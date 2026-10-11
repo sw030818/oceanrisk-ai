@@ -3,6 +3,7 @@ export interface ProviderDiagnostics {
   status: "INVALID_ARGUMENT" | "RESOURCE_EXHAUSTED" | "INTERNAL" | "UNAVAILABLE" | "PERMISSION_DENIED" | "NOT_FOUND" | "UNKNOWN";
   model?: string;
   requestFields: string[];
+  reasons?: string[];
   quotaWindow: "minute" | "day" | "unknown";
   quotaLimitZero: boolean;
   availableModels?: string[];

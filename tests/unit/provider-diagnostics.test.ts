@@ -13,6 +13,19 @@ describe("whitelisted provider diagnostics do not echo confidential text", () =>
     expect(JSON.stringify(result)).not.toContain("secret-id");
   });
   it("identifies a minute quota", () => expect(providerDiagnostics({error:{message:"PerMinute limit: 20"}},429,"gemini-3-flash").quotaWindow).toBe("minute"));
+  it("reads only known field names from structured violations without echoing values", () => {
+    const result=providerDiagnostics({error:{status:"INVALID_ARGUMENT",message:"Invalid argument",details:[{fieldViolations:[{field:"generationConfig.responseFormat.text.schema.secret-account",description:"private-document"}]}]}},400,"gemini-3-flash");
+    expect(result.requestFields).toEqual(["responseFormat","generationConfig"]);
+    expect(JSON.stringify(result)).not.toMatch(/secret|account|private|document/);
+  });
+  it("allows known provider reasons but never private metadata or arbitrary reasons", () => {
+    const result=providerDiagnostics({error:{details:[{reason:"BILLING_DISABLED",metadata:{project:"private-project"}},{reason:"PRIVATE_KEY_TEXT"},{reason:"BILLING_DISABLED"}]}},400,"gemini-3-flash");
+    expect(result.reasons).toEqual(["BILLING_DISABLED"]);
+    expect(JSON.stringify(result)).not.toMatch(/PRIVATE|private|project/);
+  });
+  it.each(["private",[{fieldViolations:"private"}], [null, {fieldViolations:[null, 42, {field:42,description:null}]}]])("ignores malformed structured details", details => {
+    expect(providerDiagnostics({error:{details}},400,"gemini-3-flash")).toMatchObject({requestFields:[],status:"UNKNOWN"});
+  });
   it.each([null,{}, {error:{status:"secret-text",message:42}}])("handles malformed diagnostics %j", payload => {
     expect(providerDiagnostics(payload,503,"private-model-value")).toEqual({httpStatus:503,status:"UNKNOWN",requestFields:[],quotaWindow:"unknown",quotaLimitZero:false});
   });

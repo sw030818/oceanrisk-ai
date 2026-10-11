@@ -31,7 +31,8 @@ else {
           const status = ["INVALID_ARGUMENT", "RESOURCE_EXHAUSTED", "INTERNAL", "UNAVAILABLE", "PERMISSION_DENIED", "NOT_FOUND"].includes(diagnostic.status) ? diagnostic.status : "UNKNOWN";
           const fields = (diagnostic.requestFields ?? []).filter(field => ["responseFormat", "response_format", "responseJsonSchema", "response_json_schema", "responseSchema", "response_schema", "thinkingConfig", "thinking_config", "maxOutputTokens", "max_output_tokens", "temperature", "generationConfig", "generation_config", "systemInstruction", "system_instruction"].includes(field));
           const window = ["minute", "day"].includes(diagnostic.quotaWindow) ? diagnostic.quotaWindow : "unknown";
-          console.log(`::notice title=Case ${item.id} provider ${index + 1}::HTTP=${http}; status=${status}; requestFields=${fields.join(",") || "none"}; quotaWindow=${window}; quotaLimitZero=${diagnostic.quotaLimitZero === true}`);
+          const reasons = (diagnostic.reasons ?? []).filter(reason => ["API_KEY_INVALID", "API_KEY_SERVICE_BLOCKED", "API_KEY_HTTP_REFERRER_BLOCKED", "API_KEY_IP_ADDRESS_BLOCKED", "BILLING_DISABLED", "SERVICE_DISABLED", "CONSUMER_INVALID", "LOCATION_POLICY_VIOLATED", "MODEL_NOT_FOUND", "MODEL_NOT_SUPPORTED", "QUOTA_EXCEEDED"].includes(reason));
+          console.log(`::notice title=Case ${item.id} provider ${index + 1}::HTTP=${http}; status=${status}; requestFields=${fields.join(",") || "none"}; reasons=${reasons.join(",") || "none"}; quotaWindow=${window}; quotaLimitZero=${diagnostic.quotaLimitZero === true}`);
           const available = (diagnostic.availableModels ?? []).filter(value => typeof value === "string" && /^gemini-[a-zA-Z0-9._-]+$/.test(value));
           if (available.length) console.log(`::notice title=Case ${item.id} advertised Flash::${available.join(", ")}`);
         }

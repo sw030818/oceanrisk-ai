@@ -200,3 +200,10 @@
 - 실제 모델 목록에 포함된 TTS 모델이 기존 preview 이름 패턴을 통과하는 결함을 발견해 audio/TTS/image/live 등 비텍스트 전용 모델을 명시적으로 제외. 안정된 숫자 버전 모델을 alias보다 우선하고, 원래 버전에 가장 가까운 모델을 선택. 실제 목록의 2.5 Flash-lite가 404인 경우 다음 후보는 3.1 Flash-lite이며 400/429/503 뒤에는 재시도하지 않음.
 - 원문 인용에서 포장 라벨 또는 부정어를 잘라낸 경우 검증될 수 있던 문제를 수정. 수량은 실제 페이지의 라벨 문맥을 재확인하고 전체 선적은 실제 원문 줄의 부정어를 검토. 기존 근거 검증을 완화하지 않음.
 - 회귀 4개 추가, 단위 **143/143** 통과. 실제 AI 성공 여부는 다음 A 최소 검증 결과로 별도 확인하며 A만 통과해도 전체 A–D 검증 완료라고 보고하지 않음.
+
+### 가까운 안정 모델의 실제 400과 구조화 오류 진단
+- 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38165651864 : quality **성공** (1m 22s), production **성공** (21s), live-gemini **실패** (23s, exit 1). A의 두 문서 모두 모델 gemini-3.1-flash-lite, HTTP 400 INVALID_ARGUMENT / API_REQUEST_REJECTED. 분류·수량·근거·비교는 실제 결과를 얻지 못해 미검증. B–D는 이 최소 실행 범위에서 제외.
+- 소스 SHA `9a9248858032c6b98dd2c0a7145463f8a1ff1fd7`, Production ID `dpl_AZL1memC5DobvWb2qKwDanzV7VHw`, 동일 SHA 서비스 및 키 설정 verified=true. 관리 API Ready는 직접 미조회.
+- 같은 소스의 ship 전체 검사: npm ci (419), typecheck, lint, 단위 **143/143**, build, PDF worker trace, Production 모드 Playwright **7/7** 성공. 원격 SHA/소스 일치. Post-push 클라우드 직접 Production 확인은 프록시 때문에 exit 1이지만 위 실제 CI 검증은 성공.
+- 최상위 메시지에 실패 설정 필드가 없어 아직 400의 근본 원인을 특정하지 못함. Google ErrorInfo의 알려진 reason과 BadRequest의 알려진 설정 필드만 화이트리스트로 추출하도록 보강. 원시 details/description/metadata는 기록하지 않음. 구조화 상세가 없으면 이유를 추정하지 않고 unknown으로 유지.
+- 상세 진단 회귀 검사 5개 추가. 다음 검증은 A 두 문서의 최소 범위로만 실행. 400/429/503 자동 재시도나 Google 할당량 변경 없음.

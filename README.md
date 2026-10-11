@@ -68,7 +68,7 @@ PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run test:e2e
 
 PDF 선택 → 데이터 처리/Google 전송 안내 확인 → 분석 시작. 접근 코드 입력이나 사용자 인증이 없습니다. 이전 `ANALYSIS_ACCESS_TOKEN` 변수는 코드에서 사용하지 않으며 Vercel에 남아 있어도 무시합니다. 기존 서버 환경변수와 프로젝트를 삭제/초기화하지 않습니다.
 
-현재 클라우드에는 Gemini 키가 없고 Production 도메인 조회도 프록시에서 차단됩니다. 따라서 **실제 Gemini A–D 검증은 미완료**입니다. 모의 응답 검사와 실제 호출 검사를 구분합니다.
+현재 Codex에는 Gemini 키가 없고 Production 도메인 직접 조회는 프록시에서 차단됩니다. GitHub Actions에서는 Production 서버 키 설정과 배포 SHA를 확인하고 실제 합성 PDF 분석을 실행했습니다. 실제 호출은 모델/제공자 오류로 실패했으며 **Gemini A–D 검증은 미완료**입니다. 상세 실행별 결과는 PROGRESS.md에 기록합니다.
 
 ```sh
 # 로컬 서버 자격 증명을 안전하게 설정한 경우
@@ -77,13 +77,13 @@ npm run test:live
 npm run test:production
 ```
 
-합성 Invoice/PL 8개를 2페이지 PDF로 생성합니다. A: 500/500 PCS, B: 500/480 PCS, C: 상품 500 PCS와 포장 20 CTNS, D: 거래 참조 누락. 실제 PDF → AI 응답 → 원문 근거 → 규칙을 검사합니다. 로컬 모드는 최대 8회 Google 호출, Production 모드는 합성 파일 2개씩 4번 서버 업로드로 최대 8회 Google 호출을 요청합니다. 유효한 키가 있으면 사용량이 발생할 수 있으며 일반 품질 검사/CI/빌드에는 실제 호출을 자동 포함하지 않습니다.
+합성 Invoice/PL 8개를 2페이지 PDF로 생성합니다. A: 500/500 PCS, B: 500/480 PCS, C: 상품 500 PCS와 포장 20 CTNS, D: 거래 참조 누락. 실제 PDF → AI 응답 → 원문 근거 → 규칙을 검사합니다. 로컬 모드는 문서 8개를 Google로 분석하고 Production 모드는 합성 파일 2개씩 4번 서버 업로드합니다. 모델 404 복구 시 목록 조회와 후보 요청이 추가될 수 있습니다. 유효한 키가 있으면 사용량이 발생할 수 있으며 일반 품질 검사/CI/빌드에는 실제 호출을 자동 포함하지 않습니다.
 
-`test-results/live-gemini/report.json`과 `test-results/live-gemini-production/report.json`에는 상태/기준/오류 코드만 기록합니다. 원시 응답/키는 저장하지 않으며 합성 PDF와 보고서는 Git에서 제외합니다. 실제 전체 통과는 종료 코드 0, 실행/검증 실패는 1, 키 미설정으로 미실행은 2입니다. Production 접속 불가는 1이며 AI 요청 전에 중단합니다. Production 보고서의 requestsAttempted는 직접 관찰한 로컬 Google 호출 수, serverRequestsAttempted는 앱 업로드 수입니다. 원격 Google 호출 수는 직접 관찰하지 않습니다.
+`test-results/live-gemini/report.json`과 `test-results/live-gemini-production/report.json`에는 상태/기준/오류 코드만 기록합니다. 원시 응답/키는 저장하지 않으며 합성 PDF와 보고서는 Git에서 제외합니다. 전체 범위에서 실제 A–D 모두 통과하면 종료 코드 0 및 completed=true입니다. 단일 사례 범위는 selectedCasesPassed만 검사하며 성공해도 completed=false입니다. 실행/검증 실패는 1, 로컬 키 미설정으로 미실행은 2입니다. Production 접속 불가는 1이며 AI 요청 전에 중단합니다. Production 보고서의 requestsAttempted는 직접 관찰한 로컬 Google 호출 수, serverRequestsAttempted는 앱 업로드 수입니다. 원격 Google 호출 수는 직접 관찰하지 않습니다.
 
 수량 규칙의 `status`(match/mismatch/unverifiable)와 `confidence`(confirmed/candidate/unavailable)를 유지합니다. 후보는 검증된 상품 수치만 표시하고 확정 오류에 집계하지 않습니다. 같은 당사자·품명·상품 단위를 확인하되 거래 참조/전체 선적 정보가 부족하면 후보로 처리합니다. 서로 다른 거래·명시적 부분선적·사용자 수정·미검증 수량은 확정 오류에 사용하지 않습니다. PCS/EA만 동의 단위로 대응하고 포장 환산·수량 추측은 하지 않습니다.
 
-Gemini 모델 기본값은 gemini-2.5-flash, REST v1beta generateContent/responseJsonSchema 및 Zod 검증을 사용합니다. 모델 없음(404), 요청 거부(400), 권한(401/403), Google 한도(429), 불완전/길이 제한 응답을 안전한 한국어 오류로 구분합니다. 실제 모델/키/스키마 수용 여부는 실제 호출 후에만 확정합니다. PDF worker를 서버 추적에 명시해 배포 패키지 누락을 방지합니다.
+Gemini 모델 기본값은 gemini-2.5-flash, REST v1beta generateContent 및 Zod 검증을 사용합니다. Gemini 2.x는 responseMimeType/responseJsonSchema, 3+와 공식 최신 Flash alias는 responseFormat.text(APPLICATION_JSON, schema)를 사용합니다. $defs/$ref로 중복 스키마를 공유합니다. 모델 없음(404), 요청 거부(400), 권한(401/403), Google 한도(429), 불완전/길이 제한 응답을 안전한 한국어 오류로 구분합니다. 실제 모델/키/스키마 수용 여부는 실제 호출 후에만 확정합니다. PDF worker를 서버 추적에 명시해 배포 패키지 누락을 방지합니다.
 
 업로드 제한 4개·파일당/합계 4 MB·30페이지·문서 텍스트 100,000자, Gemini 25초/전체 105초 제한 및 취소 전파를 유지합니다. 응답 완료/부분 처리/실패를 구분하고 원문·파일별 오류·근거 페이지·사용자 수정을 보존합니다.
 
@@ -105,7 +105,7 @@ ship은 main/원격 ancestry/Stage/비밀 파일/Push dry-run을 검사하고 np
 
 main Push 이후 기존 Vercel Git 연동이 Production 배포를 요청합니다. 새 `vercel.json`은 npm run build:verified를 실행하므로 타입/린트/단위/빌드/worker 검사 실패 시 빌드를 실패시킵니다. Playwright는 ship/Actions에서 실행합니다. 기존 Vercel 프로젝트·Git 연결·환경변수는 재생성하지 않습니다.
 
-GitHub Actions의 quality job은 main Push/PR 품질 검사를 실행합니다. main Push에는 quality 통과 후 production job이 공개 status endpoint의 정확한 SHA를 최대 약 5분간 확인합니다. Actions 자체에는 contents:read만 부여하고 실제 AI 호출·코드 Push·자동 병합은 포함하지 않습니다. Push는 Codex의 플랫폼 Git 인증과 ship이 실행합니다. main 보호 정책으로 거절되면 작업 브랜치/PR 보존 경로가 필요하며 보호 정책을 해제하지 않습니다. 필수 PR 검사/자동 병합 설정은 저장소 권한이 있어야 구성할 수 있습니다.
+GitHub Actions의 quality job은 main Push/PR 품질 검사를 실행합니다. main Push에는 quality 통과 후 production job이 공개 status endpoint의 정확한 SHA를 최대 약 5분간 확인합니다. Actions 자체에는 contents:read만 부여하고 코드 Push·자동 병합은 포함하지 않습니다. 실제 AI 호출은 별도 명시적으로 선택한 live-gemini job에만 포함됩니다. Push는 Codex의 플랫폼 Git 인증과 ship이 실행합니다. main 보호 정책으로 거절되면 작업 브랜치/PR 보존 경로가 필요하며 보호 정책을 해제하지 않습니다. 필수 PR 검사/자동 병합 설정은 저장소 권한이 있어야 구성할 수 있습니다.
 
 ```sh
 # Push 후 Production 식별만 다시 확인 (AI 분석을 호출하지 않음)
@@ -118,12 +118,8 @@ Production 상태에 Vercel 시스템 환경변수의 SHA/환경/id를 포함합
 
 이후 Codex에 수정 요청을 하면 AGENTS.md의 검증·Stage·ship 절차를 기본으로 사용합니다. Git 쓰기 권한, 최신 main, Vercel Git 연결, 정상 품질 검사, 네트워크가 필요한 전제입니다. 지침 작성만으로 모든 후속 작업이 무조건 자동 배포된다고 보증하지 않습니다.
 
-실제 AI 검증이 필요한 경우 Actions를 수동 실행하면서 verify_live_gemini를 선택하거나, 검증 실행 목적의 커밋 메시지에 `[verify-live-gemini]`를 명시합니다. quality와 Production SHA 확인이 먼저 성공해야 live-gemini job이 실행됩니다. 합성 8개 파일에만 유료 API 호출을 요청하고 안전한 기준별 결과를 공개 job summary에 기록합니다. 일반 커밋에는 이 표시를 넣지 않으며 자동 유료 검사는 실행하지 않습니다. 배포 확인 job summary에는 공개 배포 ID(시스템 변수가 제공되는 경우)와 SHA 확인 결과를 기록합니다.
+실제 AI 검증이 필요한 경우 Actions를 수동 실행하면서 verify_live_gemini를 선택하거나, 검증 실행 목적의 커밋 메시지에 `[verify-live-gemini]`를 명시합니다. quality와 Production SHA 확인이 먼저 성공해야 live-gemini job이 실행됩니다. 일반 커밋에는 이 표시를 넣지 않으며 유료 검사를 실행하지 않습니다. 배포 ID·SHA와 안전한 기준별 결과는 공개 Actions notice/job summary 및 단기 보관 artifact로 제공합니다. 원문·키·원시 모델 응답은 포함하지 않습니다.
 
-설정된 모델이 실제로 404를 반환하면 Google models.list를 1회 조회하고, generateContent 지원이 표시된 텍스트 Flash 모델을 선택해 1회만 재시도합니다. 최신 버전·같은 버전의 안정 모델을 우선하며 오디오/이미지/Pro/임의 모델은 선택하지 않습니다. 성공한 선택은 프로세스 메모리에 캐시하고 실제 사용 모델을 결과 메타데이터에 기록합니다. 400·인증·Google 할당량 오류에는 재시도하지 않습니다. 따라서 일반 정상 A–D 분석은 8개 문서 추출이고, 모델 404 복구 시 목록 조회 및 실패 모델 요청이 추가될 수 있습니다. 이것은 Google 할당량이나 과금을 우회하지 않습니다.
+설정된 모델이 실제 404를 반환할 때만 Google models.list를 1회 조회합니다. generateContent 지원이 명시된 텍스트 Flash 모델만 선택하며 TTS/audio/image/live/Pro 모델은 제외합니다. 같은 버전의 안정 모델, 가까운 버전의 안정 모델, 공식 Flash alias, preview 순으로 선택합니다. 목록에 포함됐다는 이유만으로 실제 사용 가능하다고 보증하지 않습니다. 최대 2개 후보를 확인하고 다음 후보로 넘어가는 조건은 이전 후보의 404뿐입니다. 400·권한·429·503에는 재시도하지 않습니다. 성공 응답 모델만 프로세스 메모리에 캐시하며 실제 모델명을 결과에 표시합니다. Google 할당량·과금 한도는 변경하거나 우회하지 않습니다.
 
-실제 실패 진단은 `[verify-live-gemini] [case-A]` 표시로 A 두 문서만 실행할 수 있습니다. 이 범위의 성공은 전체 A–D 완료가 아닙니다. LIVE_GEMINI_CASE=all이 기본이고 A/B/C/D를 지정하면 해당 사례만 실행합니다. 보고서의 selectedCasesPassed와 completed(전체 A–D)를 구분합니다. Google 429가 나오면 다음 사례 호출을 중단합니다. provider diagnostics는 HTTP 상태, 고정 설정 필드명, 공개 모델명, quota window/limit-zero 여부만 담으며 키/문서/원시 오류/프로젝트 ID는 포함하지 않습니다.
-
-404 모델 목록 선택은 현재 안정 모델을 우선하고, 기존 설정과 같은 버전 계열의 Flash/Flash-lite가 있으면 이를 우선합니다. 그다음 Google 목록의 공식 Flash alias, 다른 안정 Flash, preview 순입니다. 503/429 후 모델을 순환시키는 정책은 아닙니다. 404에서 제공자가 확인한 목록만 사용합니다.
-
-현재 모델 404 복구는 목록 1회 조회 후 중복을 제외한 최대 2개 후보를 확인합니다. 다음 후보로 넘어가는 조건은 앞 후보의 실제 404뿐입니다. 400/권한/429/503에는 중단합니다. Gemini 3+ 및 최신 Flash alias는 Google API discovery의 responseFormat.text(APPLICATION_JSON, schema)를 사용하고 2.x는 기존 JSON 설정을 유지합니다. $defs/$ref로 중복 스키마를 공유하며 로컬 Zod 검증은 완전히 유지합니다. 목록의 generateContent 표시만으로 실제 모델 성공을 주장하지 않습니다.
+실패 진단은 `[verify-live-gemini] [case-A]`로 A 두 문서만 실행할 수 있습니다. LIVE_GEMINI_CASE=all이 기본이고 A/B/C/D를 지정하면 해당 사례만 실행합니다. 단일 사례 성공은 전체 A–D 완료가 아닙니다. Google 429가 확인되면 다음 사례 호출을 중단합니다. provider diagnostics는 HTTP 상태·고정 설정 필드명·공개 모델명·quota window/limit-zero 여부만 담으며 키·문서·원시 오류·프로젝트 ID는 제외합니다.

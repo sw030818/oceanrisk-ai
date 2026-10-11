@@ -1,4 +1,4 @@
-// Explicit opt-in live test: eight provider requests at most, synthetic PDFs only.
+// Explicit opt-in live test: eight synthetic documents; model 404 discovery may add requests.
 import type { AnalysisResult } from "../src/modules/documents/schema";
 import { extractWithGemini } from "../src/modules/ai/gemini";
 import nextEnv from "@next/env";
