@@ -210,4 +210,31 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
+  it("diagnoses provider output truncation without exposing document text", async () => {
+    const fetcher = vi.fn(async () => response({ candidates: [{ finishReason: "MAX_TOKENS", content: { parts: [{ text: "confidential" }] } }] }));
+    await expect(extractWithGemini(pdf,{apiKey:"test", fetcher})).rejects.toMatchObject({
+      code: "INVALID_AI_RESPONSE", diagnostics: { outputIssue: "MAX_TOKENS" },
+    });
+  });
+  it("diagnoses provider output JSON parse failure with a fixed category", async () => {
+    const fetcher = vi.fn(async () => response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: "confidential-not-json" }] } }] }));
+    await expect(extractWithGemini(pdf,{apiKey:"test", fetcher})).rejects.toMatchObject({
+      code: "INVALID_AI_RESPONSE", diagnostics: { outputIssue: "INVALID_JSON" },
+    });
+  });
+  it("reports only safe field names when strict Zod validation rejects an answer", async () => {
+    const wrong = { ...data, seller: { value: 42, evidence: null } };
+    const fetcher = vi.fn(async () => response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(wrong) }] } }] }));
+    try {
+      await extractWithGemini(pdf,{apiKey:"test", fetcher});
+      throw new Error("Expected strict validation rejection");
+    } catch(error) {
+      const issue = error as { code?: string; diagnostics?: { outputIssue?: string; outputFields?: string[] } };
+      expect(issue.code).toBe("INVALID_AI_RESPONSE");
+      expect(issue.diagnostics?.outputIssue).toBe("SCHEMA_MISMATCH");
+      expect(issue.diagnostics?.outputFields).toContain("seller.value");
+      expect(JSON.stringify(issue.diagnostics)).not.toContain("confidential");
+    }
+  });
+
 });
