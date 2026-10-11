@@ -117,3 +117,5 @@ Production 상태에 Vercel 시스템 환경변수의 SHA/환경/id를 포함합
 현재 클라우드의 GitHub API/Production 도메인 프록시 403은 사이트 장애를 의미하지 않습니다. 네트워크 설정에서 api.github.com/oceanrisk-ai.vercel.app/api.vercel.com을 허용해야 원격 검사에 접근할 수 있습니다. 알려진 네트워크 차단 상태에서는 PRODUCTION_CHECK_ATTEMPTS=1로 반복 대기만 줄이며 성공을 주장하지 않습니다.
 
 이후 Codex에 수정 요청을 하면 AGENTS.md의 검증·Stage·ship 절차를 기본으로 사용합니다. Git 쓰기 권한, 최신 main, Vercel Git 연결, 정상 품질 검사, 네트워크가 필요한 전제입니다. 지침 작성만으로 모든 후속 작업이 무조건 자동 배포된다고 보증하지 않습니다.
+
+실제 AI 검증이 필요한 경우 Actions를 수동 실행하면서 verify_live_gemini를 선택하거나, 검증 실행 목적의 커밋 메시지에 `[verify-live-gemini]`를 명시합니다. quality와 Production SHA 확인이 먼저 성공해야 live-gemini job이 실행됩니다. 합성 8개 파일에만 유료 API 호출을 요청하고 안전한 기준별 결과를 공개 job summary에 기록합니다. 일반 커밋에는 이 표시를 넣지 않으며 자동 유료 검사는 실행하지 않습니다. 배포 확인 job summary에는 공개 배포 ID(시스템 변수가 제공되는 경우)와 SHA 확인 결과를 기록합니다.

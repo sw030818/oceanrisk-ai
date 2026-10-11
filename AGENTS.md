@@ -31,3 +31,5 @@
 9. 완료 보고에 브랜치·실제 SHA·Push/Actions/배포 상태·실제 Gemini 여부를 각각 기록한다. 실패/스킵/미실행을 구분한다. 지침/파일 작성만으로 자동화나 실제 배포가 확인됐다고 주장하지 않는다.
 
 네트워크 프록시가 Production/GitHub API를 차단하는 이 환경에서는 `PRODUCTION_CHECK_ATTEMPTS=1`로 알려진 확인 불가 상태의 반복 대기를 줄일 수 있다. 이 경우 GitHub 저장과 Production 확인 실패를 분리해서 보고한다. 제약이 해제되면 기본 20회 확인을 사용한다.
+
+실제 Gemini 확인을 현재 사용자가 요청한 경우에만 ship 커밋 메시지의 `[verify-live-gemini]` 표시 또는 수동 Actions verify_live_gemini 입력으로 명시적 합성 Production 검증을 실행할 수 있다. 일반 작업에는 표시를 붙이지 않는다. GitHub 공개 run/job summary에서 quality/production/live 결과와 기준별 오류를 확인하고 실제 호출이 실패하면 해당 원인을 해결하거나 정확히 보고한다. 공개 배포 SHA/ID와 Vercel 관리 Ready 상태는 구분한다.
