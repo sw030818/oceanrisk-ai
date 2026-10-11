@@ -11,6 +11,15 @@ export interface ProviderDiagnostics {
   outputIssue?: "MAX_TOKENS" | "NON_STOP" | "EMPTY_TEXT" | "INVALID_JSON" | "SCHEMA_MISMATCH";
   outputFields?: string[];
   outputFailures?: { field: string; code: string; received: string }[];
+  outputStructure?: {
+    messageCount: number;
+    textPartCount: number;
+    characters: number;
+    startsWithObject: boolean;
+    endsWithObject: boolean;
+    hasMarkdownFence: boolean;
+    jsonErrorOffset: number | null;
+  };
 }
 export class AnalysisError extends Error {
   constructor(

@@ -28,10 +28,13 @@ const args = process.argv.slice(2),
   arg = (key: string) =>
     args.find((a) => a.startsWith(`--${key}=`))?.slice(key.length + 3);
 const stage = arg("stage") ?? "all",
+  scenario = arg("scenario"),
   selected = arg("case"),
   sha = arg("sha");
 if (!["all", "single", "pair", "ad", "layouts"].includes(stage))
   throw new Error("Unknown test stage");
+if (scenario && (stage !== "ad" || !["A", "B", "C", "D"].includes(scenario)))
+  throw new Error("--scenario requires --stage=ad and A, B, C or D");
 if (selected && !layoutCases.some((c) => c.id === selected))
   throw new Error("Unknown layout case");
 const remote = args.includes("--local")
@@ -431,7 +434,7 @@ if (["all", "pair"].includes(stage) && !selected && !ledger.stopReason)
   await ad("A");
 if (["all", "ad"].includes(stage) && !selected) {
   const ids: ScenarioId[] =
-    stage === "ad" ? ["A", "B", "C", "D"] : ["B", "C", "D"];
+    scenario ? [scenario as ScenarioId] : stage === "ad" ? ["A", "B", "C", "D"] : ["B", "C", "D"];
   for (const id of ids) {
     if (ledger.stopReason) break;
     await ad(id);

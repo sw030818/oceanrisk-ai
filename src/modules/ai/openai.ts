@@ -255,12 +255,28 @@ export async function extractWithOpenAI(
     let raw: unknown;
     try {
       raw = JSON.parse(text);
-    } catch {
+    } catch (parseError) {
+      // Report only structural metadata. SyntaxError.message can contain source
+      // text and must never cross the server boundary or enter validation logs.
+      const offset = parseError instanceof SyntaxError
+        ? /position (\d+)/.exec(parseError.message)?.[1]
+        : undefined;
       throw new AnalysisError(
         "INVALID_AI_RESPONSE",
         "OpenAI 응답이 JSON 형식이 아닙니다.",
         502,
-        outputError("INVALID_JSON"),
+        {
+          ...outputError("INVALID_JSON"),
+          outputStructure: {
+            messageCount: output.filter((item) => item?.type === "message").length,
+            textPartCount: content.filter((item) => item?.type === "output_text" && typeof item.text === "string").length,
+            characters: text.length,
+            startsWithObject: text.trimStart().startsWith("{"),
+            endsWithObject: text.trimEnd().endsWith("}"),
+            hasMarkdownFence: text.trimStart().startsWith("```"),
+            jsonErrorOffset: offset === undefined ? null : Number(offset),
+          },
+        },
       );
     }
     try {

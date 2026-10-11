@@ -74,6 +74,28 @@ function completed(raw: unknown, extra = {}) {
 }
 afterEach(() => vi.unstubAllEnvs());
 describe("OpenAI Responses contract and independent grounding (MOCKED AI)", () => {
+  it("reports malformed output structure without exposing JSON error text or selecting an arbitrary object", async () => {
+    const privateText = '{"private-document":"sk-private"}';
+    const fetcher = vi.fn().mockResolvedValue(completed({}, {
+      output: [
+        { type: "message", content: [{ type: "output_text", text: privateText }] },
+        { type: "message", content: [{ type: "output_text", text: privateText }] },
+      ],
+    }));
+    try {
+      await extractWithOpenAI({ id: "x", fileName: "x", pages: [] }, { apiKey: "synthetic", fetcher });
+      throw new Error("Expected rejection");
+    } catch (error) {
+      const safe = safeError(error);
+      expect(safe.diagnostics).toMatchObject({
+        outputIssue: "INVALID_JSON",
+        outputStructure: { messageCount: 2, textPartCount: 2, characters: privateText.length * 2, startsWithObject: true, endsWithObject: true, hasMarkdownFence: false, jsonErrorOffset: privateText.length },
+      });
+      expect(JSON.stringify(safe)).not.toContain("private-document");
+      expect(JSON.stringify(safe)).not.toContain("sk-private");
+    }
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
   it("invalid credentials name the server setting without echoing provider secrets or documents", async () => {
     const fetcher = vi
       .fn()
