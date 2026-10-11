@@ -119,6 +119,40 @@ describe("actual PDF geometry with synthetic AI extractions, not live Gemini", (
       expect(() => parseUploadSlots(raw, 2)).toThrow();
   });
 });
+describe("legacy literal quotes across adjacent native blocks", () => {
+  it("grounds a split Purchase Order label/value without requiring model block IDs", async () => {
+    const f = await layoutFixture("portrait-landscape", "invoice");
+    const data = structuredClone(f.data);
+    delete data.transactionReference.evidence!.segments;
+    expect(groundDocument(data, f.pdf).transactionReference.status).toBe(
+      "verified",
+    );
+  });
+  it("does not invent a quote across noncontiguous party blocks", async () => {
+    const f = await layoutFixture("party-tables", "invoice");
+    const data = structuredClone(f.data);
+    delete data.seller.evidence!.segments;
+    expect(groundDocument(data, f.pdf).seller.status).toBe("unverified");
+  });
+});
+
+describe("typed references identify the same transaction without mixing namespaces", () => {
+  it("does not treat a verified PO and Invoice number as conflicting when typed shared references match", async () => {
+    const a = await layoutFixture("party-tables", "invoice"),
+      b = await layoutFixture("party-tables", "packing_list");
+    const data = structuredClone(b.data);
+    data.transactionReference = data.invoiceReference!;
+    const docs = [groundDocument(a.data, a.pdf), groundDocument(data, b.pdf)];
+    expect(
+      compareQuantities(docs).every(
+        (c) => c.status === "match" && c.confidence === "confirmed",
+      ),
+    ).toBe(true);
+    docs[1].invoiceReference!.value = "INV-CONFLICT";
+    expect(compareQuantities(docs)[0].id).toBe("conflicting-identifiers");
+  });
+});
+
 describe("additional conservative identity and header provenance", () => {
   it("never re-verifies full shipment with a fabricated block ID", async () => {
     const f = await layoutFixture("party-tables", "invoice");

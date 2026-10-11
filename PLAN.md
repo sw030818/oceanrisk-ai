@@ -39,4 +39,4 @@ PHASE 0/1 구현 및 로컬 검증 완료. 실제 Gemini 검증은 키 설정 �
 6. ship 검증 후 main 일반 Push 및 Production SHA 확인, 실제 합성 Gemini 평가·반복 검사 결과를 기록한다.
 7. 후속 B/L·법적 위험·견적·비용·이력 DB·대시보드 전면 재작성은 제외한다.
 
-PHASE 2 진행 상태: 구현 및 로컬 모의 검증 완료. 실제 Production Gemini 평가와 배포 확인은 실행 결과를 PROGRESS.md에 기록한 뒤 판정한다. 과거 PHASE 1.6의 실패 기록은 당시 결과이며 최신 main에서는 실제 A 성공이 확인됐다.
+PHASE 2 진행 상태: 구현·로컬 모의 검사·main Push·Production SHA 확인을 수행했다. 실제 Gemini 22개 문서 모두 구조화/제공자 오류로 실패하여 실사용 분석 검증은 미완료. 최종 로컬 단위 191개와 브라우저 10개 통과, 상세 실패와 SHA는 PROGRESS.md/안전한 검증 JSON에 보존한다. 과거 PHASE 1.6의 실패 기록은 당시 결과이며 최신 main에서는 실제 A 성공이 확인됐다.

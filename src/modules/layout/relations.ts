@@ -73,7 +73,29 @@ export function evidenceBlocks(
   const matches = page.blocks.filter((b) =>
     norm(b.text).includes(norm(evidence.quote)),
   );
-  return matches.length === 1 ? matches : null;
+  if (matches.length) return matches.length === 1 ? matches : null;
+  // Legacy quote-only evidence may span adjacent native PDF text items. Resolve
+  // only a unique literal sequence; noncontiguous selections still need IDs.
+  const quote = norm(evidence.quote);
+  if (!quote || !norm(page.text).includes(quote)) return null;
+  const sequences: PdfBlock[][] = [];
+  for (let index = 0; index < page.blocks.length; index++) {
+    const selected: PdfBlock[] = [];
+    for (
+      let offset = 0;
+      offset < 12 && index + offset < page.blocks.length;
+      offset++
+    ) {
+      selected.push(page.blocks[index + offset]);
+      const text = norm(selected.map((b) => b.text).join(" "));
+      if (text === quote) {
+        sequences.push([...selected]);
+        break;
+      }
+      if (!quote.startsWith(text + " ")) break;
+    }
+  }
+  return sequences.length === 1 ? sequences[0] : null;
 }
 const right = (b: PdfBlock) => b.x + b.width;
 const sameRow = (a: PdfBlock, b: PdfBlock) => a.row === b.row;

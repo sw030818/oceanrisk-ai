@@ -1,0 +1,546 @@
+{
+  "generatedAt": "2026-10-11T20:54:00Z",
+  "data": "synthetic PDF fixtures only; no keys, raw documents, raw provider output or extracted values",
+  "mock": {
+    "cases": 7,
+    "correctCases": 7,
+    "groundedCorrectFields": 172,
+    "expectedFields": 172,
+    "isLiveGemini": false
+  },
+  "actualInitial": {
+    "mode": "actual-gemini-synthetic-layouts",
+    "deployment": {
+      "commitSha": "600ae1d90a78e6e4ce5a7c5a1046c88ee5530af6",
+      "id": "dpl_8a4NAF5gPCrarVNY5sM8HsHTUfW3"
+    },
+    "cases": [
+      {
+        "id": "portrait-landscape",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "INVALID_AI_RESPONSE",
+          "API_ERROR"
+        ],
+        "outputIssues": [
+          "SCHEMA_MISMATCH",
+          null
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      },
+      {
+        "id": "portrait-landscape",
+        "attempt": 2,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "INVALID_AI_RESPONSE",
+          "API_ERROR"
+        ],
+        "outputIssues": [
+          "SCHEMA_MISMATCH",
+          null
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      },
+      {
+        "id": "party-tables",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "INVALID_AI_RESPONSE",
+          "API_ERROR"
+        ],
+        "outputIssues": [
+          "SCHEMA_MISMATCH",
+          null
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      },
+      {
+        "id": "mixed-packaging",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "API_ERROR",
+          "INVALID_AI_RESPONSE"
+        ],
+        "outputIssues": [
+          null,
+          "SCHEMA_MISMATCH"
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      },
+      {
+        "id": "quantity-mismatch",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "INVALID_AI_RESPONSE",
+          "INVALID_AI_RESPONSE"
+        ],
+        "outputIssues": [
+          "SCHEMA_MISMATCH",
+          "SCHEMA_MISMATCH"
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      },
+      {
+        "id": "reference-conflict",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "API_ERROR",
+          "INVALID_AI_RESPONSE"
+        ],
+        "outputIssues": [
+          null,
+          "SCHEMA_MISMATCH"
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      },
+      {
+        "id": "wrapped-description",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "API_ERROR",
+          "INVALID_AI_RESPONSE"
+        ],
+        "outputIssues": [
+          null,
+          "SCHEMA_MISMATCH"
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      },
+      {
+        "id": "missing-reference",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 22,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "INVALID_AI_RESPONSE",
+          "API_ERROR"
+        ],
+        "outputIssues": [
+          "SCHEMA_MISMATCH",
+          null
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      }
+    ],
+    "completed": false,
+    "attemptedPairs": 8,
+    "providerSuccesses": 0,
+    "expectedDocuments": 16,
+    "plannedDocuments": 16,
+    "groundedCorrectFields": 0,
+    "expectedFields": 197,
+    "correctRuleCases": 0,
+    "repeatConsistent": null
+  },
+  "actualSameSourceDiagnostic": {
+    "mode": "actual-gemini-synthetic-layouts",
+    "deployment": {
+      "commitSha": "600ae1d90a78e6e4ce5a7c5a1046c88ee5530af6",
+      "id": "dpl_8a4NAF5gPCrarVNY5sM8HsHTUfW3"
+    },
+    "cases": [
+      {
+        "id": "portrait-landscape",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "API_ERROR",
+          "API_ERROR"
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          {
+            "httpStatus": 503,
+            "status": "UNAVAILABLE",
+            "outputIssue": null,
+            "outputFields": []
+          },
+          {
+            "httpStatus": 503,
+            "status": "UNAVAILABLE",
+            "outputIssue": null,
+            "outputFields": []
+          }
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      }
+    ],
+    "scope": "portrait-landscape",
+    "selectedCasesPassed": false,
+    "completed": false,
+    "attemptedPairs": 1,
+    "providerSuccesses": 0,
+    "expectedDocuments": 2,
+    "plannedDocuments": 2,
+    "groundedCorrectFields": 0,
+    "expectedFields": 25,
+    "correctRuleCases": 0,
+    "repeatConsistent": null
+  },
+  "actualLegacyA": {
+    "sourceSha": "600ae1d90a78e6e4ce5a7c5a1046c88ee5530af6",
+    "scope": "A",
+    "completed": false,
+    "cases": [
+      {
+        "id": "A",
+        "status": "failed",
+        "errorCodes": [
+          "INVALID_AI_RESPONSE",
+          "INVALID_AI_RESPONSE"
+        ],
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ],
+        "diagnostics": [
+          {
+            "httpStatus": 200,
+            "status": "UNKNOWN",
+            "requestFields": [],
+            "quotaWindow": "unknown",
+            "quotaLimitZero": false,
+            "outputIssue": "SCHEMA_MISMATCH",
+            "outputFields": [
+              "seller.evidence.quote",
+              "buyer.evidence.quote",
+              "documentNumber.evidence.quote",
+              "transactionReference.evidence.quote",
+              "purchaseOrder.evidence.quote",
+              "currency.evidence.quote",
+              "totalAmount.evidence.quote",
+              "partialShipment.evidence.quote",
+              "items.[].description.evidence.quote",
+              "items.[].quantity.evidence.quote",
+              "items.[].unit.evidence.quote",
+              "items.[].netWeight.evidence.quote",
+              "items.[].grossWeight.evidence.quote",
+              "items.[].weightUnit.evidence.quote",
+              "items.[].amount.evidence.quote"
+            ]
+          },
+          {
+            "httpStatus": 200,
+            "status": "UNKNOWN",
+            "requestFields": [],
+            "quotaWindow": "unknown",
+            "quotaLimitZero": false,
+            "outputIssue": "SCHEMA_MISMATCH",
+            "outputFields": [
+              "seller.evidence.quote",
+              "buyer.evidence.quote",
+              "documentNumber.evidence.quote",
+              "transactionReference.evidence.quote",
+              "purchaseOrder.evidence.quote",
+              "invoiceReference",
+              "currency.evidence.quote",
+              "totalAmount",
+              "partialShipment.evidence.quote",
+              "items.[].description.evidence.quote",
+              "items.[].quantity",
+              "items.[].unit",
+              "items.[].netWeight",
+              "items.[].grossWeight",
+              "items.[].weightUnit",
+              "items.[].amount"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "actualAfterQuotePromptFix": {
+    "mode": "actual-gemini-synthetic-layouts",
+    "deployment": {
+      "commitSha": "f12b68361b3a996012d7f0d16787254f241f17ec",
+      "id": "dpl_DFY6yocQrPca5fKknotBTp5kBb7c"
+    },
+    "cases": [
+      {
+        "id": "portrait-landscape",
+        "attempt": 1,
+        "status": "failed",
+        "providerSuccesses": 0,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 25,
+        "correctValues": 0,
+        "groundedCorrectFields": 0,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null,
+          null
+        ],
+        "errorCodes": [
+          "API_ERROR",
+          "API_ERROR"
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          {
+            "httpStatus": 503,
+            "status": "UNAVAILABLE",
+            "outputIssue": null,
+            "outputFields": [],
+            "outputFailures": []
+          },
+          {
+            "httpStatus": 503,
+            "status": "UNAVAILABLE",
+            "outputIssue": null,
+            "outputFields": [],
+            "outputFailures": []
+          }
+        ],
+        "signature": "d439fe4cd4fe0460e69f392f47b0710da69504ff631d47ea2aefa536b91ff7f2",
+        "models": [
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-flash-lite"
+        ]
+      }
+    ],
+    "scope": "portrait-landscape",
+    "selectedCasesPassed": false,
+    "completed": false,
+    "attemptedPairs": 1,
+    "providerSuccesses": 0,
+    "expectedDocuments": 2,
+    "plannedDocuments": 2,
+    "groundedCorrectFields": 0,
+    "expectedFields": 25,
+    "correctRuleCases": 0,
+    "repeatConsistent": null
+  },
+  "actualValidStructuredDocuments": 0,
+  "actualAttemptedDocuments": 22,
+  "generalTradeDocumentAccuracy": "not measured",
+  "mismatchDetectionAccuracy": "not evaluable without valid AI results",
+  "readyControlPlane": "not directly queried: Vercel management API HTTP 403 and no management token"
+}

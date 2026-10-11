@@ -1,3 +1,4 @@
+import { labelRole } from "../layout/relations";
 import { productQuantities } from "../evidence/quantity-evidence";
 import type { GroundedDocument, GroundedField } from "../documents/schema";
 import { normalizeText } from "../evidence/verify";
@@ -38,6 +39,20 @@ function canonicalUnit(unit: string): string | null {
 }
 function known(field: GroundedField<unknown>): boolean {
   return field.status === "verified" && field.value !== null;
+}
+function referenceRole(field: GroundedField<string>): string | null {
+  if (!known(field) || !field.source) return null;
+  const texts =
+    field.source.blocks?.map((block) => block.text) ??
+    field.source.quote.split(/\r?\n/);
+  const roles = new Set(
+    texts
+      .map((text) => labelRole(text.split(":")[0]))
+      .filter(
+        (role) => role === "purchaseOrder" || role === "invoiceReference",
+      ),
+  );
+  return roles.size === 1 ? [...roles][0]! : null;
 }
 function result(
   id: string,
@@ -117,10 +132,29 @@ export function compareQuantities(
         ),
       ];
   }
+  const typedReferenceConfirmed =
+    (!!invoice.purchaseOrder &&
+      !!packing.purchaseOrder &&
+      known(invoice.purchaseOrder) &&
+      known(packing.purchaseOrder) &&
+      normalizeText(invoice.purchaseOrder.value!) ===
+        normalizeText(packing.purchaseOrder.value!)) ||
+    (!!packing.invoiceReference &&
+      known(invoice.documentNumber) &&
+      known(packing.invoiceReference) &&
+      normalizeText(invoice.documentNumber.value!) ===
+        normalizeText(packing.invoiceReference.value!));
   const refs = [invoice.transactionReference, packing.transactionReference];
+  const kinds = refs.map(referenceRole);
+  const distinctVerifiedNamespaces =
+    refs.every(known) &&
+    kinds.every(Boolean) &&
+    kinds[0] !== kinds[1] &&
+    typedReferenceConfirmed;
   if (
     refs.some((field) => field.status === "user_edited") ||
-    (refs.every((field) => field.value) &&
+    (!distinctVerifiedNamespaces &&
+      refs.every((field) => field.value) &&
       normalizeText(refs[0].value!) !== normalizeText(refs[1].value!))
   )
     return [
