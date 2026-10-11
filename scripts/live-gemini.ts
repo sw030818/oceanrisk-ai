@@ -21,7 +21,8 @@ if (remote) {
     if (!status.ok) throw new Error("Production unavailable");
     const data = await status.json();
     statusChecked = true;
-    configured = data.aiConfigured === true;
+    configured = data.provider === "gemini" && data.aiConfigured === true;
+    if (data.provider !== "gemini") statusError = "LEGACY_GEMINI_NOT_ACTIVE_NO_CALL";
     if (data.accessRequired) { configured = false; statusError = "PRODUCTION_STILL_ACCESS_GATED"; }
   } catch {
     configured = false;

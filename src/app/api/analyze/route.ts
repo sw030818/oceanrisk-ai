@@ -123,7 +123,7 @@ export async function POST(request: Request) {
       {
         results,
         mode: "live",
-        aiConfigured: Boolean(process.env.GEMINI_API_KEY),
+        aiConfigured: Boolean(process.env.OPENAI_API_KEY),
       },
       { headers },
     );

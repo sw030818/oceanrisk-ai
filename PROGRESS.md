@@ -311,3 +311,16 @@
 - 안전한 합성 검증 메타데이터를 [docs/validation/phase2-2026-10-12.json](./docs/validation/phase2-2026-10-12.json)에 보존. 실제 키/원시 PDF/추출값/원시 제공자 응답은 포함하지 않음.
 - **UI·근거/규칙 구현과 Git 저장·자동 배포는 수행했으나 PHASE 2 실제 Gemini 분석 검증은 미완료**. Google 503 해소 이후 quote 구조 보강 효과·전체 양식/이전 A–D·반복 일관성을 다시 확인해야 한다. 503의 원인을 키/스키마로 단정하지 않으며 관리 Ready 직접 조회도 권한 없으므로 미검증.
 - 남은 범위: 복잡한 회전/병합 표·스캔 OCR은 미지원/미검증. B/L 전체 검증·계약 법률 위험·포워더 견적·추가비용·수정 이력 DB·전체 대시보드는 PHASE 3 이후로 유지. 이번에 추가하지 않음.
+
+
+## PHASE 2.2 — OpenAI 전환 (2026-10-11 시작)
+- 기존 main 1c93c496f7d1009fe07ff4d6f906f6a4193e8cc3 및 미검증 feat/openai-luna-primary 862e536729d596ddaaaee312dcd7ea74007ce4da 조사. 자동 병합하지 않고 draft의 Responses 구조를 검토해 본 작업에 맞게 수정.
+- 현재 클라우드 OPENAI_API_KEY/GEMINI_API_KEY 미설정(값 조회/출력 없음). Vercel의 OpenAI 설정/키 유효성은 새 배포 후 별도 검증 예정.
+- 공식 Luna 문서/Structured Outputs/Responses 문서 조회 성공. 기본 gpt-6-luna, reasoning none, Standard 가격 확인. 근거 wire는 page/blockIds 후보로 간결화하고 서버가 실제 블록의 literal quote/segments를 구성한다. 기존 독립 역할/열/행/수량 검증을 보존하며 가짜 ID·숫자·포장/다른 상품 행의 오검증 회귀 추가.
+- OpenAI 기본 경로, 엄격한 required/nullable schema, 4096 출력/45초 timeout, safe HTTP/refusal/incomplete 오류, 사용량/비용 추정 추가. Gemini 소스/테스트 보존, 자동 폴백/재시도 없음. UI 전송 안내/키 메시지/활성 status/release 계약을 OpenAI로 변경.
+- 공개 앱에는 인증/접근 코드/시간당·일일·동시성 한도를 추가하지 않음. 파일/본문/페이지/Origin/전체 요청 취소 유지. 유료 검증만 공유 ledger의 $0.50/20문서 예산으로 제어하며 비용 미확인 요청은 예약 유지. 자동 유료 CI를 제거해 중복 비용 방지.
+- 작업 중 전체 단위 228/228 및 ESLint 통과. 새 테스트 fixture 타입과 스크립트 top-level module 오류를 타입 검사에서 발견해 수정. 최종 ship 검사·실제 API·저장·배포 결과는 후속 기록으로 구분한다. 이 문단은 API/Push/배포 완료 증거가 아니다.
+- npm ci 419개 설치 완료. 개발 서버 실제 HTTP 200/홈 OpenAI 안내/status provider=openai 확인. 실제 합성 A Invoice 업로드로 원문 2페이지를 추출했고 키 미설정/API_NOT_CONFIGURED 및 AI 결과 null을 확인(유료 호출 0). 로컬 live 도구는 키 미설정으로 종료 2, API 미실행을 명시.
+- 개발 서버와 동시에 수행한 전체 검사는 229개 중 새 PDF fixture 2개가 기본 5초 timeout으로 실패(타입/린트 성공). 서버 종료 후 해당 OpenAI 31/31은 1.59초로 재통과. timeout/검증 조건을 느슨하게 하지 않았고 배포 전 직렬 ship 전체 검사를 다시 실행한다. 개발 서버가 바꾼 next-env.d.ts는 본 작업의 생성 변경만 원래 Production 타입 경로로 복원.
+- 모의 7개 양식 172/172 근거/규칙 통과. 비용 preflight의 긴 문맥 배수와 timeout 비용 예약 회귀를 보강. 실무 정확도/실제 API 성공으로 보고하지 않음.
+- 첫 ship은 npm ci/type/lint/229개 단위/build/PDF worker 성공 후 Playwright의 포트 충돌로 Push 전에 중단. 이 작업에서 시작한 dev 프로세스가 세션 종료 뒤 남아 있는 것을 확인해 해당 PID/자식만 종료했고 3000 포트 해제를 확인. 기존/다른 사용자 프로세스는 종료하지 않음. 수정된 검증 도구와 문서를 다시 Stage한 뒤 전체 ship을 재실행한다.

@@ -5,11 +5,6 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      verify_live_gemini:
-        description: 'Run up to 8 actual Gemini calls using synthetic Production PDFs'
-        type: boolean
-        default: false
 permissions:
   contents: read
 concurrency:
@@ -22,6 +17,7 @@ jobs:
     env:
       NEXT_TELEMETRY_DISABLED: '1'
       GEMINI_API_KEY: ''
+      OPENAI_API_KEY: ''
       PLAYWRIGHT_SERVER_MODE: production
     steps:
       - uses: actions/checkout@v4
@@ -63,27 +59,4 @@ jobs:
         with:
           name: production-verification
           path: test-results/deployment/report.json
-          retention-days: 7
-  live-gemini:
-    if: github.ref == 'refs/heads/main' && ((github.event_name == 'workflow_dispatch' && inputs.verify_live_gemini) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[verify-live-gemini]')))
-    needs: [quality, production]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npm run test:production
-        env:
-          LIVE_GEMINI_CASE: ${{ contains(github.event.head_commit.message, '[case-A]') && 'A' || 'all' }}
-      - run: node scripts/report-summary.mjs live
-        if: always()
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: live-synthetic-gemini-report
-          path: test-results/live-gemini-production/report.json
           retention-days: 7

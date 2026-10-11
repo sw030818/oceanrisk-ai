@@ -89,7 +89,7 @@ test("no access code or bearer header; provider failure and actual waiting state
     if (attempts === 1) {
       await route.fulfill({
         status: 502,
-        json: { error: { code: "API_AUTH_OR_CONFIG", message: "Gemini 키·모델·접근 권한 설정을 확인해 주세요." } },
+        json: { error: { code: "API_AUTH_OR_CONFIG", message: "OpenAI 키·모델·접근 권한 설정을 확인해 주세요." } },
       });
       return;
     }
@@ -100,7 +100,7 @@ test("no access code or bearer header; provider failure and actual waiting state
   await expect(page.getByLabel("분석 접근 코드")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "서류 분석 시작" })).toBeEnabled();
   await page.getByRole("button", { name: "서류 분석 시작" }).click();
-  await expect(page.getByRole("alert").filter({ hasText: "Gemini 키" })).toBeVisible();
+  await expect(page.getByRole("alert").filter({ hasText: "OpenAI 키" })).toBeVisible();
   await page.getByRole("button", { name: "서류 분석 시작" }).click();
   await expect(page.getByRole("button", { name: "원문 추출 및 AI 분석 진행 중" })).toBeVisible();
   await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeDisabled();

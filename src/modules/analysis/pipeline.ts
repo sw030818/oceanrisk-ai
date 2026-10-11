@@ -1,9 +1,10 @@
 import { extractPdfText } from "../pdf/extract";
-import { extractWithGemini } from "../ai/gemini";
+import { extractWithOpenAI } from "../ai/openai";
 import { groundDocument } from "../evidence/verify";
 import { AnalysisError, safeError } from "../documents/errors";
 import type {
   AnalysisResult,
+  AIUsage,
   ExtractedDocument,
   PdfDocument,
 } from "../documents/schema";
@@ -29,6 +30,7 @@ export async function analyzeFile(
     return { pdf, document: null, error: safeError(error) };
   }
   let aiModel: string | undefined;
+  let aiUsage: AIUsage | undefined;
   try {
     if (dependencies.signal?.aborted)
       throw new AnalysisError(
@@ -38,10 +40,31 @@ export async function analyzeFile(
       );
     const data = await (
       dependencies.ai ??
-      ((pdf) => extractWithGemini(pdf, { signal: dependencies.signal, onModelUsed: (model) => { aiModel = model; } }))
+      ((pdf) =>
+        extractWithOpenAI(pdf, {
+          signal: dependencies.signal,
+          onModelUsed: (model) => {
+            aiModel = model;
+          },
+          onUsage: (usage) => {
+            aiUsage = usage;
+          },
+        }))
     )(pdf);
-    return { pdf, document: groundDocument(data, pdf), error: null, ...(aiModel ? { aiModel } : {}) };
+    return {
+      pdf,
+      document: groundDocument(data, pdf),
+      error: null,
+      ...(aiModel ? { aiModel } : {}),
+      ...(aiUsage ? { aiUsage } : {}),
+    };
   } catch (error) {
-    return { pdf, document: null, error: safeError(error), ...(aiModel ? { aiModel } : {}) };
+    return {
+      pdf,
+      document: null,
+      error: safeError(error),
+      ...(aiModel ? { aiModel } : {}),
+      ...(aiUsage ? { aiUsage } : {}),
+    };
   }
 }

@@ -1,0 +1,98 @@
+import { z } from "zod";
+import { extractedDocumentSchema, type PdfDocument } from "../documents/schema";
+
+// AI locates candidate cells. Only the server may construct a literal citation.
+const evidence = z
+  .strictObject({
+    page: z.number().int().positive(),
+    blockIds: z.array(z.string().min(1).max(40)).min(1).max(12),
+  })
+  .nullable();
+const stringField = z.strictObject({
+  value: z.string().max(300).nullable(),
+  evidence,
+});
+const numberField = z.strictObject({
+  value: z
+    .number()
+    .finite()
+    .nonnegative()
+    .max(Number.MAX_SAFE_INTEGER)
+    .nullable(),
+  evidence,
+});
+export const openAIWireSchema = z.strictObject({
+  type: z.enum(["invoice", "packing_list", "unknown"]),
+  seller: stringField,
+  buyer: stringField,
+  documentNumber: stringField,
+  transactionReference: stringField,
+  purchaseOrder: stringField,
+  invoiceReference: stringField,
+  currency: stringField,
+  totalAmount: numberField,
+  partialShipment: z.strictObject({
+    value: z.enum(["yes", "no", "unknown"]),
+    evidence,
+  }),
+  items: z
+    .array(
+      z.strictObject({
+        description: stringField,
+        quantity: numberField,
+        unit: stringField,
+        netWeight: numberField,
+        grossWeight: numberField,
+        weightUnit: stringField,
+        amount: numberField,
+      }),
+    )
+    .max(100),
+});
+export function openAIResponseSchema() {
+  // OpenAI strict requires every property to be required, including nullable fields.
+  return z.toJSONSchema(openAIWireSchema, { target: "draft-7" });
+}
+export function resolveOpenAICitations(raw: unknown, pdf: PdfDocument) {
+  const wire = openAIWireSchema.parse(raw);
+  const field = (candidate: {
+    value: string | number | null;
+    evidence: z.infer<typeof evidence>;
+  }) => {
+    const source = candidate.evidence;
+    const page = source && pdf.pages.find((p) => p.page === source.page);
+    const blocks = source?.blockIds.map((id) =>
+      page?.blocks?.find((b) => b.id === id),
+    );
+    // Missing/duplicated IDs or an overlong quote retain the value as UNVERIFIED.
+    // Never search another page, fill missing values, or trust an AI-supplied quote.
+    if (
+      !source ||
+      !blocks?.length ||
+      blocks.some((b) => !b) ||
+      new Set(source.blockIds).size !== blocks.length
+    )
+      return { value: candidate.value, evidence: null };
+    const segments = blocks.map((b) => ({ blockId: b!.id, quote: b!.text }));
+    const quote = segments.map((s) => s.quote).join("\n");
+    return {
+      value: candidate.value,
+      evidence:
+        quote.length && quote.length <= 800
+          ? { page: source.page, quote, segments }
+          : null,
+    };
+  };
+  const { items, ...root } = wire;
+  return extractedDocumentSchema.parse({
+    ...root,
+    ...Object.fromEntries(
+      Object.entries(root)
+        .filter(([k]) => k !== "type")
+        .map(([k, v]) => [k, field(v as Parameters<typeof field>[0])]),
+    ),
+    items: items.map((item) =>
+      Object.fromEntries(Object.entries(item).map(([k, v]) => [k, field(v)])),
+    ),
+  });
+}

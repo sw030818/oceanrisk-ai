@@ -13,13 +13,14 @@
     "test:layouts:production": "tsx scripts/live-layouts.ts",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:live": "tsx scripts/live-gemini.ts",
+    "test:live": "tsx scripts/live-openai.ts",
     "verify": "node scripts/verify.mjs",
     "verify:runtime": "node scripts/verify-runtime.mjs",
     "ship": "tsx scripts/ship.ts",
     "check:production": "tsx scripts/check-production.ts",
-    "test:production": "tsx scripts/live-gemini.ts --url=https://oceanrisk-ai.vercel.app",
-    "build:verified": "node scripts/verify.mjs --build-only"
+    "test:production": "tsx scripts/live-openai.ts",
+    "build:verified": "node scripts/verify.mjs --build-only",
+    "test:gemini:legacy": "tsx scripts/live-gemini.ts"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

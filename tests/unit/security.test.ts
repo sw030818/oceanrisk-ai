@@ -6,11 +6,11 @@ const { analyze } = vi.hoisted(() => ({ analyze: vi.fn() }));
 vi.mock("@/modules/analysis/pipeline", () => ({ analyzeFile: analyze }));
 beforeEach(() => {
   vi.stubEnv("NODE_ENV", "production");
-  vi.stubEnv("GEMINI_API_KEY", "");
+  vi.stubEnv("OPENAI_API_KEY", "");
   analyze.mockReset().mockResolvedValue({
     pdf: { id: "synthetic", fileName: "synthetic.pdf", pages: [{ page: 1, text: "synthetic test" }] },
     document: null,
-    error: { code: "API_NOT_CONFIGURED", message: "Gemini 키가 없습니다." },
+    error: { code: "API_NOT_CONFIGURED", message: "OpenAI 키가 없습니다." },
   });
 });
 afterEach(() => vi.unstubAllEnvs());
@@ -32,7 +32,7 @@ describe("public analysis retains request safety without local auth or quotas", 
     expect(analyze).toHaveBeenCalledTimes(30);
   });
   it("does not apply a local hourly AI document budget", async () => {
-    vi.stubEnv("GEMINI_API_KEY", "synthetic-mock-key-not-real");
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-mock-key-not-real");
     for (let i = 0; i < 8; i++) expect((await POST(request(4))).status).toBe(200);
     expect(analyze).toHaveBeenCalledTimes(32);
   });
@@ -81,13 +81,13 @@ describe("public analysis retains request safety without local auth or quotas", 
     expect(analyze).not.toHaveBeenCalled();
   });
   it("returns only credential presence and safe deployment metadata", async () => {
-    vi.stubEnv("GEMINI_API_KEY", "synthetic-secret-test-value");
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-secret-test-value");
     vi.stubEnv("VERCEL_GIT_COMMIT_SHA", "a".repeat(40));
     vi.stubEnv("VERCEL_ENV", "production");
     vi.stubEnv("VERCEL_DEPLOYMENT_ID", "dpl_synthetic123");
     const response = GET();
     const body = await response.json();
-    expect(body).toEqual({ aiConfigured: true, deployment: { commitSha: "a".repeat(40), id: "dpl_synthetic123", environment: "production" } });
+    expect(body).toEqual({ provider: "openai", model: "gpt-6-luna", aiConfigured: true, deployment: { commitSha: "a".repeat(40), id: "dpl_synthetic123", environment: "production" } });
     expect(JSON.stringify(body)).not.toContain("synthetic-secret-test-value");
     expect(response.headers.get("cache-control")).toBe("no-store");
   });

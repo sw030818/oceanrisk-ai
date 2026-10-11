@@ -10,10 +10,12 @@ describe("release protection", () => {
 });
 describe("Production identity checks do not equate presence with live AI success", () => {
   const sha = "a".repeat(40);
-  const payload = { aiConfigured: true, deployment: { commitSha: sha, id: "dpl_synthetic", environment: "production" } };
+  const payload = { provider: "openai", model: "gpt-6-luna", aiConfigured: true, deployment: { commitSha: sha, id: "dpl_synthetic", environment: "production" } };
   it("requires exact commit and Production identity", () => expect(assertProduction(payload, sha)).toEqual({ commitSha: sha, id: "dpl_synthetic" }));
   it.each([
     { ...payload, aiConfigured: false },
+    { ...payload, provider: "gemini" },
+    { ...payload, model: null },
     { ...payload, accessRequired: true },
     { ...payload, accessConfigured: true },
     { ...payload, deployment: { ...payload.deployment, environment: "preview" } },

@@ -134,6 +134,7 @@ export interface GroundedDocument {
   items: GroundedItem[];
 }
 export interface AnalysisResult {
+  aiUsage?: AIUsage;
   uploadSlot?: UploadSlot;
   typeMismatch?: boolean;
   aiModel?: string;
@@ -144,4 +145,18 @@ export interface AnalysisResult {
     message: string;
     diagnostics?: ProviderDiagnostics;
   } | null;
+}
+export interface AIUsage {
+  provider: "openai";
+  model: string;
+  requestCount: number;
+  retryCount: number;
+  durationMs: number;
+  inputTokens: number | null;
+  outputTokens: number | null;
+  cachedInputTokens: number;
+  cacheWriteTokens: number;
+  reasoningTokens: number | null;
+  estimatedCostUsd: number | null;
+  pricingSource: string | null;
 }

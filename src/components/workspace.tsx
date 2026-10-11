@@ -414,7 +414,7 @@ export function Workspace() {
                     />
                     <p className="text-[10px] leading-5 text-slate-500">
                       업로드 파일은 이 앱의 데이터베이스에 저장하지 않습니다. AI
-                      분석 시 추출 텍스트가 Google Gemini로 전송됩니다. 제공자
+                      분석 시 추출 텍스트가 OpenAI로 전송됩니다. 제공자
                       데이터 처리 정책을 확인하고 민감정보는 제거해 주세요.
                     </p>
                   </div>
@@ -433,7 +433,7 @@ export function Workspace() {
                       role="status"
                       className="mt-4 rounded-lg border border-amber-100 bg-amber-50 p-3 text-[11px] leading-5 text-amber-800"
                     >
-                      Gemini 키가 설정되지 않았습니다. PDF 원문 추출은 가능하며
+                      OpenAI API 키가 설정되지 않았습니다. PDF 원문 추출은 가능하며
                       AI 정보 추출·수량 비교 결과는 생성되지 않습니다.
                     </p>
                   )}

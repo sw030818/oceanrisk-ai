@@ -27,7 +27,7 @@ test("upload workspace, validation and responsive layout", async ({ page }) => {
     ),
   ).toBe(true);
 });
-test("actual server PDF extraction with missing Gemini key", async ({
+test("actual server PDF extraction with missing OpenAI key", async ({
   page,
   request,
 }) => {
@@ -62,7 +62,7 @@ test("actual server PDF extraction with missing Gemini key", async ({
 test("synthetic mocked analysis: mismatch evidence, edits and revalidation", async ({
   page,
 }) => {
-  // Explicit test-only mock. This is not a real Gemini success.
+  // Explicit test-only mock. This is not a real OpenAI success.
   const pair = [
     syntheticDocument("invoice", 100),
     syntheticDocument("packing_list", 90),

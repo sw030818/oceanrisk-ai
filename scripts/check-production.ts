@@ -18,7 +18,7 @@ for (let i = 0; i < attempts; i++) {
     break;
   } catch (error) {
     // Proxy denial is not evidence that Production itself failed.
-    report.reason = error instanceof Error && ["Production has not served the expected commit SHA.", "Endpoint did not identify a Production deployment.", "Production still serves the access-gated status contract.", "Production Gemini key is not configured; no real analysis readiness claimed."].includes(error.message) ? error.message : "Production endpoint could not be verified (network or HTTP failure).";
+    report.reason = error instanceof Error && ["Production has not served the expected commit SHA.", "Endpoint did not identify a Production deployment.", "Production still serves the access-gated status contract.", "Production does not serve the OpenAI provider contract.", "Production OpenAI key is not configured; no real analysis readiness claimed."].includes(error.message) ? error.message : "Production endpoint could not be verified (network or HTTP failure).";
     console.log(`Production check ${i + 1}/${attempts}: ${report.reason}`);
   }
   if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 15000));

@@ -40,3 +40,12 @@ PHASE 0/1 구현 및 로컬 검증 완료. 실제 Gemini 검증은 키 설정 �
 7. 후속 B/L·법적 위험·견적·비용·이력 DB·대시보드 전면 재작성은 제외한다.
 
 PHASE 2 진행 상태: 구현·로컬 모의 검사·main Push·Production SHA 확인을 수행했다. 실제 Gemini 22개 문서 모두 구조화/제공자 오류로 실패하여 실사용 분석 검증은 미완료. 최종 로컬 단위 191개와 브라우저 10개 통과, 상세 실패와 SHA는 PROGRESS.md/안전한 검증 JSON에 보존한다. 과거 PHASE 1.6의 실패 기록은 당시 결과이며 최신 main에서는 실제 A 성공이 확인됐다.
+
+
+## PHASE 2.2
+1. main과 미검증 OpenAI feature branch를 조사하고 공식 모델/Responses/strict schema 계약을 확인한다. 브랜치를 자동 병합하지 않는다.
+2. 기본 공급자를 OpenAI로 전환하고 AI의 값·블록 후보를 실제 PDF에서 재구성/독립 검증한다. Gemini 소스/회귀/키를 보존하며 폴백하지 않는다.
+3. 사용량·안전한 오류·타임아웃·출력 제한·검증 전용 예산 ledger를 구현하고 기존 UI/규칙 회귀를 유지한다.
+4. npm ci/type/lint/단위/build/worker/Production 브라우저를 실행하고 ship으로 일반 main Push·원격 SHA·Production/Actions를 확인한다.
+5. 배포된 OpenAI를 단일 A→pair→A–D→7양식→반복 순서로 실제 검증한다. $0.50/문서20개 이전 중단·별도 추가 승인 규칙을 지키고 모의/실제/남은 검증을 구분한다.
+6. 실제 메타데이터/PROGRESS를 보존하고 설정 초안을 저장한다. 모든 실제 검증 미완료 시 부분 완료로 보고한다. 후속 기능은 추가하지 않는다.
