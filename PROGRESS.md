@@ -161,3 +161,9 @@
 - GitHub 공개 Actions 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38160863388 에서 **Status Success** 확인. quality 1m 11s / production 22s.
 - production job은 고정 공식 도메인의 /api/status에서 **동일 소스 SHA·Production 환경·키 설정·인증 필드 제거**를 확인해야만 성공한다. 이 작업의 성공은 Production이 새 소스를 서비스함을 입증한다. 실제 AI 성공/관리 API Ready/id 확인은 별도.
 - 이 CI 경로에서는 Production 네트워크가 가능함이 확인되어, 수동 입력 또는 `[verify-live-gemini]`라는 명시적 커밋 표시가 있을 때만 A–D 실제 합성 AI 검증을 실행하도록 확장. 일반 Push/PR/빌드에는 유료 AI 호출을 포함하지 않음. 결과의 안전한 메타데이터를 공개 job summary로 제공하여 클라우드 프록시로 artifact/API를 읽지 못해도 실제 기준별 결과와 공개 deployment id를 확인할 수 있도록 함.
+
+### 실제 Production A–D 첫 실행 실패 및 진단 보강
+- 명시적 live 표시 커밋 `a9a88b877daf54157a0a13e0dce81e2ad0c2b0a4`를 검증 후 main Push.
+- https://github.com/sw030818/oceanrisk-ai/actions/runs/38161238732 : quality 및 production 성공, **live-gemini 실패 (exit 1)**. 이 실행 결과를 실제 AI 성공으로 보고하지 않음.
+- 익명 공개 페이지에서 로그/summary/artifact 세부내용을 읽을 수 없어 원인을 확정할 수 없었음. 안전한 case별 HTTP/오류/검증 상태와 공개 deployment ID를 Actions notice로 제공하도록 진단 보강. 문서 원문·키·원시 모델 응답은 포함하지 않음.
+- Gemini 400 응답의 API_KEY_INVALID reason 및 스키마 거부 메시지를 서버 내부에서 분류하되 원문은 반환/로그로 노출하지 않음. 합성 회귀 검사 추가. 진단을 갖춘 실제 A–D 검사를 명시적으로 재실행해 가능한 수정 또는 외부 설정 필요 원인을 확인한다.

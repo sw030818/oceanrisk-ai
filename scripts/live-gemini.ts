@@ -77,9 +77,12 @@ for (const id of ["A", "B", "C", "D"] as const) {
       for (const file of files) form.append("files", file);
       report.serverRequestsAttempted++;
       const response = await fetch(new URL("/api/analyze", remote), { method: "POST", body: form, signal: AbortSignal.timeout(110000) });
-      const payload = await response.json();
-      if (!response.ok || !Array.isArray(payload.results) || payload.results.length !== 2)
-        throw new Error("Remote analysis failed");
+      const payload = await response.json().catch(() => null);
+      if (!response.ok || !Array.isArray(payload?.results) || payload.results.length !== 2) {
+        const code = payload?.error?.code;
+        report.cases.push({ id, status: "failed", httpStatus: response.status, errorCodes: [typeof code === "string" && /^[A-Z0-9_]{1,60}$/.test(code) ? code : "INVALID_SERVER_RESPONSE"] });
+        continue;
+      }
       results.push(...payload.results as AnalysisResult[]);
     } catch {
       report.cases.push({ id, status: "failed", reason: "PRODUCTION_ANALYSIS_UNAVAILABLE" });
@@ -164,6 +167,8 @@ for (const id of ["A", "B", "C", "D"] as const) {
       status: check.status,
       confidence: check.confidence,
     })),
+    groundingStatuses: documents.map((doc) => ({ seller: doc.seller.status, buyer: doc.buyer.status, transactionReference: doc.transactionReference.status, partialShipment: doc.partialShipment.status })),
+    ruleReasons: checks.map((check) => check.explanation),
   });
   console.log(
     `Case ${id}: ${passed ? "PASS" : "FAIL"} (no keys or raw document responses logged)`,

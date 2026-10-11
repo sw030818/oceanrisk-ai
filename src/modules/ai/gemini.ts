@@ -107,12 +107,23 @@ export async function extractWithGemini(
         "설정된 Gemini 모델을 사용할 수 없습니다. 서버의 모델명과 API 버전을 확인해 주세요.",
         502,
       );
-    if (response.status === 400)
+    if (response.status === 400) {
+      let keyInvalid = false, schemaRejected = false;
+      try {
+        const failure = await response.json();
+        keyInvalid = Array.isArray(failure.error?.details) && failure.error.details.some((detail: { reason?: unknown }) => detail.reason === "API_KEY_INVALID");
+        schemaRejected = typeof failure.error?.message === "string" && /\bschema\b/i.test(failure.error.message);
+      } catch { /* Never expose raw provider diagnostics. */ }
+      if (keyInvalid)
+        throw new AnalysisError("API_KEY_INVALID", "Google Gemini가 서버 API 키를 유효하지 않은 키로 판정했습니다. 운영자가 Vercel 서버 키를 확인해야 합니다.", 502);
+      if (schemaRejected)
+        throw new AnalysisError("API_SCHEMA_REJECTED", "Google Gemini가 구조화 응답 스키마를 거부했습니다. 서버의 스키마와 모델 지원 형식을 확인해야 합니다.", 502);
       throw new AnalysisError(
         "API_REQUEST_REJECTED",
         "Google Gemini가 요청을 거부했습니다. 서버의 키·모델·구조화 응답 스키마 설정을 확인해 주세요.",
         502,
       );
+    }
     if ([401, 403].includes(response.status))
       throw new AnalysisError(
         "API_AUTH_OR_CONFIG",

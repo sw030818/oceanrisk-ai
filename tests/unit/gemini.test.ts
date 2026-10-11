@@ -71,6 +71,14 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
       ).rejects.toMatchObject({ code });
     },
   );
+  it.each([
+    [{ error: { details: [{ reason: "API_KEY_INVALID" }], message: "private value" } }, "API_KEY_INVALID"],
+    [{ error: { message: "response schema too complex: private data" } }, "API_SCHEMA_REJECTED"],
+  ])("classifies safe 400 reasons without echoing provider diagnostics", async (payload, code) => {
+    await expect(extractWithGemini(pdf, { apiKey: "test", fetcher: async () => response(payload, 400) })).rejects.toMatchObject({ code });
+    try { await extractWithGemini(pdf, { apiKey: "test", fetcher: async () => response(payload, 400) }); }
+    catch (error) { expect((error as Error).message).not.toContain("private"); }
+  });
   it("maps network failure", async () => {
     await expect(
       extractWithGemini(pdf, {
