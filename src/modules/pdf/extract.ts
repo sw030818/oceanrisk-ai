@@ -4,7 +4,16 @@ import { MAX_PAGES, MAX_TEXT_CHARS } from "../upload/limits";
 import { validatePdfSignature } from "../upload/validate";
 import type { PdfPage } from "../documents/schema";
 
-export async function extractPdfText(bytes: Uint8Array): Promise<PdfPage[]> {
+export async function extractPdfText(
+  bytes: Uint8Array,
+  signal?: AbortSignal,
+): Promise<PdfPage[]> {
+  if (signal?.aborted)
+    throw new AnalysisError(
+      "REQUEST_CANCELLED",
+      "PDF 처리가 취소되었습니다.",
+      408,
+    );
   validatePdfSignature(bytes);
   const task = getDocument({
     data: new Uint8Array(bytes),
@@ -12,7 +21,17 @@ export async function extractPdfText(bytes: Uint8Array): Promise<PdfPage[]> {
     verbosity: VerbosityLevel.ERRORS,
     stopAtErrors: true,
   });
+  const cancel = () => {
+    void task.destroy().catch(() => {});
+  };
+  signal?.addEventListener("abort", cancel, { once: true });
   try {
+    if (signal?.aborted)
+      throw new AnalysisError(
+        "REQUEST_CANCELLED",
+        "PDF 처리가 취소되었습니다.",
+        408,
+      );
     const pdf = await task.promise;
     if (pdf.numPages > MAX_PAGES)
       throw new AnalysisError(
@@ -22,6 +41,12 @@ export async function extractPdfText(bytes: Uint8Array): Promise<PdfPage[]> {
     const pages: PdfPage[] = [];
     let count = 0;
     for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+      if (signal?.aborted)
+        throw new AnalysisError(
+          "REQUEST_CANCELLED",
+          "PDF 처리가 취소되었습니다.",
+          408,
+        );
       const page = await pdf.getPage(pageNumber);
       const content = await page.getTextContent();
       let text = "";
@@ -56,6 +81,12 @@ export async function extractPdfText(bytes: Uint8Array): Promise<PdfPage[]> {
       );
     return pages;
   } catch (error) {
+    if (signal?.aborted)
+      throw new AnalysisError(
+        "REQUEST_CANCELLED",
+        "PDF 처리가 취소되었습니다.",
+        408,
+      );
     if (error instanceof AnalysisError) throw error;
     if (error instanceof Error && error.name === "PasswordException")
       throw new AnalysisError(
@@ -67,6 +98,7 @@ export async function extractPdfText(bytes: Uint8Array): Promise<PdfPage[]> {
       "PDF를 읽지 못했습니다. 손상되었거나 지원되지 않는 문서입니다.",
     );
   } finally {
+    signal?.removeEventListener("abort", cancel);
     await task.destroy();
   }
 }

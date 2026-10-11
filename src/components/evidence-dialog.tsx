@@ -79,7 +79,7 @@ export function EvidenceDialog({
             <p className="mt-2 text-[10px] text-slate-400">
               AI가 제시한 근거 후보 (수정값의 새 근거가 아닙니다)
             </p>
-            <blockquote className="mt-2 rounded-lg border-l-2 border-blue-500 bg-blue-50 p-3 text-sm leading-6">
+            <blockquote className="mt-2 break-words rounded-lg border-l-2 border-blue-500 bg-blue-50 p-3 text-sm leading-6">
               {selection.field.source.quote}
             </blockquote>
             <p className="mt-5 text-xs font-bold">

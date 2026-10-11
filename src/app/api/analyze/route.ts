@@ -1,3 +1,8 @@
+import { analysisLimiter } from "@/modules/security/limiter";
+import {
+  requireAnalysisAccess,
+  requireSameOrigin,
+} from "@/modules/security/access";
 import { NextResponse } from "next/server";
 import { validateUploads } from "@/modules/upload/validate";
 import { MAX_TOTAL_BYTES } from "@/modules/upload/limits";
@@ -9,7 +14,10 @@ export const maxDuration = 120;
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "no-store, private" };
 const MAX_REQUEST_BYTES = MAX_TOTAL_BYTES + 128 * 1024;
-async function boundedFormData(request: Request): Promise<FormData> {
+async function boundedFormData(
+  request: Request,
+  signal: AbortSignal,
+): Promise<FormData> {
   if (!request.headers.get("content-type")?.startsWith("multipart/form-data"))
     throw new AnalysisError(
       "INVALID_REQUEST",
@@ -25,10 +33,20 @@ async function boundedFormData(request: Request): Promise<FormData> {
   if (!request.body)
     throw new AnalysisError("NO_FILES", "PDF 파일을 선택해 주세요.", 400);
   const reader = request.body.getReader();
+  const cancel = () => {
+    void reader.cancel().catch(() => {});
+  };
+  signal.addEventListener("abort", cancel, { once: true });
   const chunks: Uint8Array[] = [];
   let size = 0;
   try {
     while (true) {
+      if (signal.aborted)
+        throw new AnalysisError(
+          "REQUEST_CANCELLED",
+          "업로드가 취소되었거나 처리 시간이 초과되었습니다.",
+          408,
+        );
       const { done, value } = await reader.read();
       if (done) break;
       size += value.byteLength;
@@ -43,8 +61,15 @@ async function boundedFormData(request: Request): Promise<FormData> {
       chunks.push(value);
     }
   } finally {
+    signal.removeEventListener("abort", cancel);
     reader.releaseLock();
   }
+  if (signal.aborted)
+    throw new AnalysisError(
+      "REQUEST_CANCELLED",
+      "업로드가 취소되었거나 처리 시간이 초과되었습니다.",
+      408,
+    );
   const body = new Uint8Array(size);
   let offset = 0;
   for (const chunk of chunks) {
@@ -64,8 +89,16 @@ async function boundedFormData(request: Request): Promise<FormData> {
   }
 }
 export async function POST(request: Request) {
+  let release: (() => void) | undefined;
   try {
-    const data = await boundedFormData(request);
+    requireSameOrigin(request);
+    requireAnalysisAccess(request);
+    analysisLimiter.checkRequest();
+    const signal = AbortSignal.any([
+      request.signal,
+      AbortSignal.timeout(105000),
+    ]);
+    const data = await boundedFormData(request, signal);
     const entries = data.getAll("files");
     if (entries.some((entry) => !(entry instanceof File)))
       throw new AnalysisError(
@@ -75,9 +108,13 @@ export async function POST(request: Request) {
       );
     const files = entries as File[];
     validateUploads(files);
+    release = analysisLimiter.reserve(
+      files.length,
+      Boolean(process.env.GEMINI_API_KEY),
+    );
     const results: AnalysisResult[] = [];
     // Sequential processing bounds memory and provider requests.
-    for (const file of files) results.push(await analyzeFile(file));
+    for (const file of files) results.push(await analyzeFile(file, { signal }));
     return NextResponse.json(
       {
         results,
@@ -91,8 +128,17 @@ export async function POST(request: Request) {
       { error: safeError(error) },
       {
         status: error instanceof AnalysisError ? error.httpStatus : 500,
-        headers,
+        headers: {
+          ...headers,
+          ...(error instanceof AnalysisError && error.httpStatus === 429
+            ? {
+                "Retry-After": error.code === "AI_BUDGET_LIMIT" ? "3600" : "60",
+              }
+            : {}),
+        },
       },
     );
+  } finally {
+    release?.();
   }
 }

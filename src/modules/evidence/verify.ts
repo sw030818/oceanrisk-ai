@@ -1,3 +1,4 @@
+import { productQuantities } from "./quantity-evidence";
 import type {
   Evidence,
   ExtractedDocument,
@@ -47,7 +48,11 @@ export function verifyField<T extends string | number>(
     };
   const valuePresent =
     typeof field.value === "number"
-      ? numericTokens(quote).includes(field.value)
+      ? role === "quantity"
+        ? productQuantities(field.evidence.quote).some(
+            (item) => item.value === field.value,
+          )
+        : numericTokens(quote).includes(field.value)
       : quote.includes(normalizeText(field.value));
   if (!valuePresent)
     return {
@@ -55,29 +60,17 @@ export function verifyField<T extends string | number>(
       status: "unverified",
       reason: "원문 근거에서 추출값을 확인하지 못했습니다.",
     };
-  if (
-    role === "quantity" &&
-    (!/(?:quantity|qty|수량)/i.test(quote) ||
-      /(?:cartons?|ctns?|packages?|no\.? of packs|포장|박스|상자|중량|weight|amount)/i.test(
-        quote,
-      ))
-  )
-    return {
-      ...base,
-      status: "unverified",
-      reason:
-        "상품 수량 근거인지 명확하지 않습니다. 포장 개수·중량과 구분해 주세요.",
-    };
   if (role === "quantity") {
-    const values = [
-      ...quote.matchAll(/(?:quantity|qty|수량)\s*[:=-]?\s*([-+]?\d[\d.,]*)/g),
-    ].flatMap((match) => numericTokens(match[1]));
-    if (!values.length || values.some((value) => value !== field.value))
+    const quantities = productQuantities(field.evidence.quote);
+    if (
+      !quantities.length ||
+      quantities.some((item) => item.value !== field.value)
+    )
       return {
         ...base,
         status: "unverified",
         reason:
-          "수량 라벨 바로 옆의 수치와 추출값이 명확하게 일치하지 않습니다.",
+          "상품 수량 라벨의 수치를 명확히 확인하지 못했습니다. 포장 개수·다른 행 수량과 구분해 주세요.",
       };
   }
   if (role === "seller" || role === "buyer") {
@@ -85,10 +78,14 @@ export function verifyField<T extends string | number>(
       role === "seller"
         ? /(?:seller|exporter|shipper|판매자|수출자)\s*[:=-]\s*/
         : /(?:buyer|importer|consignee|구매자|수입자)\s*[:=-]\s*/;
-    const match = label.exec(quote);
+    const partyLine = field.evidence.quote
+      .split(/\r?\n/)
+      .map(normalizeText)
+      .find((line) => label.test(line));
+    const match = label.exec(partyLine ?? "");
     if (
       !match ||
-      quote.slice(match.index + match[0].length).trim() !==
+      partyLine!.slice(match.index + match[0].length).trim() !==
         normalizeText(String(field.value))
     )
       return {
@@ -128,14 +125,20 @@ export function groundDocument(
   } else if (partial.source) {
     const page = pdf.pages.find((page) => page.page === partial.source!.page);
     const quote = normalizeText(partial.source.quote);
+    const noLine = (line: string) =>
+      /^(?:partial shipment\s*[:=-]\s*no[.]?|(?:full|complete) shipment(?:\s*[:=-]\s*yes)?[.]?|부분선적\s*[:=-]\s*(?:아니오|없음)|전량 선적)$/.test(
+        normalizeText(line),
+      );
+    const yesLine = (line: string) =>
+      /^(?:partial shipment\s*[:=-]\s*yes[.]?|부분선적\s*[:=-]\s*(?:예|있음))$/.test(
+        normalizeText(line),
+      );
+    const sourceLines = partial.source.quote.split(/\r?\n/);
+    const allLines = pdf.pages.flatMap((page) => page.text.split(/\r?\n/));
+    const conflicting = allLines.some(noLine) && allLines.some(yesLine);
     const explicit =
-      data.partialShipment.value === "no"
-        ? /(?:full shipment|complete shipment|partial shipment\s*[:=-]\s*no|부분선적\s*[:=-]\s*(?:아니오|없음)|전량 선적)/.test(
-            quote,
-          )
-        : /(?:partial shipment\s*[:=-]\s*yes|부분선적\s*[:=-]\s*(?:예|있음))/.test(
-            quote,
-          );
+      !conflicting &&
+      sourceLines.some(data.partialShipment.value === "no" ? noLine : yesLine);
     partial.status =
       page && normalizeText(page.text).includes(quote) && explicit
         ? "verified"

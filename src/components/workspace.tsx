@@ -36,6 +36,7 @@ import {
 import { validateUploads } from "@/modules/upload/validate";
 import { safeError } from "@/modules/documents/errors";
 import { editField } from "@/modules/evidence/verify";
+import { summarizeAnalysis } from "@/modules/analysis/summary";
 import { compareQuantities } from "@/modules/rules/quantity";
 import type {
   AnalysisResult,
@@ -63,6 +64,9 @@ export function Workspace() {
   const [busy, setBusy] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [configured, setConfigured] = useState<boolean | null>(null);
+  const [accessRequired, setAccessRequired] = useState(false);
+  const [accessConfigured, setAccessConfigured] = useState(true);
+  const [accessToken, setAccessToken] = useState("");
   const [consent, setConsent] = useState(false);
   const [results, setResults] = useState<AnalysisResult[]>([]);
   const [documents, setDocuments] = useState<GroundedDocument[]>([]);
@@ -75,13 +79,18 @@ export function Workspace() {
     const controller = new AbortController();
     fetch("/api/status", { signal: controller.signal })
       .then((response) => response.json())
-      .then((data) => setConfigured(data.aiConfigured === true))
+      .then((data) => {
+        setConfigured(data.aiConfigured === true);
+        setAccessRequired(data.accessRequired === true);
+        setAccessConfigured(data.accessConfigured !== false);
+      })
       .catch(() => {});
     return () => {
       controller.abort();
       abort.current?.abort();
     };
   }, []);
+  const summary = summarizeAnalysis(results);
   const checks = useMemo(() => compareQuantities(documents), [documents]);
   const verifiedCount = documents.reduce(
     (count, doc) =>
@@ -158,6 +167,7 @@ export function Workspace() {
         method: "POST",
         body: form,
         signal: controller.signal,
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
       });
       const data = await response.json();
       if (!response.ok)
@@ -385,6 +395,38 @@ export function Workspace() {
               </section>
               <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_290px]">
                 <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-7">
+                  {accessRequired && (
+                    <div className="mb-5 rounded-lg border border-blue-100 bg-blue-50 p-4">
+                      <label className="block text-xs font-semibold text-blue-900">
+                        분석 접근 코드
+                        <input
+                          aria-label="분석 접근 코드"
+                          type="password"
+                          autoComplete="off"
+                          value={accessToken}
+                          disabled={busy}
+                          onChange={(event) =>
+                            setAccessToken(event.target.value)
+                          }
+                          className="mt-2 w-full rounded-lg border border-blue-200 bg-white px-3 py-2.5 text-sm"
+                          placeholder="운영자에게 받은 코드를 입력하세요"
+                        />
+                      </label>
+                      <p className="mt-2 text-[11px] leading-5 text-blue-800">
+                        접근 코드는 이 브라우저 화면의 메모리에서만 사용하며
+                        Gemini에 전송하지 않습니다.
+                      </p>
+                      {!accessConfigured && (
+                        <p
+                          role="alert"
+                          className="mt-2 text-xs font-semibold text-amber-800"
+                        >
+                          서버 접근 제한이 아직 설정되지 않았습니다. 운영자에게
+                          문의해 주세요.
+                        </p>
+                      )}
+                    </div>
+                  )}
                   <div className="mb-6 flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <div className="flex size-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
@@ -518,7 +560,12 @@ export function Workspace() {
                   )}
                   <button
                     onClick={analyze}
-                    disabled={busy || !files.length || !consent}
+                    disabled={
+                      busy ||
+                      !files.length ||
+                      !consent ||
+                      (accessRequired && (!accessConfigured || !accessToken))
+                    }
                     className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400"
                   >
                     {busy ? (
@@ -635,6 +682,15 @@ export function Workspace() {
             </>
           ) : (
             <>
+              <section
+                role="status"
+                className={`mb-5 rounded-xl border p-4 ${summary.status === "success" ? "border-emerald-100 bg-emerald-50" : summary.status === "partial" ? "border-amber-100 bg-amber-50" : "border-red-100 bg-red-50"}`}
+              >
+                <h2 className="text-sm font-bold">{summary.title}</h2>
+                <p className="mt-2 text-xs leading-6 text-slate-600">
+                  {summary.message}
+                </p>
+              </section>
               <div className="mb-6 grid grid-cols-3 gap-3">
                 {[
                   {
@@ -665,7 +721,7 @@ export function Workspace() {
                         개
                       </span>
                     </p>
-                    <p className="mt-2 text-[10px] text-slate-500">
+                    <p className="mt-2 break-all text-[10px] text-slate-500">
                       {stat.label}
                     </p>
                   </div>
@@ -703,7 +759,9 @@ export function Workspace() {
                           <p className="text-xs font-bold">
                             {check.status === "unverifiable" && (
                               <span className="mr-2 text-amber-700">
-                                검증 불가
+                                {check.confidence === "candidate"
+                                  ? "비교 후보"
+                                  : "검증 불가"}
                               </span>
                             )}
                             {check.item ? `${check.item} · ` : ""}
@@ -730,7 +788,7 @@ export function Workspace() {
                             </p>
                           </div>
                           {check.sources.filter(Boolean).length > 0 && (
-                            <p className="mt-2 text-[10px] text-slate-500">
+                            <p className="mt-2 break-all text-[10px] text-slate-500">
                               근거:{" "}
                               {check.sources
                                 .filter(Boolean)

@@ -140,4 +140,24 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
       JSON.parse(body.contents[0].parts[0].text).untrustedDocument.pages,
     ).toEqual(maliciousPdf.pages);
   });
+  it("stops before the provider when the caller is cancelled", async () => {
+    const fetcher = vi.fn();
+    await expect(
+      extractWithGemini(pdf, {
+        apiKey: "test",
+        signal: AbortSignal.abort(),
+        fetcher,
+      }),
+    ).rejects.toMatchObject({ code: "REQUEST_CANCELLED" });
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+  it("maps body receive timeout separately from invalid model JSON", async () => {
+    const result = new Response("{}");
+    result.json = async () => {
+      throw new DOMException("timeout", "TimeoutError");
+    };
+    await expect(
+      extractWithGemini(pdf, { apiKey: "test", fetcher: async () => result }),
+    ).rejects.toMatchObject({ code: "API_UNAVAILABLE" });
+  });
 });

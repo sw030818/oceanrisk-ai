@@ -1,6 +1,6 @@
 # OceanRisk AI 개발 지침
 - 기존 체크아웃 루트에서 작업한다. 별도 중첩 프로젝트나 Git worktree를 만들지 않는다.
-- PHASE 0/1만 구현한다. 과거 PortNotice/OceanRisk 코드는 복사하지 않는다.
+- PHASE 0/1을 보존하고 PHASE 1.5 실사용 검증·안정화까지만 구현한다. 과거 PortNotice/OceanRisk 코드는 복사하지 않는다.
 - TypeScript strict, Zod 입출력 검증. 수치 비교는 결정적 TypeScript 코드로 수행한다.
 - 근거가 검증되지 않은 값, 사용자 수정값은 확정 불일치 근거로 사용하지 않는다.
 - 상품 수량과 포장 개수, 서로 다른 단위, 부분선적을 구분한다.

@@ -1,9 +1,11 @@
+import { productQuantities } from "../evidence/quantity-evidence";
 import type { GroundedDocument, GroundedField } from "../documents/schema";
 import { normalizeText } from "../evidence/verify";
 export type RuleStatus = "match" | "mismatch" | "unverifiable";
 export interface QuantityCheck {
   id: string;
   status: RuleStatus;
+  confidence?: "confirmed" | "candidate" | "unavailable";
   title: string;
   explanation: string;
   question: string;
@@ -45,6 +47,7 @@ function result(
   return {
     id,
     status: "unverifiable",
+    confidence: "unavailable",
     title: "수량 비교를 확정할 수 없습니다",
     explanation,
     question:
@@ -67,7 +70,7 @@ export function compareQuantities(
     ];
   const invoice = invoices[0],
     packing = packingLists[0];
-  for (const key of ["seller", "buyer", "transactionReference"] as const) {
+  for (const key of ["seller", "buyer"] as const) {
     if (
       !known(invoice[key]) ||
       !known(packing[key]) ||
@@ -76,21 +79,41 @@ export function compareQuantities(
       return [
         result(
           "parties",
-          "판매자·구매자·거래 참조가 두 문서의 원문에서 동일하게 확인되지 않아 같은 거래로 확정할 수 없습니다.",
+          "판매자·구매자가 원문에서 동일하게 확인되지 않아 문서를 연결하지 않았습니다.",
         ),
       ];
   }
+  const refs = [invoice.transactionReference, packing.transactionReference];
   if (
-    ![invoice.partialShipment, packing.partialShipment].every(
-      (field) => known(field) && field.value === "no",
+    refs.some((field) => field.status === "user_edited") ||
+    (refs.every((field) => field.value) &&
+      normalizeText(refs[0].value!) !== normalizeText(refs[1].value!))
+  )
+    return [
+      result(
+        "transaction-reference",
+        "거래 참조가 다르거나 사용자가 수정했습니다. 서로 다른 거래를 비교하지 않습니다.",
+      ),
+    ];
+  const scopes = [invoice.partialShipment, packing.partialShipment];
+  if (
+    scopes.some(
+      (field) => field.value === "yes" || field.status === "user_edited",
     )
   )
     return [
       result(
         "shipment-scope",
-        "부분선적 가능성이 있거나 전체 선적 여부가 명시되지 않았습니다. 수량 차이가 실제 오류인지 확정할 수 없습니다.",
+        "부분선적이거나 선적 범위가 사용자 수정값입니다. 전체 거래 수량과 출하 수량을 오류로 비교하지 않습니다.",
       ),
     ];
+  const referenceConfirmed =
+    refs.every(known) &&
+    normalizeText(refs[0].value!) === normalizeText(refs[1].value!);
+  const scopeConfirmed = scopes.every(
+    (field) => known(field) && field.value === "no",
+  );
+  const confirmed = referenceConfirmed && scopeConfirmed;
   if (!invoice.items.length || !packing.items.length)
     return [result("no-items", "비교할 상품 정보가 부족합니다.")];
   const results: QuantityCheck[] = [];
@@ -154,10 +177,12 @@ export function compareQuantities(
       (row) =>
         row.quantity.source?.page === row.unit.source?.page &&
         row.quantity.source &&
-        row.unit.value &&
-        normalizeText(row.quantity.source.quote)
-          .split(/[^\p{L}\p{N}]+/u)
-          .includes(normalizeText(row.unit.value).replace(/\.$/, "")),
+        productQuantities(row.quantity.source.quote).some(
+          (evidence) =>
+            evidence.value === row.quantity.value &&
+            evidence.unit &&
+            canonicalUnit(evidence.unit) === canonicalUnit(row.unit.value!),
+        ),
     );
     if (!quantityUnitsLinked) {
       results.push(
@@ -172,16 +197,23 @@ export function compareQuantities(
     const equal = item.quantity.value === other.quantity.value;
     results.push({
       id,
-      status: equal ? "match" : "mismatch",
-      title: equal
-        ? "동일 품목의 수량이 일치합니다"
-        : "동일 품목의 수량 차이를 확인했습니다",
-      explanation: equal
-        ? "원문과 대조된 상품 수량·단위가 두 문서에서 일치합니다. 전체 문서가 안전하다는 뜻은 아닙니다."
-        : "동일 거래당사자·거래 참조·품명·단위·전체 선적 범위가 원문에서 확인된 문서 사이에 수량 차이가 있습니다. 발행자 확인이 필요합니다.",
-      question: equal
-        ? "실제 출하 수량과 최종 발행 서류도 같은지 확인해 주세요."
-        : "Invoice와 Packing List의 수량이 다릅니다. 실제 출하 수량은 무엇이며 어느 서류를 수정해야 하나요?",
+      status: confirmed ? (equal ? "match" : "mismatch") : "unverifiable",
+      confidence: confirmed ? "confirmed" : "candidate",
+      title: !confirmed
+        ? "수량 비교 후보 · 확정 오류 아님"
+        : equal
+          ? "동일 품목의 수량이 일치합니다"
+          : "동일 품목의 수량 차이를 확인했습니다",
+      explanation: !confirmed
+        ? "상품 수량과 단위는 원문에서 확인했지만 거래 참조 또는 전체 선적 범위가 부족합니다. 수치 차이를 참고하되 같은 거래·선적 범위인지 발행자에게 확인해야 합니다."
+        : equal
+          ? "원문과 대조된 상품 수량·단위가 두 문서에서 일치합니다. 전체 문서가 안전하다는 뜻은 아닙니다."
+          : "동일 거래당사자·거래 참조·품명·단위·전체 선적 범위가 원문에서 확인된 문서 사이에 수량 차이가 있습니다. 발행자 확인이 필요합니다.",
+      question: !confirmed
+        ? "두 서류가 같은 주문 및 같은 선적 범위인가요? 부분선적이나 서류 버전 차이가 있는지 확인해 주세요."
+        : equal
+          ? "실제 출하 수량과 최종 발행 서류도 같은지 확인해 주세요."
+          : "Invoice와 Packing List의 수량이 다릅니다. 실제 출하 수량은 무엇이며 어느 서류를 수정해야 하나요?",
       item: label,
       invoiceQuantity: item.quantity.value!,
       packingQuantity: other.quantity.value!,
