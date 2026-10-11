@@ -274,6 +274,42 @@ function verifyFieldCore<T extends string | number>(
     )
       delete source.layout;
   }
+  if (
+    typeof field.value === "string" &&
+    role &&
+    [
+      "unit",
+      "weightUnit",
+      "packageUnit",
+      "totalWeightUnit",
+      "totalQuantityUnit",
+    ].includes(role) &&
+    !layout
+  ) {
+    const parents: Record<string, string[]> = {
+      unit: ["unit", "quantity"],
+      weightUnit: ["weightUnit", "netWeight", "grossWeight"],
+      packageUnit: ["packageUnit", "packageQuantity", "packaging"],
+      totalWeightUnit: [
+        "totalWeightUnit",
+        "totalNetWeight",
+        "totalGrossWeight",
+      ],
+      totalQuantityUnit: ["totalQuantityUnit", "totalQuantity"],
+    };
+    const roles = (
+      blocks?.map((b) => b.text) ?? field.evidence.quote.split(/\r?\n/)
+    )
+      .map((text) => labelForInline(text.split(":")[0]))
+      .filter((r): r is string => !!r);
+    if (!roles.length || roles.some((r) => !parents[role].includes(r)))
+      return {
+        ...base,
+        status: "unverified",
+        reason:
+          "단위 문구는 있지만 상품·중량·포장 중 해당 단위의 실제 라벨 의미를 확인하지 못했습니다.",
+      };
+  }
   if (role === "quantity") {
     const quantities = productQuantities(field.evidence.quote);
     const quoteLines = field.evidence.quote.split(/\r?\n/).map(normalizeText);

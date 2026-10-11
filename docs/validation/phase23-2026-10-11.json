@@ -1,33 +1,190 @@
 {
   "mode": "actual-openai-phase23-synthetic",
-  "recordedAtUtc": "2026-10-11T23:35:26.138447+00:00",
-  "sourceSha": null,
-  "actualPerformed": false,
-  "passed": false,
+  "recordedAtUtc": "2026-10-11T23:42:09.571Z",
+  "sourceSha": "5122cb071044df2dcee86f49404ea9c6c9db99cb",
+  "keyPresence": true,
+  "model": "gpt-6-luna",
   "budget": {
-    "documents": 0,
-    "measuredCostUsd": 0,
-    "unresolvedCostUpperUsd": 0,
+    "documents": 2,
+    "measuredCostUsd": 0.00184606,
+    "unresolvedCostUpperUsd": 0.0,
     "maxDocuments": 2,
     "maxCostUsd": 0.03
   },
-  "approval": "Explicit new user approval for 2 synthetic documents / $0.03; previous PHASE 2.2 budget not reused",
-  "preflightUpperUsd": 0.0120219,
-  "structuredSuccesses": 0,
+  "documentRequests": 2,
+  "batchRequests": 1,
+  "automaticRetries": 0,
+  "structuredSuccesses": 2,
+  "expectedFields": 57,
+  "correctValues": 57,
+  "groundedCorrectFields": 57,
+  "ruleSummary": {
+    "analyzedDocuments": 2,
+    "comparedItems": 2,
+    "confirmedMatches": 29,
+    "confirmedMismatches": 0,
+    "provisionalOrReview": 0,
+    "insufficientInformation": 3,
+    "referenceWarning": false,
+    "confirmedQuantityMatches": 2,
+    "confirmedQuantityMismatches": 0
+  },
+  "quantityStates": [
+    "confirmed_match",
+    "confirmed_match"
+  ],
+  "fieldStates": [
+    [
+      {
+        "description": "verified",
+        "quantity": "verified",
+        "unit": "verified",
+        "netWeight": "verified",
+        "grossWeight": "verified",
+        "sku": "verified"
+      },
+      {
+        "description": "verified",
+        "quantity": "verified",
+        "unit": "verified",
+        "netWeight": "verified",
+        "grossWeight": "verified",
+        "sku": "verified"
+      }
+    ],
+    [
+      {
+        "description": "verified",
+        "quantity": "verified",
+        "unit": "verified",
+        "netWeight": "verified",
+        "grossWeight": "verified",
+        "sku": "verified"
+      },
+      {
+        "description": "verified",
+        "quantity": "verified",
+        "unit": "verified",
+        "netWeight": "verified",
+        "grossWeight": "verified",
+        "sku": "verified"
+      }
+    ]
+  ],
+  "errorCodes": [
+    null,
+    null
+  ],
+  "providerDiagnostics": [
+    null,
+    null
+  ],
+  "verificationIssues": [
+    [
+      {
+        "quantity": "verified",
+        "netWeight": "verified",
+        "grossWeight": "verified",
+        "sku": "verified"
+      },
+      {
+        "quantity": "verified",
+        "netWeight": "verified",
+        "grossWeight": "verified",
+        "sku": "verified"
+      }
+    ],
+    [
+      {
+        "quantity": "verified",
+        "netWeight": "verified",
+        "grossWeight": "verified",
+        "sku": "verified"
+      },
+      {
+        "quantity": "verified",
+        "netWeight": "verified",
+        "grossWeight": "verified",
+        "sku": "verified"
+      }
+    ]
+  ],
+  "usage": [
+    {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "requestCount": 1,
+      "retryCount": 0,
+      "durationMs": 8077,
+      "inputTokens": 4836,
+      "outputTokens": 1071,
+      "cachedInputTokens": 0,
+      "cacheWriteTokens": 4833,
+      "reasoningTokens": 0,
+      "estimatedCostUsd": 0.001139925,
+      "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "requestCount": 1,
+      "retryCount": 0,
+      "durationMs": 6332,
+      "inputTokens": 4499,
+      "outputTokens": 948,
+      "cachedInputTokens": 2871,
+      "cacheWriteTokens": 1625,
+      "reasoningTokens": 0,
+      "estimatedCostUsd": 0.000706135,
+      "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    }
+  ],
+  "browser": {
+    "executed": true,
+    "passed": true,
+    "reason": null
+  },
+  "passed": true,
+  "limitations": [
+    "Synthetic reported structure only; actual user PDFs were not available",
+    "No extra mismatch/provider tests paid; comprehensive regression tests remain mocked"
+  ],
+  "actualPerformed": true,
   "localValidation": {
-    "actualSyntheticPdfMockAi": "passed",
-    "unitTestsBeforeLastSafetyRegressions": 253,
-    "additionalSafetyRegressions": 3,
+    "unitTests": 256,
     "browserTests": 15,
-    "typecheck": "passed before final tooling edit",
-    "lint": "last prefer-const tooling correction pending full gate",
+    "npmCi": "passed, 419 packages",
+    "typecheck": "passed",
+    "lint": "passed",
     "productionBuild": "passed",
     "pdfWorker": "passed",
+    "mockLayoutCases": 7,
+    "mockGroundedFields": 172,
+    "mockExpectedFields": 172,
     "repositoryBusinessPdfFilesFound": 0
   },
-  "remaining": [
-    "Real OpenAI validation pending code deployment",
-    "Actual user business PDFs not available; equivalent structure synthetic fixture used",
-    "No scanned OCR, merged/rotated table guarantees"
-  ]
+  "approval": "Explicit new user approval: 2 synthetic documents, one batch, max $0.03, no retries; previous 31 not reused",
+  "deployment": {
+    "sourceSha": "5122cb071044df2dcee86f49404ea9c6c9db99cb",
+    "deploymentId": "dpl_mF7oJSDnPJSy8b5Z6rtTFanDB9T9",
+    "githubActionsRun": 38185179745,
+    "githubActionsConclusion": "success",
+    "sameShaProductionVerified": true
+  },
+  "postLiveSafetyRegression": {
+    "scope": "Literal units from wrong semantic labels are rejected. Existing reported-structure positive fixtures and source quotes retain their original proof checks.",
+    "additionalTests": 1,
+    "additionalPaidCalls": 0,
+    "targetedTestsPassed": 88,
+    "requiredFinalUnitCount": 257,
+    "requiredFinalBrowserCount": 15,
+    "verificationNote": "Final ship and GitHub Actions enforce full type/lint/unit/build/worker/browser checks before final source is saved; actual live source is recorded separately."
+  },
+  "tokenTotals": {
+    "inputTokens": 9335,
+    "outputTokens": 2019,
+    "cachedInputTokens": 2871,
+    "cacheWriteTokens": 6458,
+    "reasoningTokens": 0
+  }
 }

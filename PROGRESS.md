@@ -378,3 +378,14 @@
 - 초기 검사: 기존검사61개 중6개는 이전early-return/id/unavailable기대와 변경된제품정책 충돌. 삭제하지않고 별도참조경고+계속비교+확정오류금지 강화로 갱신. 전체단위253/253 통과. API slot검사의 불완전mock(type만) 1개는 완전한합성GroundedDocument로보강하고 기존분류/slot안전검사 유지. 첫lint 미사용UIimport/도구prefer-const, live도구nullable타입오류 수정.
 - 실제 npm ci419/type/lint/단위253/build/PDF worker/Playwright **15/15** 모두통과. 이후 총계잘못인용/다른행단위/Backorder3회귀와compactAPI를 보강했고 최종ship에서 전체검사 재실행. 새핵심회귀19개와 기존237개=예정256개, 기존12브라우저+새3개 유지. 모의AI+실제PDF 검증을 실제OpenAI성공으로 합산하지 않음.
 - 새유료검증 사용자명시승인: **2문서/배치1회/최대$0.03/자동재시도0**. 요청byte상한가격사전예약 **$0.0120219**. PHASE2.2의31문서예산과 별도ledger/archive, 호출전예약·중단후예산복원·미확인비용유지. 실행은 새code정확ProductionSHA 후 단1회. live-phase23 도구는 실제API결과를메모리에만보관해 공식ProductionHTML/assets의 실제UI에재생(추가유료호출0), Node의TLS검증프록시전송사용/ignoreHTTPSErrors없음. 아직 실제API성공으로 보고하지 않음.
+
+
+### PHASE 2.3 실제 저장·배포·OpenAI 결과
+- 구현 main **5122cb071044df2dcee86f49404ea9c6c9db99cb**, 일반Push/원격SHA 일치. ship npm ci419/type/lint/**256/256 단위**/Production build/PDF worker/**15/15 브라우저** 모두통과. 공식Production 같은SHA/ID **dpl_mF7oJSDnPJSy8b5Z6rtTFanDB9T9**, Actions **38185179745 quality/production success** 확인.
+- 승인된 최소검증 실행: 같은ProductionSHA에서 실제OpenAI GPT-6 Luna Responses 배치1회/문서2개. **구조화2/2**, 핵심 추출값**57/57**, 실제블록/페이지/행/라벨 근거**57/57**. seller/buyer/own문서번호/PO/InvoiceReference/선적/600PCS·400PCS/품명/SKU/중량/포장/Invoice금액을 확인. 독립엔진 실제비교품목2, 확인된수량일치2, 불일치0, 참조충돌없음. Invoice PO와PL InvoiceReference가다르다는이유로전체비교불가가되지않음.
+- 2API 실제응답을 메모리에서만 유지해 공식ProductionHTML/CSS/JS와UI에서파일선택·분석·2개확정수량카드·390px모바일넘침없음·원문페이지/블록보기 확인. Node의HTTPS프록시/TLS정상검증으로asset전송, Chrome ignoreHTTPSErrors사용안함. 브라우저의분석응답만이미받은실제응답으로재생했으며 추가유료호출0. 단순mock성공과분리해서기록. 실제사용자업무PDF는없고합성동일구조검증임.
+- 실제usage 입력**9,335**, 출력**2,019**, 캐시입력**2,871**, 캐시쓰기**6,458**, 추론**0**. 시간8077/6332ms, 자동retry0. 사용량 기반추정비용 **$0.00184606 < 승인$0.03**. usage미확인없음(회계부동소수점잔여는0반올림), 실제청구서는미조회. **새2문서예산소진/추가유료호출중단**, 이전31문서ledger변경없음.
+- 통과후원문문맥보호보강: 단위문자KG/PCS가판매자나포장라벨등잘못된의미의인용에있으면단순존재만으로승인하지않도록문자단위의부모라벨검사/새회귀1개추가. 보고된동일구조positive근거/기존독립행검사는유지. 실제유료검증은5122cb0의결과이며후속보강은로컬전체회귀로확인하고추가유료호출하지않음. 최종ship예정단위257/브라우저15.
+- 초기핵심6개old검사기대/불완전mock1개/lint·타입오류는위수정뒤해결. 실패한검사삭제나없는인용승인으로통과시키지않음. 최종무조건전체live성공/실무전체정확도보증으로확대하지않음.
+- 남은범위: 실제업무파일자체의원인블록은제공되지않아확인불가. 스캔OCR/복잡병합·회전표/모든기업양식·대형문서의실무정확도미검증. 정체성/근거/전체선적이없으면비교는진행하되잠정상태가정상. 단가/통화/할인·세금·운임/총액정의가부족한금액차이는확정오류로올리지않음. Vercel관리Ready직접조회는관리권한부족과구분하며Git완료·같은SHA서빙을확인. PHASE3기능추가없음.
+- 안전메타데이터 [docs/validation/phase23-2026-10-11.json](./docs/validation/phase23-2026-10-11.json)에실제결과/예산보존. 최종보강·기록은전체ship검사후main일반Push/자동Production정확SHA를확인하며최종SHA는완료보고에기록(문서자기SHA재귀수정없음).

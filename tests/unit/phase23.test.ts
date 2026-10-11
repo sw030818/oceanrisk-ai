@@ -2,13 +2,38 @@ import { describe, it, expect } from "vitest";
 import { phase23Fixture } from "../fixtures/phase23";
 import { reviewDocuments } from "@/modules/rules/review";
 import { compareQuantities } from "@/modules/rules/quantity";
-import { groundDocument, editField } from "@/modules/evidence/verify";
+import {
+  groundDocument,
+  editField,
+  verifyField,
+} from "@/modules/evidence/verify";
 import { syntheticDocument } from "../fixtures/synthetic";
 const pair = async (options: Parameters<typeof phase23Fixture>[1] = {}) => [
   await phase23Fixture("invoice"),
   await phase23Fixture("packing_list", options),
 ];
 describe("PHASE 2.3 reported structure: actual synthetic PDFs, MOCKED extraction", () => {
+  it("never validates a literal unit from a wrong semantic label", () => {
+    const f = syntheticDocument();
+    f.pdf.pages[0].text += "\nPackage Unit: KG\nSeller: PCS Trading";
+    expect(
+      verifyField(
+        { value: "KG", evidence: { page: 1, quote: "Package Unit: KG" } },
+        f.pdf,
+        "weightUnit",
+      ).status,
+    ).toBe("unverified");
+    expect(
+      verifyField(
+        { value: "PCS", evidence: { page: 1, quote: "Seller: PCS Trading" } },
+        f.pdf,
+        "unit",
+      ).status,
+    ).toBe("unverified");
+    expect(
+      verifyField(f.data.items[0].weightUnit, f.pdf, "weightUnit").status,
+    ).toBe("verified");
+  });
   it("does not use a product QTY cell as a document total amount or subtotal", async () => {
     const f = await phase23Fixture("invoice"),
       d = structuredClone(f.data);
