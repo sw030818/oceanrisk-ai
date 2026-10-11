@@ -307,6 +307,7 @@ export async function extractWithGemini(
         }
       }
 
+      if (checked.success) return checked.data; // Retain TypeScript narrowing after an optional repair.
       const outputFields = [...new Set(checked.error.issues.slice(0, 16).map(issue =>
         issue.path.map(segment => typeof segment === "number" ? "[]" : String(segment)).join(".")
       ))].filter(field => /^[A-Za-z0-9_.\[\]]{1,120}$/.test(field));
