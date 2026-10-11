@@ -5,9 +5,9 @@ import { makePdf } from "../fixtures/synthetic";
 
 async function uploadSynthetic(page: import("@playwright/test").Page) {
   await page.goto("/");
-  await expect(page.getByLabel("PDF 파일 선택")).toBeEnabled();
+  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeEnabled();
   await page
-    .getByLabel("PDF 파일 선택")
+    .getByLabel("Commercial Invoice PDF 파일 선택")
     .setInputFiles({
       name: "synthetic.pdf",
       mimeType: "application/pdf",
@@ -103,7 +103,7 @@ test("no access code or bearer header; provider failure and actual waiting state
   await expect(page.getByRole("alert").filter({ hasText: "Gemini 키" })).toBeVisible();
   await page.getByRole("button", { name: "서류 분석 시작" }).click();
   await expect(page.getByRole("button", { name: "원문 추출 및 AI 분석 진행 중" })).toBeVisible();
-  await expect(page.getByLabel("PDF 파일 선택")).toBeDisabled();
+  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeDisabled();
   await expect(page.getByText("실제 응답을 기다리는 중입니다.", { exact: false })).toBeVisible();
   release();
   await expect(page.getByRole("heading", { name: "분석 응답 완료" })).toBeVisible();
@@ -113,9 +113,9 @@ test("actual unreadable PDF displays failure instead of AI success", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.getByLabel("PDF 파일 선택")).toBeEnabled();
+  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeEnabled();
   await page
-    .getByLabel("PDF 파일 선택")
+    .getByLabel("Commercial Invoice PDF 파일 선택")
     .setInputFiles({
       name: "blank-synthetic.pdf",
       mimeType: "application/pdf",

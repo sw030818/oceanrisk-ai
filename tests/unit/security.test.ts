@@ -44,6 +44,16 @@ describe("public analysis retains request safety without local auth or quotas", 
     try { await vi.waitFor(() => expect(analyze).toHaveBeenCalledTimes(5)); } finally { release(); }
     expect((await Promise.all(responses)).map((result) => result.status)).toEqual([200, 200, 200, 200, 200]);
   });
+  it("keeps selected slots separate from the classified types, independent of filenames", async () => {
+    analyze.mockResolvedValueOnce({ pdf: { id: "a", fileName: "invoice.pdf", pages: [] }, document: { type: "packing_list" }, error: null });
+    const body = new FormData();body.append("files", new File(["%PDF-test"], "invoice.pdf", {type:"application/pdf"}));body.append("slots", '["invoice"]');
+    const response=await POST(new Request("https://test/api/analyze",{method:"POST",body}));
+    expect((await response.json()).results[0]).toMatchObject({ uploadSlot:"invoice",typeMismatch:true,document:{type:"packing_list"} });
+  });
+  it("rejects malformed slot metadata before starting AI", async () => {
+    const body = new FormData();body.append("files", new File(["%PDF-test"], "invoice.pdf", {type:"application/pdf"}));body.append("slots", '["invoice","packing_list"]');
+    const response=await POST(new Request("https://test/api/analyze",{method:"POST",body}));expect(response.status).toBe(400);expect(analyze).not.toHaveBeenCalled();
+  });
   it("still validates multipart requests before PDF/AI work", async () => {
     const response = await POST(new Request("https://test/api/analyze", { method: "POST", body: "not multipart" }));
     expect(response.status).toBe(400);

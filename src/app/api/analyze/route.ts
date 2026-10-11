@@ -1,3 +1,4 @@
+import { parseUploadSlots } from "@/modules/upload/slots";
 import { requireSameOrigin } from "@/modules/security/origin";
 import { NextResponse } from "next/server";
 import { validateUploads } from "@/modules/upload/validate";
@@ -101,9 +102,14 @@ export async function POST(request: Request) {
       );
     const files = entries as File[];
     validateUploads(files);
+    const slots = parseUploadSlots(data.get("slots"), files.length);
     const results: AnalysisResult[] = [];
     // Sequential processing bounds memory and provider requests.
-    for (const file of files) results.push(await analyzeFile(file, { signal }));
+    for (const [index, file] of files.entries()) {
+      const result = await analyzeFile(file, { signal });
+      const uploadSlot = slots?.[index];
+      results.push(uploadSlot ? { ...result, uploadSlot, typeMismatch: !!result.document && result.document.type !== uploadSlot } : result);
+    }
     return NextResponse.json(
       {
         results,

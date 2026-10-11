@@ -22,7 +22,8 @@ Next.js App Router / strict TypeScript / Tailwind CSS / Zod / Vitest / Playwrigh
 ## 구조
 - `src/app`: 페이지와 서버 API
 - `src/modules/upload`: 파일 제한 및 검증
-- `src/modules/pdf`: 페이지별 텍스트 추출
+- `src/modules/pdf`: 페이지별 원문·텍스트 블록·좌표·행 추출
+- `src/modules/layout`: 원문 라벨과 값, 표 열과 상품 행의 위치 관계 검증
 - `src/modules/ai`: Gemini 분류·추출
 - `src/modules/evidence`: 원문 근거 검증
 - `src/modules/rules`: TypeScript 교차검증
@@ -31,13 +32,13 @@ Next.js App Router / strict TypeScript / Tailwind CSS / Zod / Vitest / Playwrigh
 - `tests/unit`, `tests/e2e`: 검증
 
 ## 범위 및 원칙
-PHASE 0 기반 → PHASE 1 Commercial Invoice / Packing List. 텍스트 PDF만 지원하며 OCR, B/L, 위험 예측, DB 저장은 범위 밖입니다. AI 값은 근거 검증 없이 확정 오류에 사용하지 않습니다. 민감한 파일/추출값을 로그에 남기지 않습니다. 테스트용 합성 문서는 실제 분석 결과가 아닙니다.
+PHASE 0–1.6 기반을 보존한 PHASE 2 Commercial Invoice / Packing List. 텍스트 PDF만 지원하며 OCR, B/L, 위험 예측, DB 저장은 범위 밖입니다. AI 값은 근거 검증 없이 확정 오류에 사용하지 않습니다. 민감한 파일/추출값을 로그에 남기지 않습니다. 테스트용 합성 문서는 실제 분석 결과가 아닙니다.
 
 ## 배포
 기존 Vercel 프로젝트/저장소 설정은 유지합니다. Node.js 24, Next.js 프레임워크, 루트 디렉터리 기본값. 서버 환경변수는 Vercel 환경 설정에서 입력합니다. 이 작업의 빌드는 배포 성공을 의미하지 않습니다.
 
 ## PHASE 1 기능 및 사용 흐름
-1. 텍스트 기반 PDF를 선택합니다. 최대 4개, 파일당/합계 4 MB, 파일당 30페이지입니다. 합계 제한은 Vercel 함수의 요청 크기 제한을 고려한 값입니다.
+1. Commercial Invoice(상업송장)와 Packing List(포장명세서) 영역에 텍스트 PDF를 각각 선택하거나 드롭합니다. 하나만 있어도 분석할 수 있고 두 파일은 한 요청으로 전송합니다. UI는 영역당 1개, 기존 API는 최대 4개, 파일당/합계 4 MB, 파일당 30페이지입니다. 합계 제한은 Vercel 함수의 요청 크기 제한을 고려한 값입니다.
 2. Google Gemini로 추출 텍스트가 전송된다는 안내를 확인하고 분석을 시작합니다. 파일명과 키는 Gemini 프롬프트에 넣지 않습니다.
 3. 필드별 ‘원문 대조 완료/근거 미확인/정보 없음’을 확인합니다. 배지를 누르면 파일명·페이지·근거 후보와 실제 원문을 볼 수 있습니다. ‘원문 대조’는 문서 진위나 의미의 정확성 보증이 아닙니다.
 4. 값을 수정하면 ‘사용자 수정’으로 표시되고 확정 비교에서 제외됩니다. ‘AI 추출값 복원’으로 원래 후보를 복원할 수 있습니다. 실제 수정 서류는 ‘새 서류 검토’로 다시 업로드합니다.
@@ -45,7 +46,7 @@ PHASE 0 기반 → PHASE 1 Commercial Invoice / Packing List. 텍스트 PDF만 �
 
 ## API 및 데이터 처리
 - `GET /api/status`: 키 설정 여부와 공개 배포 식별 메타데이터(commitSha/id/environment)를 반환합니다. 키 값이나 접근 인증 정보를 반환하지 않습니다. 설정 여부는 키 유효성/실제 AI 성공의 보증이 아닙니다.
-- `POST /api/analyze`: `multipart/form-data`의 `files` 필드. 파일별 원문/근거 후보/검증 결과/오류를 반환하며 `Cache-Control: no-store`를 설정합니다. 본문은 제한된 크기로 읽고, PDF 시그니처·텍스트·페이지를 검증합니다.
+- `POST /api/analyze`: `multipart/form-data`의 `files` 필드. 선택적인 `slots` JSON 배열은 파일 순서별 사용자 지정 영역(invoice/packing_list)이며 기존 files-only 클라이언트도 지원합니다. AI 판독 유형을 변경하지 않고 응답의 uploadSlot/typeMismatch로 구분합니다. 파일별 원문/근거 후보/검증 결과/오류를 반환하며 `Cache-Control: no-store`를 설정합니다. 본문은 제한된 크기로 읽고, PDF 시그니처·텍스트·페이지를 검증합니다.
 - Gemini REST `generateContent`, 기본 모델 `gemini-2.5-flash`. 서버 `x-goog-api-key` 헤더와 JSON Schema 구조화 출력 사용. 타임아웃/요청 한도/권한/불완전 응답을 구분합니다. 실키 미설정 시 PDF 원문만 추출하고 `API_NOT_CONFIGURED`를 표시합니다.
 - 문서 내 지시문은 별도 시스템 지시가 아닌 신뢰하지 않는 사용자 데이터로만 전달합니다. 모델에 외부 도구를 제공하지 않습니다. 반환값은 Zod 및 별도 근거 검증을 거칩니다.
 - 앱은 DB·파일 영구 저장·문서 로그를 만들지 않습니다. 처리를 위해 서버 메모리와 현재 브라우저 상태에 존재하며 Gemini 분석 시 Google에 전달됩니다. 제공자/호스팅의 데이터 처리 정책까지 ‘미저장’으로 보증하지 않습니다.
@@ -68,7 +69,7 @@ PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run test:e2e
 
 PDF 선택 → 데이터 처리/Google 전송 안내 확인 → 분석 시작. 접근 코드 입력이나 사용자 인증이 없습니다. 이전 `ANALYSIS_ACCESS_TOKEN` 변수는 코드에서 사용하지 않으며 Vercel에 남아 있어도 무시합니다. 기존 서버 환경변수와 프로젝트를 삭제/초기화하지 않습니다.
 
-현재 Codex에는 Gemini 키가 없고 Production 도메인 직접 조회는 프록시에서 차단됩니다. GitHub Actions에서는 Production 서버 키 설정과 배포 SHA를 확인하고 실제 합성 PDF 분석을 실행했습니다. 실제 호출은 모델/제공자 오류로 실패했으며 **Gemini A–D 검증은 미완료**입니다. 상세 실행별 결과는 PROGRESS.md에 기록합니다.
+실제 실행 상태는 PROGRESS.md를 따릅니다. 과거 PHASE 1.6의 Google 400은 후속 변경으로 실제 A 분석 성공이 확인됐습니다. 현재 클라우드의 키와 Production의 키는 별개이며, 설정 여부만 조회합니다. 로컬 모의 검사와 실제 Google 호출 결과를 혼동하지 않습니다.
 
 ```sh
 # 로컬 서버 자격 증명을 안전하게 설정한 경우
@@ -114,7 +115,7 @@ npm run check:production -- --sha <main-commit-sha>
 
 Production 상태에 Vercel 시스템 환경변수의 SHA/환경/id를 포함합니다. 변수 노출 설정이 비활성화되면 SHA/id 확인이 불가능할 수 있습니다. 같은 SHA를 서비스하는 HTTP 응답은 배포된 코드의 근거지만 **Vercel 관리 API Ready 상태 또는 실제 AI 성공을 증명하지 않습니다**. 배포 확인 실패 후에도 이미 Push된 소스는 보존합니다. 보고서는 test-results/deployment/report.json입니다.
 
-현재 클라우드의 GitHub API/Production 도메인 프록시 403은 사이트 장애를 의미하지 않습니다. 네트워크 설정에서 api.github.com/oceanrisk-ai.vercel.app/api.vercel.com을 허용해야 원격 검사에 접근할 수 있습니다. 알려진 네트워크 차단 상태에서는 PRODUCTION_CHECK_ATTEMPTS=1로 반복 대기만 줄이며 성공을 주장하지 않습니다.
+과거 클라우드의 GitHub API/Production 도메인 프록시 403은 사이트 장애를 의미하지 않았습니다. PHASE 2에서는 Production 직접 접근이 가능해졌으며 각 환경의 현재 접근 가능 여부를 다시 확인합니다. 네트워크 설정에서 api.github.com/oceanrisk-ai.vercel.app/api.vercel.com을 허용해야 원격 검사에 접근할 수 있습니다. 알려진 네트워크 차단 상태에서는 PRODUCTION_CHECK_ATTEMPTS=1로 반복 대기만 줄이며 성공을 주장하지 않습니다.
 
 이후 Codex에 수정 요청을 하면 AGENTS.md의 검증·Stage·ship 절차를 기본으로 사용합니다. Git 쓰기 권한, 최신 main, Vercel Git 연결, 정상 품질 검사, 네트워크가 필요한 전제입니다. 지침 작성만으로 모든 후속 작업이 무조건 자동 배포된다고 보증하지 않습니다.
 
@@ -125,3 +126,23 @@ Production 상태에 Vercel 시스템 환경변수의 SHA/환경/id를 포함합
 실패 진단은 `[verify-live-gemini] [case-A]`로 A 두 문서만 실행할 수 있습니다. LIVE_GEMINI_CASE=all이 기본이고 A/B/C/D를 지정하면 해당 사례만 실행합니다. 단일 사례 성공은 전체 A–D 완료가 아닙니다. Google 429가 확인되면 다음 사례 호출을 중단합니다. provider diagnostics는 HTTP 상태·고정 설정 필드명·공개 모델명·quota window/limit-zero 여부만 담으며 키·문서·원시 오류·프로젝트 ID는 제외합니다.
 
 현재 최종 소스의 품질 검사는 단위 **153개**, Production 모드 브라우저 **7개** 및 타입/린트/빌드/worker 검사를 통과했습니다. 실제 Production A 두 문서는 gemini-3.1-flash-lite에서 HTTP 400 INVALID_ARGUMENT로 실패하며 안전한 오류 상세에도 거부 필드/사유가 없습니다. 따라서 **실제 분석 정상화는 미완료**이고 최종 소스의 B–D는 미재실행입니다. 동일 프로젝트의 기본 Google generateContent 호출과 구조화 요청을 키가 있는 안전한 환경에서 분리 재현해야 근본 원인을 구분할 수 있습니다. Codex의 키는 환경 설정에서만 등록하고 키 값을 채팅이나 Git에 저장하지 마세요.
+
+
+## PHASE 2 — 다양한 양식과 독립적인 근거 검증
+
+두 업로드 영역은 데스크톱 2열·모바일 1열입니다. 빨간 PDF 아이콘/배지는 파일 종류를 뜻하며 카드 전체는 네이비·화이트를 유지합니다. 파일 제거·교체·드롭을 지원합니다. AI 판독 유형이 선택 영역과 다르면 ‘서류 종류 확인 필요’를 표시하고 재업로드 또는 두 칸 교환으로 수정할 수 있습니다. 칸 교환은 실제 판독 유형을 바꾸거나 새 유료 분석을 실행하지 않습니다.
+
+PDF.js의 실제 페이지 좌표·블록 ID·행 정보를 기존 page/text에 추가합니다. Gemini에는 이 원문 구조를 신뢰하지 않는 데이터로 전달해 역할/표를 해석하도록 요청합니다. 인용은 기존 page/quote 또는 선택적인 segments[{blockId, quote}]를 사용합니다. 여러 블록의 인용은 각 블록에 실제로 존재해야 하며 합친 quote와도 일치해야 합니다. 존재하지 않는 인용/블록/페이지는 검증하지 않습니다.
+
+별도 TypeScript 모듈이 실제 라벨과 인접 값, 표 제목의 열 범위와 데이터 행을 연결합니다. SELLER 아래 회사명, Purchase Order 옆 값, QTY 아래 수량, 줄바꿈 품명 등을 처리하며 회사별 좌표를 하드코딩하지 않습니다. 품명·수량·단위가 같은 표의 같은 상품 행이어야 하고 CTNS 열은 상품 수량에서 제외합니다. 근거 창에 원문과 실제 블록 위치를 표시합니다. 모호한 역할/열/행은 미검증으로 남깁니다. 회전·복잡한 병합 셀·스캔 문서 전체를 지원한다고 보증하지 않습니다.
+
+검증된 주문번호·Invoice 참조 충돌과 수정값을 제외한 뒤 동일 거래·단위·선적 범위를 판단합니다. 상태는 확인된 일치 / 확인된 불일치 / 비교 후보·추가 확인 필요 / 비교 불가·분석 미실시를 구분합니다. 한 문서만 있으면 대상 서류 부족으로 표시하며 ‘수량 차이 0건’으로 오해시키지 않습니다. 부분선적 정보가 부족하면 검증된 상품 수치를 후보로 제공하고 확정 오류로 집계하지 않습니다.
+
+```sh
+# 실제 PDF 추출·합성 AI 응답: 7개 양식 조합, 외부 호출 없음
+npm run test:layouts
+# 배포된 동일 SHA와 서버 키 확인 후 실제 Gemini: 7개 조합 + 첫 조합 1회 반복
+npm run test:layouts:production -- --sha=<deployed-main-sha> --repeat=2
+```
+
+실제 테스트 스크립트는 정상 세로/가로 양식, 별도 당사자 표, PCS/CTNS 혼재, 수량 차이, 거래번호 충돌, 줄바꿈 품명, 참조 누락을 검사합니다. 예상 필드/근거 확인 수·분류·규칙·오류 코드·반복 결과 해시만 보고서에 기록하고 원시 문서 값/키는 저장하지 않습니다. 429가 발생하면 후속 사례를 중단하며 제공자 한도를 변경/우회하지 않습니다. 보고서는 Git에서 제외된 test-results/live-layouts에 있습니다. 합성 표본의 수치는 실무 전체 서류의 정확도가 아닙니다.

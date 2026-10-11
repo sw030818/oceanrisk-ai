@@ -9,6 +9,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
+    "test:layouts": "tsx scripts/evaluate-layouts.ts",
+    "test:layouts:production": "tsx scripts/live-layouts.ts",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:live": "tsx scripts/live-gemini.ts",

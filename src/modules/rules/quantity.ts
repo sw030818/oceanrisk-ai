@@ -65,7 +65,7 @@ export function compareQuantities(
     return [
       result(
         "document-pair",
-        "Invoice 1개와 Packing List 1개가 필요합니다. 여러 거래 문서가 섞인 경우 비교할 한 쌍만 선택해 주세요.",
+        "대상 서류 부족 또는 문서 유형 확인 필요: Invoice 1개와 Packing List 1개가 필요합니다. 여러 거래 문서가 섞인 경우 비교할 한 쌍만 선택해 주세요.",
       ),
     ];
   const invoice = invoices[0],
@@ -82,6 +82,16 @@ export function compareQuantities(
           "판매자·구매자가 원문에서 동일하게 확인되지 않아 문서를 연결하지 않았습니다.",
         ),
       ];
+  }
+  if ([invoice.documentNumber, invoice.purchaseOrder, packing.purchaseOrder, invoice.invoiceReference, packing.invoiceReference].some(field => field?.status === "user_edited"))
+    return [result("edited-identifiers", "사용자가 수정한 거래 식별 정보가 있습니다. 원문을 재확인하기 전 확정 비교에 사용하지 않습니다.")];
+  for (const [left, right] of [
+    [invoice.purchaseOrder, packing.purchaseOrder],
+    [invoice.documentNumber, packing.invoiceReference],
+    [invoice.invoiceReference, packing.invoiceReference],
+  ]) {
+    if (left && right && known(left) && known(right) && normalizeText(left.value!) !== normalizeText(right.value!))
+      return [result("conflicting-identifiers", "검증된 주문번호 또는 Invoice 참조번호가 충돌합니다. 같은 거래로 자동 연결하지 않았습니다.")];
   }
   const refs = [invoice.transactionReference, packing.transactionReference];
   if (
@@ -108,8 +118,9 @@ export function compareQuantities(
       ),
     ];
   const referenceConfirmed =
-    refs.every(known) &&
-    normalizeText(refs[0].value!) === normalizeText(refs[1].value!);
+    (refs.every(known) && normalizeText(refs[0].value!) === normalizeText(refs[1].value!)) ||
+    (!!invoice.purchaseOrder && !!packing.purchaseOrder && known(invoice.purchaseOrder) && known(packing.purchaseOrder) && normalizeText(invoice.purchaseOrder.value!) === normalizeText(packing.purchaseOrder.value!)) ||
+    (!!packing.invoiceReference && known(invoice.documentNumber) && known(packing.invoiceReference) && normalizeText(invoice.documentNumber.value!) === normalizeText(packing.invoiceReference.value!));
   const scopeConfirmed = scopes.every(
     (field) => known(field) && field.value === "no",
   );
@@ -177,12 +188,14 @@ export function compareQuantities(
       (row) =>
         row.quantity.source?.page === row.unit.source?.page &&
         row.quantity.source &&
-        productQuantities(row.quantity.source.quote).some(
+        (row.quantity.source.layout?.role === "quantity" && row.quantity.source.layout.unit
+          ? canonicalUnit(row.quantity.source.layout.unit) === canonicalUnit(row.unit.value!)
+          : productQuantities(row.quantity.source.quote).some(
           (evidence) =>
             evidence.value === row.quantity.value &&
             evidence.unit &&
             canonicalUnit(evidence.unit) === canonicalUnit(row.unit.value!),
-        ),
+        )),
     );
     if (!quantityUnitsLinked) {
       results.push(

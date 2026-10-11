@@ -28,3 +28,15 @@ PHASE 0/1 구현 및 로컬 검증 완료. 실제 Gemini 검증은 키 설정 �
 
 ## PHASE 1.6 현재 상태
 접근 코드·자체 한도 제거, PDF worker 패키징/근거 문맥 회귀 수정, 검증 후 main Push와 기존 Vercel Git 자동 반영은 실제 실행으로 확인. 최종 소스는 단위 153개·Production 브라우저 7개 및 타입/린트/빌드 검사를 통과했다. 실제 Gemini A 분석은 HTTP 400 INVALID_ARGUMENT로 실패하여 정상화가 미완료다. 최종 소스의 B–D 실제 검증, Google 400 원인 격리, Vercel 관리 Ready 직접 확인이 남아 있다. 자세한 SHA/배포/실패 근거는 PROGRESS.md를 따른다.
+
+
+## PHASE 2
+1. 최신 main의 Gemini 정상화 코드를 보존하고 업로드 영역 2개·선택 영역 메타데이터를 추가한다.
+2. 원본 페이지 텍스트를 유지하면서 실제 PDF 블록 좌표·행 구조를 추가한다.
+3. 다중 블록 인용, 라벨/값 연결, 상품 표의 열·행 검증을 독립적으로 수행한다.
+4. 검증된 PO/Invoice 충돌·수정값을 제외하고 확정/후보/불가 상태를 표시한다.
+5. 7개 다양한 양식, 기존 A–D 회귀, 단위·Production 브라우저·PDF worker 검사를 실행한다.
+6. ship 검증 후 main 일반 Push 및 Production SHA 확인, 실제 합성 Gemini 평가·반복 검사 결과를 기록한다.
+7. 후속 B/L·법적 위험·견적·비용·이력 DB·대시보드 전면 재작성은 제외한다.
+
+PHASE 2 진행 상태: 구현 및 로컬 모의 검증 완료. 실제 Production Gemini 평가와 배포 확인은 실행 결과를 PROGRESS.md에 기록한 뒤 판정한다. 과거 PHASE 1.6의 실패 기록은 당시 결과이며 최신 main에서는 실제 A 성공이 확인됐다.

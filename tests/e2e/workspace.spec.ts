@@ -2,14 +2,14 @@ import { test, expect } from "@playwright/test";
 import { makePdf, syntheticDocument } from "../fixtures/synthetic";
 test("upload workspace, validation and responsive layout", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByLabel("PDF 파일 선택")).toBeEnabled();
+  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeEnabled();
   await expect(
     page.getByRole("heading", { name: "서류 검토, 더 명확하게." }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "서류 분석 시작" }),
   ).toBeDisabled();
-  await page.getByLabel("PDF 파일 선택").setInputFiles({
+  await page.getByLabel("Commercial Invoice PDF 파일 선택").setInputFiles({
     name: "invalid.png",
     mimeType: "image/png",
     buffer: Buffer.from("bad"),
@@ -19,7 +19,7 @@ test("upload workspace, validation and responsive layout", async ({ page }) => {
   ).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(
-    page.getByRole("button", { name: "파일 선택", exact: true }),
+    page.getByRole("button", { name: "파일 선택", exact: true }).first(),
   ).toBeVisible();
   expect(
     await page.evaluate(
@@ -37,12 +37,12 @@ test("actual server PDF extraction with missing Gemini key", async ({
     "Missing-key test only applies when key is absent",
   );
   await page.goto("/");
-  await expect(page.getByLabel("PDF 파일 선택")).toBeEnabled();
+  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeEnabled();
   const pdf = await makePdf([
     ["COMMERCIAL INVOICE", "Quantity: 100 PCS"],
     ["Second page evidence"],
   ]);
-  await page.getByLabel("PDF 파일 선택").setInputFiles({
+  await page.getByLabel("Commercial Invoice PDF 파일 선택").setInputFiles({
     name: "real-generated-synthetic.pdf",
     mimeType: "application/pdf",
     buffer: Buffer.from(pdf),
@@ -81,14 +81,8 @@ test("synthetic mocked analysis: mismatch evidence, edits and revalidation", asy
     }),
   );
   await page.goto("/");
-  await expect(page.getByLabel("PDF 파일 선택")).toBeEnabled();
-  await page.getByLabel("PDF 파일 선택").setInputFiles(
-    pair.map((fixture) => ({
-      name: fixture.pdf.fileName,
-      mimeType: "application/pdf",
-      buffer: Buffer.from("%PDF-synthetic-ui-test"),
-    })),
-  );
+  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeEnabled();
+  for (const [index, fixture] of pair.entries()) await page.getByLabel(index ? "Packing List PDF 파일 선택" : "Commercial Invoice PDF 파일 선택").setInputFiles({ name: fixture.pdf.fileName, mimeType: "application/pdf", buffer: Buffer.from("%PDF-synthetic-ui-test") });
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: "서류 분석 시작" }).click();
   await expect(

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { UploadSlotCard } from "./upload-slot";
 import { EditableField } from "./editable-field";
 import { EvidenceDialog } from "./evidence-dialog";
 import { statusColors, statusLabels } from "./field-status";
@@ -28,7 +29,6 @@ import {
   ShieldCheck,
   Sparkles,
   UploadCloud,
-  X,
   AlertTriangle,
   Info,
   ScanText,
@@ -40,6 +40,7 @@ import { summarizeAnalysis } from "@/modules/analysis/summary";
 import { compareQuantities } from "@/modules/rules/quantity";
 import type {
   AnalysisResult,
+  UploadSlot,
   GroundedDocument,
   GroundedField,
 } from "@/modules/documents/schema";
@@ -59,17 +60,17 @@ type EvidenceSelection = {
 
 export function Workspace() {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
-  const [files, setFiles] = useState<File[]>([]);
+  const [slots, setSlots] = useState<Record<UploadSlot, File | null>>({ invoice: null, packing_list: null });
+  const activeSlots = (["invoice", "packing_list"] as UploadSlot[]).filter(slot => slots[slot]);
+  const files = activeSlots.map(slot => slots[slot]!);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [dragging, setDragging] = useState(false);
   const [configured, setConfigured] = useState<boolean | null>(null);
   const [consent, setConsent] = useState(false);
   const [results, setResults] = useState<AnalysisResult[]>([]);
   const [documents, setDocuments] = useState<GroundedDocument[]>([]);
   const [tab, setTab] = useState<"upload" | "results">("upload");
   const [selection, setSelection] = useState<EvidenceSelection | null>(null);
-  const input = useRef<HTMLInputElement>(null);
   const runToken = useRef(0);
   const abort = useRef<AbortController | null>(null);
   useEffect(() => {
@@ -102,33 +103,24 @@ export function Workspace() {
       ].filter((field) => field.status === "verified").length,
     0,
   );
-  function addFiles(incoming: File[]) {
-    if (busy) return;
-    const next = [...files];
-    incoming.forEach((file) => {
-      if (
-        !next.some(
-          (old) =>
-            old.name === file.name &&
-            old.size === file.size &&
-            old.lastModified === file.lastModified,
-        )
-      )
-        next.push(file);
-    });
+  function selectFile(slot: UploadSlot, incoming: File[]) {
+    if (busy || !incoming.length) return;
+    if (incoming.length !== 1) { setError("각 업로드 영역에는 PDF 1개만 넣어 주세요."); return; }
+    const next = { ...slots, [slot]: incoming[0] };
     try {
-      validateUploads(next);
-      setFiles(next);
-      setError(null);
-    } catch (problem) {
-      setError(safeError(problem).message);
-    }
+      validateUploads(Object.values(next).filter((file): file is File => file !== null));
+      setSlots(next); setError(null); setResults([]); setDocuments([]);
+    } catch (problem) { setError(safeError(problem).message); }
+  }
+  function swapSlots() {
+    setSlots({ invoice: slots.packing_list, packing_list: slots.invoice });
+    setResults(current=>current.map(result=>result.uploadSlot ? { ...result, uploadSlot: result.uploadSlot === "invoice" ? "packing_list" : "invoice", typeMismatch: !!result.document && result.document.type !== (result.uploadSlot === "invoice" ? "packing_list" : "invoice") } : result));
   }
   function clearAll() {
     runToken.current++;
     abort.current?.abort();
     setBusy(false);
-    setFiles([]);
+    setSlots({ invoice: null, packing_list: null });
     setResults([]);
     setDocuments([]);
     setSelection(null);
@@ -158,6 +150,7 @@ export function Workspace() {
     try {
       const form = new FormData();
       files.forEach((file) => form.append("files", file));
+      form.append("slots", JSON.stringify(activeSlots));
       const response = await fetch("/api/analyze", {
         method: "POST",
         body: form,
@@ -407,89 +400,13 @@ export function Workspace() {
                       텍스트 PDF
                     </span>
                   </div>
-                  <div
-                    onDragOver={(event) => {
-                      event.preventDefault();
-                      if (!busy) setDragging(true);
-                    }}
-                    onDragLeave={() => setDragging(false)}
-                    onDrop={(event) => {
-                      event.preventDefault();
-                      setDragging(false);
-                      addFiles(Array.from(event.dataTransfer.files));
-                    }}
-                    className={`rounded-xl border-2 border-dashed p-6 text-center transition md:p-9 ${dragging ? "border-blue-500 bg-blue-50" : "border-blue-200/70 bg-[#f8faff]"}`}
-                  >
-                    <div className="mx-auto mb-5 flex size-14 items-center justify-center rounded-2xl border border-blue-100 bg-white text-blue-600 shadow-sm">
-                      <UploadCloud size={27} strokeWidth={1.5} />
-                    </div>
-                    <p className="text-sm font-semibold">
-                      PDF 파일을 여기에 놓아주세요
-                    </p>
-                    <p className="mt-2 text-xs text-slate-500">
-                      또는 아래 버튼으로 여러 파일을 선택하세요
-                    </p>
-                    <button
-                      type="button"
-                      disabled={busy || !ready}
-                      onClick={() => input.current?.click()}
-                      className="mt-5 inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-white px-5 py-2.5 text-xs font-bold text-blue-700 shadow-sm transition hover:bg-blue-50 disabled:opacity-50"
-                    >
-                      <UploadCloud size={14} />
-                      파일 선택
-                    </button>
-                    <input
-                      ref={input}
-                      type="file"
-                      disabled={busy || !ready}
-                      accept=".pdf,application/pdf"
-                      multiple
-                      aria-label="PDF 파일 선택"
-                      className="sr-only"
-                      onChange={(event) => {
-                        addFiles(Array.from(event.target.files ?? []));
-                        event.target.value = "";
-                      }}
-                    />
-                    <p className="mt-5 text-[10px] leading-5 text-slate-400">
-                      최대 4개 · 파일당 4 MB · 전체 합계 4 MB · 파일당 30페이지
-                    </p>
+                  <div className="grid gap-4 md:grid-cols-2" data-testid="upload-slots">
+                    {(["invoice", "packing_list"] as UploadSlot[]).map(slot=><UploadSlotCard key={slot} slot={slot} file={slots[slot]} disabled={busy || !ready} onSelect={incoming=>selectFile(slot,incoming)} onRemove={()=>{setSlots(current=>({...current,[slot]:null}));setError(null);setResults([]);setDocuments([]);}} />)}
                   </div>
-                  {files.length > 0 && (
-                    <ul className="mt-4 space-y-2" aria-label="선택한 파일">
-                      {files.map((file, i) => (
-                        <li
-                          key={`${file.name}-${i}`}
-                          className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50/60 p-3"
-                        >
-                          <FileText
-                            size={19}
-                            className="shrink-0 text-blue-600"
-                          />
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-xs font-medium">
-                              {file.name}
-                            </p>
-                            <p className="mt-0.5 text-[10px] text-slate-400">
-                              {(file.size / 1024).toFixed(1)} KB · PDF
-                            </p>
-                          </div>
-                          <button
-                            disabled={busy}
-                            aria-label={`${file.name} 제거`}
-                            onClick={() =>
-                              setFiles((current) =>
-                                current.filter((_, index) => index !== i),
-                              )
-                            }
-                            className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-red-600"
-                          >
-                            <X size={15} />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-[11px] leading-5 text-slate-500">하나만 올려도 개별 분석 가능 · 두 파일 합계 4 MB 이내</p>
+                    <button type="button" disabled={busy || !files.length} onClick={swapSlots} className="rounded-lg border border-slate-200 px-3 py-2 text-[11px] font-semibold text-blue-700 disabled:opacity-40">두 업로드 칸 서로 바꾸기</button>
+                  </div>
                   <div className="mt-5 flex items-start gap-2 rounded-lg bg-slate-50 px-3 py-3">
                     <LockKeyhole
                       size={14}
@@ -652,6 +569,7 @@ export function Workspace() {
                   {summary.message}
                 </p>
               </section>
+              {results.some(result=>result.typeMismatch) && <section role="alert" className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-6 text-amber-900"><strong>서류 종류 확인 필요</strong><p>선택한 업로드 영역과 AI 판독 유형이 다릅니다. 파일명으로 유형을 판단하지 않았습니다.</p>{results.filter(result=>result.typeMismatch).map(result=><p key={result.pdf.id}>{result.pdf.fileName} · 선택: {typeLabels[result.uploadSlot!]} / AI 판독: {typeLabels[result.document!.type]}</p>)}<div className="mt-3 flex flex-wrap gap-3"><button onClick={swapSlots} className="rounded-lg border border-amber-300 bg-white px-3 py-2 font-semibold">두 업로드 칸 서로 바꾸기</button><button onClick={()=>setTab("upload")} className="rounded-lg bg-blue-600 px-3 py-2 text-white">업로드 영역에서 파일 교체</button></div></section>}
               <div className="mb-6 grid grid-cols-3 gap-3">
                 {[
                   {
@@ -665,9 +583,8 @@ export function Workspace() {
                     icon: ShieldCheck,
                   },
                   {
-                    label: "수량 차이",
-                    value: checks.filter((check) => check.status === "mismatch")
-                      .length,
+                    label: "교차검증 상태",
+                    value: !documents.length ? "분석 미실시" : documents.length===1 ? "대상 서류 부족" : checks.some(check=>check.confidence==='candidate') ? "추가 확인 필요" : checks.every(check=>check.confidence==='confirmed') ? (checks.some(check=>check.status==='mismatch') ? "확인된 불일치" : "확인된 일치") : "비교 불가",
                     icon: FileCheck2,
                   },
                 ].map((stat) => (
@@ -676,10 +593,10 @@ export function Workspace() {
                     className="rounded-xl border border-slate-200 bg-white p-4 md:p-5"
                   >
                     <stat.icon size={18} className="mb-3 text-blue-600" />
-                    <p className="text-2xl font-bold">
+                    <p className={`${typeof stat.value === "string" ? "text-sm leading-6" : "text-2xl"} font-bold`}>
                       {stat.value}
                       <span className="ml-2 text-[11px] font-normal text-slate-400">
-                        개
+                        {typeof stat.value === "number" ? "개" : ""}
                       </span>
                     </p>
                     <p className="mt-2 break-all text-[10px] text-slate-500">
@@ -835,6 +752,8 @@ export function Workspace() {
                               ["buyer", "구매자"],
                               ["documentNumber", "문서 번호"],
                               ["transactionReference", "거래 참조"],
+                              ["purchaseOrder", "Purchase Order 번호"],
+                              ["invoiceReference", "Invoice 참조번호"],
                               ["currency", "통화"],
                               ["totalAmount", "총 금액"],
                             ] as const
@@ -842,10 +761,10 @@ export function Workspace() {
                             <EditableField
                               key={key}
                               label={label}
-                              field={doc[key]}
+                              field={doc[key] ?? { value: null, source: null, status: "missing", reason: "참조 정보 없음" }}
                               numeric={key === "totalAmount"}
                               onEvidence={() =>
-                                setSelection({ field: doc[key], label })
+                                setSelection({ field: doc[key] ?? { value: null, source: null, status: "missing", reason: "참조 정보 없음" }, label })
                               }
                               onChange={(value) =>
                                 updateDoc(doc.id, (current) =>
@@ -860,7 +779,7 @@ export function Workspace() {
                                     : {
                                         ...current,
                                         [key]: editField(
-                                          current[key],
+                                          current[key] ?? { value: null, source: null, status: "missing", reason: "참조 정보 없음" },
                                           value as string | null,
                                         ),
                                       },
@@ -1028,7 +947,7 @@ export function Workspace() {
             </p>
             <span className="flex items-center gap-1.5">
               <ShieldCheck size={13} />
-              Commercial Invoice · Packing List / PHASE 1
+              Commercial Invoice · Packing List
             </span>
           </footer>
         </main>
@@ -1037,6 +956,7 @@ export function Workspace() {
         <EvidenceDialog
           selection={selection}
           pageText={sourcePage?.text}
+          page={sourcePage}
           onClose={() => setSelection(null)}
         />
       )}
