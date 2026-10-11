@@ -1,5 +1,5 @@
 import { extractPdfText } from "../pdf/extract";
-import { extractWithGemini } from "../ai/gemini";
+import { extractWithOpenAI } from "../ai/openai";
 import { groundDocument } from "../evidence/verify";
 import { AnalysisError, safeError } from "../documents/errors";
 import type {
@@ -38,7 +38,7 @@ export async function analyzeFile(
       );
     const data = await (
       dependencies.ai ??
-      ((pdf) => extractWithGemini(pdf, { signal: dependencies.signal, onModelUsed: (model) => { aiModel = model; } }))
+      ((pdf) => extractWithOpenAI(pdf, { signal: dependencies.signal, onModelUsed: (model) => { aiModel = model; } }))
     )(pdf);
     return { pdf, document: groundDocument(data, pdf), error: null, ...(aiModel ? { aiModel } : {}) };
   } catch (error) {
