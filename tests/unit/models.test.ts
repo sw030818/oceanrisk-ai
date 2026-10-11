@@ -35,10 +35,10 @@ describe("confirmed 404 model discovery with mocked Google (not live validation)
     expect(fetcher.mock.calls[1][1].headers).toEqual({ "x-goog-api-key": "synthetic-test-key" });
     expect(models).toEqual(["gemini-2.5-flash","gemini-3-flash-preview"]);
     const body=JSON.parse(fetcher.mock.calls[2][1].body);
-    expect(body.generationConfig.responseFormat.text.mimeType).toBe("APPLICATION_JSON");
-    expect(body.generationConfig.responseFormat.text.schema.$defs).toBeDefined();
-    expect(body.generationConfig.responseMimeType).toBeUndefined();
-    expect(body.generationConfig.responseJsonSchema).toBeUndefined();
+    expect(body.generationConfig.responseMimeType).toBe("application/json");
+    expect(body.generationConfig.responseJsonSchema.required).toContain("items");
+    expect(body.generationConfig.responseJsonSchema.$defs).toBeUndefined();
+    expect(body.generationConfig.responseFormat).toBeUndefined();
     expect(body.generationConfig.thinkingConfig).toBeUndefined();
   });
   it.each([400,401,403,429,500])("never discovers or retries provider status %s", async status => {

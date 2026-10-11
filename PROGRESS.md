@@ -207,3 +207,9 @@
 - 같은 소스의 ship 전체 검사: npm ci (419), typecheck, lint, 단위 **143/143**, build, PDF worker trace, Production 모드 Playwright **7/7** 성공. 원격 SHA/소스 일치. Post-push 클라우드 직접 Production 확인은 프록시 때문에 exit 1이지만 위 실제 CI 검증은 성공.
 - 최상위 메시지에 실패 설정 필드가 없어 아직 400의 근본 원인을 특정하지 못함. Google ErrorInfo의 알려진 reason과 BadRequest의 알려진 설정 필드만 화이트리스트로 추출하도록 보강. 원시 details/description/metadata는 기록하지 않음. 구조화 상세가 없으면 이유를 추정하지 않고 unknown으로 유지.
 - 상세 진단 회귀 검사 5개 추가. 다음 검증은 A 두 문서의 최소 범위로만 실행. 400/429/503 자동 재시도나 Google 할당량 변경 없음.
+
+### 구조화 상세에도 원인 없음 / REST 스키마 호환성 최소 확인
+- 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38166034467 : quality 성공 (1m 11s), production 성공 (25s), live-gemini 실패 (21s, exit 1). A 두 문서 모두 gemini-3.1-flash-lite, HTTP 400 INVALID_ARGUMENT. requestFields=none, reasons=none. 알려진 상세 오류 근거가 없으므로 키/스키마/모델 중 하나를 확정 원인으로 주장하지 않음.
+- 소스 SHA `ea4843d44074ba027fcc2dc5dd15f63b40aadb19`, Production ID `dpl_G3LHKsb58Vy4vBvKPFzAg3nGAY8Q`, 같은 SHA·키 설정 verified=true. ship: npm ci, typecheck, lint, **148/148** 단위, build, worker trace, **7/7** Production 브라우저 성공 및 main 원격 일치.
+- 모델 숫자 버전만으로 새 출력 포맷 수용을 추정하던 분기를 제거. 모든 모델에 공식 REST의 responseMimeType/responseJsonSchema 호환 경로를 사용하며 지원 JSON Schema 키만 전송. minLength/maxLength 및 참조는 전송에서 제외/인라인화하되 로컬 Zod의 모든 원래 제약은 유지. 이 변경으로 실제 400이 해결됐다고 미리 주장하지 않음.
+- 전송 스키마 변경에도 긴 거래당사자/근거, 잘못된 페이지, 101개 품목의 HTTP 200 AI 응답이 반드시 거부되는 회귀 5개를 추가. 최종 검사 후 A 두 문서로만 실제 수용 여부를 확인.

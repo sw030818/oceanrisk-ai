@@ -1,4 +1,3 @@
-import { z } from "zod";
 import {
   extractedDocumentSchema,
   type ExtractedDocument,
@@ -7,6 +6,7 @@ import {
 import { AnalysisError } from "../documents/errors";
 import { availableFlashModels } from "./models";
 import { providerDiagnostics } from "./provider-diagnostics";
+import { geminiResponseSchema } from "./response-schema";
 // Only a successful discovery is cached. Never persisted or logged; each server process owns its cache.
 let discoveredModel: { apiKey: string; requested: string; model: string } | null = null;
 
@@ -42,10 +42,7 @@ export async function extractWithGemini(
       "서버의 Gemini 모델 설정을 확인해 주세요.",
       503,
     );
-  const jsonSchema = z.toJSONSchema(extractedDocumentSchema, { reused: "ref" });
-  // Gemini accepts JSON Schema through responseJsonSchema; omit the meta-schema URI.
-  const { $schema: _schema, ...responseJsonSchema } = jsonSchema;
-  void _schema;
+  const responseJsonSchema = geminiResponseSchema();
   let model = !options.fetcher && discoveredModel?.apiKey === apiKey && discoveredModel.requested === requested ? discoveredModel.model : requested;
   let response: Response;
   let candidates: string[] = [];
@@ -62,9 +59,7 @@ export async function extractWithGemini(
           contents: [{ role: "user", parts: [{ text: JSON.stringify({ untrustedDocument: { pages: pdf.pages } }) }] }],
           generationConfig: {
             temperature: 0, maxOutputTokens: 8192,
-            ...((Number(/^gemini-(\d+(?:\.\d+)?)-/.exec(selected)?.[1] ?? 0) >= 3 || /^gemini-flash(?:-lite)?-latest$/.test(selected))
-              ? { responseFormat: { text: { mimeType: "APPLICATION_JSON", schema: responseJsonSchema } } }
-              : { responseMimeType: "application/json", responseJsonSchema }),
+            responseMimeType: "application/json", responseJsonSchema,
             ...(selected === "gemini-2.5-flash" ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
           },
         }),

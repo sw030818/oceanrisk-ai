@@ -83,7 +83,7 @@ npm run test:production
 
 수량 규칙의 `status`(match/mismatch/unverifiable)와 `confidence`(confirmed/candidate/unavailable)를 유지합니다. 후보는 검증된 상품 수치만 표시하고 확정 오류에 집계하지 않습니다. 같은 당사자·품명·상품 단위를 확인하되 거래 참조/전체 선적 정보가 부족하면 후보로 처리합니다. 서로 다른 거래·명시적 부분선적·사용자 수정·미검증 수량은 확정 오류에 사용하지 않습니다. PCS/EA만 동의 단위로 대응하고 포장 환산·수량 추측은 하지 않습니다.
 
-Gemini 모델 기본값은 gemini-2.5-flash, REST v1beta generateContent 및 Zod 검증을 사용합니다. Gemini 2.x는 responseMimeType/responseJsonSchema, 3+와 공식 최신 Flash alias는 responseFormat.text(APPLICATION_JSON, schema)를 사용합니다. $defs/$ref로 중복 스키마를 공유합니다. 모델 없음(404), 요청 거부(400), 권한(401/403), Google 한도(429), 불완전/길이 제한 응답을 안전한 한국어 오류로 구분합니다. 실제 모델/키/스키마 수용 여부는 실제 호출 후에만 확정합니다. PDF worker를 서버 추적에 명시해 배포 패키지 누락을 방지합니다.
+Gemini 모델 기본값은 gemini-2.5-flash, REST v1beta generateContent 및 Zod 검증을 사용합니다. 모든 선택 모델에 문서화된 REST responseMimeType/responseJsonSchema를 사용합니다. 전송 스키마는 지원 키만 포함하며 참조를 인라인으로 펼칩니다. 서버 Zod는 문자열 길이·페이지·수량·품목 제한을 포함한 전체 제약을 그대로 검증합니다. 모델 없음(404), 요청 거부(400), 권한(401/403), Google 한도(429), 불완전/길이 제한 응답을 안전한 한국어 오류로 구분합니다. 실제 모델/키/스키마 수용 여부는 실제 호출 후에만 확정합니다. PDF worker를 서버 추적에 명시해 배포 패키지 누락을 방지합니다.
 
 업로드 제한 4개·파일당/합계 4 MB·30페이지·문서 텍스트 100,000자, Gemini 25초/전체 105초 제한 및 취소 전파를 유지합니다. 응답 완료/부분 처리/실패를 구분하고 원문·파일별 오류·근거 페이지·사용자 수정을 보존합니다.
 
