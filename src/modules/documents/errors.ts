@@ -8,6 +8,8 @@ export interface ProviderDiagnostics {
   quotaLimitZero: boolean;
   availableModels?: string[];
   minimalJsonAttempted?: boolean;
+  outputIssue?: "MAX_TOKENS" | "NON_STOP" | "EMPTY_TEXT" | "INVALID_JSON" | "SCHEMA_MISMATCH";
+  outputFields?: string[];
 }
 export class AnalysisError extends Error {
   constructor(
