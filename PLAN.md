@@ -25,3 +25,6 @@ PHASE 0/1 구현 및 로컬 검증 완료. 실제 Gemini 검증은 키 설정 �
 - 로컬/Production A–D 실행 도구와 명확한 모델/요청/응답 오류를 확인한다.
 - 검증 → 커밋 → 일반 main Push → 원격 SHA → Production SHA 확인을 실행하는 ship, 최소 권한 Actions, Vercel 검증 빌드를 구성한다.
 - 실제 Gemini, GitHub Actions, Vercel Ready는 각각 실행 근거가 있을 때만 완료로 보고한다. 키/네트워크 차단은 미검증으로 기록한다.
+
+## PHASE 1.6 현재 상태
+접근 코드·자체 한도 제거, PDF worker 패키징/근거 문맥 회귀 수정, 검증 후 main Push와 기존 Vercel Git 자동 반영은 실제 실행으로 확인. 최종 소스는 단위 153개·Production 브라우저 7개 및 타입/린트/빌드 검사를 통과했다. 실제 Gemini A 분석은 HTTP 400 INVALID_ARGUMENT로 실패하여 정상화가 미완료다. 최종 소스의 B–D 실제 검증, Google 400 원인 격리, Vercel 관리 Ready 직접 확인이 남아 있다. 자세한 SHA/배포/실패 근거는 PROGRESS.md를 따른다.

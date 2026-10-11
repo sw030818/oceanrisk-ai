@@ -123,3 +123,5 @@ Production 상태에 Vercel 시스템 환경변수의 SHA/환경/id를 포함합
 설정된 모델이 실제 404를 반환할 때만 Google models.list를 1회 조회합니다. generateContent 지원이 명시된 텍스트 Flash 모델만 선택하며 TTS/audio/image/live/Pro 모델은 제외합니다. 같은 버전의 안정 모델, 가까운 버전의 안정 모델, 공식 Flash alias, preview 순으로 선택합니다. 목록에 포함됐다는 이유만으로 실제 사용 가능하다고 보증하지 않습니다. 최대 2개 후보를 확인하고 다음 후보로 넘어가는 조건은 이전 후보의 404뿐입니다. 400·권한·429·503에는 재시도하지 않습니다. 성공 응답 모델만 프로세스 메모리에 캐시하며 실제 모델명을 결과에 표시합니다. Google 할당량·과금 한도는 변경하거나 우회하지 않습니다.
 
 실패 진단은 `[verify-live-gemini] [case-A]`로 A 두 문서만 실행할 수 있습니다. LIVE_GEMINI_CASE=all이 기본이고 A/B/C/D를 지정하면 해당 사례만 실행합니다. 단일 사례 성공은 전체 A–D 완료가 아닙니다. Google 429가 확인되면 다음 사례 호출을 중단합니다. provider diagnostics는 HTTP 상태·고정 설정 필드명·공개 모델명·quota window/limit-zero 여부만 담으며 키·문서·원시 오류·프로젝트 ID는 제외합니다.
+
+현재 최종 소스의 품질 검사는 단위 **153개**, Production 모드 브라우저 **7개** 및 타입/린트/빌드/worker 검사를 통과했습니다. 실제 Production A 두 문서는 gemini-3.1-flash-lite에서 HTTP 400 INVALID_ARGUMENT로 실패하며 안전한 오류 상세에도 거부 필드/사유가 없습니다. 따라서 **실제 분석 정상화는 미완료**이고 최종 소스의 B–D는 미재실행입니다. 동일 프로젝트의 기본 Google generateContent 호출과 구조화 요청을 키가 있는 안전한 환경에서 분리 재현해야 근본 원인을 구분할 수 있습니다. Codex의 키는 환경 설정에서만 등록하고 키 값을 채팅이나 Git에 저장하지 마세요.

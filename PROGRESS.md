@@ -213,3 +213,42 @@
 - 소스 SHA `ea4843d44074ba027fcc2dc5dd15f63b40aadb19`, Production ID `dpl_G3LHKsb58Vy4vBvKPFzAg3nGAY8Q`, 같은 SHA·키 설정 verified=true. ship: npm ci, typecheck, lint, **148/148** 단위, build, worker trace, **7/7** Production 브라우저 성공 및 main 원격 일치.
 - 모델 숫자 버전만으로 새 출력 포맷 수용을 추정하던 분기를 제거. 모든 모델에 공식 REST의 responseMimeType/responseJsonSchema 호환 경로를 사용하며 지원 JSON Schema 키만 전송. minLength/maxLength 및 참조는 전송에서 제외/인라인화하되 로컬 Zod의 모든 원래 제약은 유지. 이 변경으로 실제 400이 해결됐다고 미리 주장하지 않음.
 - 전송 스키마 변경에도 긴 거래당사자/근거, 잘못된 페이지, 101개 품목의 HTTP 200 AI 응답이 반드시 거부되는 회귀 5개를 추가. 최종 검사 후 A 두 문서로만 실제 수용 여부를 확인.
+
+## PHASE 1.6 최종 검증 상태 — Gemini 정상화 미완료
+
+### 최종 소스·실제 Production 결과
+- 정상화/자동화 소스 SHA: `b1118fb548200f5553d784491d0886befecde2ca`, 브랜치 **main**. 검증 후 ship에서 실제 일반 Push, ls-remote SHA 및 Fetch된 원격 소스 일치 확인. 강제 Push/기록 초기화/프로젝트·환경변수 삭제 없음.
+- 실제 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38166437186 : quality **성공** (58s), production **성공** (24s), live-gemini **실패** (25s, exit 1). 전체 workflow **Failure**를 숨기지 않음.
+- Production 도메인이 해당 SHA를 서비스하며 서버 키 설정/Production 환경/인증 필드 제거를 확인. 배포 ID `dpl_EPQpU7KDXX72mSYz7eFAx7n1tVck`, verified=true. Git main Push만으로 자동 반영됨; 수동 PR/Redeploy 없이 확인.
+- Vercel 관리 API는 네트워크 프록시 차단, VERCEL_TOKEN 미설정으로 Ready 상태 직접 미조회. 실제 HTTP 서비스·SHA 일치를 관리 API Ready 또는 AI 성공과 혼동하지 않음.
+- 최종 호환 REST 스키마 요청에도 A 두 문서가 gemini-3.1-flash-lite의 HTTP **400 INVALID_ARGUMENT**, API_REQUEST_REJECTED로 실패. known requestFields/reasons 없음. 실제 분류/수량/원문 근거/비교 결과는 미검증이며 성공 AI 응답은 0개. 400 원인을 키/스키마/모델 중 하나로 확정하지 않음.
+
+### 모의 결과와 실제 분석 결과
+| 사례 | 실제 PDF 추출 + 합성 모의 AI 결과 | 실제 Gemini 결과 |
+|---|---|---|
+| A: Invoice 500 / PL 500 PCS | confirmed match 통과 | 최종 소스에서 두 문서 HTTP 400, 실패 |
+| B: Invoice 500 / PL 480 PCS | confirmed mismatch 통과 | 이전 전체 실행에서 요청 거부, 최종 소스에서 미재실행 |
+| C: 500 PCS 상품 / 20 CTNS 포장 | 상품 비교 정상, 포장 제외 통과 | 이전 전체 실행에서 요청 거부/서비스 오류, 최종 소스에서 미재실행 |
+| D: 거래 참조 누락 | 확정 오류 제외, candidate/unverifiable 통과 | 이전 전체 실행에서 서비스/Google 한도 오류, 최종 소스에서 미재실행 |
+
+- 최종 최소 A 검증은 scope=A, completed=false이며 A도 실패. 전체 실제 A–D 완료 또는 실제 AI가 UI까지 성공했다고 보고하지 않음. 동일 실패 상태에서 불필요한 B–D 추가 호출을 하지 않음.
+- Codex 키 미설정은 재확인; Vercel Production 키 설정은 실제 CI status로 확인. Vercel Preview/Development 키 유효성은 별도로 확인하지 않음. 키 값/실제 업로드/원시 Google 응답을 출력·저장하지 않음.
+
+### 최종 로컬·CI 품질 검사
+- `npm ci`: **419 packages**, 성공.
+- `npm run typecheck`, `npm run lint`, `npm run build`: 모두 성공.
+- `npm test`: **153/153**, 14개 파일, 실패/스킵 0. 기존 PHASE 0/1의 55개, 근거/수량/부분선적/단위/수정값 검사 유지. 제거한 인증/한도 회귀는 공개 API 검사로 교체.
+- PDF 단위 검사: 실제 합성 PDF.js 페이지 추출, 형식/판독 실패, 원문 위치/상품 포장 수량 구분 통과.
+- `npm run verify:runtime`: Production /api/analyze 추적에 worker 포함 및 파일 존재, 성공.
+- Playwright: **7/7**, Production Next 서버 실행, 실패/스킵 0. 기존 3개 포함. 인증 없는 업로드, 실제 원문 추출/판독 실패, 기다림·오류·부분 성공, 합성 수량 비교·근거·수정, 390px 모바일 확인. 실제 AI 결과 UI 성공 테스트는 아님.
+- CI에서도 동일 소스의 품질 검사 및 실제 Production SHA 확인 성공. 유일한 최종 실제 테스트 실패는 **Gemini A 두 문서의 400**. 클라우드 자체 post-push Production 검사 실패는 프록시 때문에 별도 발생했으며 CI에서 배포를 확인.
+
+### 보존한 기능·안전장치와 남은 작업
+- 접근 코드 UI/Bearer/토큰 의존성/인증 401·503 및 자체 분당/시간당/동시성 카운터·429/Retry-After 제거 완료. 기존 ANALYSIS_ACCESS_TOKEN 환경변수는 운영상 불필요하며 남아 있어도 무시.
+- PDF/본문/페이지/원문 메모리 제한, Origin, 취소/타임아웃, 서버 키, Zod, 상품/포장 구분, 근거 페이지 검증 유지. 잘린 포장 라벨·전체 선적 부정어의 근거 오검증 회귀 보강.
+- 같은 당사자·거래·품명·동의 단위·전체 선적 조건의 확정 비교 및 부족 정보 후보 구분 유지. 사용자 수정/근거 없는 값/서로 다른 거래/부분선적은 확정 오류에 사용하지 않음.
+- 남은 최우선 작업: 실제 Google 400 원인 격리와 성공 응답 검증. 키가 설정된 안전한 로컬 환경 또는 Google AI Studio의 같은 프로젝트에서 기본 generateContent 호출과 구조화 요청을 분리 재현해야 함. Codex의 GEMINI_API_KEY 바인딩은 아직 미설정이며 환경 설정에서 안전하게 등록할 수 있음; 채팅/Git에 키를 입력하지 않음. 현재 정보로 provider 설정 문제와 요청 호환성 문제를 확정 구분할 수 없음.
+- 기본 호출이 가능해진 뒤 `npm run test:live`/명시적 Production live workflow로 전체 A–D를 다시 실행해야 실제 분석 정상화를 완료할 수 있음. Google 429 시 후속 사례를 중단하며 제공자 한도/과금 설정을 변경·우회하지 않음.
+- 인증/자체 한도가 없는 공개 API의 반복 호출·비용·동시 메모리 위험이 존재. 파일/시간 제한은 전역 과금 상한이 아님.
+- 환경 설치/시작 지침과 필요한 네트워크 목적지 초안 저장 완료. 저장과 현재 네트워크 적용/사용자 Publish는 별도. 이번 작업은 후속 기능을 추가하지 않았으며 **PHASE 1.6 전체 완료라고 보고하지 않음**.
+- 이 최종 결과 문서는 별도 일반 main 커밋으로 보존. 해당 문서 커밋의 최종 SHA와 자동 배포 ID는 완료 보고 및 다음 Actions production notice에서 확인하며 유료 live 표시는 포함하지 않음.
