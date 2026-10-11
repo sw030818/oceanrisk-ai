@@ -65,6 +65,10 @@ type Entry = {
   errorCodes: (string | null)[];
   models: (string | null)[];
   usage: AnalysisResult["aiUsage"][];
+  providerDiagnostics: (
+    | NonNullable<AnalysisResult["error"]>["diagnostics"]
+    | null
+  )[];
   signature: string;
   details: unknown;
 };
@@ -75,7 +79,7 @@ try {
 } catch (e) {
   if ((e as NodeJS.ErrnoException).code !== "ENOENT")
     throw new Error("Budget ledger unreadable; do not reset it to retry");
-  ledger = {
+  const fresh: Ledger = {
     budget: {
       documents: 0,
       measuredCostUsd: 0,
@@ -86,12 +90,39 @@ try {
     cases: [],
     stopReason: null,
   };
+  // A new cloud checkout must not reset the already consumed PHASE 2.2 budget.
+  // The committed report contains safe metadata only, never keys or documents.
+  try {
+    const archive = JSON.parse(
+      await readFile("docs/validation/phase22-2026-10-11.json", "utf8"),
+    );
+    if (
+      archive.mode !== "actual-openai-synthetic-pdfs" ||
+      !archive.budget ||
+      !Array.isArray(archive.cases)
+    )
+      throw new Error("Invalid saved budget archive");
+    ledger = { budget: archive.budget, cases: archive.cases, stopReason: null };
+  } catch (archiveError) {
+    if ((archiveError as NodeJS.ErrnoException).code !== "ENOENT")
+      throw new Error(
+        "Saved validation budget is unreadable; do not reset it to retry",
+      );
+    ledger = fresh;
+  }
 }
 if (
   !ledger.budget ||
   !Array.isArray(ledger.cases) ||
-  !Number.isFinite(ledger.budget.documents) ||
-  ledger.budget.documents < 0
+  !Number.isSafeInteger(ledger.budget.documents) ||
+  ledger.budget.documents < 0 ||
+  ![ledger.budget.measuredCostUsd, ledger.budget.unresolvedCostUpperUsd].every(
+    (n) => Number.isFinite(n) && n >= 0,
+  ) ||
+  !Number.isSafeInteger(ledger.budget.maxDocuments) ||
+  ledger.budget.maxDocuments < 20 ||
+  ledger.budget.maxDocuments > 40 ||
+  ledger.budget.maxCostUsd !== 0.5
 )
   throw new Error("Invalid budget ledger");
 // Only use after explicit user approval; default never exceeds the authorized cap.
@@ -264,6 +295,7 @@ function add(
     errorCodes: results.map((r) => r.error?.code ?? null),
     models: results.map((r) => r.aiModel ?? null),
     usage: results.map((r) => r.aiUsage),
+    providerDiagnostics: results.map((r) => r.error?.diagnostics ?? null),
     signature,
     details: evaluation.details,
   };
@@ -319,27 +351,35 @@ function evaluateAD(
   const checks = compareQuantities(
     results.flatMap((r) => (r.document ? [r.document] : [])),
   );
-  const ruleCorrect = single
-    ? checks.length === 1 && checks[0].confidence === "unavailable"
-    : checks.length === 1 &&
-      checks[0].status ===
-        (id === "B" ? "mismatch" : id === "D" ? "unverifiable" : "match") &&
-      (id !== "D" || checks[0].confidence !== "confirmed");
+  const providerResponses =
+    results.length === expected.length &&
+    results.every((r) => r.document && !r.error);
+  const singleStateCorrect =
+    checks.length === 1 && checks[0].confidence === "unavailable";
+  const ruleCorrect =
+    single || !providerResponses
+      ? null
+      : checks.length === 1 &&
+        checks[0].status ===
+          (id === "B" ? "mismatch" : id === "D" ? "unverifiable" : "match") &&
+        (id !== "D" || checks[0].confidence !== "confirmed");
   const classified =
     results.length === expected.length &&
     results.every((r, i) => r.document?.type === expected[i].type);
   return {
     passed:
       classified &&
-      results.every((r) => r.document && !r.error) &&
+      providerResponses &&
       groundedCorrectFields === expectedFields &&
-      ruleCorrect,
+      (single ? singleStateCorrect : ruleCorrect === true),
     expectedFields,
     correctValues,
     groundedCorrectFields,
     ruleCorrect,
     details: {
       classified,
+      providerResponses,
+      singleDocumentState: single ? singleStateCorrect : null,
       rules: checks.map((c) => ({
         status: c.status,
         confidence: c.confidence,

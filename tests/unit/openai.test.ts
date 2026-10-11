@@ -12,6 +12,7 @@ import type {
   PdfDocument,
 } from "@/modules/documents/schema";
 import { analyzeFile } from "@/modules/analysis/pipeline";
+import { safeError } from "@/modules/documents/errors";
 import { makePdf } from "../fixtures/synthetic";
 
 // Convert known synthetic candidates to mocked provider block references. These
@@ -73,6 +74,40 @@ function completed(raw: unknown, extra = {}) {
 }
 afterEach(() => vi.unstubAllEnvs());
 describe("OpenAI Responses contract and independent grounding (MOCKED AI)", () => {
+  it("invalid credentials name the server setting without echoing provider secrets or documents", async () => {
+    const fetcher = vi
+      .fn()
+      .mockResolvedValue(
+        Response.json(
+          {
+            error: {
+              code: "invalid_api_key",
+              param: "private-document-key",
+              message: "sk-private-document-content",
+            },
+          },
+          { status: 401 },
+        ),
+      );
+    try {
+      await extractWithOpenAI(
+        { id: "x", fileName: "x", pages: [] },
+        { apiKey: "synthetic", fetcher },
+      );
+      throw new Error("Expected rejection");
+    } catch (error) {
+      const safe = safeError(error);
+      expect(safe.code).toBe("API_AUTH_OR_CONFIG");
+      expect(safe.message).toContain("키가 유효하지 않습니다");
+      expect(safe.diagnostics).toMatchObject({
+        httpStatus: 401,
+        reasons: ["invalid_api_key"],
+        requestFields: [],
+      });
+      expect(JSON.stringify(safe)).not.toContain("private-document");
+    }
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
   it("uses strict text.format, supported Luna effort, store:false and bounded output without Gemini fallback", async () => {
     const f = await layoutFixture("party-tables", "invoice"),
       fetcher = vi.fn().mockResolvedValue(completed(wire(f.data, f.pdf))),
@@ -183,19 +218,17 @@ describe("OpenAI Responses contract and independent grounding (MOCKED AI)", () =
   it.each([400, 401, 403, 404, 429, 500, 503])(
     "HTTP %i returns safe failure metadata, never provider text, retries or Gemini",
     async (status) => {
-      const fetcher = vi
-          .fn()
-          .mockResolvedValue(
-            Response.json(
-              {
-                error: {
-                  message: "private document/API-key",
-                  code: status === 429 ? "insufficient_quota" : "bad",
-                },
+      const fetcher = vi.fn().mockResolvedValue(
+          Response.json(
+            {
+              error: {
+                message: "private document/API-key",
+                code: status === 429 ? "insufficient_quota" : "bad",
               },
-              { status },
-            ),
+            },
+            { status },
           ),
+        ),
         onUsage = vi.fn();
       await expect(
         extractWithOpenAI(

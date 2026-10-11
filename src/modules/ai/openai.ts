@@ -190,7 +190,9 @@ export async function extractWithOpenAI(
       if (response.status === 401 || response.status === 403)
         throw new AnalysisError(
           "API_AUTH_OR_CONFIG",
-          "OpenAI API 키와 프로젝트의 모델 접근 권한을 확인해 주세요.",
+          code === "invalid_api_key"
+            ? "등록된 OpenAI API 키가 유효하지 않습니다. 서버 환경 설정의 OPENAI_API_KEY를 확인해 주세요."
+            : "OpenAI API 키와 프로젝트의 모델 접근 권한을 확인해 주세요.",
           502,
           diagnostics,
         );

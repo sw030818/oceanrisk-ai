@@ -1,0 +1,204 @@
+{
+  "mode": "actual-openai-synthetic-pdfs",
+  "model": "gpt-6-luna",
+  "keyConfigured": true,
+  "deploymentSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+  "completed": false,
+  "budget": {
+    "documents": 2,
+    "measuredCostUsd": 0,
+    "unresolvedCostUpperUsd": 0.0083578,
+    "maxDocuments": 20,
+    "maxCostUsd": 0.5
+  },
+  "stopReason": "FAILED_STAGE_STOP_FIX_BEFORE_NEXT_CALL",
+  "cases": [
+    {
+      "id": "connection-single-A",
+      "deploymentSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+      "documents": 1,
+      "status": "failed",
+      "providerSuccesses": 0,
+      "expectedFields": 8,
+      "correctValues": 0,
+      "groundedCorrectFields": 0,
+      "ruleCorrect": null,
+      "errorCodes": [
+        "API_AUTH_OR_CONFIG"
+      ],
+      "models": [
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 307,
+          "inputTokens": null,
+          "outputTokens": null,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 0,
+          "reasoningTokens": null,
+          "estimatedCostUsd": null,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "signature": "1d8fc6ceb1f94c6326d6d5483d258fcb2e179e9869325b245d105c2219bf69fd",
+      "details": {
+        "classified": false,
+        "rules": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null
+        ]
+      },
+      "singleDocumentUnavailableStateHandled": true
+    },
+    {
+      "id": "connection-single-A",
+      "deploymentSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+      "documents": 1,
+      "status": "failed",
+      "providerSuccesses": 0,
+      "expectedFields": 8,
+      "correctValues": 0,
+      "groundedCorrectFields": 0,
+      "ruleCorrect": null,
+      "errorCodes": [
+        "API_AUTH_OR_CONFIG"
+      ],
+      "models": [
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 256,
+          "inputTokens": null,
+          "outputTokens": null,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 0,
+          "reasoningTokens": null,
+          "estimatedCostUsd": null,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        {
+          "httpStatus": 401,
+          "model": "gpt-6-luna",
+          "status": "PERMISSION_DENIED",
+          "requestFields": [],
+          "reasons": [
+            "invalid_api_key"
+          ],
+          "quotaWindow": "unknown",
+          "quotaLimitZero": false
+        }
+      ],
+      "signature": "1d8fc6ceb1f94c6326d6d5483d258fcb2e179e9869325b245d105c2219bf69fd",
+      "details": {
+        "classified": false,
+        "rules": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          null
+        ]
+      },
+      "singleDocumentUnavailableStateHandled": true
+    }
+  ],
+  "repeatConsistent": null,
+  "providerSuccesses": 0,
+  "expectedDocuments": 2,
+  "groundedCorrectFields": 0,
+  "expectedFields": 16,
+  "missing": [
+    "connection-single-A",
+    "A-D-A",
+    "A-D-B",
+    "A-D-C",
+    "A-D-D",
+    "layout-portrait-landscape",
+    "layout-party-tables",
+    "layout-mixed-packaging",
+    "layout-quantity-mismatch",
+    "layout-reference-conflict",
+    "layout-wrapped-description",
+    "layout-missing-reference",
+    "repeat-portrait-landscape"
+  ],
+  "recordedAtUtc": "2026-10-11T22:12:34.325115+00:00",
+  "sourceCommit": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+  "localEnvironment": {
+    "openAIKeyConfigured": false,
+    "geminiKeyConfigured": false,
+    "actualCalls": 0,
+    "reason": "KEY_NOT_CONFIGURED"
+  },
+  "localQuality": {
+    "npmCiPackages": 419,
+    "typecheck": "passed",
+    "lint": "passed",
+    "unitTests": 230,
+    "browserTests": 12,
+    "productionBuild": "passed",
+    "pdfWorker": "passed",
+    "clientCredentialReferences": 0,
+    "mockLayoutCases": 7,
+    "mockGroundedFields": 172,
+    "mockExpectedFields": 172,
+    "note": "Final added invalid-key error/redaction regression passed in the targeted 37-test run; final full release gate executes before this metadata is pushed."
+  },
+  "deployment": {
+    "productionSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+    "deploymentId": "dpl_FHB9YWLa65MgA1Psv3MQoE27rgTE",
+    "httpServingVerified": true,
+    "provider": "openai",
+    "model": "gpt-6-luna",
+    "keyPresent": true,
+    "keyValidity": "invalid_api_key confirmed by second diagnostic",
+    "githubActionsRun": 38179102095,
+    "githubActionsConclusion": "success",
+    "githubDeploymentState": "success",
+    "githubDeploymentDescription": "Deployment has completed",
+    "vercelManagementReady": "unverified",
+    "vercelManagementHttpStatus": 403
+  },
+  "actualValidation": {
+    "model": "gpt-6-luna",
+    "documentRequests": 2,
+    "automaticRetries": 0,
+    "structuredSuccesses": 0,
+    "attemptedExpectedFields": 16,
+    "groundedCorrectFields": 0,
+    "successfulTokenUsageResponses": 0,
+    "chargedCostUsd": null,
+    "confirmedMeasuredCostUsd": null,
+    "unresolvedCostReservationUsd": 0.0083578,
+    "A": "single invoice failed, pair not run",
+    "B": "not run",
+    "C": "not run",
+    "D": "not run",
+    "sevenLayouts": "not run",
+    "repeatConsistency": null,
+    "quantityComparisonsEvaluated": 0,
+    "mismatchAccuracy": null,
+    "falsePositiveRate": null,
+    "reason": "HTTP 401 invalid_api_key; stop before later stages"
+  },
+  "historicalReportCorrection": "The initial single-document ruleCorrect boolean tested insufficient-document handling only. It is preserved as singleDocumentUnavailableStateHandled, with ruleCorrect=null because no quantity comparison was evaluated."
+}

@@ -14,7 +14,7 @@ for (let i = 0; i < attempts; i++) {
     const match = assertProduction(await response.json(), sha);
     report.verified = true;
     report.deploymentId = match.id;
-    report.reason = "Production HTTP response serves the expected SHA and has the Gemini key configured. This is not a real AI accuracy test or Vercel control-plane Ready confirmation.";
+    report.reason = "Production HTTP response serves the expected SHA and has the OpenAI key configured. This is not key validity, a real AI accuracy test or Vercel control-plane Ready confirmation.";
     break;
   } catch (error) {
     // Proxy denial is not evidence that Production itself failed.
