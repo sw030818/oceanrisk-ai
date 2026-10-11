@@ -194,4 +194,14 @@ describe("PHASE 1.5 actual generated PDFs with MOCKED AI (not live Gemini)", () 
         ).status,
       ).toBe("unverified");
   });
+  it("rejects a quote that crops the package qualifier from the actual page", () => {
+    const pdf = { ...syntheticDocument().pdf, pages: [{ page: 1, text: "Package quantity: 20 PCS" }] };
+    expect(verifyField({value:20,evidence:{page:1,quote:"quantity: 20 PCS"}},pdf,"quantity").status).toBe("unverified");
+  });
+  it("rejects a quote that crops the negation from full-shipment text", () => {
+    const { data, pdf } = syntheticDocument();
+    pdf.pages[0].text = pdf.pages[0].text.replace("Full shipment", "Not full shipment");
+    data.partialShipment = { value:"no", evidence:{page:1,quote:"full shipment"} };
+    expect(groundDocument(data,pdf).partialShipment.status).toBe("unverified");
+  });
 });

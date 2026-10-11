@@ -62,9 +62,16 @@ export function verifyField<T extends string | number>(
     };
   if (role === "quantity") {
     const quantities = productQuantities(field.evidence.quote);
+    const quoteLines = field.evidence.quote.split(/\r?\n/).map(normalizeText);
+    const context = page.text.split(/\r?\n/).filter(line => {
+      const normalized = normalizeText(line);
+      return normalized && quoteLines.some(quoted => quoted && (normalized.includes(quoted) || quoted.includes(normalized)));
+    });
+    const productContext = context.some(line => productQuantities(line).some(item => item.value === field.value));
     if (
       !quantities.length ||
-      quantities.some((item) => item.value !== field.value)
+      quantities.some((item) => item.value !== field.value) ||
+      !productContext
     )
       return {
         ...base,
@@ -136,9 +143,12 @@ export function groundDocument(
     const sourceLines = partial.source.quote.split(/\r?\n/);
     const allLines = pdf.pages.flatMap((page) => page.text.split(/\r?\n/));
     const conflicting = allLines.some(noLine) && allLines.some(yesLine);
+    const sourceInActualLine = (line: string) => normalizeText(line).includes(quote);
+    const actualSourceLines = page?.text.split(/\r?\n/).filter(sourceInActualLine) ?? [];
     const explicit =
       !conflicting &&
-      sourceLines.some(data.partialShipment.value === "no" ? noLine : yesLine);
+      sourceLines.some(data.partialShipment.value === "no" ? noLine : yesLine) &&
+      actualSourceLines.some(data.partialShipment.value === "no" ? noLine : yesLine);
     partial.status =
       page && normalizeText(page.text).includes(quote) && explicit
         ? "verified"

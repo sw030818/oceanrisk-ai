@@ -16,6 +16,12 @@ describe("confirmed 404 model discovery with mocked Google (not live validation)
     expect(selectAvailableFlash([available("gemini-3.8-flash"),available("gemini-2.5-flash-lite"),available("gemini-flash-latest")],"gemini-2.5-flash")).toBe("gemini-2.5-flash-lite");
     expect(selectAvailableFlash([available("gemini-3.8-flash-preview"),available("gemini-2.5-flash-lite")],"gemini-2.5-flash")).toBe("gemini-2.5-flash-lite");
   });
+  it("prefers the closest stable upgrade over the latest generation and alias", () => {
+    expect(selectAvailableFlash([available("gemini-3.8-flash"),available("gemini-3.1-flash-lite"),available("gemini-flash-latest")],"gemini-2.5-flash")).toBe("gemini-3.1-flash-lite");
+  });
+  it("excludes advertised TTS/audio/image variants even when generateContent is supported", () => {
+    expect(selectAvailableFlash([available("gemini-2.5-flash-preview-tts"),available("gemini-3.1-flash-preview-image"),available("gemini-3.1-flash-preview-audio")],"gemini-2.5-flash")).toBeNull();
+  });
   it.each([null, [], [{ name: "../../private" }], [available("gemini-2.5-flash")], [available("gemini-3-flash-live")]])("never guesses a model outside the supported list", (models) => {
     expect(selectAvailableFlash(models, "gemini-2.5-flash")).toBeNull();
   });

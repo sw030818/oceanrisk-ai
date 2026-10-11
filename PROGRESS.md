@@ -194,3 +194,9 @@
 - Google discovery가 명시한 최신 GenerationConfig.responseFormat.text(mimeType=APPLICATION_JSON, schema) 형식을 Gemini 3+ 및 공식 최신 Flash alias에 사용. 2.x에는 기존 responseMimeType/responseJsonSchema 경로 유지.
 - Zod JSON Schema는 reused=ref로 중복 정의를 공유해 실제 측정 6721→2087 bytes로 축소. 로컬 Zod/근거 검증 조건은 유지. API지원필드 metadata에 $defs/$ref가 명시됨을 확인했지만 실제 생성 성공은 아직 추가 실행으로 확인해야 함.
 - 새 요청 형식/후보 404 연속 처리/400·429·503 비재시도 회귀 검사와 최종 단위 **139/139** 통과. 다음은 A 최소 실제 실행이며 전체 A–D 완료로 오인하지 않음.
+
+### 최신 alias 실제 실패 및 텍스트 모델/근거 문맥 회귀 보강
+- 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38164103963 : quality/production 성공, A 실제 분석 실패. 사용 모델 gemini-flash-latest; 문서별 HTTP 503 UNAVAILABLE / HTTP 400 INVALID_ARGUMENT. 반환된 안전한 설정 필드 힌트 없음. 배포 SHA `3a55d251ea0461d29d2305bb09321ca477c07241`, ID `dpl_H5zos4N7KxeabDeDJDm7rEepUC3H`, verified=true.
+- 실제 모델 목록에 포함된 TTS 모델이 기존 preview 이름 패턴을 통과하는 결함을 발견해 audio/TTS/image/live 등 비텍스트 전용 모델을 명시적으로 제외. 안정된 숫자 버전 모델을 alias보다 우선하고, 원래 버전에 가장 가까운 모델을 선택. 실제 목록의 2.5 Flash-lite가 404인 경우 다음 후보는 3.1 Flash-lite이며 400/429/503 뒤에는 재시도하지 않음.
+- 원문 인용에서 포장 라벨 또는 부정어를 잘라낸 경우 검증될 수 있던 문제를 수정. 수량은 실제 페이지의 라벨 문맥을 재확인하고 전체 선적은 실제 원문 줄의 부정어를 검토. 기존 근거 검증을 완화하지 않음.
+- 회귀 4개 추가, 단위 **143/143** 통과. 실제 AI 성공 여부는 다음 A 최소 검증 결과로 별도 확인하며 A만 통과해도 전체 A–D 검증 완료라고 보고하지 않음.
