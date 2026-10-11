@@ -252,3 +252,11 @@
 - 인증/자체 한도가 없는 공개 API의 반복 호출·비용·동시 메모리 위험이 존재. 파일/시간 제한은 전역 과금 상한이 아님.
 - 환경 설치/시작 지침과 필요한 네트워크 목적지 초안 저장 완료. 저장과 현재 네트워크 적용/사용자 Publish는 별도. 이번 작업은 후속 기능을 추가하지 않았으며 **PHASE 1.6 전체 완료라고 보고하지 않음**.
 - 이 최종 결과 문서는 별도 일반 main 커밋으로 보존. 해당 문서 커밋의 최종 SHA와 자동 배포 ID는 완료 보고 및 다음 Actions production notice에서 확인하며 유료 live 표시는 포함하지 않음.
+
+
+### 2026-10-12 실제 Gemini 최소 검증 A 성공
+- PR #2: 기존 스키마 기반 Google 400 INVALID_ARGUMENT 요청이 실패할 경우 동일 모델로 responseMimeType만 설정한 JSON 요청을 1회 시도. 200 응답 도달, Zod 엄격 검증은 유지.
+- PR #3: 실제 200 응답의 Zod 불일치 위치를 원문/키 없이 안전한 필드 경로로 분류. 최초 A는 type / 숫자.value 필드에서 SCHEMA_MISMATCH.
+- PR #4: Gemini 프롬프트에 허용 타입·숫자·필수 evidence 구조를 명시하고, 명백한 유형 별칭·순수 숫자 문자열만 안전 변환. 통과 못한 값은 원래대로 Zod 거부, 원문 근거 검증 불변.
+- 실제 GitHub Actions 실행: https://github.com/sw030818/oceanrisk-ai/actions/runs/38168465687 : quality/production/live-gemini 모두 성공. **합성 A (Invoice 500 PCS + Packing List 500 PCS) 두 문서 실제 Gemini 응답, 분류, 상품 수량, 근거 페이지, 비교 결과 모두 PASS**. 모델 gemini-3.1-flash-lite. 원시 결과/키/사용자 문서 로그 없음.
+- A만 테스트했으므로 이 시점에 전체 A–D 완료라고 주장하지 않음. 이어서 명시적인 전체 실제 A–D 검사 수행 후 결과를 각각 기록한다.
