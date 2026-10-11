@@ -35,11 +35,12 @@ export async function analyzeFile(
         "분석 요청이 취소되었거나 처리 시간이 초과되었습니다.",
         408,
       );
+    let aiModel: string | undefined;
     const data = await (
       dependencies.ai ??
-      ((pdf) => extractWithGemini(pdf, { signal: dependencies.signal }))
+      ((pdf) => extractWithGemini(pdf, { signal: dependencies.signal, onModelUsed: (model) => { aiModel = model; } }))
     )(pdf);
-    return { pdf, document: groundDocument(data, pdf), error: null };
+    return { pdf, document: groundDocument(data, pdf), error: null, ...(aiModel ? { aiModel } : {}) };
   } catch (error) {
     return { pdf, document: null, error: safeError(error) };
   }

@@ -39,6 +39,10 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
       "x-goog-api-key": "synthetic-test-key",
     });
     const body = JSON.parse(init.body as string);
+    expect(init.signal).toBeInstanceOf(AbortSignal);
+    expect(init.cache).toBe("no-store");
+    expect(body).not.toHaveProperty("signal");
+    expect(body).not.toHaveProperty("cache");
     expect(body.generationConfig.responseMimeType).toBe("application/json");
     expect(body.generationConfig.responseJsonSchema).not.toHaveProperty("$schema");
     expect(body.generationConfig.responseJsonSchema.required).toContain("partialShipment");

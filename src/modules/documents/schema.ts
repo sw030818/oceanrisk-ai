@@ -98,6 +98,7 @@ export interface GroundedDocument {
   items: GroundedItem[];
 }
 export interface AnalysisResult {
+  aiModel?: string;
   pdf: PdfDocument;
   document: GroundedDocument | null;
   error: { code: string; message: string } | null;

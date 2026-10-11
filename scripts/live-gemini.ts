@@ -163,6 +163,7 @@ for (const id of ["A", "B", "C", "D"] as const) {
     status: passed ? "passed" : "failed",
     criteria,
     errorCodes: results.map((result) => result.error?.code ?? null),
+    modelsUsed: results.map((result) => result.aiModel ?? null),
     ruleStatus: checks.map((check) => ({
       status: check.status,
       confidence: check.confidence,

@@ -23,6 +23,8 @@ else {
       if (process.env.GITHUB_ACTIONS === "true") {
         const http = Number.isInteger(item.httpStatus) ? item.httpStatus : "not-recorded";
         console.log(`::notice title=Actual Gemini case ${item.id}::${status}; HTTP=${http}; ${criteria}; errors=${codes}`);
+        const models = (item.modelsUsed ?? []).filter((value) => typeof value === "string" && /^gemini-[a-zA-Z0-9._-]+$/.test(value));
+        if (models.length) console.log(`::notice title=Case ${item.id} models::${models.join(", ")}`);
         for (const [index, doc] of (item.groundingStatuses ?? []).entries()) {
           const states = ["seller", "buyer", "transactionReference", "partialShipment"].map((key) => `${key}=${["verified", "unverified", "missing", "user_edited"].includes(doc[key]) ? doc[key] : "unknown"}`).join("; ");
           console.log(`::notice title=Case ${item.id} context ${index + 1}::${states}`);
