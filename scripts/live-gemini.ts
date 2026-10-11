@@ -8,21 +8,47 @@ import { analyzeFile } from "../src/modules/analysis/pipeline";
 import { compareQuantities } from "../src/modules/rules/quantity";
 import { normalizeText } from "../src/modules/evidence/verify";
 nextEnv.loadEnvConfig(process.cwd());
-const configured = Boolean(process.env.GEMINI_API_KEY);
+const remoteArg = process.argv.slice(2).find((arg) => arg.startsWith("--url="));
+const remote = remoteArg ? new URL(remoteArg.slice(6)) : null;
+if (remote && remote.origin !== "https://oceanrisk-ai.vercel.app")
+  throw new Error("Remote live tests only target the authorized OceanRisk Production domain");
+let configured = Boolean(process.env.GEMINI_API_KEY);
+let statusError: string | null = null;
+let statusChecked = false;
+if (remote) {
+  try {
+    const status = await fetch(new URL("/api/status", remote), { cache: "no-store", signal: AbortSignal.timeout(10000) });
+    if (!status.ok) throw new Error("Production unavailable");
+    const data = await status.json();
+    statusChecked = true;
+    configured = data.aiConfigured === true;
+    if (data.accessRequired) { configured = false; statusError = "PRODUCTION_STILL_ACCESS_GATED"; }
+  } catch {
+    configured = false;
+    statusError = "PRODUCTION_STATUS_UNAVAILABLE";
+  }
+}
+const outputDir = remote ? "test-results/live-gemini-production" : "test-results/live-gemini";
 const report: {
   mode: string;
-  keyConfigured: boolean;
+  keyConfigured: boolean | null;
   completed: boolean;
   requestsAttempted: number;
+  serverRequestsAttempted: number;
+  productionStatusChecked: boolean;
+  statusError: string | null;
   cases: unknown[];
 } = {
-  mode: "live-gemini-synthetic-pdf",
-  keyConfigured: configured,
+  mode: remote ? "production-live-gemini-synthetic-pdf" : "live-gemini-synthetic-pdf",
+  keyConfigured: remote && !statusChecked ? null : configured,
   completed: false,
   requestsAttempted: 0,
+  serverRequestsAttempted: 0,
+  productionStatusChecked: statusChecked,
+  statusError,
   cases: [],
 };
-await mkdir("test-results/live-gemini", { recursive: true });
+await mkdir(outputDir, { recursive: true });
 for (const id of ["A", "B", "C", "D"] as const) {
   const scenario = phase15Scenario(id);
   const files = await Promise.all(
@@ -30,14 +56,14 @@ for (const id of ["A", "B", "C", "D"] as const) {
   );
   for (const file of files)
     await writeFile(
-      `test-results/live-gemini/${file.name}`,
+      `${outputDir}/${file.name}`,
       new Uint8Array(await file.arrayBuffer()),
     );
   if (!configured) {
     report.cases.push({
       id,
       status: "not_run",
-      reason: "GEMINI_API_KEY missing; no provider call was made",
+      reason: statusError ?? "GEMINI_API_KEY missing; no provider call was made",
     });
     continue;
   }
@@ -45,7 +71,21 @@ for (const id of ["A", "B", "C", "D"] as const) {
     `Case ${id}: requesting actual Gemini analysis of two synthetic PDFs`,
   );
   const results: AnalysisResult[] = [];
-  for (const file of files)
+  if (remote) {
+    try {
+      const form = new FormData();
+      for (const file of files) form.append("files", file);
+      report.serverRequestsAttempted++;
+      const response = await fetch(new URL("/api/analyze", remote), { method: "POST", body: form, signal: AbortSignal.timeout(110000) });
+      const payload = await response.json();
+      if (!response.ok || !Array.isArray(payload.results) || payload.results.length !== 2)
+        throw new Error("Remote analysis failed");
+      results.push(...payload.results as AnalysisResult[]);
+    } catch {
+      report.cases.push({ id, status: "failed", reason: "PRODUCTION_ANALYSIS_UNAVAILABLE" });
+      continue;
+    }
+  } else for (const file of files)
     results.push(
       await analyzeFile(file, {
         ai: (pdf) =>
@@ -57,6 +97,7 @@ for (const id of ["A", "B", "C", "D"] as const) {
           }),
       }),
     );
+  try {
   const documents = results.flatMap((result) =>
     result.document ? [result.document] : [],
   );
@@ -127,6 +168,9 @@ for (const id of ["A", "B", "C", "D"] as const) {
   console.log(
     `Case ${id}: ${passed ? "PASS" : "FAIL"} (no keys or raw document responses logged)`,
   );
+  } catch {
+    report.cases.push({ id, status: "failed", reason: "INVALID_ANALYSIS_RESULT" });
+  }
 }
 report.completed =
   configured &&
@@ -134,12 +178,12 @@ report.completed =
     (entry) => (entry as { status: string }).status === "passed",
   );
 await writeFile(
-  "test-results/live-gemini/report.json",
+  `${outputDir}/report.json`,
   JSON.stringify(report, null, 2),
 );
 console.log(
   configured
     ? `Live validation ${report.completed ? "passed" : "failed"}; report contains metadata only`
-    : "GEMINI_API_KEY unset. A-D PDFs generated; actual API tests NOT RUN.",
+    : `${statusError ?? "GEMINI_API_KEY unset"}. A-D PDFs generated; actual API tests NOT RUN.`,
 );
-process.exitCode = report.completed ? 0 : configured ? 1 : 2;
+process.exitCode = report.completed ? 0 : statusError || configured ? 1 : 2;

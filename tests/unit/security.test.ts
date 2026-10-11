@@ -1,195 +1,107 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { createAnalysisLimiter } from "@/modules/security/limiter";
-import {
-  requireAnalysisAccess,
-  requireSameOrigin,
-  accessSettings,
-} from "@/modules/security/access";
+import { describe, expect, it, vi, afterEach, beforeEach } from "vitest";
+import { requireSameOrigin } from "@/modules/security/origin";
 import { POST } from "@/app/api/analyze/route";
+import { GET } from "@/app/api/status/route";
+const { analyze } = vi.hoisted(() => ({ analyze: vi.fn() }));
+vi.mock("@/modules/analysis/pipeline", () => ({ analyzeFile: analyze }));
+beforeEach(() => {
+  vi.stubEnv("NODE_ENV", "production");
+  vi.stubEnv("GEMINI_API_KEY", "");
+  analyze.mockReset().mockResolvedValue({
+    pdf: { id: "synthetic", fileName: "synthetic.pdf", pages: [{ page: 1, text: "synthetic test" }] },
+    document: null,
+    error: { code: "API_NOT_CONFIGURED", message: "Gemini 키가 없습니다." },
+  });
+});
 afterEach(() => vi.unstubAllEnvs());
-const testToken = "synthetic-only-access-token-1234567890";
-describe("prototype access and cost safeguards", () => {
-  it("fails closed when production has no access token", () => {
-    vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("ANALYSIS_ACCESS_TOKEN", "");
-    expect(accessSettings()).toEqual({ required: true, configured: false });
-    expect(() =>
-      requireAnalysisAccess(new Request("https://test")),
-    ).toThrowError(expect.objectContaining({ code: "ACCESS_NOT_CONFIGURED" }));
+function request(count = 1) {
+  const body = new FormData();
+  for (let i = 0; i < count; i++) body.append("files", new File(["%PDF-test-only"], `synthetic-${i}.pdf`, { type: "application/pdf" }));
+  return new Request("https://test/api/analyze", { method: "POST", body });
+}
+describe("public analysis retains request safety without local auth or quotas", () => {
+  it.each(["", "obsolete-server-value"])("production upload needs no authorization regardless of obsolete access setting (%s)", async (setting) => {
+    vi.stubEnv("ANALYSIS_ACCESS_TOKEN", setting);
+    const response = await POST(request());
+    expect(response.status).toBe(200);
+    expect((await response.json()).results[0].error.code).toBe("API_NOT_CONFIGURED");
+    expect(analyze).toHaveBeenCalledTimes(1);
   });
-  it("rejects missing, wrong and oversized bearer values", () => {
-    for (const supplied of ["", "Bearer wrong", "Bearer " + "x".repeat(300)])
-      expect(() =>
-        requireAnalysisAccess(
-          new Request("https://test", { headers: { authorization: supplied } }),
-          { required: true, token: testToken },
-        ),
-      ).toThrowError(expect.objectContaining({ code: "ACCESS_DENIED" }));
+  it("does not reject bursts after ten requests", async () => {
+    for (let i = 0; i < 30; i++) expect((await POST(request())).status).toBe(200);
+    expect(analyze).toHaveBeenCalledTimes(30);
   });
-  it("accepts only the configured private token", () => {
-    expect(() =>
-      requireAnalysisAccess(
-        new Request("https://test", {
-          headers: { authorization: `Bearer ${testToken}` },
-        }),
-        { required: true, token: testToken },
-      ),
-    ).not.toThrow();
+  it("does not apply a local hourly AI document budget", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "synthetic-mock-key-not-real");
+    for (let i = 0; i < 8; i++) expect((await POST(request(4))).status).toBe(200);
+    expect(analyze).toHaveBeenCalledTimes(32);
   });
-  it("rejects a weak configured code", () => {
-    expect(() =>
-      requireAnalysisAccess(new Request("https://test"), {
-        required: true,
-        token: "short",
-      }),
-    ).toThrowError(expect.objectContaining({ code: "ACCESS_NOT_CONFIGURED" }));
+  it("does not block five concurrent analysis batches", async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => { release = resolve; });
+    analyze.mockImplementation(async () => { await gate; return { pdf: { id: "synthetic", fileName: "synthetic.pdf", pages: [] }, document: null, error: null }; });
+    const responses = Array.from({ length: 5 }, () => POST(request()));
+    try { await vi.waitFor(() => expect(analyze).toHaveBeenCalledTimes(5)); } finally { release(); }
+    expect((await Promise.all(responses)).map((result) => result.status)).toEqual([200, 200, 200, 200, 200]);
   });
-  it("rejects other-site requests, accepts same origin and explicit API clients", () => {
-    expect(() =>
-      requireSameOrigin(
-        new Request("https://test/api", {
-          headers: { origin: "https://other" },
-        }),
-      ),
-    ).toThrowError(expect.objectContaining({ code: "CROSS_ORIGIN_DENIED" }));
-    expect(() =>
-      requireSameOrigin(
-        new Request("https://test/api", {
-          headers: { origin: "https://test" },
-        }),
-      ),
-    ).not.toThrow();
-    expect(() =>
-      requireSameOrigin(new Request("https://test/api")),
-    ).not.toThrow();
-  });
-  it("limits request bursts and recovers after the window", () => {
-    let now = 0;
-    const limiter = createAnalysisLimiter(() => now);
-    for (let i = 0; i < 10; i++) limiter.checkRequest();
-    expect(() => limiter.checkRequest()).toThrowError(
-      expect.objectContaining({ code: "REQUEST_RATE_LIMIT" }),
-    );
-    now = 60001;
-    expect(() => limiter.checkRequest()).not.toThrow();
-  });
-  it("limits concurrency and releases exactly once", () => {
-    const limiter = createAnalysisLimiter();
-    const a = limiter.reserve(1, false),
-      b = limiter.reserve(1, false);
-    expect(() => limiter.reserve(1, false)).toThrowError(
-      expect.objectContaining({ code: "ANALYSIS_BUSY" }),
-    );
-    a();
-    a();
-    const c = limiter.reserve(1, false);
-    expect(() => limiter.reserve(1, false)).toThrow();
-    b();
-    c();
-  });
-  it("reserves the AI budget per document and does not refund failed provider calls", () => {
-    let now = 0;
-    const limiter = createAnalysisLimiter(() => now);
-    for (let i = 0; i < 6; i++) limiter.reserve(4, true)();
-    expect(() => limiter.reserve(1, true)).toThrowError(
-      expect.objectContaining({ code: "AI_BUDGET_LIMIT" }),
-    );
-    expect(() => limiter.reserve(1, false)).not.toThrow();
-    now = 3600001;
-    expect(() => limiter.reserve(1, true)).not.toThrow();
-  });
-  it("denies unauthorized API requests before reading uploaded data", async () => {
-    vi.stubEnv("ANALYSIS_ACCESS_TOKEN", testToken);
-    const response = await POST(
-      new Request("https://test/api/analyze", {
-        method: "POST",
-        body: "not multipart",
-      }),
-    );
-    expect(response.status).toBe(401);
-    expect((await response.json()).error.code).toBe("ACCESS_DENIED");
-  });
-  it("allows authorized requests to reach ordinary upload validation", async () => {
-    vi.stubEnv("ANALYSIS_ACCESS_TOKEN", testToken);
-    const response = await POST(
-      new Request("https://test/api/analyze", {
-        method: "POST",
-        headers: { authorization: `Bearer ${testToken}` },
-        body: "not multipart",
-      }),
-    );
+  it("still validates multipart requests before PDF/AI work", async () => {
+    const response = await POST(new Request("https://test/api/analyze", { method: "POST", body: "not multipart" }));
     expect(response.status).toBe(400);
     expect((await response.json()).error.code).toBe("INVALID_REQUEST");
+    expect(analyze).not.toHaveBeenCalled();
   });
-  it("returns configuration failure for an unprotected production API", async () => {
-    vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("ANALYSIS_ACCESS_TOKEN", "");
-    const response = await POST(
-      new Request("https://test/api/analyze", {
-        method: "POST",
-        body: "not multipart",
-      }),
-    );
-    expect(response.status).toBe(503);
-    expect((await response.json()).error.code).toBe("ACCESS_NOT_CONFIGURED");
+  it("still enforces upload count", async () => {
+    const response = await POST(request(5));
+    expect(response.status).toBe(400);
+    expect((await response.json()).error.code).toBe("TOO_MANY_FILES");
+    expect(analyze).not.toHaveBeenCalled();
   });
-  it("uses the received Host when Next normalizes the internal URL", () => {
-    expect(() =>
-      requireSameOrigin(
-        new Request("http://localhost:3000/api", {
-          headers: { host: "127.0.0.1:3000", origin: "http://127.0.0.1:3000" },
-        }),
-      ),
-    ).not.toThrow();
+  it("still bounds the request body", async () => {
+    const response = await POST(new Request("https://test/api/analyze", { method: "POST", headers: { "content-type": "multipart/form-data; boundary=x", "content-length": "999999999" }, body: "x" }));
+    expect(response.status).toBe(413);
+    expect((await response.json()).error.code).toBe("TOTAL_TOO_LARGE");
+    expect(analyze).not.toHaveBeenCalled();
   });
-  it("supports the deployed HTTPS proxy protocol and still denies foreign origins", () => {
-    expect(() =>
-      requireSameOrigin(
-        new Request("http://localhost:3000/api", {
-          headers: {
-            host: "ocean.example",
-            "x-forwarded-proto": "https",
-            origin: "https://ocean.example",
-          },
-        }),
-      ),
-    ).not.toThrow();
-    expect(() =>
-      requireSameOrigin(
-        new Request("http://localhost:3000/api", {
-          headers: {
-            host: "ocean.example",
-            "x-forwarded-proto": "https",
-            origin: "https://other.example",
-          },
-        }),
-      ),
-    ).toThrow();
+  it("rejects foreign origins before analysis", async () => {
+    const upload = request();
+    upload.headers.set("origin", "https://other");
+    const response = await POST(upload);
+    expect(response.status).toBe(403);
+    expect((await response.json()).error.code).toBe("CROSS_ORIGIN_DENIED");
+    expect(analyze).not.toHaveBeenCalled();
   });
-  it("rejects null/malformed and cross-site origins", () => {
-    for (const origin of ["null", "invalid"])
-      expect(() =>
-        requireSameOrigin(
-          new Request("https://test/api", { headers: { origin } }),
-        ),
-      ).toThrowError(expect.objectContaining({ code: "CROSS_ORIGIN_DENIED" }));
-    expect(() =>
-      requireSameOrigin(
-        new Request("https://test/api", {
-          headers: { "sec-fetch-site": "cross-site" },
-        }),
-      ),
-    ).toThrow();
+  it("returns only credential presence and safe deployment metadata", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "synthetic-secret-test-value");
+    vi.stubEnv("VERCEL_GIT_COMMIT_SHA", "a".repeat(40));
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("VERCEL_DEPLOYMENT_ID", "dpl_synthetic123");
+    const response = GET();
+    const body = await response.json();
+    expect(body).toEqual({ aiConfigured: true, deployment: { commitSha: "a".repeat(40), id: "dpl_synthetic123", environment: "production" } });
+    expect(JSON.stringify(body)).not.toContain("synthetic-secret-test-value");
+    expect(response.headers.get("cache-control")).toBe("no-store");
   });
-  it("rejects inaccessible overlong or whitespace-only configured codes", () => {
-    for (const token of ["x".repeat(257), " ".repeat(32)]) {
-      vi.stubEnv("ANALYSIS_ACCESS_TOKEN", token);
-      expect(accessSettings().configured).toBe(false);
-      expect(() =>
-        requireAnalysisAccess(new Request("https://test")),
-      ).toThrowError(
-        expect.objectContaining({ code: "ACCESS_NOT_CONFIGURED" }),
-      );
-    }
+  it("does not echo malformed deployment environment values", async () => {
+    vi.stubEnv("VERCEL_GIT_COMMIT_SHA", "private-value");
+    vi.stubEnv("VERCEL_DEPLOYMENT_ID", "private-value");
+    expect((await GET().json()).deployment).toMatchObject({ commitSha: null, id: null });
+  });
+});
+describe("retained browser origin validation", () => {
+  it("accepts same origin and explicit API clients", () => {
+    expect(() => requireSameOrigin(new Request("https://test/api", { headers: { origin: "https://test" } }))).not.toThrow();
+    expect(() => requireSameOrigin(new Request("https://test/api"))).not.toThrow();
+  });
+  it("uses Host when Next normalizes request.url", () => {
+    expect(() => requireSameOrigin(new Request("http://localhost:3000/api", { headers: { host: "127.0.0.1:3000", origin: "http://127.0.0.1:3000" } }))).not.toThrow();
+  });
+  it("supports an HTTPS deployment behind a proxy", () => {
+    expect(() => requireSameOrigin(new Request("http://localhost:3000/api", { headers: { host: "ocean.example", "x-forwarded-proto": "https", origin: "https://ocean.example" } }))).not.toThrow();
+  });
+  it.each(["null", "invalid", "https://other.example"])("rejects unsafe origin %s", (origin) => {
+    expect(() => requireSameOrigin(new Request("https://test/api", { headers: { origin } }))).toThrowError(expect.objectContaining({ code: "CROSS_ORIGIN_DENIED" }));
+  });
+  it("rejects cross-site browser requests without an Origin", () => {
+    expect(() => requireSameOrigin(new Request("https://test/api", { headers: { "sec-fetch-site": "cross-site" } }))).toThrow();
   });
 });

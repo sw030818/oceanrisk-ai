@@ -98,10 +98,22 @@ export async function extractWithGemini(
     if (response.status === 429)
       throw new AnalysisError(
         "API_RATE_LIMIT",
-        "AI 요청 한도에 도달했습니다. 잠시 후 다시 시도하거나 서버 할당량을 확인해 주세요.",
+        "Google Gemini 제공자의 요청 한도에 도달했습니다. 잠시 후 다시 시도하거나 Google 할당량을 확인해 주세요.",
         429,
       );
-    if ([400, 401, 403].includes(response.status))
+    if (response.status === 404)
+      throw new AnalysisError(
+        "API_MODEL_NOT_FOUND",
+        "설정된 Gemini 모델을 사용할 수 없습니다. 서버의 모델명과 API 버전을 확인해 주세요.",
+        502,
+      );
+    if (response.status === 400)
+      throw new AnalysisError(
+        "API_REQUEST_REJECTED",
+        "Google Gemini가 요청을 거부했습니다. 서버의 키·모델·구조화 응답 스키마 설정을 확인해 주세요.",
+        502,
+      );
+    if ([401, 403].includes(response.status))
       throw new AnalysisError(
         "API_AUTH_OR_CONFIG",
         "Gemini 키·모델·접근 권한 설정을 확인해 주세요.",
@@ -117,7 +129,13 @@ export async function extractWithGemini(
     const payload = await response.json();
     const candidates = payload.candidates;
     if (!Array.isArray(candidates) || candidates[0]?.finishReason !== "STOP")
-      throw new Error("Incomplete response");
+      throw new AnalysisError(
+        "INVALID_AI_RESPONSE",
+        candidates?.[0]?.finishReason === "MAX_TOKENS"
+          ? "AI 응답이 출력 길이 제한으로 중단되었습니다. 필요한 페이지만 분리해 다시 분석해 주세요."
+          : "AI 응답이 차단되었거나 완료되지 않았습니다. 원문은 보존되었으며 추출값을 확정하지 않았습니다.",
+        502,
+      );
     const text = candidates[0]?.content?.parts
       ?.filter(
         (part: { text?: string; thought?: boolean }) =>
@@ -128,6 +146,7 @@ export async function extractWithGemini(
     if (!text) throw new Error("Missing output");
     return extractedDocumentSchema.parse(JSON.parse(text));
   } catch (error) {
+    if (error instanceof AnalysisError) throw error;
     if (options.signal?.aborted)
       throw new AnalysisError(
         "REQUEST_CANCELLED",

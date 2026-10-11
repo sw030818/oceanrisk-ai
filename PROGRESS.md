@@ -100,3 +100,56 @@
 - 환경 초안에 기존 설치 지침, 갱신한 PHASE 1.5 시작 지침과 ANALYSIS_ACCESS_TOKEN 변수 요구사항 저장. 실제 값/현재 머신 적용/게시와는 별도.
 - 안정화 소스 커밋 `876f3d765455979caedb0096c34ae75f00c14355`를 같은 개발 브랜치에 Push 완료. `git ls-remote` SHA 일치, 원격 Fetch 후 `git diff HEAD origin/feat/oceanrisk-phase-0-1` 차이 없음 확인. 이 저장 상태 기록은 별도 문서 커밋으로 보존하며 최종 브랜치 SHA는 완료 보고에서 제공.
 - main 직접 Push/강제 Push/기록 삭제/병합/Vercel Production 배포/후속 기능 확장은 수행하지 않음. 코드 검토는 가능하지만 실제 Gemini 검증 및 운영 설정 없이 배포 준비 완료라고 보고하지 않음.
+
+## PHASE 1.6 — 공개 분석 및 검증 후 자동 저장·배포
+
+### 작업 기준과 원격 확인
+- 사용자의 PHASE 1.6 요청에 따라 main Push와 기존 Vercel Git 연동 Production 배포가 승인됨. 이전 단계의 배포 금지 지침은 이 요청 범위에 맞게 갱신.
+- 깨끗한 작업 트리에서 원격 Fetch, main 동기화. 시작 main SHA: `30ab26922505363f0a02bcc119409a4384ccea1e` (기존 PHASE 1.5 PR 병합 기록 보존).
+- 플랫폼 HTTPS Git read 및 main Push dry-run 성공. GH_TOKEN 설정 여부만 확인했으며 값은 읽거나 출력하지 않음. GitHub API는 현재 프록시 Forbidden. GitHub 공개 Actions 페이지는 HTTP 200으로 조회됨.
+- Production 도메인의 / 및 /api/status 요청은 CONNECT 프록시 403으로 차단. 실제 사이트 HTTP 오류/배포 실패로 해석하지 않음. Vercel 관리 토큰은 현재 환경 미설정. 프로젝트 연결/Ready/배포 ID는 직접 확인되지 않음.
+
+### 코드 변경
+- 접근 코드 입력 UI/state/Authorization 헤더, Bearer 비교, ANALYSIS_ACCESS_TOKEN 의존성, /api/status 인증 필드 제거. 과거 변수가 Vercel에 남아 있어도 코드에서 무시하며 삭제/초기화하지 않음.
+- 앱 자체 분당/시간당/동시성 제한, 글로벌 카운터, 제한 관련 429/Retry-After 코드 제거. Google 제공자의 429는 명확한 별도 오류로 유지.
+- 파일 형식/시그니처/4개/4 MB 합계/30페이지/100,000자, 본문 메모리 제한, 순차 파일 처리, Origin 검증, 25초 모델/105초 전체 제한과 취소 전파 보존.
+- 기존 Production 분석 route trace에 pdf.worker.mjs가 **없음**을 검사에서 확인 → outputFileTracingIncludes로 명시하고 배포 trace 및 worker 파일 존재를 검사하는 verify:runtime 추가. 실제 Vercel 실패 원인으로 확정한 것은 아니며 확인된 패키징 결함을 수정한 것임.
+- Gemini 400 요청 거부/404 모델 없음/401·403 권한/429 Google 한도, 응답 길이 제한·차단 메시지 구분. 기존 v1beta 모델 URL, responseJsonSchema, Zod, 실제 텍스트 입력 및 원문 검증 유지. 실제 모델/스키마 수용은 아직 확인 불가.
+- 기존 confirmed/candidate/unavailable 수량 규칙, 수정값 출처, 반응형 디자인/원문·페이지·부분 성공·실패 UI 유지.
+- /api/status에는 비밀값 없이 키 존재 여부와 Vercel 시스템 배포 SHA/id/환경만 포함. 존재 플래그를 실제 API 성공으로 해석하지 않음.
+
+### 실제 수행한 검사
+- TypeScript / ESLint 통과.
+- 단위 테스트 **111/111**, 11개 파일 통과, 실패/스킵 0. 기존 PHASE 0/1의 55개 및 A–D 근거/규칙 검사를 유지. 제거한 인증/자체 한도 테스트는 공개 Production·burst 30회·AI 문서 32개·동시 5개 테스트로 교체.
+- npm run build:verified 실제 실행 통과: typecheck → lint → unit → Production build → worker trace.
+- Playwright **7/7** Production 모드에서 통과, 실패/스킵 0. 접근 입력 없음/인증 헤더 없음, 모델 오류·대기, 실제 PDF·판독 실패, 수정/근거, 비교 후보·부분 처리, 390px 모바일 검사.
+- 실제 로컬 Production 서버에 합성 PDF를 인증 없이 12번 연속 업로드. HTTP 200 및 각 2페이지 추출, API_NOT_CONFIGURED 표시, 자체 429 없음. 외부 Origin 403 및 클라이언트 JS의 서버 키/헤더/Google URL 미포함 검사 통과. 실제 Google 호출 없음.
+- GitHub workflow YAML 파싱 통과. 이는 Actions 실제 실행 성공을 의미하지 않음.
+- 새 업로드 개수 회귀 테스트의 예상 HTTP 코드가 422였으나 기존 검증기는 400을 반환 → 기존 정상 동작에 맞게 기대값 수정. 최종 전체 단위/브라우저 실패 없음.
+
+### 실제 Gemini와 모의 결과 구분
+| 사례 | 실제 PDF + 모의 AI 응답 | 실제 Gemini |
+|---|---|---|
+| A: 500/500 PCS | confirmed match 통과 | 미실행 |
+| B: 500/480 PCS | confirmed mismatch 통과 | 미실행 |
+| C: 500 PCS 상품 / 20 CTNS 포장 | 포장 제외, 정상 상품 비교 통과 | 미실행 |
+| D: 거래 참조 누락 | unverifiable/candidate 통과 | 미실행 |
+
+- 로컬 키 미설정. npm run test:live 종료 코드 2, requestsAttempted=0, completed=false.
+- npm run test:production 실제 실행했으나 Production status 조회 단계에서 네트워크 차단. 종료 코드 1, productionStatusChecked=false, keyConfigured=null, serverRequestsAttempted=0, Google 직접 요청 0, A–D not_run.
+- report.json과 PDF는 합성 테스트 산출물로 Git 제외. 원시 AI 응답/키를 저장하지 않음.
+- 키가 있는 로컬 또는 Production에 접근 가능한 환경에서 test:live/test:production을 실행해야 실제 Gemini 성공/정확도 검증을 완료할 수 있음. 현재 정상화 코드를 구현했으나 실제 분석 성공을 확정하지 않음.
+
+### 자동 저장·배포 방식과 검증 한계
+- AGENTS.md에 시작 시 최신 main 동기화 및 종료 시 검토/Stage/ship 실행을 명시.
+- ship: main/원격 ancestry/비밀 파일/Push dry-run → npm ci 및 전체 로컬 검사 → Stage/HEAD/원격 재확인 → 의미 있는 커밋 → 일반 main Push → 원격 SHA/소스 일치 → 공개 Production SHA 확인. 실패/충돌/권한 오류 시 중단, Force Push/정책 해제/PAT 저장 없음.
+- quality.yml은 main Push/PR 검사, main Push에는 quality 성공 후 Production SHA 확인. contents:read만 사용. 실제 AI 호출·자동 병합·Code Push를 하는 Actions가 아님.
+- vercel.json의 buildCommand는 검증 빌드. 타입/린트/단위/빌드/worker 검사 실패 시 빌드가 실패하여 새 Production 버전 준비를 중단. Vercel 연결/프로젝트/환경변수는 삭제하거나 재생성하지 않음.
+- 이번 소스는 ship으로 전체 검사와 실제 커밋/Push를 실행하며 확인된 SHA/Push 결과는 완료 보고 및 후속 저장 상태 기록에 제공. 원격 확인 전 저장/배포 성공으로 보고하지 않음.
+- 배포 endpoint의 SHA가 일치해도 Vercel 관리 API Ready/실제 AI 성공은 별도. 네트워크가 차단되면 소스 보존과 배포 확인 불가를 분리 보고.
+
+### 운영 위험 및 환경
+- 인증/자체 제한 제거로 공개 API 반복 호출·동시 메모리 증가·과금 악용 위험이 존재. Google 측 할당량/예산/알림은 운영자가 설정해야 하며 변경/우회하지 않음. Origin 검사는 API 클라이언트의 호출을 인증하지 않음.
+- 환경 초안에 기존 Google 목적지를 보존하며 api.github.com, oceanrisk-ai.vercel.app, api.vercel.com 허용 목적지를 저장. 현재 런타임 네트워크 허용 요청은 승인됐지만 목적지 프록시 제한은 남아 있음. 초안 저장은 현재 프록시 적용/Publish 완료가 아님.
+- 폐기된 ANALYSIS_ACCESS_TOKEN 변수 요구사항이 환경 초안/Vercel에 남아 있어도 이 코드에는 필요하지 않음. 기존 환경변수를 임의 삭제하지 않음.
+- 후속 기능은 추가하지 않음. 실제 Gemini 검증, Actions 성공, Production Ready/ID/커밋 일치가 확인되기 전 전체 자동화 검증 완료라고 보고하지 않음.

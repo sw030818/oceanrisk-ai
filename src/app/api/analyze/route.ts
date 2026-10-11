@@ -1,8 +1,4 @@
-import { analysisLimiter } from "@/modules/security/limiter";
-import {
-  requireAnalysisAccess,
-  requireSameOrigin,
-} from "@/modules/security/access";
+import { requireSameOrigin } from "@/modules/security/origin";
 import { NextResponse } from "next/server";
 import { validateUploads } from "@/modules/upload/validate";
 import { MAX_TOTAL_BYTES } from "@/modules/upload/limits";
@@ -89,11 +85,8 @@ async function boundedFormData(
   }
 }
 export async function POST(request: Request) {
-  let release: (() => void) | undefined;
   try {
     requireSameOrigin(request);
-    requireAnalysisAccess(request);
-    analysisLimiter.checkRequest();
     const signal = AbortSignal.any([
       request.signal,
       AbortSignal.timeout(105000),
@@ -108,10 +101,6 @@ export async function POST(request: Request) {
       );
     const files = entries as File[];
     validateUploads(files);
-    release = analysisLimiter.reserve(
-      files.length,
-      Boolean(process.env.GEMINI_API_KEY),
-    );
     const results: AnalysisResult[] = [];
     // Sequential processing bounds memory and provider requests.
     for (const file of files) results.push(await analyzeFile(file, { signal }));
@@ -128,17 +117,8 @@ export async function POST(request: Request) {
       { error: safeError(error) },
       {
         status: error instanceof AnalysisError ? error.httpStatus : 500,
-        headers: {
-          ...headers,
-          ...(error instanceof AnalysisError && error.httpStatus === 429
-            ? {
-                "Retry-After": error.code === "AI_BUDGET_LIMIT" ? "3600" : "60",
-              }
-            : {}),
-        },
+        headers,
       },
     );
-  } finally {
-    release?.();
   }
 }

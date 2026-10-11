@@ -74,68 +74,39 @@ test("partial success preserves successful fields and shows the failed file", as
   await expect(page.getByText("오류 코드: NO_READABLE_TEXT")).toBeVisible();
 });
 
-test("access code gating, authentication failure and actual waiting state", async ({
+test("no access code or bearer header; provider failure and actual waiting state", async ({
   page,
 }) => {
   await page.route("**/api/status", (route) =>
-    route.fulfill({
-      json: {
-        aiConfigured: true,
-        accessRequired: true,
-        accessConfigured: true,
-      },
-    }),
+    route.fulfill({ json: { aiConfigured: true } }),
   );
   let attempts = 0;
   let release!: () => void;
-  const pending = new Promise<void>((resolve) => {
-    release = resolve;
-  });
+  const pending = new Promise<void>((resolve) => { release = resolve; });
   await page.route("**/api/analyze", async (route) => {
+    expect(route.request().headers().authorization).toBeUndefined();
     attempts++;
     if (attempts === 1) {
       await route.fulfill({
-        status: 401,
-        json: {
-          error: {
-            code: "ACCESS_DENIED",
-            message: "분석 접근 코드가 올바르지 않습니다.",
-          },
-        },
+        status: 502,
+        json: { error: { code: "API_AUTH_OR_CONFIG", message: "Gemini 키·모델·접근 권한 설정을 확인해 주세요." } },
       });
       return;
     }
-    expect(route.request().headers().authorization).toBe(
-      "Bearer synthetic-browser-access-code",
-    );
     await pending;
-    await route.fulfill({
-      json: { results: syntheticResults("A"), aiConfigured: true },
-    });
+    await route.fulfill({ json: { results: syntheticResults("A"), aiConfigured: true } });
   });
   await uploadSynthetic(page);
-  await expect(page.getByLabel("분석 접근 코드")).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "서류 분석 시작" }),
-  ).toBeDisabled();
-  await page.getByLabel("분석 접근 코드").fill("wrong-synthetic-code");
+  await expect(page.getByLabel("분석 접근 코드")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "서류 분석 시작" })).toBeEnabled();
   await page.getByRole("button", { name: "서류 분석 시작" }).click();
-  await expect(
-    page.getByRole("alert").filter({ hasText: "분석 접근 코드" }),
-  ).toBeVisible();
-  await page.getByLabel("분석 접근 코드").fill("synthetic-browser-access-code");
+  await expect(page.getByRole("alert").filter({ hasText: "Gemini 키" })).toBeVisible();
   await page.getByRole("button", { name: "서류 분석 시작" }).click();
-  await expect(
-    page.getByRole("button", { name: "원문 추출 및 AI 분석 진행 중" }),
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "원문 추출 및 AI 분석 진행 중" })).toBeVisible();
   await expect(page.getByLabel("PDF 파일 선택")).toBeDisabled();
-  await expect(
-    page.getByText("실제 응답을 기다리는 중입니다.", { exact: false }),
-  ).toBeVisible();
+  await expect(page.getByText("실제 응답을 기다리는 중입니다.", { exact: false })).toBeVisible();
   release();
-  await expect(
-    page.getByRole("heading", { name: "분석 응답 완료" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "분석 응답 완료" })).toBeVisible();
 });
 
 test("actual unreadable PDF displays failure instead of AI success", async ({

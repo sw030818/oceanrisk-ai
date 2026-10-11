@@ -40,6 +40,10 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
     });
     const body = JSON.parse(init.body as string);
     expect(body.generationConfig.responseMimeType).toBe("application/json");
+    expect(body.generationConfig.responseJsonSchema).not.toHaveProperty("$schema");
+    expect(body.generationConfig.responseJsonSchema.required).toContain("partialShipment");
+    expect(body.generationConfig.maxOutputTokens).toBe(8192);
+    expect(body.generationConfig.thinkingConfig).toEqual({ thinkingBudget: 0 });
     expect(body.generationConfig.responseJsonSchema.properties).toHaveProperty(
       "items",
     );
@@ -50,6 +54,9 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
   });
   it.each([
     [429, "API_RATE_LIMIT"],
+    [400, "API_REQUEST_REJECTED"],
+    [401, "API_AUTH_OR_CONFIG"],
+    [404, "API_MODEL_NOT_FOUND"],
     [403, "API_AUTH_OR_CONFIG"],
     [500, "API_ERROR"],
   ])(

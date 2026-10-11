@@ -11,7 +11,13 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:live": "tsx scripts/live-gemini.ts"
+    "test:live": "tsx scripts/live-gemini.ts",
+    "verify": "node scripts/verify.mjs",
+    "verify:runtime": "node scripts/verify-runtime.mjs",
+    "ship": "tsx scripts/ship.ts",
+    "check:production": "tsx scripts/check-production.ts",
+    "test:production": "tsx scripts/live-gemini.ts --url=https://oceanrisk-ai.vercel.app",
+    "build:verified": "node scripts/verify.mjs --build-only"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

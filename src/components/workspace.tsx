@@ -64,9 +64,6 @@ export function Workspace() {
   const [busy, setBusy] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [configured, setConfigured] = useState<boolean | null>(null);
-  const [accessRequired, setAccessRequired] = useState(false);
-  const [accessConfigured, setAccessConfigured] = useState(true);
-  const [accessToken, setAccessToken] = useState("");
   const [consent, setConsent] = useState(false);
   const [results, setResults] = useState<AnalysisResult[]>([]);
   const [documents, setDocuments] = useState<GroundedDocument[]>([]);
@@ -81,8 +78,6 @@ export function Workspace() {
       .then((response) => response.json())
       .then((data) => {
         setConfigured(data.aiConfigured === true);
-        setAccessRequired(data.accessRequired === true);
-        setAccessConfigured(data.accessConfigured !== false);
       })
       .catch(() => {});
     return () => {
@@ -167,7 +162,6 @@ export function Workspace() {
         method: "POST",
         body: form,
         signal: controller.signal,
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
       });
       const data = await response.json();
       if (!response.ok)
@@ -395,38 +389,6 @@ export function Workspace() {
               </section>
               <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_290px]">
                 <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-7">
-                  {accessRequired && (
-                    <div className="mb-5 rounded-lg border border-blue-100 bg-blue-50 p-4">
-                      <label className="block text-xs font-semibold text-blue-900">
-                        분석 접근 코드
-                        <input
-                          aria-label="분석 접근 코드"
-                          type="password"
-                          autoComplete="off"
-                          value={accessToken}
-                          disabled={busy}
-                          onChange={(event) =>
-                            setAccessToken(event.target.value)
-                          }
-                          className="mt-2 w-full rounded-lg border border-blue-200 bg-white px-3 py-2.5 text-sm"
-                          placeholder="운영자에게 받은 코드를 입력하세요"
-                        />
-                      </label>
-                      <p className="mt-2 text-[11px] leading-5 text-blue-800">
-                        접근 코드는 이 브라우저 화면의 메모리에서만 사용하며
-                        Gemini에 전송하지 않습니다.
-                      </p>
-                      {!accessConfigured && (
-                        <p
-                          role="alert"
-                          className="mt-2 text-xs font-semibold text-amber-800"
-                        >
-                          서버 접근 제한이 아직 설정되지 않았습니다. 운영자에게
-                          문의해 주세요.
-                        </p>
-                      )}
-                    </div>
-                  )}
                   <div className="mb-6 flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <div className="flex size-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
@@ -563,8 +525,7 @@ export function Workspace() {
                     disabled={
                       busy ||
                       !files.length ||
-                      !consent ||
-                      (accessRequired && (!accessConfigured || !accessToken))
+                      !consent
                     }
                     className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400"
                   >
