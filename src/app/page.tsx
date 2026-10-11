@@ -1,1 +1,4 @@
-export default function Home() { return <main className="mx-auto max-w-5xl px-6 py-20"><p className="text-sm font-semibold text-blue-700">OCEANRISK AI</p><h1 className="mt-4 text-4xl font-bold">무역 서류의 위험을, 근거와 함께.</h1><p className="mt-6 text-slate-600">Commercial Invoice · Packing List 분석을 위한 개발 기반이 준비되었습니다.</p></main>; }
+import { Workspace } from "@/components/workspace";
+export default function Home() {
+  return <Workspace />;
+}
