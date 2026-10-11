@@ -285,4 +285,37 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
     expect(fetcher).toHaveBeenCalledTimes(3);
   });
 
+
+  it("repairs invalid JSON from the minimal Gemini mode once without inventing facts", async () => {
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(response({ error: { status: "INVALID_ARGUMENT" } }, 400))
+      .mockResolvedValueOnce(response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: "{invalid-json" }] } }] }))
+      .mockResolvedValueOnce(response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(data) }] } }] }));
+    expect(await extractWithGemini(pdf, { apiKey:"test", fetcher })).toEqual(data);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    const repaired = JSON.parse(fetcher.mock.calls[2][1].body);
+    expect(repaired.generationConfig).toEqual({ responseMimeType: "application/json" });
+    expect(repaired.systemInstruction.parts[0].text).toContain("FORMAT CORRECTION REQUIRED");
+    expect(repaired.contents).toEqual(JSON.parse(fetcher.mock.calls[0][1].body).contents);
+  });
+  it("stops after exactly one invalid-JSON repair when Gemini remains invalid", async () => {
+    const invalid = response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: "still-not-json" }] } }] });
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(response({ error: { status: "INVALID_ARGUMENT" } }, 400))
+      .mockResolvedValueOnce(invalid)
+      .mockResolvedValueOnce(response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: "still-not-json" }] } }] }));
+    await expect(extractWithGemini(pdf, { apiKey:"test", fetcher })).rejects.toMatchObject({
+      code: "INVALID_AI_RESPONSE", diagnostics: { outputIssue: "INVALID_JSON" },
+    });
+    expect(fetcher).toHaveBeenCalledTimes(3);
+  });
+  it("does not retry malformed JSON if Google already accepted the strict provider schema", async () => {
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: "not-json" }] } }] }));
+    await expect(extractWithGemini(pdf, { apiKey:"test", fetcher })).rejects.toMatchObject({
+      code: "INVALID_AI_RESPONSE", diagnostics: { outputIssue: "INVALID_JSON" },
+    });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
 });

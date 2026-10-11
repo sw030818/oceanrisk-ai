@@ -264,50 +264,50 @@ export async function extractWithGemini(
       "AI 응답에 추출 데이터가 없습니다. 원문을 보존했으며 결과를 확정하지 않았습니다.",
       502, safeOutputDiagnostics("EMPTY_TEXT"),
     );
+    // Gemini can return HTTP 200/STOP with malformed JSON despite the
+    // application/json MIME request. Exactly one format repair is attempted
+    // only when a provider-schema 400 already forced the minimal JSON path.
+    // A successful repair must still pass the identical strict Zod validator
+    // and later source-page evidence verification.
+    const repairInvalidOutputOnce = async (): Promise<ExtractedDocument | null> => {
+      if (!minimalJsonAttempted || options.signal?.aborted) return null;
+      try {
+        const repairResponse = await requestModel(model, true, true);
+        if (repairResponse.status === 429)
+          throw new AnalysisError("API_RATE_LIMIT", "Google Gemini 요청 한도에 도달했습니다.", 429);
+        if (!repairResponse.ok) return null;
+        const repairPayload = await repairResponse.json().catch(() => null);
+        const candidate = repairPayload?.candidates?.[0];
+        if (candidate?.finishReason !== "STOP") return null;
+        const repairedText = candidate.content?.parts
+          ?.filter((part: { text?: string; thought?: boolean }) => !part.thought && typeof part.text === "string")
+          .map((part: { text: string }) => part.text)
+          .join("");
+        if (!repairedText) return null;
+        let repairedJson: unknown;
+        try { repairedJson = JSON.parse(repairedText); } catch { return null; }
+        const repaired = extractedDocumentSchema.safeParse(normalizeMachineReadableValues(repairedJson));
+        return repaired.success ? repaired.data : null;
+      } catch (error) {
+        if (error instanceof AnalysisError) throw error;
+        if (options.signal?.aborted)
+          throw new AnalysisError("REQUEST_CANCELLED", "분석 요청이 취소되었습니다.", 408);
+        // Preserve the original well-classified failure when repair fails.
+        return null;
+      }
+    };
     let json: unknown;
     try {
       json = JSON.parse(text);
     } catch {
+      const repaired = await repairInvalidOutputOnce();
+      if (repaired) return repaired;
       throw new AnalysisError("INVALID_AI_RESPONSE", "AI 응답이 올바른 JSON 형식이 아닙니다.", 502, safeOutputDiagnostics("INVALID_JSON"));
     }
-    let checked = extractedDocumentSchema.safeParse(normalizeMachineReadableValues(json));
+    const checked = extractedDocumentSchema.safeParse(normalizeMachineReadableValues(json));
     if (!checked.success) {
-      // A single, explicitly bounded format-repair request is allowed only
-      // after Google accepted a reduced JSON request (HTTP 200), and strict
-      // local validation found malformed field objects. No evidence is forged:
-      // all returned values still require Zod and source-page verification.
-      if (minimalJsonAttempted && !options.signal?.aborted) {
-        try {
-          const repairResponse = await requestModel(model, true, true);
-          if (repairResponse.status === 429)
-            throw new AnalysisError("API_RATE_LIMIT", "Google Gemini 요청 한도에 도달했습니다.", 429);
-          if (repairResponse.ok) {
-            const repairPayload = await repairResponse.json().catch(() => null);
-            const candidate = repairPayload?.candidates?.[0];
-            if (candidate?.finishReason === "STOP") {
-              const repairedText = candidate.content?.parts
-                ?.filter((part: { text?: string; thought?: boolean }) => !part.thought && typeof part.text === "string")
-                .map((part: { text: string }) => part.text)
-                .join("");
-              if (repairedText) {
-                let repairedJson: unknown;
-                try { repairedJson = JSON.parse(repairedText); } catch { repairedJson = null; }
-                if (repairedJson) {
-                  checked = extractedDocumentSchema.safeParse(normalizeMachineReadableValues(repairedJson));
-                  if (checked.success) return checked.data;
-                }
-              }
-            }
-          }
-        } catch (error) {
-          if (error instanceof AnalysisError) throw error;
-          if (options.signal?.aborted)
-            throw new AnalysisError("REQUEST_CANCELLED", "분석 요청이 취소되었습니다.", 408);
-          // Keep the original safe schema-mismatch result when repair is unavailable.
-        }
-      }
-
-      if (checked.success) return checked.data; // Retain TypeScript narrowing after an optional repair.
+      const repaired = await repairInvalidOutputOnce();
+      if (repaired) return repaired;
       const outputFields = [...new Set(checked.error.issues.slice(0, 16).map(issue =>
         issue.path.map(segment => typeof segment === "number" ? "[]" : String(segment)).join(".")
       ))].filter(field => /^[A-Za-z0-9_.\[\]]{1,120}$/.test(field));
