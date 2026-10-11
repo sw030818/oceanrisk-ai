@@ -237,4 +237,24 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
     }
   });
 
+  it("normalizes only explicit document-type aliases and canonical decimal strings", async () => {
+    const candidate = JSON.parse(JSON.stringify(data));
+    candidate.type = "commercial invoice";
+    candidate.totalAmount.value = "1,234.50";
+    candidate.items[0].quantity.value = "500";
+    const fetcher = vi.fn(async () => response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(candidate) }] } }] }));
+    const result = await extractWithGemini(pdf,{apiKey:"test", fetcher});
+    expect(result.type).toBe("invoice");
+    expect(result.totalAmount.value).toBe(1234.50);
+    expect(result.items[0].quantity.value).toBe(500);
+  });
+  it("never guesses numeric values from unit-bearing or ambiguous strings", async () => {
+    const candidate = JSON.parse(JSON.stringify(data));
+    candidate.items[0].quantity.value = "500 PCS";
+    const fetcher = vi.fn(async () => response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(candidate) }] } }] }));
+    await expect(extractWithGemini(pdf,{apiKey:"test", fetcher})).rejects.toMatchObject({
+      code:"INVALID_AI_RESPONSE", diagnostics:{outputIssue:"SCHEMA_MISMATCH",outputFields:expect.arrayContaining(["items.[].quantity.value"])},
+    });
+  });
+
 });
