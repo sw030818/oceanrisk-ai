@@ -7,6 +7,7 @@ export interface ProviderDiagnostics {
   quotaWindow: "minute" | "day" | "unknown";
   quotaLimitZero: boolean;
   availableModels?: string[];
+  minimalJsonAttempted?: boolean;
 }
 export class AnalysisError extends Error {
   constructor(
