@@ -180,3 +180,9 @@
 - 실제 결과: A API_ERROR/API_REQUEST_REJECTED, B 요청 거부 2개, C 요청 거부/API_ERROR, D API_ERROR/API_RATE_LIMIT. 모델 404 이후 다른 제공자 단계에 도달했지만 구조화 분석 성공 사례는 아직 없음.
 - 정확한 거부 필드/HTTP 상태를 확인하기 위해 원문 메시지를 서버 메모리에서만 읽고 status·고정 설정 필드명·요청 모델·quota window/limit-zero 여부만 화이트리스트로 반환/알림. 키·문서·프로젝트 ID·원시 응답은 출력하지 않음.
 - 다음 실행은 `[case-A]` 표시로 A 두 문서만 검사. 일부 범위가 통과해도 전체 A–D completed는 false로 유지. 제공자 429를 확인하면 테스트 도구는 뒤의 사례 호출을 중단하며 Google 한도 변경/우회/자동 재시도를 하지 않음.
+
+### A 최소 진단으로 확인된 HTTP 503
+- 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38162836658 : quality/production 성공, A 실제 분석 실패. 두 문서 모두 모델 gemini-3.8-flash, HTTP 503, status UNAVAILABLE. requestFields 없음, quotaLimitZero=false. 해당 실행에서는 원시 메시지 없이 공급자 서비스 불가를 확인했으며 권한/스키마 오류라고 주장하지 않음.
+- 배포 SHA `9855c95e5f6d80d0eea0173cd9fcf1b966ddad34`, ID `dpl_HFwAELmASmfmuCFWJq7sdUWRmnu1`, Production verified=true.
+- 404 목록 선택을 단순 최신 버전 우선에서 **안정 모델·원래 버전 계열·공식 Flash alias** 우선으로 변경. 같은 목록에 실제로 있는 모델만 선택하며, 503/429를 받은 뒤 다른 모델로 순환하거나 한도를 우회하지 않음. 원래 버전의 Flash-lite가 목록에 있다면 이를 먼저 사용하여 프롬프트/스키마 호환성과 안정성을 유지. 합성 선택 회귀 검사 추가.
+- Google 공개 API discovery 문서 `https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta`를 실제 HTTP 200으로 확인. generationConfig의 responseJsonSchema/responseSchema/responseMimeType와 새 responseFormat이 존재함을 확인. 기존 필드명이 없다는 추측으로 오류 원인을 단정하지 않음.

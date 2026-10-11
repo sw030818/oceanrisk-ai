@@ -12,6 +12,10 @@ describe("confirmed 404 model discovery with mocked Google (not live validation)
   it("permits a Flash alias only when Google actually lists it", () => {
     expect(selectAvailableFlash([available("gemini-flash-latest")],"gemini-2.5-flash")).toBe("gemini-flash-latest");
   });
+  it("prefers a compatible stable family over a newer unstable or unrelated generation", () => {
+    expect(selectAvailableFlash([available("gemini-3.8-flash"),available("gemini-2.5-flash-lite"),available("gemini-flash-latest")],"gemini-2.5-flash")).toBe("gemini-2.5-flash-lite");
+    expect(selectAvailableFlash([available("gemini-3.8-flash-preview"),available("gemini-2.5-flash-lite")],"gemini-2.5-flash")).toBe("gemini-2.5-flash-lite");
+  });
   it.each([null, [], [{ name: "../../private" }], [available("gemini-2.5-flash")], [available("gemini-3-flash-live")]])("never guesses a model outside the supported list", (models) => {
     expect(selectAvailableFlash(models, "gemini-2.5-flash")).toBeNull();
   });

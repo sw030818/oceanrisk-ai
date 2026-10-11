@@ -123,3 +123,5 @@ Production 상태에 Vercel 시스템 환경변수의 SHA/환경/id를 포함합
 설정된 모델이 실제로 404를 반환하면 Google models.list를 1회 조회하고, generateContent 지원이 표시된 텍스트 Flash 모델을 선택해 1회만 재시도합니다. 최신 버전·같은 버전의 안정 모델을 우선하며 오디오/이미지/Pro/임의 모델은 선택하지 않습니다. 성공한 선택은 프로세스 메모리에 캐시하고 실제 사용 모델을 결과 메타데이터에 기록합니다. 400·인증·Google 할당량 오류에는 재시도하지 않습니다. 따라서 일반 정상 A–D 분석은 8개 문서 추출이고, 모델 404 복구 시 목록 조회 및 실패 모델 요청이 추가될 수 있습니다. 이것은 Google 할당량이나 과금을 우회하지 않습니다.
 
 실제 실패 진단은 `[verify-live-gemini] [case-A]` 표시로 A 두 문서만 실행할 수 있습니다. 이 범위의 성공은 전체 A–D 완료가 아닙니다. LIVE_GEMINI_CASE=all이 기본이고 A/B/C/D를 지정하면 해당 사례만 실행합니다. 보고서의 selectedCasesPassed와 completed(전체 A–D)를 구분합니다. Google 429가 나오면 다음 사례 호출을 중단합니다. provider diagnostics는 HTTP 상태, 고정 설정 필드명, 공개 모델명, quota window/limit-zero 여부만 담으며 키/문서/원시 오류/프로젝트 ID는 포함하지 않습니다.
+
+404 모델 목록 선택은 현재 안정 모델을 우선하고, 기존 설정과 같은 버전 계열의 Flash/Flash-lite가 있으면 이를 우선합니다. 그다음 Google 목록의 공식 Flash alias, 다른 안정 Flash, preview 순입니다. 503/429 후 모델을 순환시키는 정책은 아닙니다. 404에서 제공자가 확인한 목록만 사용합니다.
