@@ -179,4 +179,35 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
       extractWithGemini(pdf, { apiKey: "test", fetcher: async () => result }),
     ).rejects.toMatchObject({ code: "API_UNAVAILABLE" });
   });
+  it("retries confirmed schema-shaped 400 once without a provider schema, retaining strict Zod validation", async () => {
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(response({ error: { status: "INVALID_ARGUMENT", message: "Request contains an invalid argument." } }, 400))
+      .mockResolvedValueOnce(response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(data) }] } }] }));
+    expect(await extractWithGemini(pdf, { apiKey: "synthetic-test-key", fetcher })).toEqual(data);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    const original = JSON.parse(fetcher.mock.calls[0][1].body);
+    const fallback = JSON.parse(fetcher.mock.calls[1][1].body);
+    expect(original.generationConfig.responseJsonSchema).toBeDefined();
+    expect(fallback.generationConfig).toEqual({ responseMimeType: "application/json" });
+    expect(fallback.systemInstruction.parts[0].text).toContain('"documentNumber"');
+    expect(fallback.contents).toEqual(original.contents);
+    expect(fetcher.mock.calls[1][0]).toBe(fetcher.mock.calls[0][0]);
+  });
+  it("marks a failed minimal-JSON retry without leaking provider messages or cycling models", async () => {
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(response({ error: { status: "INVALID_ARGUMENT" } }, 400))
+      .mockResolvedValueOnce(response({ error: { status: "INVALID_ARGUMENT", message: "private diagnostic" } }, 400));
+    await expect(extractWithGemini(pdf, { apiKey: "test", fetcher }))
+      .rejects.toMatchObject({ code: "API_REQUEST_REJECTED", diagnostics: { minimalJsonAttempted: true } });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+  it("does not retry known invalid API key as a schema failure", async () => {
+    const fetcher = vi.fn().mockResolvedValue(response({
+      error: { status: "INVALID_ARGUMENT", message: "redacted", details: [{ reason: "API_KEY_INVALID" }] },
+    }, 400));
+    await expect(extractWithGemini(pdf, { apiKey: "test", fetcher }))
+      .rejects.toMatchObject({ code: "API_KEY_INVALID" });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
 });
