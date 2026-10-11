@@ -29,9 +29,11 @@ else {
           if (!diagnostic) continue;
           const http = Number.isInteger(diagnostic.httpStatus) ? diagnostic.httpStatus : "unknown";
           const status = ["INVALID_ARGUMENT", "RESOURCE_EXHAUSTED", "INTERNAL", "UNAVAILABLE", "PERMISSION_DENIED", "NOT_FOUND"].includes(diagnostic.status) ? diagnostic.status : "UNKNOWN";
-          const fields = (diagnostic.requestFields ?? []).filter(field => ["responseJsonSchema", "response_json_schema", "responseSchema", "response_schema", "thinkingConfig", "thinking_config", "maxOutputTokens", "max_output_tokens", "temperature", "generationConfig", "generation_config", "systemInstruction", "system_instruction"].includes(field));
+          const fields = (diagnostic.requestFields ?? []).filter(field => ["responseFormat", "response_format", "responseJsonSchema", "response_json_schema", "responseSchema", "response_schema", "thinkingConfig", "thinking_config", "maxOutputTokens", "max_output_tokens", "temperature", "generationConfig", "generation_config", "systemInstruction", "system_instruction"].includes(field));
           const window = ["minute", "day"].includes(diagnostic.quotaWindow) ? diagnostic.quotaWindow : "unknown";
           console.log(`::notice title=Case ${item.id} provider ${index + 1}::HTTP=${http}; status=${status}; requestFields=${fields.join(",") || "none"}; quotaWindow=${window}; quotaLimitZero=${diagnostic.quotaLimitZero === true}`);
+          const available = (diagnostic.availableModels ?? []).filter(value => typeof value === "string" && /^gemini-[a-zA-Z0-9._-]+$/.test(value));
+          if (available.length) console.log(`::notice title=Case ${item.id} advertised Flash::${available.join(", ")}`);
         }
         for (const [index, doc] of (item.groundingStatuses ?? []).entries()) {
           const states = ["seller", "buyer", "transactionReference", "partialShipment"].map((key) => `${key}=${["verified", "unverified", "missing", "user_edited"].includes(doc[key]) ? doc[key] : "unknown"}`).join("; ");

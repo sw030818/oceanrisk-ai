@@ -8,7 +8,7 @@ export function providerDiagnostics(payload: unknown, httpStatus: number, model:
     httpStatus,
     status: typeof status === "string" && allowed.includes(status) ? status as ProviderDiagnostics["status"] : "UNKNOWN",
     ...(/^gemini-[a-zA-Z0-9._-]+$/.test(model) ? { model } : {}),
-    requestFields: ["responseJsonSchema", "response_json_schema", "responseSchema", "response_schema", "thinkingConfig", "thinking_config", "maxOutputTokens", "max_output_tokens", "temperature", "generationConfig", "generation_config", "systemInstruction", "system_instruction"].filter(field => message.includes(field)),
+    requestFields: ["responseFormat", "response_format", "responseJsonSchema", "response_json_schema", "responseSchema", "response_schema", "thinkingConfig", "thinking_config", "maxOutputTokens", "max_output_tokens", "temperature", "generationConfig", "generation_config", "systemInstruction", "system_instruction"].filter(field => message.includes(field)),
     quotaWindow: /per.?day|per_day/i.test(message) ? "day" : /per.?minute|per_minute/i.test(message) ? "minute" : "unknown",
     quotaLimitZero: /limit\s*:\s*0\b/i.test(message),
   };

@@ -29,7 +29,10 @@ describe("confirmed 404 model discovery with mocked Google (not live validation)
     expect(fetcher.mock.calls[1][1].headers).toEqual({ "x-goog-api-key": "synthetic-test-key" });
     expect(models).toEqual(["gemini-2.5-flash","gemini-3-flash-preview"]);
     const body=JSON.parse(fetcher.mock.calls[2][1].body);
-    expect(body.generationConfig.responseMimeType).toBe("application/json");
+    expect(body.generationConfig.responseFormat.text.mimeType).toBe("APPLICATION_JSON");
+    expect(body.generationConfig.responseFormat.text.schema.$defs).toBeDefined();
+    expect(body.generationConfig.responseMimeType).toBeUndefined();
+    expect(body.generationConfig.responseJsonSchema).toBeUndefined();
     expect(body.generationConfig.thinkingConfig).toBeUndefined();
   });
   it.each([400,401,403,429,500])("never discovers or retries provider status %s", async status => {
@@ -40,6 +43,17 @@ describe("confirmed 404 model discovery with mocked Google (not live validation)
   it("stops if a supported model also returns 404", async () => {
     const fetcher=vi.fn().mockResolvedValueOnce(json({},404)).mockResolvedValueOnce(json({models:[available("gemini-3-flash")]})).mockResolvedValueOnce(json({},404));
     await expect(extractWithGemini(good.pdf,{apiKey:"test",fetcher})).rejects.toMatchObject({code:"API_MODEL_NOT_FOUND"});
+    expect(fetcher).toHaveBeenCalledTimes(3);
+  });
+  it("tries a second advertised candidate only after the first is also 404", async () => {
+    const fetcher=vi.fn().mockResolvedValueOnce(json({},404)).mockResolvedValueOnce(json({models:[available("gemini-2.5-flash-lite"),available("gemini-flash-latest")]})).mockResolvedValueOnce(json({},404)).mockResolvedValueOnce(json({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(good.data) }] } }] }));
+    expect(await extractWithGemini(good.pdf,{apiKey:"test",fetcher})).toEqual(good.data);
+    expect(fetcher).toHaveBeenCalledTimes(4);
+    expect(fetcher.mock.calls[3][0]).toContain("gemini-flash-latest:generateContent");
+  });
+  it.each([400,429,503])("never proceeds to another candidate after fallback status %s", async status => {
+    const fetcher=vi.fn().mockResolvedValueOnce(json({},404)).mockResolvedValueOnce(json({models:[available("gemini-2.5-flash-lite"),available("gemini-flash-latest")]})).mockResolvedValueOnce(json({},status));
+    await expect(extractWithGemini(good.pdf,{apiKey:"test",fetcher})).rejects.toThrow();
     expect(fetcher).toHaveBeenCalledTimes(3);
   });
 });

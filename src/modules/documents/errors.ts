@@ -5,6 +5,7 @@ export interface ProviderDiagnostics {
   requestFields: string[];
   quotaWindow: "minute" | "day" | "unknown";
   quotaLimitZero: boolean;
+  availableModels?: string[];
 }
 export class AnalysisError extends Error {
   constructor(

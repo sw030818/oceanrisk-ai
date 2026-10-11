@@ -186,3 +186,11 @@
 - 배포 SHA `9855c95e5f6d80d0eea0173cd9fcf1b966ddad34`, ID `dpl_HFwAELmASmfmuCFWJq7sdUWRmnu1`, Production verified=true.
 - 404 목록 선택을 단순 최신 버전 우선에서 **안정 모델·원래 버전 계열·공식 Flash alias** 우선으로 변경. 같은 목록에 실제로 있는 모델만 선택하며, 503/429를 받은 뒤 다른 모델로 순환하거나 한도를 우회하지 않음. 원래 버전의 Flash-lite가 목록에 있다면 이를 먼저 사용하여 프롬프트/스키마 호환성과 안정성을 유지. 합성 선택 회귀 검사 추가.
 - Google 공개 API discovery 문서 `https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta`를 실제 HTTP 200으로 확인. generationConfig의 responseJsonSchema/responseSchema/responseMimeType와 새 responseFormat이 존재함을 확인. 기존 필드명이 없다는 추측으로 오류 원인을 단정하지 않음.
+
+### 같은 계열 후보도 실제 404 / 최신 API 형식 정리
+- 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38163293926 : quality/production 성공, A 두 문서 모두 gemini-2.5-flash-lite의 HTTP 404 NOT_FOUND로 실패. Google 목록에 generateContent 모델로 표시돼도 실제 사용 가능성을 보증하지 않음을 확인.
+- 소스 SHA `a29ce3edd52f23ed72b31b844d71bf474b40822e`, ID `dpl_AdFxodSYUSw8gy5TCu4rtztv9uyL`, Production verified=true.
+- 404 복구는 1회 목록 조회 후 중복을 제거한 최대 2개 후보까지만 확인. 후보도 404인 경우에만 다음 후보를 사용하며 400/429/503에는 중단. 성공한 실제 응답 모델만 메모리 캐시.
+- Google discovery가 명시한 최신 GenerationConfig.responseFormat.text(mimeType=APPLICATION_JSON, schema) 형식을 Gemini 3+ 및 공식 최신 Flash alias에 사용. 2.x에는 기존 responseMimeType/responseJsonSchema 경로 유지.
+- Zod JSON Schema는 reused=ref로 중복 정의를 공유해 실제 측정 6721→2087 bytes로 축소. 로컬 Zod/근거 검증 조건은 유지. API지원필드 metadata에 $defs/$ref가 명시됨을 확인했지만 실제 생성 성공은 아직 추가 실행으로 확인해야 함.
+- 새 요청 형식/후보 404 연속 처리/400·429·503 비재시도 회귀 검사와 최종 단위 **139/139** 통과. 다음은 A 최소 실제 실행이며 전체 A–D 완료로 오인하지 않음.

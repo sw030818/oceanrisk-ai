@@ -5,7 +5,7 @@ import {
   type PdfDocument,
 } from "../documents/schema";
 import { AnalysisError } from "../documents/errors";
-import { selectAvailableFlash } from "./models";
+import { availableFlashModels } from "./models";
 import { providerDiagnostics } from "./provider-diagnostics";
 // Only a successful discovery is cached. Never persisted or logged; each server process owns its cache.
 let discoveredModel: { apiKey: string; requested: string; model: string } | null = null;
@@ -42,12 +42,13 @@ export async function extractWithGemini(
       "서버의 Gemini 모델 설정을 확인해 주세요.",
       503,
     );
-  const jsonSchema = z.toJSONSchema(extractedDocumentSchema);
+  const jsonSchema = z.toJSONSchema(extractedDocumentSchema, { reused: "ref" });
   // Gemini accepts JSON Schema through responseJsonSchema; omit the meta-schema URI.
   const { $schema: _schema, ...responseJsonSchema } = jsonSchema;
   void _schema;
   let model = !options.fetcher && discoveredModel?.apiKey === apiKey && discoveredModel.requested === requested ? discoveredModel.model : requested;
   let response: Response;
+  let candidates: string[] = [];
   const fetcher = options.fetcher ?? fetch;
   const requestModel = async (selected: string) => {
     if (/^gemini-[a-zA-Z0-9._-]+$/.test(selected)) options.onModelUsed?.(selected);
@@ -60,7 +61,10 @@ export async function extractWithGemini(
           systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
           contents: [{ role: "user", parts: [{ text: JSON.stringify({ untrustedDocument: { pages: pdf.pages } }) }] }],
           generationConfig: {
-            temperature: 0, responseMimeType: "application/json", responseJsonSchema, maxOutputTokens: 8192,
+            temperature: 0, maxOutputTokens: 8192,
+            ...((Number(/^gemini-(\d+(?:\.\d+)?)-/.exec(selected)?.[1] ?? 0) >= 3 || /^gemini-flash(?:-lite)?-latest$/.test(selected))
+              ? { responseFormat: { text: { mimeType: "APPLICATION_JSON", schema: responseJsonSchema } } }
+              : { responseMimeType: "application/json", responseJsonSchema }),
             ...(selected === "gemini-2.5-flash" ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
           },
         }),
@@ -71,21 +75,22 @@ export async function extractWithGemini(
   };
   try {
     response = await requestModel(model);
-    // A confirmed model 404 permits one lookup and one retry, using only Google's advertised text Flash models.
+    // A confirmed model 404 permits one lookup and at most two candidates, using only Google's advertised text Flash models.
     // Auth, validation and quota failures never trigger discovery/retry.
     if (response.status === 404 && !options.signal?.aborted) {
-      let available: string | null = null;
       try {
         const list = await fetcher("https://generativelanguage.googleapis.com/v1beta/models?pageSize=100", {
           headers: { "x-goog-api-key": apiKey }, cache: "no-store",
           signal: options.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(25000)]) : AbortSignal.timeout(25000),
         });
-        if (list.ok) available = selectAvailableFlash((await list.json()).models, model);
+        if (list.ok) candidates = availableFlashModels((await list.json()).models, model);
       } catch { /* Preserve the original safe model error; no raw diagnostics. */ }
-      if (available && !options.signal?.aborted) {
+      for (const available of candidates.slice(0, 2)) {
+        if (options.signal?.aborted) break;
         model = available;
         response = await requestModel(model);
         if (response.ok && !options.fetcher) discoveredModel = { apiKey, requested, model };
+        if (response.status !== 404) break;
       }
     }
   } catch {
@@ -104,6 +109,7 @@ export async function extractWithGemini(
   if (!response.ok) {
     const failure = await response.json().catch(() => null);
     const diagnostics = providerDiagnostics(failure, response.status, model);
+    if (candidates.length) diagnostics.availableModels = candidates.slice(0, 10);
     if (response.status === 429)
       throw new AnalysisError(
         "API_RATE_LIMIT",

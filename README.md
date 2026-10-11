@@ -125,3 +125,5 @@ Production 상태에 Vercel 시스템 환경변수의 SHA/환경/id를 포함합
 실제 실패 진단은 `[verify-live-gemini] [case-A]` 표시로 A 두 문서만 실행할 수 있습니다. 이 범위의 성공은 전체 A–D 완료가 아닙니다. LIVE_GEMINI_CASE=all이 기본이고 A/B/C/D를 지정하면 해당 사례만 실행합니다. 보고서의 selectedCasesPassed와 completed(전체 A–D)를 구분합니다. Google 429가 나오면 다음 사례 호출을 중단합니다. provider diagnostics는 HTTP 상태, 고정 설정 필드명, 공개 모델명, quota window/limit-zero 여부만 담으며 키/문서/원시 오류/프로젝트 ID는 포함하지 않습니다.
 
 404 모델 목록 선택은 현재 안정 모델을 우선하고, 기존 설정과 같은 버전 계열의 Flash/Flash-lite가 있으면 이를 우선합니다. 그다음 Google 목록의 공식 Flash alias, 다른 안정 Flash, preview 순입니다. 503/429 후 모델을 순환시키는 정책은 아닙니다. 404에서 제공자가 확인한 목록만 사용합니다.
+
+현재 모델 404 복구는 목록 1회 조회 후 중복을 제외한 최대 2개 후보를 확인합니다. 다음 후보로 넘어가는 조건은 앞 후보의 실제 404뿐입니다. 400/권한/429/503에는 중단합니다. Gemini 3+ 및 최신 Flash alias는 Google API discovery의 responseFormat.text(APPLICATION_JSON, schema)를 사용하고 2.x는 기존 JSON 설정을 유지합니다. $defs/$ref로 중복 스키마를 공유하며 로컬 Zod 검증은 완전히 유지합니다. 목록의 generateContent 표시만으로 실제 모델 성공을 주장하지 않습니다.
