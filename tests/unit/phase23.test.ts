@@ -13,6 +13,21 @@ const pair = async (options: Parameters<typeof phase23Fixture>[1] = {}) => [
   await phase23Fixture("packing_list", options),
 ];
 describe("PHASE 2.3 reported structure: actual synthetic PDFs, MOCKED extraction", () => {
+  it("never validates a document total or cropped total qualifier as an individual product quantity", () => {
+    const f = syntheticDocument();
+    f.pdf.pages[0].text += "\nTotal product quantity: 1000 PCS";
+    for (const quote of [
+      "Total product quantity: 1000 PCS",
+      "quantity: 1000 PCS",
+    ])
+      expect(
+        verifyField(
+          { value: 1000, evidence: { page: 1, quote } },
+          f.pdf,
+          "quantity",
+        ).status,
+      ).toBe("unverified");
+  });
   it("never validates a literal unit from a wrong semantic label", () => {
     const f = syntheticDocument();
     f.pdf.pages[0].text += "\nPackage Unit: KG\nSeller: PCS Trading";

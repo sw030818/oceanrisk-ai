@@ -172,13 +172,18 @@
     "sameShaProductionVerified": true
   },
   "postLiveSafetyRegression": {
-    "scope": "Literal units from wrong semantic labels are rejected. Existing reported-structure positive fixtures and source quotes retain their original proof checks.",
-    "additionalTests": 1,
+    "scope": "Wrong semantic unit labels and document-total/cropped-total citations never validate individual product fields. Additional safety changes are mock/PDF regressions, no extra paid calls.",
+    "additionalTests": 2,
     "additionalPaidCalls": 0,
     "targetedTestsPassed": 88,
-    "requiredFinalUnitCount": 257,
+    "requiredFinalUnitCount": 258,
     "requiredFinalBrowserCount": 15,
-    "verificationNote": "Final ship and GitHub Actions enforce full type/lint/unit/build/worker/browser checks before final source is saved; actual live source is recorded separately."
+    "verificationNote": "Final ship and GitHub Actions enforce full type/lint/unit/build/worker/browser checks before final source is saved; actual live source is recorded separately.",
+    "intermediateFullGate": {
+      "sourceSha": "f17b259b4ce1d921c94a70c9c74c17d267e0b080",
+      "unitTestsPassed": 257,
+      "browserTestsPassed": 15
+    }
   },
   "tokenTotals": {
     "inputTokens": 9335,

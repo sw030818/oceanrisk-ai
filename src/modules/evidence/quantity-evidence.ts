@@ -12,6 +12,7 @@ export function productQuantities(quote: string): ProductQuantityEvidence[] {
       const prefix = line.slice(0, match.index).trim();
       const unit = match[1] ?? match[3] ?? null;
       if (
+        /(?:^|\s)(?:total|subtotal|sum|총|합계|전체)(?:\s|$)/i.test(prefix) ||
         /(?:packages?|cartons?|ctns?|boxes|box|weight|amount|중량|금액|포장|박스|상자)\s*$/i.test(
           prefix,
         ) ||
