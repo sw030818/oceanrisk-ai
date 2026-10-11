@@ -257,4 +257,32 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
     });
   });
 
+  it("repairs malformed nested field objects once after accepted minimal JSON response", async () => {
+    const malformed = structuredClone(data) as unknown as Record<string, unknown>;
+    malformed.totalAmount = null;
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(response({ error: { status: "INVALID_ARGUMENT" } }, 400))
+      .mockResolvedValueOnce(response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(malformed) }] } }] }))
+      .mockResolvedValueOnce(response({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(data) }] } }] }));
+    expect(await extractWithGemini(pdf, { apiKey:"test", fetcher })).toEqual(data);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    const repairBody = JSON.parse(fetcher.mock.calls[2][1].body);
+    expect(repairBody.generationConfig).toEqual({ responseMimeType:"application/json" });
+    expect(repairBody.systemInstruction.parts[0].text).toContain("FORMAT CORRECTION REQUIRED");
+    expect(repairBody.contents).toEqual(JSON.parse(fetcher.mock.calls[0][1].body).contents);
+  });
+  it("does not invent facts if even the one repair response remains malformed", async () => {
+    const malformed = structuredClone(data) as unknown as Record<string, unknown>;
+    malformed.totalAmount = null;
+    const bad = { candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(malformed) }] } }] };
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(response({ error: { status: "INVALID_ARGUMENT" } }, 400))
+      .mockResolvedValueOnce(response(bad))
+      .mockResolvedValueOnce(response(bad));
+    await expect(extractWithGemini(pdf, { apiKey:"test", fetcher })).rejects.toMatchObject({
+      code: "INVALID_AI_RESPONSE", diagnostics: { outputIssue: "SCHEMA_MISMATCH" },
+    });
+    expect(fetcher).toHaveBeenCalledTimes(3);
+  });
+
 });
