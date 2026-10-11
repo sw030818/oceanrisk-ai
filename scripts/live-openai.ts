@@ -31,7 +31,7 @@ const stage = arg("stage") ?? "all",
   scenario = arg("scenario"),
   selected = arg("case"),
   sha = arg("sha");
-if (!["all", "single", "pair", "ad", "layouts"].includes(stage))
+if (!["all", "single", "pair", "ad", "layouts", "repeat"].includes(stage))
   throw new Error("Unknown test stage");
 if (scenario && (stage !== "ad" || !["A", "B", "C", "D"].includes(scenario)))
   throw new Error("--scenario requires --stage=ad and A, B, C or D");
@@ -294,7 +294,11 @@ function add(
     expectedFields: evaluation.expectedFields,
     correctValues: evaluation.correctValues,
     groundedCorrectFields: evaluation.groundedCorrectFields,
-    ruleCorrect: evaluation.ruleCorrect,
+    ruleCorrect:
+      results.length === expected.length &&
+      results.every((r) => r.document && !r.error)
+        ? evaluation.ruleCorrect
+        : null,
     errorCodes: results.map((r) => r.error?.code ?? null),
     models: results.map((r) => r.aiModel ?? null),
     usage: results.map((r) => r.aiUsage),
@@ -433,8 +437,11 @@ if (["all", "single"].includes(stage) && !selected && !ledger.stopReason)
 if (["all", "pair"].includes(stage) && !selected && !ledger.stopReason)
   await ad("A");
 if (["all", "ad"].includes(stage) && !selected) {
-  const ids: ScenarioId[] =
-    scenario ? [scenario as ScenarioId] : stage === "ad" ? ["A", "B", "C", "D"] : ["B", "C", "D"];
+  const ids: ScenarioId[] = scenario
+    ? [scenario as ScenarioId]
+    : stage === "ad"
+      ? ["A", "B", "C", "D"]
+      : ["B", "C", "D"];
   for (const id of ids) {
     if (ledger.stopReason) break;
     await ad(id);
@@ -485,34 +492,36 @@ if (["all", "layouts"].includes(stage) || selected) {
     );
     await save();
   }
-  if (
-    !selected &&
-    !ledger.stopReason &&
-    (stage === "all" || arg("repeat") === "2")
-  ) {
-    const first = layoutCases[0],
-      fixtures = await Promise.all([
-        layoutFixture(first.id, "invoice"),
-        layoutFixture(first.id, "packing_list"),
-      ]);
-    const results = await request(
-      `repeat-${first.id}`,
-      fixtures.map((f) => f.makeFile()),
+}
+if (
+  !selected &&
+  !ledger.stopReason &&
+  (stage === "all" ||
+    stage === "repeat" ||
+    (stage === "layouts" && arg("repeat") === "2"))
+) {
+  const first = layoutCases[0],
+    fixtures = await Promise.all([
+      layoutFixture(first.id, "invoice"),
+      layoutFixture(first.id, "packing_list"),
+    ]);
+  const results = await request(
+    `repeat-${first.id}`,
+    fixtures.map((f) => f.makeFile()),
+  );
+  if (results) {
+    const ev = evaluateLayoutResults(
+      results,
+      fixtures.map((f) => f.data),
+      first.id,
     );
-    if (results) {
-      const ev = evaluateLayoutResults(
-        results,
-        fixtures.map((f) => f.data),
-        first.id,
-      );
-      add(
-        `repeat-${first.id}`,
-        results,
-        fixtures.map((f) => f.data),
-        { ...ev, details: ev },
-      );
-      await save();
-    }
+    add(
+      `repeat-${first.id}`,
+      results,
+      fixtures.map((f) => f.data),
+      { ...ev, details: ev },
+    );
+    await save();
   }
 }
 const sameSha = ledger.cases.filter((c) => c.deploymentSha === (sha ?? null));

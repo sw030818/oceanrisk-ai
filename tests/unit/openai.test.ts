@@ -76,41 +76,167 @@ afterEach(() => vi.unstubAllEnvs());
 describe("OpenAI Responses contract and independent grounding (MOCKED AI)", () => {
   it("reports malformed output structure without exposing JSON error text or selecting an arbitrary object", async () => {
     const privateText = '{"private-document":"sk-private"}';
-    const fetcher = vi.fn().mockResolvedValue(completed({}, {
-      output: [
-        { type: "message", content: [{ type: "output_text", text: privateText }] },
-        { type: "message", content: [{ type: "output_text", text: privateText }] },
-      ],
-    }));
+    const fetcher = vi.fn().mockResolvedValue(
+      completed(
+        {},
+        {
+          output: [
+            {
+              type: "message",
+              content: [{ type: "output_text", text: privateText }],
+            },
+            {
+              type: "message",
+              content: [{ type: "output_text", text: privateText }],
+            },
+          ],
+        },
+      ),
+    );
     try {
-      await extractWithOpenAI({ id: "x", fileName: "x", pages: [] }, { apiKey: "synthetic", fetcher });
+      await extractWithOpenAI(
+        { id: "x", fileName: "x", pages: [] },
+        { apiKey: "synthetic", fetcher },
+      );
       throw new Error("Expected rejection");
     } catch (error) {
       const safe = safeError(error);
       expect(safe.diagnostics).toMatchObject({
-        outputIssue: "INVALID_JSON",
-        outputStructure: { messageCount: 2, textPartCount: 2, characters: privateText.length * 2, startsWithObject: true, endsWithObject: true, hasMarkdownFence: false, jsonErrorOffset: privateText.length },
+        outputIssue: "NON_STOP",
       });
       expect(JSON.stringify(safe)).not.toContain("private-document");
       expect(JSON.stringify(safe)).not.toContain("sk-private");
     }
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
-  it("invalid credentials name the server setting without echoing provider secrets or documents", async () => {
+  it("uses the explicit final answer without concatenating intermediate commentary", async () => {
+    const f = await layoutFixture("party-tables", "invoice");
+    const raw = wire(f.data, f.pdf);
+    const fetcher = vi.fn().mockResolvedValue(
+      completed(
+        {},
+        {
+          output: [
+            {
+              type: "message",
+              phase: "commentary",
+              content: [
+                {
+                  type: "output_text",
+                  text: "private-document intermediate explanation",
+                },
+              ],
+            },
+            {
+              type: "message",
+              phase: "final_answer",
+              content: [{ type: "output_text", text: JSON.stringify(raw) }],
+            },
+          ],
+        },
+      ),
+    );
+    const result = await extractWithOpenAI(f.pdf, {
+      apiKey: "synthetic",
+      fetcher,
+    });
+    expect(result.type).toBe("invoice");
+    expect(groundDocument(result, f.pdf).items[0].quantity.status).toBe(
+      "verified",
+    );
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it.each([
+    "commentary-only",
+    "two-finals",
+    "unknown-phase",
+    "refusal-in-commentary",
+  ])("rejects ambiguous or refused %s output", async (kind) => {
+    const message = (phase: string, type = "output_text") => ({
+      type: "message",
+      phase,
+      content: [{ type, text: "private-document" }],
+    });
+    const output =
+      kind === "commentary-only"
+        ? [message("commentary")]
+        : kind === "two-finals"
+          ? [message("final_answer"), message("final_answer")]
+          : kind === "unknown-phase"
+            ? [message("private-phase")]
+            : [message("commentary", "refusal"), message("final_answer")];
+    const fetcher = vi.fn().mockResolvedValue(completed({}, { output }));
+    try {
+      await extractWithOpenAI(
+        { id: "x", fileName: "x", pages: [] },
+        { apiKey: "synthetic", fetcher },
+      );
+      throw new Error("Expected rejection");
+    } catch (error) {
+      const safe = safeError(error);
+      expect(safe.code).toBe(
+        kind === "refusal-in-commentary" ? "AI_REFUSAL" : "INVALID_AI_RESPONSE",
+      );
+      expect(JSON.stringify(safe)).not.toContain("private-document");
+      expect(JSON.stringify(safe)).not.toContain("private-phase");
+    }
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it("malformed single final output exposes only structural metadata", async () => {
+    const text = '{"private-document":"sk-private"} trailing-private';
     const fetcher = vi
       .fn()
       .mockResolvedValue(
-        Response.json(
+        completed(
+          {},
           {
-            error: {
-              code: "invalid_api_key",
-              param: "private-document-key",
-              message: "sk-private-document-content",
-            },
+            output: [
+              {
+                type: "message",
+                phase: "final_answer",
+                content: [{ type: "output_text", text }],
+              },
+            ],
           },
-          { status: 401 },
         ),
       );
+    try {
+      await extractWithOpenAI(
+        { id: "x", fileName: "x", pages: [] },
+        { apiKey: "synthetic", fetcher },
+      );
+      throw new Error("Expected rejection");
+    } catch (error) {
+      const safe = safeError(error);
+      expect(safe.diagnostics).toMatchObject({
+        outputIssue: "INVALID_JSON",
+        outputStructure: {
+          messageCount: 1,
+          textPartCount: 1,
+          characters: text.length,
+          startsWithObject: true,
+          endsWithObject: false,
+          hasMarkdownFence: false,
+          jsonErrorOffset: text.indexOf("trailing-private"),
+        },
+      });
+      expect(JSON.stringify(safe)).not.toContain("private-document");
+      expect(JSON.stringify(safe)).not.toContain("sk-private");
+    }
+  });
+  it("invalid credentials name the server setting without echoing provider secrets or documents", async () => {
+    const fetcher = vi.fn().mockResolvedValue(
+      Response.json(
+        {
+          error: {
+            code: "invalid_api_key",
+            param: "private-document-key",
+            message: "sk-private-document-content",
+          },
+        },
+        { status: 401 },
+      ),
+    );
     try {
       await extractWithOpenAI(
         { id: "x", fileName: "x", pages: [] },

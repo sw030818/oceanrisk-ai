@@ -90,3 +90,7 @@ PDF.js의 실제 페이지 좌표·블록 ID·행 정보를 기존 page/text에 
 # 합성 AI 응답 + 실제 PDF.js (외부 API 호출 없음)
 npm run test:layouts
 ```
+
+Responses의 중간 `commentary`와 최종 `final_answer` 메시지를 구분합니다. 명시적인 최종 메시지가 하나일 때만 JSON을 파싱하며, 기존 단일 unphased 메시지는 지원합니다. 여러 최종 메시지·알 수 없는 phase·refusal·불완전한 출력은 안전하게 거부합니다. 중간 설명과 최종 JSON을 이어 붙이거나 JSON을 추측 복구하지 않습니다.
+
+이미 다른 단계가 끝난 경우 `test:production -- --sha=<SHA> --stage=ad --scenario=C` 또는 `--stage=repeat`로 해당 최소 검사만 실행할 수 있습니다. 예산과 실패 이력은 모든 실행에서 공유합니다.

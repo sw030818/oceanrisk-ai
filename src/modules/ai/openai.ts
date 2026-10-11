@@ -227,18 +227,55 @@ export async function extractWithOpenAI(
         ),
       );
     const output = Array.isArray(result.output) ? result.output : [];
-    const content = output.flatMap((item) =>
-      item?.type === "message" && Array.isArray(item.content)
-        ? item.content
-        : [],
+    const messages = output.filter((item) => item?.type === "message");
+    const allContent = messages.flatMap((item) =>
+      Array.isArray(item.content) ? item.content : [],
     );
-    if (content.some((item) => item?.type === "refusal"))
+    if (allContent.some((item) => item?.type === "refusal"))
       throw new AnalysisError(
         "AI_REFUSAL",
         "OpenAI가 이 문서 분석을 거부했습니다. 파일 내용을 확인해 주세요.",
         502,
         outputError("NON_STOP"),
       );
+    if (messages.length === 0)
+      throw new AnalysisError(
+        "INVALID_AI_RESPONSE",
+        "OpenAI가 추출 결과를 반환하지 않았습니다.",
+        502,
+        outputError("EMPTY_TEXT"),
+      );
+    // Responses may include intermediate commentary alongside the final answer.
+    // Never concatenate separate messages or guess which JSON-looking object wins.
+    // Prefer the explicitly labelled final answer; legacy single unphased output
+    // remains supported. Refusals in any message are rejected above.
+    const finalMessages = messages.filter(
+      (item) => item.phase === "final_answer",
+    );
+    const candidates = finalMessages.length
+      ? finalMessages
+      : messages.filter((item) => item.phase == null);
+    if (
+      candidates.length !== 1 ||
+      (candidates[0]?.status != null && candidates[0].status !== "completed") ||
+      (candidates[0]?.role != null && candidates[0].role !== "assistant") ||
+      messages.some(
+        (item) =>
+          item.phase != null &&
+          !["commentary", "final_answer"].includes(item.phase),
+      )
+    )
+      throw new AnalysisError(
+        "INVALID_AI_RESPONSE",
+        "OpenAI의 최종 분석 응답을 하나로 확인할 수 없습니다. 불완전한 결과는 사용하지 않습니다.",
+        502,
+        outputError("NON_STOP"),
+      );
+    const content: { type?: unknown; text?: unknown }[] = Array.isArray(
+      candidates[0].content,
+    )
+      ? candidates[0].content
+      : [];
     const text = content
       .filter(
         (item) => item?.type === "output_text" && typeof item.text === "string",
@@ -258,9 +295,10 @@ export async function extractWithOpenAI(
     } catch (parseError) {
       // Report only structural metadata. SyntaxError.message can contain source
       // text and must never cross the server boundary or enter validation logs.
-      const offset = parseError instanceof SyntaxError
-        ? /position (\d+)/.exec(parseError.message)?.[1]
-        : undefined;
+      const offset =
+        parseError instanceof SyntaxError
+          ? /position (\d+)/.exec(parseError.message)?.[1]
+          : undefined;
       throw new AnalysisError(
         "INVALID_AI_RESPONSE",
         "OpenAI 응답이 JSON 형식이 아닙니다.",
@@ -268,8 +306,12 @@ export async function extractWithOpenAI(
         {
           ...outputError("INVALID_JSON"),
           outputStructure: {
-            messageCount: output.filter((item) => item?.type === "message").length,
-            textPartCount: content.filter((item) => item?.type === "output_text" && typeof item.text === "string").length,
+            messageCount: output.filter((item) => item?.type === "message")
+              .length,
+            textPartCount: content.filter(
+              (item) =>
+                item?.type === "output_text" && typeof item.text === "string",
+            ).length,
             characters: text.length,
             startsWithObject: text.trimStart().startsWith("{"),
             endsWithObject: text.trimEnd().endsWith("}"),

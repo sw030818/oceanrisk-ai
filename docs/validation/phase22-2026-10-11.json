@@ -2,13 +2,13 @@
   "mode": "actual-openai-synthetic-pdfs",
   "model": "gpt-6-luna",
   "keyConfigured": true,
-  "deploymentSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+  "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
   "completed": false,
   "budget": {
-    "documents": 9,
-    "measuredCostUsd": 0.0022548950000000002,
-    "unresolvedCostUpperUsd": 0.008357800000000006,
-    "maxDocuments": 27,
+    "documents": 27,
+    "measuredCostUsd": 0.008630045000000003,
+    "unresolvedCostUpperUsd": 0.008357800000000002,
+    "maxDocuments": 29,
     "maxCostUsd": 0.5
   },
   "stopReason": "FAILED_STAGE_STOP_FIX_BEFORE_NEXT_CALL",
@@ -22,7 +22,7 @@
       "expectedFields": 8,
       "correctValues": 0,
       "groundedCorrectFields": 0,
-      "ruleCorrect": true,
+      "ruleCorrect": null,
       "errorCodes": [
         "API_AUTH_OR_CONFIG"
       ],
@@ -68,7 +68,7 @@
       "expectedFields": 8,
       "correctValues": 0,
       "groundedCorrectFields": 0,
-      "ruleCorrect": true,
+      "ruleCorrect": null,
       "errorCodes": [
         "API_AUTH_OR_CONFIG"
       ],
@@ -448,22 +448,1058 @@
           }
         ]
       }
+    },
+    {
+      "id": "A-D-C",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 16,
+      "correctValues": 16,
+      "groundedCorrectFields": 16,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2981,
+          "inputTokens": 2170,
+          "outputTokens": 410,
+          "cachedInputTokens": 2167,
+          "cacheWriteTokens": 0,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00022697,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2663,
+          "inputTokens": 2164,
+          "outputTokens": 411,
+          "cachedInputTokens": 2161,
+          "cacheWriteTokens": 0,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00022741,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "ed7e5c20a0eaea4cd66822db087981b7bcf694aedd726b3bc7b4ca1a8b8cbede",
+      "details": {
+        "classified": true,
+        "providerResponses": true,
+        "singleDocumentState": null,
+        "rules": [
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-D-D",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 14,
+      "correctValues": 14,
+      "groundedCorrectFields": 14,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3220,
+          "inputTokens": 2068,
+          "outputTokens": 376,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 498,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00026622,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3155,
+          "inputTokens": 2062,
+          "outputTokens": 377,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 492,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00026597000000000003,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "0c0f209863adc37e96fdfcc6020d697fb76a317ac64a94d2b6cfd293097da680",
+      "details": {
+        "classified": true,
+        "providerResponses": true,
+        "singleDocumentState": null,
+        "rules": [
+          {
+            "status": "unverifiable",
+            "confidence": "candidate"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "missing",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "missing",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "layout-portrait-landscape",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 25,
+      "correctValues": 25,
+      "groundedCorrectFields": 25,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 4292,
+          "inputTokens": 2425,
+          "outputTokens": 492,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 855,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.000368845,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3200,
+          "inputTokens": 2511,
+          "outputTokens": 493,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 941,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00038009500000000005,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "0ab7efc0dcf8daf49a6d9c749bc1ece57dceaf742e15a641fa2da4e5796eb012",
+      "details": {
+        "providerSuccesses": 2,
+        "documentCount": 2,
+        "classified": true,
+        "expectedFields": 25,
+        "correctValues": 25,
+        "groundedCorrectFields": 25,
+        "ruleCorrect": true,
+        "confirmedMismatches": 0,
+        "passed": true,
+        "ruleStates": [
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          },
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ],
+        "errorCodes": [
+          null,
+          null
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "layout-party-tables",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 25,
+      "correctValues": 25,
+      "groundedCorrectFields": 25,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3369,
+          "inputTokens": 2500,
+          "outputTokens": 502,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 930,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00038322000000000003,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3672,
+          "inputTokens": 2570,
+          "outputTokens": 503,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 1000,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00039247,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "0ab7efc0dcf8daf49a6d9c749bc1ece57dceaf742e15a641fa2da4e5796eb012",
+      "details": {
+        "providerSuccesses": 2,
+        "documentCount": 2,
+        "classified": true,
+        "expectedFields": 25,
+        "correctValues": 25,
+        "groundedCorrectFields": 25,
+        "ruleCorrect": true,
+        "confirmedMismatches": 0,
+        "passed": true,
+        "ruleStates": [
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          },
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ],
+        "errorCodes": [
+          null,
+          null
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "layout-mixed-packaging",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 25,
+      "correctValues": 25,
+      "groundedCorrectFields": 25,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3022,
+          "inputTokens": 2516,
+          "outputTokens": 502,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 946,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00038522000000000003,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3384,
+          "inputTokens": 2602,
+          "outputTokens": 503,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 1032,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00039647,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "0ab7efc0dcf8daf49a6d9c749bc1ece57dceaf742e15a641fa2da4e5796eb012",
+      "details": {
+        "providerSuccesses": 2,
+        "documentCount": 2,
+        "classified": true,
+        "expectedFields": 25,
+        "correctValues": 25,
+        "groundedCorrectFields": 25,
+        "ruleCorrect": true,
+        "confirmedMismatches": 0,
+        "passed": true,
+        "ruleStates": [
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          },
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ],
+        "errorCodes": [
+          null,
+          null
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "layout-quantity-mismatch",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 25,
+      "correctValues": 25,
+      "groundedCorrectFields": 25,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2851,
+          "inputTokens": 2503,
+          "outputTokens": 502,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 933,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00038359500000000003,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2997,
+          "inputTokens": 2577,
+          "outputTokens": 503,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 1007,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.000393345,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "379b91fa4208d09c50ff55ccdba342378db04ad3f3c0870d792737e983681476",
+      "details": {
+        "providerSuccesses": 2,
+        "documentCount": 2,
+        "classified": true,
+        "expectedFields": 25,
+        "correctValues": 25,
+        "groundedCorrectFields": 25,
+        "ruleCorrect": true,
+        "confirmedMismatches": 1,
+        "passed": true,
+        "ruleStates": [
+          {
+            "status": "mismatch",
+            "confidence": "confirmed"
+          },
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ],
+        "errorCodes": [
+          null,
+          null
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "layout-reference-conflict",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 25,
+      "correctValues": 25,
+      "groundedCorrectFields": 25,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2930,
+          "inputTokens": 2516,
+          "outputTokens": 502,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 946,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00038522000000000003,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3208,
+          "inputTokens": 2606,
+          "outputTokens": 507,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 1036,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00039897,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "8c0b5a2ea5a656f18629b92b6ca559c44d445cea8f1e011671061dae696bf267",
+      "details": {
+        "providerSuccesses": 2,
+        "documentCount": 2,
+        "classified": true,
+        "expectedFields": 25,
+        "correctValues": 25,
+        "groundedCorrectFields": 25,
+        "ruleCorrect": true,
+        "confirmedMismatches": 0,
+        "passed": true,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ],
+        "errorCodes": [
+          null,
+          null
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "layout-wrapped-description",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 25,
+      "correctValues": 25,
+      "groundedCorrectFields": 25,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3361,
+          "inputTokens": 2533,
+          "outputTokens": 507,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 963,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00038984500000000005,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2951,
+          "inputTokens": 2603,
+          "outputTokens": 508,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 1033,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.000399095,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "0ab7efc0dcf8daf49a6d9c749bc1ece57dceaf742e15a641fa2da4e5796eb012",
+      "details": {
+        "providerSuccesses": 2,
+        "documentCount": 2,
+        "classified": true,
+        "expectedFields": 25,
+        "correctValues": 25,
+        "groundedCorrectFields": 25,
+        "ruleCorrect": true,
+        "confirmedMismatches": 0,
+        "passed": true,
+        "ruleStates": [
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          },
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ],
+        "errorCodes": [
+          null,
+          null
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "layout-missing-reference",
+      "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "documents": 2,
+      "status": "failed",
+      "providerSuccesses": 1,
+      "expectedFields": 22,
+      "correctValues": 12,
+      "groundedCorrectFields": 12,
+      "ruleCorrect": null,
+      "errorCodes": [
+        null,
+        "INVALID_AI_RESPONSE"
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2975,
+          "inputTokens": 2516,
+          "outputTokens": 502,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 946,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00038522000000000003,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2933,
+          "inputTokens": 2430,
+          "outputTokens": 447,
+          "cachedInputTokens": 1567,
+          "cacheWriteTokens": 860,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00034697000000000005,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        {
+          "httpStatus": 200,
+          "status": "UNKNOWN",
+          "requestFields": [],
+          "quotaWindow": "unknown",
+          "quotaLimitZero": false,
+          "outputIssue": "INVALID_JSON",
+          "outputStructure": {
+            "messageCount": 2,
+            "textPartCount": 2,
+            "characters": 1444,
+            "startsWithObject": false,
+            "endsWithObject": true,
+            "hasMarkdownFence": false,
+            "jsonErrorOffset": null
+          }
+        }
+      ],
+      "signature": "fd3c814e768fc3b4dcb944e5568d7273ff3f3a0aafe82cadb4bb1ac2f5387ccc",
+      "details": {
+        "providerSuccesses": 1,
+        "documentCount": 2,
+        "classified": false,
+        "expectedFields": 22,
+        "correctValues": 12,
+        "groundedCorrectFields": 12,
+        "ruleCorrect": false,
+        "confirmedMismatches": 0,
+        "passed": false,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "unavailable"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          null
+        ],
+        "errorCodes": [
+          null,
+          "INVALID_AI_RESPONSE"
+        ],
+        "outputIssues": [
+          null,
+          "INVALID_JSON"
+        ],
+        "providerDiagnostics": [
+          null,
+          {
+            "httpStatus": 200,
+            "status": "UNKNOWN",
+            "outputIssue": "INVALID_JSON",
+            "outputFields": [],
+            "outputFailures": []
+          }
+        ]
+      }
     }
   ],
   "repeatConsistent": null,
-  "providerSuccesses": 6,
-  "expectedDocuments": 9,
-  "groundedCorrectFields": 48,
-  "expectedFields": 72,
+  "providerSuccesses": 23,
+  "expectedDocuments": 27,
+  "groundedCorrectFields": 240,
+  "expectedFields": 274,
   "missing": [
-    "A-D-C",
-    "A-D-D",
-    "layout-portrait-landscape",
-    "layout-party-tables",
-    "layout-mixed-packaging",
-    "layout-quantity-mismatch",
-    "layout-reference-conflict",
-    "layout-wrapped-description",
+    "connection-single-A",
+    "A-D-A",
+    "A-D-B",
     "layout-missing-reference",
     "repeat-portrait-landscape"
   ],
@@ -477,7 +1513,7 @@
     "npmCiPackages": 419,
     "typecheck": "passed",
     "lint": "passed",
-    "unitTests": 231,
+    "unitTests": 237,
     "browserTests": 12,
     "productionBuild": "passed",
     "pdfWorker": "passed",
@@ -485,21 +1521,7 @@
     "mockLayoutCases": 7,
     "mockGroundedFields": 172,
     "mockExpectedFields": 172,
-    "note": "230 unit and 12 browser tests passed in previous full ship; a new structural-diagnostics regression is checked in the next full ship before push."
-  },
-  "historicalReportCorrection": "The initial single-document ruleCorrect boolean tested insufficient-document handling only. It is preserved as singleDocumentUnavailableStateHandled, with ruleCorrect=null because no quantity comparison was evaluated.",
-  "recordedAtUtc": "2026-10-11T22:24:06.565210+00:00",
-  "sourceCommit": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
-  "deployment": {
-    "productionSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
-    "deploymentId": "dpl_2RLEZsCQfrMuMK7EMWx5EnJVvv6p",
-    "httpServingVerified": true,
-    "provider": "openai",
-    "model": "gpt-6-luna",
-    "keyPresent": true,
-    "keyValidity": "actual analysis succeeded after user credential update",
-    "vercelManagementReady": "unverified",
-    "vercelManagementHttpStatus": 403
+    "note": "Previous full ship passed 231 unit/12 browser tests. Six additional message-phase regressions are validated in the next ship before Push."
   },
   "credentialRecovery": {
     "failedBeforeUpdate": 2,
@@ -514,10 +1536,47 @@
     "automaticRetries": 0,
     "chargedCostUsd": null
   },
+  "historicalReportCorrection": "The initial single-document ruleCorrect boolean tested insufficient-document handling only. It is preserved as singleDocumentUnavailableStateHandled, with ruleCorrect=null because no quantity comparison was evaluated.",
   "budgetApproval": {
-    "additionalDocuments": 7,
-    "totalDocuments": 27,
+    "additionalDocuments": 9,
+    "totalDocuments": 29,
     "maxCostUsd": 0.5,
-    "source": "explicit user reply"
+    "source": "two explicit user replies, +7 then +2"
+  },
+  "recordedAtUtc": "2026-10-11T22:30:23.864800+00:00",
+  "sourceCommits": [
+    "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+    "5be24ac81cedb9c43492814fcd3e7780d6e36bf4"
+  ],
+  "deployment": {
+    "productionSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+    "deploymentId": "dpl_HmyV17H7CBNwMNPMAqNnFHAzdkFq",
+    "httpServingVerified": true,
+    "provider": "openai",
+    "model": "gpt-6-luna",
+    "keyPresent": true,
+    "keyValidity": "actual analysis succeeded",
+    "githubActionsRun": 38180389649,
+    "githubActionsConclusion": "success",
+    "githubDeploymentState": "success",
+    "githubDeploymentDescription": "Deployment has completed",
+    "vercelManagementReady": "unverified",
+    "vercelManagementHttpStatus": 403
+  },
+  "latestValidation": {
+    "AD": {
+      "A": "passed at 5be24ac",
+      "B": "passed at 5be24ac",
+      "C": "initial invalid JSON, passed minimal retest at 45db98f",
+      "D": "passed at 45db98f"
+    },
+    "layoutsPassed": 6,
+    "layoutsAttempted": 7,
+    "layoutGroundedFields": 162,
+    "layoutExpectedFields": 172,
+    "repeat": "not run",
+    "unresolved": "Two-message response concatenated commentary/final JSON; phase-aware parser fix awaits actual validation",
+    "chargedCostUsd": null,
+    "automaticRetries": 0
   }
 }

@@ -1,6 +1,13 @@
 export interface ProviderDiagnostics {
   httpStatus: number;
-  status: "INVALID_ARGUMENT" | "RESOURCE_EXHAUSTED" | "INTERNAL" | "UNAVAILABLE" | "PERMISSION_DENIED" | "NOT_FOUND" | "UNKNOWN";
+  status:
+    | "INVALID_ARGUMENT"
+    | "RESOURCE_EXHAUSTED"
+    | "INTERNAL"
+    | "UNAVAILABLE"
+    | "PERMISSION_DENIED"
+    | "NOT_FOUND"
+    | "UNKNOWN";
   model?: string;
   requestFields: string[];
   reasons?: string[];
@@ -8,7 +15,12 @@ export interface ProviderDiagnostics {
   quotaLimitZero: boolean;
   availableModels?: string[];
   minimalJsonAttempted?: boolean;
-  outputIssue?: "MAX_TOKENS" | "NON_STOP" | "EMPTY_TEXT" | "INVALID_JSON" | "SCHEMA_MISMATCH";
+  outputIssue?:
+    | "MAX_TOKENS"
+    | "NON_STOP"
+    | "EMPTY_TEXT"
+    | "INVALID_JSON"
+    | "SCHEMA_MISMATCH";
   outputFields?: string[];
   outputFailures?: { field: string; code: string; received: string }[];
   outputStructure?: {
@@ -32,9 +44,17 @@ export class AnalysisError extends Error {
     this.name = "AnalysisError";
   }
 }
-export function safeError(error: unknown): { code: string; message: string; diagnostics?: ProviderDiagnostics } {
+export function safeError(error: unknown): {
+  code: string;
+  message: string;
+  diagnostics?: ProviderDiagnostics;
+} {
   if (error instanceof AnalysisError)
-    return { code: error.code, message: error.message, ...(error.diagnostics ? { diagnostics: error.diagnostics } : {}) };
+    return {
+      code: error.code,
+      message: error.message,
+      ...(error.diagnostics ? { diagnostics: error.diagnostics } : {}),
+    };
   return {
     code: "ANALYSIS_FAILED",
     message: "문서를 처리하지 못했습니다. 파일을 확인하고 다시 시도해 주세요.",
