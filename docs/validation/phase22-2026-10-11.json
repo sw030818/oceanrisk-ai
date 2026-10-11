@@ -2,16 +2,16 @@
   "mode": "actual-openai-synthetic-pdfs",
   "model": "gpt-6-luna",
   "keyConfigured": true,
-  "deploymentSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+  "deploymentSha": "64c91ee5ff4875fa3c25e2ca15e2d315dbd273d1",
   "completed": false,
   "budget": {
-    "documents": 27,
-    "measuredCostUsd": 0.008630045000000003,
+    "documents": 31,
+    "measuredCostUsd": 0.009692945000000003,
     "unresolvedCostUpperUsd": 0.008357800000000002,
-    "maxDocuments": 29,
+    "maxDocuments": 31,
     "maxCostUsd": 0.5
   },
-  "stopReason": "FAILED_STAGE_STOP_FIX_BEFORE_NEXT_CALL",
+  "stopReason": null,
   "cases": [
     {
       "id": "connection-single-A",
@@ -1489,19 +1489,271 @@
           }
         ]
       }
+    },
+    {
+      "id": "layout-missing-reference",
+      "deploymentSha": "64c91ee5ff4875fa3c25e2ca15e2d315dbd273d1",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 22,
+      "correctValues": 22,
+      "groundedCorrectFields": 22,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3144,
+          "inputTokens": 2516,
+          "outputTokens": 502,
+          "cachedInputTokens": 2513,
+          "cacheWriteTokens": 0,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00027643,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3002,
+          "inputTokens": 2430,
+          "outputTokens": 439,
+          "cachedInputTokens": 2427,
+          "cacheWriteTokens": 0,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00024406999999999999,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "915c4df8d5e3335560ad0aaa78473ed2e23507591e25d129cda15eed8d746dbd",
+      "details": {
+        "providerSuccesses": 2,
+        "documentCount": 2,
+        "classified": true,
+        "expectedFields": 22,
+        "correctValues": 22,
+        "groundedCorrectFields": 22,
+        "ruleCorrect": true,
+        "confirmedMismatches": 0,
+        "passed": true,
+        "ruleStates": [
+          {
+            "status": "unverifiable",
+            "confidence": "candidate"
+          },
+          {
+            "status": "unverifiable",
+            "confidence": "candidate"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "missing",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ],
+        "errorCodes": [
+          null,
+          null
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "repeat-portrait-landscape",
+      "deploymentSha": "64c91ee5ff4875fa3c25e2ca15e2d315dbd273d1",
+      "documents": 2,
+      "status": "passed",
+      "providerSuccesses": 2,
+      "expectedFields": 25,
+      "correctValues": 25,
+      "groundedCorrectFields": 25,
+      "ruleCorrect": true,
+      "errorCodes": [
+        null,
+        null
+      ],
+      "models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "usage": [
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 3141,
+          "inputTokens": 2425,
+          "outputTokens": 492,
+          "cachedInputTokens": 2422,
+          "cacheWriteTokens": 0,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00027052,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "requestCount": 1,
+          "retryCount": 0,
+          "durationMs": 2880,
+          "inputTokens": 2511,
+          "outputTokens": 493,
+          "cachedInputTokens": 2508,
+          "cacheWriteTokens": 0,
+          "reasoningTokens": 0,
+          "estimatedCostUsd": 0.00027188,
+          "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+        }
+      ],
+      "providerDiagnostics": [
+        null,
+        null
+      ],
+      "signature": "0ab7efc0dcf8daf49a6d9c749bc1ece57dceaf742e15a641fa2da4e5796eb012",
+      "details": {
+        "providerSuccesses": 2,
+        "documentCount": 2,
+        "classified": true,
+        "expectedFields": 25,
+        "correctValues": 25,
+        "groundedCorrectFields": 25,
+        "ruleCorrect": true,
+        "confirmedMismatches": 0,
+        "passed": true,
+        "ruleStates": [
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          },
+          {
+            "status": "match",
+            "confidence": "confirmed"
+          }
+        ],
+        "fieldStates": [
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          },
+          {
+            "seller": "verified",
+            "buyer": "verified",
+            "reference": "verified",
+            "items": [
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              },
+              {
+                "description": "verified",
+                "quantity": "verified",
+                "unit": "verified"
+              }
+            ]
+          }
+        ],
+        "errorCodes": [
+          null,
+          null
+        ],
+        "outputIssues": [
+          null,
+          null
+        ],
+        "providerDiagnostics": [
+          null,
+          null
+        ]
+      }
     }
   ],
   "repeatConsistent": null,
-  "providerSuccesses": 23,
-  "expectedDocuments": 27,
-  "groundedCorrectFields": 240,
-  "expectedFields": 274,
+  "providerSuccesses": 27,
+  "expectedDocuments": 31,
+  "groundedCorrectFields": 287,
+  "expectedFields": 321,
   "missing": [
     "connection-single-A",
     "A-D-A",
     "A-D-B",
-    "layout-missing-reference",
-    "repeat-portrait-landscape"
+    "A-D-C",
+    "A-D-D",
+    "layout-portrait-landscape",
+    "layout-party-tables",
+    "layout-mixed-packaging",
+    "layout-quantity-mismatch",
+    "layout-reference-conflict",
+    "layout-wrapped-description"
   ],
   "localEnvironment": {
     "openAIKeyConfigured": false,
@@ -1521,7 +1773,7 @@
     "mockLayoutCases": 7,
     "mockGroundedFields": 172,
     "mockExpectedFields": 172,
-    "note": "Previous full ship passed 231 unit/12 browser tests. Six additional message-phase regressions are validated in the next ship before Push."
+    "note": "Full ship 64c91ee passed npm ci, typecheck, lint, 237 unit tests, Production build/worker, 12 browser tests."
   },
   "credentialRecovery": {
     "failedBeforeUpdate": 2,
@@ -1537,26 +1789,170 @@
     "chargedCostUsd": null
   },
   "historicalReportCorrection": "The initial single-document ruleCorrect boolean tested insufficient-document handling only. It is preserved as singleDocumentUnavailableStateHandled, with ruleCorrect=null because no quantity comparison was evaluated.",
-  "budgetApproval": {
-    "additionalDocuments": 9,
-    "totalDocuments": 29,
-    "maxCostUsd": 0.5,
-    "source": "two explicit user replies, +7 then +2"
-  },
-  "recordedAtUtc": "2026-10-11T22:30:23.864800+00:00",
+  "recordedAtUtc": "2026-10-11T22:35:09.714147+00:00",
   "sourceCommits": [
     "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
-    "5be24ac81cedb9c43492814fcd3e7780d6e36bf4"
+    "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+    "64c91ee5ff4875fa3c25e2ca15e2d315dbd273d1"
   ],
+  "budgetApproval": {
+    "additionalDocuments": 11,
+    "totalDocuments": 31,
+    "maxCostUsd": 0.5,
+    "source": "explicit user replies +7, +2, final +2; no further paid calls"
+  },
+  "coverageAcrossRecordedReleases": {
+    "allRequiredCasesHavePassed": true,
+    "sameShaFullSuiteComplete": false,
+    "cases": [
+      {
+        "id": "connection-single-A",
+        "sourceSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+        "passed": true
+      },
+      {
+        "id": "A-D-A",
+        "sourceSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+        "passed": true
+      },
+      {
+        "id": "A-D-B",
+        "sourceSha": "5be24ac81cedb9c43492814fcd3e7780d6e36bf4",
+        "passed": true
+      },
+      {
+        "id": "A-D-C",
+        "sourceSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+        "passed": true
+      },
+      {
+        "id": "A-D-D",
+        "sourceSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+        "passed": true
+      },
+      {
+        "id": "layout-portrait-landscape",
+        "sourceSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+        "passed": true
+      },
+      {
+        "id": "layout-party-tables",
+        "sourceSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+        "passed": true
+      },
+      {
+        "id": "layout-mixed-packaging",
+        "sourceSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+        "passed": true
+      },
+      {
+        "id": "layout-quantity-mismatch",
+        "sourceSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+        "passed": true
+      },
+      {
+        "id": "layout-reference-conflict",
+        "sourceSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+        "passed": true
+      },
+      {
+        "id": "layout-wrapped-description",
+        "sourceSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+        "passed": true
+      },
+      {
+        "id": "layout-missing-reference",
+        "sourceSha": "64c91ee5ff4875fa3c25e2ca15e2d315dbd273d1",
+        "passed": true
+      },
+      {
+        "id": "repeat-portrait-landscape",
+        "sourceSha": "64c91ee5ff4875fa3c25e2ca15e2d315dbd273d1",
+        "passed": true
+      }
+    ],
+    "selectedSuccessfulFields": 267,
+    "selectedExpectedFields": 267,
+    "selectionNote": "Latest passed run per required case. Historical failures remain in cumulative denominators. Cases span three source commits; this is not a full suite at one SHA.",
+    "crossReleaseRepeatConsistent": true,
+    "repeatSourceShas": [
+      "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
+      "64c91ee5ff4875fa3c25e2ca15e2d315dbd273d1"
+    ]
+  },
+  "unchangedValidationModules": {
+    "src/modules/ai/openai-schema.ts": true,
+    "src/modules/evidence/verify.ts": true,
+    "src/modules/rules/quantity.ts": true,
+    "src/modules/pdf/extract.ts": true,
+    "instructionsAndRequest": true
+  },
+  "usageSummary": {
+    "allDocumentRequests": 31,
+    "automaticRetries": 0,
+    "knownUsageResponses": 29,
+    "unknownUsageResponses": 2,
+    "knownTokenTotals": {
+      "inputTokens": 68671,
+      "outputTokens": 14030,
+      "cachedInputTokens": 51337,
+      "cacheWriteTokens": 17247,
+      "reasoningTokens": 0
+    },
+    "knownTokenCostEstimateUsd": 0.009692945000000003,
+    "unknownCostReservationUsd": 0.008357800000000002,
+    "combinedAccountingUpperUsd": 0.018050745000000007,
+    "actualBilledCostUsd": null,
+    "medianProviderDurationMs": 3141,
+    "maxProviderDurationMs": 4427,
+    "scope": "Synthetic text PDFs, GPT-6 Luna Standard only; estimated cost is not an invoice."
+  },
+  "actualRates": {
+    "allAttempts": {
+      "structuredSuccesses": 27,
+      "documents": 31,
+      "successRate": 0.8709677419354839,
+      "groundedCorrectFields": 287,
+      "expectedFields": 321,
+      "groundingRate": 0.8940809968847352
+    },
+    "afterCredentialCorrection": {
+      "structuredSuccesses": 27,
+      "documents": 29
+    },
+    "afterMessagePhaseFix": {
+      "structuredSuccesses": 4,
+      "documents": 4,
+      "groundedCorrectFields": 47,
+      "expectedFields": 47
+    },
+    "failedCaseCount": 4,
+    "failureHistory": [
+      "Two API_AUTH_OR_CONFIG requests before credential correction; second confirmed invalid_api_key HTTP401",
+      "C invoice HTTP200 INVALID_JSON; explicit minimal retest passed",
+      "Missing-reference Packing List HTTP200 INVALID_JSON with two output messages; phase-aware fix and explicit retest passed"
+    ]
+  },
+  "quantityValidation": {
+    "selectedPairCases": 12,
+    "correctOutcomeCases": 12,
+    "expectedConfirmedMismatchCases": 2,
+    "correctlyDetectedConfirmedMismatchCases": 2,
+    "unexpectedConfirmedMismatches": 0,
+    "confirmedComparisonRows": 15,
+    "confirmedMismatchRows": 2,
+    "confirmedMatchRows": 13,
+    "note": "Latest passing synthetic runs only. Candidate/unavailable results are not counted as confirmed matches; failed provider runs are excluded from numerical accuracy assessment, retained in all-attempt success metrics."
+  },
   "deployment": {
-    "productionSha": "45db98f1955ce3f474c8450fcca8ac3ba71ffa4a",
-    "deploymentId": "dpl_HmyV17H7CBNwMNPMAqNnFHAzdkFq",
+    "productionSha": "64c91ee5ff4875fa3c25e2ca15e2d315dbd273d1",
+    "deploymentId": "dpl_4QeNXMhZ46Az8cR98U8aV3nRe1Kz",
     "httpServingVerified": true,
     "provider": "openai",
     "model": "gpt-6-luna",
     "keyPresent": true,
     "keyValidity": "actual analysis succeeded",
-    "githubActionsRun": 38180389649,
+    "githubActionsRun": 38180818228,
     "githubActionsConclusion": "success",
     "githubDeploymentState": "success",
     "githubDeploymentDescription": "Deployment has completed",
@@ -1564,19 +1960,21 @@
     "vercelManagementHttpStatus": 403
   },
   "latestValidation": {
-    "AD": {
-      "A": "passed at 5be24ac",
-      "B": "passed at 5be24ac",
-      "C": "initial invalid JSON, passed minimal retest at 45db98f",
-      "D": "passed at 45db98f"
+    "AD": "A/B passed at 5be24ac; C/D passed at 45db98f",
+    "sevenLayouts": "First six passed at 45db98f; missing-reference passed after phase fix at 64c91ee",
+    "selectedLayoutGrounding": {
+      "correct": 172,
+      "expected": 172
     },
-    "layoutsPassed": 6,
-    "layoutsAttempted": 7,
-    "layoutGroundedFields": 162,
-    "layoutExpectedFields": 172,
-    "repeat": "not run",
-    "unresolved": "Two-message response concatenated commentary/final JSON; phase-aware parser fix awaits actual validation",
+    "repeat": "Passed at 64c91ee; identical core-field/grounding signature to 45db98f first run",
     "chargedCostUsd": null,
-    "automaticRetries": 0
+    "automaticRetries": 0,
+    "remainingRisks": [
+      "No full live suite at a single final SHA; explicitly recorded cross-release coverage",
+      "Historical invalid JSON response phase labels were not retained; the concatenation bug was fixed without raw document logging",
+      "Synthetic tests do not establish general real-world trade-document accuracy",
+      "Rotated/merged tables and scanned-PDF OCR remain unsupported or unverified",
+      "Vercel management Ready direct query denied HTTP403; Git integration success and same-SHA serving verified"
+    ]
   }
 }

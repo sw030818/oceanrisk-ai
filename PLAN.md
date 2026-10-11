@@ -49,3 +49,5 @@ PHASE 2 진행 상태: 구현·로컬 모의 검사·main Push·Production SHA �
 4. npm ci/type/lint/단위/build/worker/Production 브라우저를 실행하고 ship으로 일반 main Push·원격 SHA·Production/Actions를 확인한다.
 5. 배포된 OpenAI를 단일 A→pair→A–D→7양식→반복 순서로 실제 검증한다. $0.50/문서20개 이전 중단·별도 추가 승인 규칙을 지키고 모의/실제/남은 검증을 구분한다.
 6. 실제 메타데이터/PROGRESS를 보존하고 설정 초안을 저장한다. 모든 실제 검증 미완료 시 부분 완료로 보고한다. 후속 기능은 추가하지 않는다.
+
+PHASE 2.2 실행 결과: OpenAI Responses 기본 전환, phase별 최종 JSON 처리, 독립 PDF 근거 검증과 기존 UI를 보존했다. 실제 합성 A–D/7양식/반복의 통과 결과를 확보했으며, 총31문서 예산에서 종료했다. 초기4실패를 포함한 실제 구조화27/31과 최신 양식근거172/172를 구분한다. 최종SHA 단독 전체 live suite 및 실무 양식 일반정확도는 미검증이며, 이 단계의 후속 기능은 추가하지 않는다. 자세한 소스/배포/예산은 PROGRESS.md 및 validation JSON을 따른다.
