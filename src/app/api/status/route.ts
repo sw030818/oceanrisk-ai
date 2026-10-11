@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 export function GET() {
   return NextResponse.json(
     {
-      aiConfigured: Boolean(process.env.GEMINI_API_KEY),
+      aiConfigured: Boolean(process.env.OPENAI_API_KEY),
       deployment: {
         commitSha: /^[a-f0-9]{40}$/i.test(process.env.VERCEL_GIT_COMMIT_SHA ?? "")
           ? process.env.VERCEL_GIT_COMMIT_SHA
