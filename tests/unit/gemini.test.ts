@@ -318,4 +318,16 @@ describe("Gemini transport with mocked provider (not live API validation)", () =
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
+  it("rejects quote arrays and exposes only fixed shape diagnostics, no source text", async () => {
+    const malformed = structuredClone(data);
+    (malformed.seller.evidence as unknown as {quote:unknown}).quote = ["sensitive synthetic text"];
+    const fetcher = vi.fn(async () => response({candidates:[{finishReason:"STOP",content:{parts:[{text:JSON.stringify(malformed)}]}}]}));
+    await expect(extractWithGemini(pdf,{apiKey:"test",fetcher})).rejects.toMatchObject({
+      code:"INVALID_AI_RESPONSE",diagnostics:{outputFailures:[{field:"seller.evidence.quote",code:"invalid_type",received:"array"}]},
+    });
+    try { await extractWithGemini(pdf,{apiKey:"test",fetcher}); }
+    catch (error) { expect(JSON.stringify(error)).not.toContain("sensitive synthetic text"); }
+    expect(SYSTEM_INSTRUCTION).toContain("evidence.quote MUST be a JSON STRING");
+  });
+
 });

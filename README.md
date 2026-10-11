@@ -143,6 +143,11 @@ PDF.js의 실제 페이지 좌표·블록 ID·행 정보를 기존 page/text에 
 npm run test:layouts
 # 배포된 동일 SHA와 서버 키 확인 후 실제 Gemini: 7개 조합 + 첫 조합 1회 반복
 npm run test:layouts:production -- --sha=<deployed-main-sha> --repeat=2
+# 특정 실패 양식만 최소 재진단 (전체 완료로 집계하지 않음)
+npm run test:layouts:production -- --sha=<deployed-main-sha> --case=portrait-landscape
 ```
 
 실제 테스트 스크립트는 정상 세로/가로 양식, 별도 당사자 표, PCS/CTNS 혼재, 수량 차이, 거래번호 충돌, 줄바꿈 품명, 참조 누락을 검사합니다. 예상 필드/근거 확인 수·분류·규칙·오류 코드·반복 결과 해시만 보고서에 기록하고 원시 문서 값/키는 저장하지 않습니다. 429가 발생하면 후속 사례를 중단하며 제공자 한도를 변경/우회하지 않습니다. 보고서는 Git에서 제외된 test-results/live-layouts에 있습니다. 합성 표본의 수치는 실무 전체 서류의 정확도가 아닙니다.
+
+
+클라우드의 HTTPS_PROXY가 설정되어도 Node fetch가 자동 사용하지 않는 경우 `NODE_USE_ENV_PROXY=1`을 ship/check:production/test:production/test:layouts:production 실행 앞에 지정합니다(Node.js 24). 프록시 주소나 인증 정보를 출력하지 않습니다. 현재 실제 PHASE 2 분석은 응답 구조/Google 503로 실패했으므로 Production 배포 성공과 실제 분석 정상화를 구분합니다. 최신 재검증 결과는 PROGRESS.md를 따릅니다.

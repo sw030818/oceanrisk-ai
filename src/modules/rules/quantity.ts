@@ -83,15 +83,39 @@ export function compareQuantities(
         ),
       ];
   }
-  if ([invoice.documentNumber, invoice.purchaseOrder, packing.purchaseOrder, invoice.invoiceReference, packing.invoiceReference].some(field => field?.status === "user_edited"))
-    return [result("edited-identifiers", "사용자가 수정한 거래 식별 정보가 있습니다. 원문을 재확인하기 전 확정 비교에 사용하지 않습니다.")];
+  if (
+    [
+      invoice.documentNumber,
+      invoice.purchaseOrder,
+      packing.purchaseOrder,
+      invoice.invoiceReference,
+      packing.invoiceReference,
+    ].some((field) => field?.status === "user_edited")
+  )
+    return [
+      result(
+        "edited-identifiers",
+        "사용자가 수정한 거래 식별 정보가 있습니다. 원문을 재확인하기 전 확정 비교에 사용하지 않습니다.",
+      ),
+    ];
   for (const [left, right] of [
     [invoice.purchaseOrder, packing.purchaseOrder],
     [invoice.documentNumber, packing.invoiceReference],
     [invoice.invoiceReference, packing.invoiceReference],
   ]) {
-    if (left && right && known(left) && known(right) && normalizeText(left.value!) !== normalizeText(right.value!))
-      return [result("conflicting-identifiers", "검증된 주문번호 또는 Invoice 참조번호가 충돌합니다. 같은 거래로 자동 연결하지 않았습니다.")];
+    if (
+      left &&
+      right &&
+      known(left) &&
+      known(right) &&
+      normalizeText(left.value!) !== normalizeText(right.value!)
+    )
+      return [
+        result(
+          "conflicting-identifiers",
+          "검증된 주문번호 또는 Invoice 참조번호가 충돌합니다. 같은 거래로 자동 연결하지 않았습니다.",
+        ),
+      ];
   }
   const refs = [invoice.transactionReference, packing.transactionReference];
   if (
@@ -118,9 +142,19 @@ export function compareQuantities(
       ),
     ];
   const referenceConfirmed =
-    (refs.every(known) && normalizeText(refs[0].value!) === normalizeText(refs[1].value!)) ||
-    (!!invoice.purchaseOrder && !!packing.purchaseOrder && known(invoice.purchaseOrder) && known(packing.purchaseOrder) && normalizeText(invoice.purchaseOrder.value!) === normalizeText(packing.purchaseOrder.value!)) ||
-    (!!packing.invoiceReference && known(invoice.documentNumber) && known(packing.invoiceReference) && normalizeText(invoice.documentNumber.value!) === normalizeText(packing.invoiceReference.value!));
+    (refs.every(known) &&
+      normalizeText(refs[0].value!) === normalizeText(refs[1].value!)) ||
+    (!!invoice.purchaseOrder &&
+      !!packing.purchaseOrder &&
+      known(invoice.purchaseOrder) &&
+      known(packing.purchaseOrder) &&
+      normalizeText(invoice.purchaseOrder.value!) ===
+        normalizeText(packing.purchaseOrder.value!)) ||
+    (!!packing.invoiceReference &&
+      known(invoice.documentNumber) &&
+      known(packing.invoiceReference) &&
+      normalizeText(invoice.documentNumber.value!) ===
+        normalizeText(packing.invoiceReference.value!));
   const scopeConfirmed = scopes.every(
     (field) => known(field) && field.value === "no",
   );
@@ -188,14 +222,16 @@ export function compareQuantities(
       (row) =>
         row.quantity.source?.page === row.unit.source?.page &&
         row.quantity.source &&
-        (row.quantity.source.layout?.role === "quantity" && row.quantity.source.layout.unit
-          ? canonicalUnit(row.quantity.source.layout.unit) === canonicalUnit(row.unit.value!)
+        (row.quantity.source.layout?.role === "quantity" &&
+        row.quantity.source.layout.unit
+          ? canonicalUnit(row.quantity.source.layout.unit) ===
+            canonicalUnit(row.unit.value!)
           : productQuantities(row.quantity.source.quote).some(
-          (evidence) =>
-            evidence.value === row.quantity.value &&
-            evidence.unit &&
-            canonicalUnit(evidence.unit) === canonicalUnit(row.unit.value!),
-        )),
+              (evidence) =>
+                evidence.value === row.quantity.value &&
+                evidence.unit &&
+                canonicalUnit(evidence.unit) === canonicalUnit(row.unit.value!),
+            )),
     );
     if (!quantityUnitsLinked) {
       results.push(

@@ -10,6 +10,7 @@ export interface ProviderDiagnostics {
   minimalJsonAttempted?: boolean;
   outputIssue?: "MAX_TOKENS" | "NON_STOP" | "EMPTY_TEXT" | "INVALID_JSON" | "SCHEMA_MISMATCH";
   outputFields?: string[];
+  outputFailures?: { field: string; code: string; received: string }[];
 }
 export class AnalysisError extends Error {
   constructor(

@@ -283,3 +283,19 @@
 현재 구현은 ship 검사 및 main Push를 준비하는 상태이며, 아래에 실제 실행 결과·SHA·미검증을 추가한다. 이 문단 자체는 Push/배포/API 성공의 근거가 아니다.
 
 - 최초 ship은 새 선적 근거 회귀 보강에서 `Full shipment`와 내부 `no`를 문자 비교하는 결함으로 단위 178/185, 7개 실패하여 커밋/Push 전 중단. 명시적 선적 의미와 실제 인용 블록 존재를 별도로 검증하도록 수정. 가짜 블록 ID 회귀도 유지하고 재실행 결과를 아래 기록한다.
+
+
+### 첫 소스 저장·Production 및 실제 실패 결과
+- main 소스 **600ae1d90a78e6e4ce5a7c5a1046c88ee5530af6** 일반 Push 및 원격 SHA/소스 일치 확인. ship: npm ci 419개, type/lint, 단위 **185/185**, build/worker, Production 브라우저 **10/10** 성공.
+- 첫 ship의 배포 조회는 Node가 환경 프록시를 사용하지 않아 실패. 이 작업의 해당 조회 프로세스를 종료하고 `NODE_USE_ENV_PROXY=1 npm run check:production -- --sha <SHA>`로 재실행: 5회차에 정확한 Production SHA·서버 키·ID **dpl_8a4NAF5gPCrarVNY5sM8HsHTUfW3** 확인.
+- Actions https://github.com/sw030818/oceanrisk-ai/actions/runs/38172996014 : quality/production 성공, live-gemini는 일반 커밋이므로 skipped. Vercel GitHub 커밋 상태 및 Production deployment 상태는 success / Deployment has completed. 관리 API는 HTTP 403, 관리 토큰 미설정: control-plane Ready 직접 조회와 구분.
+- 실제 공식 Production의 데스크톱/390px 모바일 UI를 Chromium으로 확인: 두 영역·빨간 PDF·세로 배치·가로 넘침 없음. 프록시 인증서 때문에 별도 공개 페이지 점검 컨텍스트에만 ignoreHTTPSErrors 적용했으며 앱/CI 보안 설정은 변경하지 않음.
+- 실제 Gemini 7개 양식 + 첫 양식 반복: 8개 요청/16개 문서, 모델 gemini-3.1-flash-lite. **유효 구조화 분석 0/16, 예상 핵심 근거 0/197, 규칙 사례 0/8**. 9개 문서는 HTTP 200 응답의 SCHEMA_MISMATCH, 7개는 API_ERROR. 유효 결과가 없어서 분류/수량 탐지 정확도·반복 일관성을 평가할 수 없으며 오탐 0이라고도 주장하지 않음. 모의 172/172와 다른 결과임.
+- 추가 최소 양식 진단 2개는 Google **503 UNAVAILABLE**로 실패. 기존 실제 정상 샘플 A 2개도 재검사 실패: HTTP 200 SCHEMA_MISMATCH, 주로 evidence.quote 필드 경로. 이 시점의 모든 실제 20개 문서는 구조화 성공 0개. B–D 추가 유료 실행은 하지 않음. 429 없음; 제공자 오류 자동 반복/모델 순환·할당량 변경 없음.
+- 기존 실제 A 성공 기록은 이전 배포의 결과이며 이번 배포의 A 실패를 숨기지 않음. 현재 실제 PDF 분석 정상화/범용 정확도 검증은 미완료.
+
+### 인용 구조 계약 보강 및 재진단 준비
+- evidence.quote는 문자열, evidence.page는 정수, segments는 별도의 선택 배열임을 명시하고 실제 인용 객체 타입 예시/800자 제한을 프롬프트에 추가. 형식 복구의 필드 목록에 PO/Invoice 참조도 포함. 실제 값/근거 검증을 느슨하게 하지 않고 Zod/원문/행/역할 조건 유지.
+- 원문/값을 포함하지 않는 Zod 실패 경로·코드·받은 JSON 타입 진단 추가. quote 배열을 거부하고 민감 텍스트를 진단에 포함하지 않는 회귀 검사 추가.
+- 평가 도구에 최소 `--case` 범위와 진행 보고서·안전한 HTTP/형식 진단 추가. subset 통과를 전체 완료로 표시하지 않음. 실패 문서의 필드를 분모에 유지하고 미검증 정답을 근거 성공으로 집계하지 않는 보고 회귀 검사 2개 추가.
+- 실제 수정 효과는 새 커밋 배포 이후 최소 검사로 확인하며 Google 503을 코드로 해결했다고 미리 주장하지 않음. 읽기 쉬운 코드 정렬은 함수 동작을 바꾸지 않음.

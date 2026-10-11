@@ -108,7 +108,16 @@ export async function POST(request: Request) {
     for (const [index, file] of files.entries()) {
       const result = await analyzeFile(file, { signal });
       const uploadSlot = slots?.[index];
-      results.push(uploadSlot ? { ...result, uploadSlot, typeMismatch: !!result.document && result.document.type !== uploadSlot } : result);
+      results.push(
+        uploadSlot
+          ? {
+              ...result,
+              uploadSlot,
+              typeMismatch:
+                !!result.document && result.document.type !== uploadSlot,
+            }
+          : result,
+      );
     }
     return NextResponse.json(
       {

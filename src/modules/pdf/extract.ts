@@ -1,4 +1,8 @@
-import { getDocument, VerbosityLevel, Util } from "pdfjs-dist/legacy/build/pdf.mjs";
+import {
+  getDocument,
+  VerbosityLevel,
+  Util,
+} from "pdfjs-dist/legacy/build/pdf.mjs";
 import { AnalysisError } from "../documents/errors";
 import { MAX_PAGES, MAX_TEXT_CHARS } from "../upload/limits";
 import { validatePdfSignature } from "../upload/validate";
@@ -58,9 +62,22 @@ export async function extractPdfText(
         if (!("str" in item)) continue;
         if (item.str.trim()) {
           const position = Util.transform(viewport.transform, item.transform);
-          const height = Math.hypot(position[2], position[3]) || item.height || 1;
-          blocks.push({ id: `p${pageNumber}-b${blocks.length}`, text: item.str, x: position[4], y: position[5] - height, width: Math.abs(item.width), height, row: 0 });
-          if (++blockCount > 10000) throw new AnalysisError("PDF_LAYOUT_TOO_COMPLEX", "텍스트 블록이 너무 많습니다. 필요한 페이지만 분리해 주세요.");
+          const height =
+            Math.hypot(position[2], position[3]) || item.height || 1;
+          blocks.push({
+            id: `p${pageNumber}-b${blocks.length}`,
+            text: item.str,
+            x: position[4],
+            y: position[5] - height,
+            width: Math.abs(item.width),
+            height,
+            row: 0,
+          });
+          if (++blockCount > 10000)
+            throw new AnalysisError(
+              "PDF_LAYOUT_TOO_COMPLEX",
+              "텍스트 블록이 너무 많습니다. 필요한 페이지만 분리해 주세요.",
+            );
         }
         const y = item.transform[5];
         if (lastY !== null && Math.abs(y - lastY) > 3 && !text.endsWith("\n"))
@@ -75,12 +92,22 @@ export async function extractPdfText(
           "TOO_MUCH_TEXT",
           "문서 텍스트가 너무 많습니다. 필요한 페이지만 분리해 주세요.",
         );
-      let row = -1, baseline = -Infinity;
+      let row = -1,
+        baseline = -Infinity;
       for (const block of [...blocks].sort((a, b) => a.y - b.y || a.x - b.x)) {
-        if (Math.abs(block.y - baseline) > Math.max(2, block.height * 0.45)) { row++; baseline = block.y; }
+        if (Math.abs(block.y - baseline) > Math.max(2, block.height * 0.45)) {
+          row++;
+          baseline = block.y;
+        }
         block.row = row;
       }
-      pages.push({ page: pageNumber, text, width: viewport.width, height: viewport.height, blocks });
+      pages.push({
+        page: pageNumber,
+        text,
+        width: viewport.width,
+        height: viewport.height,
+        blocks,
+      });
       page.cleanup();
     }
     if (!pages.some((page) => page.text.replace(/\s/g, "").length >= 8))

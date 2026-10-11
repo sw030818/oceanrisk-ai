@@ -33,3 +33,5 @@
 네트워크 프록시가 Production/GitHub API를 차단하는 이 환경에서는 `PRODUCTION_CHECK_ATTEMPTS=1`로 알려진 확인 불가 상태의 반복 대기를 줄일 수 있다. 이 경우 GitHub 저장과 Production 확인 실패를 분리해서 보고한다. 제약이 해제되면 기본 20회 확인을 사용한다.
 
 실제 Gemini 확인을 현재 사용자가 요청한 경우에만 ship 커밋 메시지의 `[verify-live-gemini]` 표시 또는 수동 Actions verify_live_gemini 입력으로 명시적 합성 Production 검증을 실행할 수 있다. 일반 작업에는 표시를 붙이지 않는다. GitHub 공개 run/job summary에서 quality/production/live 결과와 기준별 오류를 확인하고 실제 호출이 실패하면 해당 원인을 해결하거나 정확히 보고한다. 공개 배포 SHA/ID와 Vercel 관리 Ready 상태는 구분한다.
+
+Node.js 24의 fetch가 설정된 HTTPS_PROXY를 사용하지 않아 DNS/연결 실패가 발생할 수 있다. 해당 클라우드에서는 `NODE_USE_ENV_PROXY=1`을 ship 또는 원격 검사 명령 앞에 지정한다. 프록시 주소/인증 정보를 출력하지 않는다. PHASE 2의 최소 진단은 `test:layouts:production -- --sha=<SHA> --case=<fixture-id>`로 가능하며 subset 성공을 전체 완료로 보고하지 않는다. 실제 오류가 지속되면 모의 통과·Vercel success로 AI 정상화를 주장하지 않는다.

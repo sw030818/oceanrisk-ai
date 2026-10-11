@@ -84,8 +84,76 @@ export function EvidenceDialog({
             <blockquote className="mt-2 break-words rounded-lg border-l-2 border-blue-500 bg-blue-50 p-3 text-sm leading-6">
               {selection.field.source.quote}
             </blockquote>
-            {selection.field.source.blocks?.length ? <div className="mt-4 rounded-lg border border-slate-200 p-3"><p className="text-xs font-semibold">실제 PDF 블록 위치</p>{selection.field.source.blocks.map(block=><p key={block.id} className="mt-2 break-words text-[11px] leading-5 text-slate-600">“{block.text}” · 원문 {block.row+1}행 · x {block.x.toFixed(1)}, y {block.y.toFixed(1)}</p>)}{selection.field.source.layout && <p className="mt-3 text-[11px] text-blue-700">동일 표의 상품 행 연결 · {selection.field.source.layout.role === 'quantity' ? '상품 수량 열' : selection.field.source.layout.role === 'description' ? '품명 열' : '단위 열'}{selection.field.source.layout.unit ? ` · ${selection.field.source.layout.unit}` : ''}</p>}</div> : null}
-            {page?.blocks && page.width && page.height ? <div className="mt-4"><p className="mb-2 text-xs font-semibold">원문 위치 미리보기</p><svg role="img" aria-label="PDF 텍스트 블록과 근거 위치" viewBox={`0 0 ${page.width} ${page.height}`} className="max-h-96 w-full rounded-lg border border-slate-200 bg-white">{page.blocks.slice(0,2000).map(block=>{const highlighted=selection.field.source?.blocks?.some(b=>b.id===block.id);return <g key={block.id}><rect x={block.x} y={block.y} width={block.width} height={block.height} fill={highlighted?'#dbeafe':'transparent'} stroke={highlighted?'#2563eb':'none'} /><text x={block.x} y={block.y+block.height*.85} fontSize={block.height*.8} fill={highlighted?'#1e40af':'#64748b'}>{block.text}</text></g>;})}</svg>{page.blocks.length>2000 && <p className="mt-2 text-[10px] text-slate-500">미리보기는 처음 2,000개 블록만 표시합니다. 아래 원문에서 전체를 확인하세요.</p>}</div> : null}
+            {selection.field.source.blocks?.length ? (
+              <div className="mt-4 rounded-lg border border-slate-200 p-3">
+                <p className="text-xs font-semibold">실제 PDF 블록 위치</p>
+                {selection.field.source.blocks.map((block) => (
+                  <p
+                    key={block.id}
+                    className="mt-2 break-words text-[11px] leading-5 text-slate-600"
+                  >
+                    “{block.text}” · 원문 {block.row + 1}행 · x{" "}
+                    {block.x.toFixed(1)}, y {block.y.toFixed(1)}
+                  </p>
+                ))}
+                {selection.field.source.layout && (
+                  <p className="mt-3 text-[11px] text-blue-700">
+                    동일 표의 상품 행 연결 ·{" "}
+                    {selection.field.source.layout.role === "quantity"
+                      ? "상품 수량 열"
+                      : selection.field.source.layout.role === "description"
+                        ? "품명 열"
+                        : "단위 열"}
+                    {selection.field.source.layout.unit
+                      ? ` · ${selection.field.source.layout.unit}`
+                      : ""}
+                  </p>
+                )}
+              </div>
+            ) : null}
+            {page?.blocks && page.width && page.height ? (
+              <div className="mt-4">
+                <p className="mb-2 text-xs font-semibold">원문 위치 미리보기</p>
+                <svg
+                  role="img"
+                  aria-label="PDF 텍스트 블록과 근거 위치"
+                  viewBox={`0 0 ${page.width} ${page.height}`}
+                  className="max-h-96 w-full rounded-lg border border-slate-200 bg-white"
+                >
+                  {page.blocks.slice(0, 2000).map((block) => {
+                    const highlighted = selection.field.source?.blocks?.some(
+                      (b) => b.id === block.id,
+                    );
+                    return (
+                      <g key={block.id}>
+                        <rect
+                          x={block.x}
+                          y={block.y}
+                          width={block.width}
+                          height={block.height}
+                          fill={highlighted ? "#dbeafe" : "transparent"}
+                          stroke={highlighted ? "#2563eb" : "none"}
+                        />
+                        <text
+                          x={block.x}
+                          y={block.y + block.height * 0.85}
+                          fontSize={block.height * 0.8}
+                          fill={highlighted ? "#1e40af" : "#64748b"}
+                        >
+                          {block.text}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+                {page.blocks.length > 2000 && (
+                  <p className="mt-2 text-[10px] text-slate-500">
+                    미리보기는 처음 2,000개 블록만 표시합니다. 아래 원문에서
+                    전체를 확인하세요.
+                  </p>
+                )}
+              </div>
+            ) : null}
             <p className="mt-5 text-xs font-bold">
               해당 페이지의 실제 추출 원문
             </p>

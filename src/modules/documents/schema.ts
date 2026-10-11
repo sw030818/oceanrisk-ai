@@ -8,7 +8,16 @@ export const documentTypeSchema = z.enum([
 export const evidenceSchema = z.object({
   page: z.number().int().positive(),
   quote: z.string().min(1).max(800),
-  segments: z.array(z.object({ blockId: z.string().min(1).max(40), quote: z.string().min(1).max(800) })).min(1).max(12).optional(),
+  segments: z
+    .array(
+      z.object({
+        blockId: z.string().min(1).max(40),
+        quote: z.string().min(1).max(800),
+      }),
+    )
+    .min(1)
+    .max(12)
+    .optional(),
 });
 export const stringFieldSchema = z.object({
   value: z.string().max(300).nullable(),
@@ -92,7 +101,12 @@ export interface GroundedField<T> {
     quote: string;
     segments?: Evidence["segments"];
     blocks?: PdfBlock[];
-    layout?: { tableId: string; rowId: string; role: string; unit: string | null };
+    layout?: {
+      tableId: string;
+      rowId: string;
+      role: string;
+      unit: string | null;
+    };
   } | null;
 }
 export interface GroundedItem {
@@ -125,5 +139,9 @@ export interface AnalysisResult {
   aiModel?: string;
   pdf: PdfDocument;
   document: GroundedDocument | null;
-  error: { code: string; message: string; diagnostics?: ProviderDiagnostics } | null;
+  error: {
+    code: string;
+    message: string;
+    diagnostics?: ProviderDiagnostics;
+  } | null;
 }
