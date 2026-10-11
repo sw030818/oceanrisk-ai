@@ -29,6 +29,19 @@ export const openAIWireSchema = z.strictObject({
   transactionReference: stringField,
   purchaseOrder: stringField,
   invoiceReference: stringField,
+  shipmentReference: stringField,
+  bookingReference: stringField,
+  subtotalAmount: numberField,
+  discountAmount: numberField,
+  freightAmount: numberField,
+  taxAmount: numberField,
+  totalNetWeight: numberField,
+  totalGrossWeight: numberField,
+  totalWeightUnit: stringField,
+  totalPackages: numberField,
+  packageUnit: stringField,
+  totalQuantity: numberField,
+  totalQuantityUnit: stringField,
   currency: stringField,
   totalAmount: numberField,
   partialShipment: z.strictObject({
@@ -45,6 +58,10 @@ export const openAIWireSchema = z.strictObject({
         grossWeight: numberField,
         weightUnit: stringField,
         amount: numberField,
+        sku: stringField,
+        unitPrice: numberField,
+        packageQuantity: numberField,
+        packageUnit: stringField,
       }),
     )
     .max(100),
@@ -72,7 +89,17 @@ export function resolveOpenAICitations(raw: unknown, pdf: PdfDocument) {
       blocks.some((b) => !b) ||
       new Set(source.blockIds).size !== blocks.length
     )
-      return { value: candidate.value, evidence: null };
+      return {
+        value: candidate.value,
+        evidence: null,
+        evidenceIssue: !source
+          ? undefined
+          : !page
+            ? "page_missing"
+            : blocks?.some((b) => !b)
+              ? "block_missing"
+              : "duplicate_block",
+      };
     const segments = blocks.map((b) => ({ blockId: b!.id, quote: b!.text }));
     const quote = segments.map((s) => s.quote).join("\n");
     return {
@@ -81,6 +108,7 @@ export function resolveOpenAICitations(raw: unknown, pdf: PdfDocument) {
         quote.length && quote.length <= 800
           ? { page: source.page, quote, segments }
           : null,
+      ...(quote.length > 800 ? { evidenceIssue: "citation_too_long" } : {}),
     };
   };
   const { items, ...root } = wire;

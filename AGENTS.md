@@ -35,3 +35,5 @@
 PHASE 2.2의 기본 분석은 OpenAI Responses `gpt-6-luna`이며 Gemini 모듈/키는 보존하되 자동 폴백하지 않는다. 일반 verify/CI는 OPENAI_API_KEY와 GEMINI_API_KEY를 모두 비워 유료 호출을 막는다. 실제 검사에는 정확한 Production SHA와 승인 예산을 확인한다. `test:production -- --sha=<SHA>`는 단일 A→A pair→B–D→7양식→반복 단계로 실행하고 실패/예산 도달 시 중단한다. 모든 실행은 test-results/live-openai/ledger.json의 기본 $0.50/문서 20개 예산을 공유한다. 임의 초기화 금지. 소모량/남은 사례를 사용자에게 보고하고 명시적 추가 승인 후에만 --approved-extra-documents=N을 사용한다. 앱 자체 분석 횟수 한도와 이 검증 예산은 별개다. 현재 코드/모의 통과/키 설정만으로 실제 분석 정상화를 보고하지 않는다. 문서/키/raw 응답은 로그/Git/산출물에 넣지 않는다.
 
 Node.js 24의 fetch가 설정된 HTTPS_PROXY를 사용하지 않아 DNS/연결 실패가 발생할 수 있다. 해당 클라우드에서는 `NODE_USE_ENV_PROXY=1`을 ship 또는 원격 검사 명령 앞에 지정한다. 프록시 주소/인증 정보를 출력하지 않는다. PHASE 2의 최소 진단은 `test:layouts:production -- --sha=<SHA> --case=<fixture-id>`로 가능하며 subset 성공을 전체 완료로 보고하지 않는다. 실제 오류가 지속되면 모의 통과·Vercel success로 AI 정상화를 주장하지 않는다.
+
+PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동일성/참조/당사자/품목/단위/수량/자체검토를 독립 판정한다. 누락·충돌·부분선적·수정값은 전체검사를 early-return하지 않고 항목별잠정/확인필요로 보호한다. 실제근거/동일의미/유일품목/선적범위 없는 확정오류 금지. 기존유료31문서예산 재사용 금지. 이번명시승인은 PHASE2.3 합성2문서/한배치/$0.03/자동재시도0뿐이며 live-phase23별도ledger/committed archive로보존한다. 소모후추가호출은 새승인없이어떤SHA에서도금지. 일반ship/CI는 키를 비워유료호출하지않는다.

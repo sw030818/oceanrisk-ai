@@ -19,9 +19,17 @@ export const evidenceSchema = z.object({
     .max(12)
     .optional(),
 });
+export const evidenceIssueSchema = z.enum([
+  "page_missing",
+  "block_missing",
+  "duplicate_block",
+  "citation_too_long",
+]);
+export type EvidenceIssue = z.infer<typeof evidenceIssueSchema>;
 export const stringFieldSchema = z.object({
   value: z.string().max(300).nullable(),
   evidence: evidenceSchema.nullable(),
+  evidenceIssue: evidenceIssueSchema.optional(),
 });
 export const numberFieldSchema = z.object({
   value: z
@@ -31,6 +39,7 @@ export const numberFieldSchema = z.object({
     .max(Number.MAX_SAFE_INTEGER)
     .nullable(),
   evidence: evidenceSchema.nullable(),
+  evidenceIssue: evidenceIssueSchema.optional(),
 });
 export const extractedDocumentSchema = z.object({
   type: documentTypeSchema,
@@ -40,6 +49,19 @@ export const extractedDocumentSchema = z.object({
   transactionReference: stringFieldSchema,
   purchaseOrder: stringFieldSchema.optional(),
   invoiceReference: stringFieldSchema.optional(),
+  shipmentReference: stringFieldSchema.optional(),
+  bookingReference: stringFieldSchema.optional(),
+  subtotalAmount: numberFieldSchema.optional(),
+  discountAmount: numberFieldSchema.optional(),
+  freightAmount: numberFieldSchema.optional(),
+  taxAmount: numberFieldSchema.optional(),
+  totalNetWeight: numberFieldSchema.optional(),
+  totalGrossWeight: numberFieldSchema.optional(),
+  totalWeightUnit: stringFieldSchema.optional(),
+  totalPackages: numberFieldSchema.optional(),
+  packageUnit: stringFieldSchema.optional(),
+  totalQuantity: numberFieldSchema.optional(),
+  totalQuantityUnit: stringFieldSchema.optional(),
   currency: stringFieldSchema,
   totalAmount: numberFieldSchema,
   partialShipment: z.object({
@@ -56,6 +78,10 @@ export const extractedDocumentSchema = z.object({
         grossWeight: numberFieldSchema,
         weightUnit: stringFieldSchema,
         amount: numberFieldSchema,
+        sku: stringFieldSchema.optional(),
+        unitPrice: numberFieldSchema.optional(),
+        packageQuantity: numberFieldSchema.optional(),
+        packageUnit: stringFieldSchema.optional(),
       }),
     )
     .max(100),
@@ -94,6 +120,18 @@ export interface GroundedField<T> {
   value: T | null;
   status: VerificationStatus;
   reason: string;
+  verificationCode?:
+    | "verified"
+    | "missing_value"
+    | "missing_evidence"
+    | "quote_mismatch"
+    | "value_mismatch"
+    | "role_mismatch"
+    | "ambiguous_cell"
+    | "row_mismatch"
+    | "context_unverified"
+    | "user_edited"
+    | EvidenceIssue;
   source: {
     fileId: string;
     fileName: string;
@@ -107,6 +145,7 @@ export interface GroundedField<T> {
       role: string;
       unit: string | null;
     };
+    semanticRole?: string;
   } | null;
 }
 export interface GroundedItem {
@@ -117,6 +156,10 @@ export interface GroundedItem {
   grossWeight: GroundedField<number>;
   weightUnit: GroundedField<string>;
   amount: GroundedField<number>;
+  sku?: GroundedField<string>;
+  unitPrice?: GroundedField<number>;
+  packageQuantity?: GroundedField<number>;
+  packageUnit?: GroundedField<string>;
 }
 export interface GroundedDocument {
   id: string;
@@ -128,6 +171,19 @@ export interface GroundedDocument {
   transactionReference: GroundedField<string>;
   purchaseOrder?: GroundedField<string>;
   invoiceReference?: GroundedField<string>;
+  shipmentReference?: GroundedField<string>;
+  bookingReference?: GroundedField<string>;
+  subtotalAmount?: GroundedField<number>;
+  discountAmount?: GroundedField<number>;
+  freightAmount?: GroundedField<number>;
+  taxAmount?: GroundedField<number>;
+  totalNetWeight?: GroundedField<number>;
+  totalGrossWeight?: GroundedField<number>;
+  totalWeightUnit?: GroundedField<string>;
+  totalPackages?: GroundedField<number>;
+  packageUnit?: GroundedField<string>;
+  totalQuantity?: GroundedField<number>;
+  totalQuantityUnit?: GroundedField<string>;
   currency: GroundedField<string>;
   totalAmount: GroundedField<number>;
   partialShipment: GroundedField<"yes" | "no" | "unknown">;

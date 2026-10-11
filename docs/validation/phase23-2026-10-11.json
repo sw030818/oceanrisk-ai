@@ -1,0 +1,33 @@
+{
+  "mode": "actual-openai-phase23-synthetic",
+  "recordedAtUtc": "2026-10-11T23:35:26.138447+00:00",
+  "sourceSha": null,
+  "actualPerformed": false,
+  "passed": false,
+  "budget": {
+    "documents": 0,
+    "measuredCostUsd": 0,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 2,
+    "maxCostUsd": 0.03
+  },
+  "approval": "Explicit new user approval for 2 synthetic documents / $0.03; previous PHASE 2.2 budget not reused",
+  "preflightUpperUsd": 0.0120219,
+  "structuredSuccesses": 0,
+  "localValidation": {
+    "actualSyntheticPdfMockAi": "passed",
+    "unitTestsBeforeLastSafetyRegressions": 253,
+    "additionalSafetyRegressions": 3,
+    "browserTests": 15,
+    "typecheck": "passed before final tooling edit",
+    "lint": "last prefer-const tooling correction pending full gate",
+    "productionBuild": "passed",
+    "pdfWorker": "passed",
+    "repositoryBusinessPdfFilesFound": 0
+  },
+  "remaining": [
+    "Real OpenAI validation pending code deployment",
+    "Actual user business PDFs not available; equivalent structure synthetic fixture used",
+    "No scanned OCR, merged/rotated table guarantees"
+  ]
+}

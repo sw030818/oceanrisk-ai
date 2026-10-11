@@ -6,6 +6,7 @@ import { MAX_TOTAL_BYTES } from "@/modules/upload/limits";
 import { AnalysisError, safeError } from "@/modules/documents/errors";
 import { analyzeFile } from "@/modules/analysis/pipeline";
 import type { AnalysisResult } from "@/modules/documents/schema";
+import { reviewDocuments } from "@/modules/rules/review";
 export const runtime = "nodejs";
 export const maxDuration = 120;
 export const dynamic = "force-dynamic";
@@ -119,9 +120,47 @@ export async function POST(request: Request) {
           : result,
       );
     }
+    const selectedInvoice = results.filter(
+      (r) => r.uploadSlot === "invoice" && r.document,
+    );
+    const selectedPacking = results.filter(
+      (r) => r.uploadSlot === "packing_list" && r.document,
+    );
+    const review = reviewDocuments(
+      results.flatMap((r) => (r.document ? [r.document] : [])),
+      selectedInvoice.length === 1 && selectedPacking.length === 1
+        ? {
+            invoiceId: selectedInvoice[0].pdf.id,
+            packingId: selectedPacking[0].pdf.id,
+          }
+        : undefined,
+    );
     return NextResponse.json(
       {
         results,
+        // Literal evidence is already returned in results. Keep the independent
+        // rule response compact instead of duplicating quotes/blocks per check.
+        review: {
+          status: review.status,
+          selection: review.selection,
+          summary: review.summary,
+          checks: review.checks.map(({ fields, sources, ...verdict }) => ({
+            ...verdict,
+            evidenceRefs: sources
+              .filter(Boolean)
+              .map((source) => ({
+                fileId: source!.fileId,
+                page: source!.page,
+                tableId: source!.layout?.tableId,
+                rowId: source!.layout?.rowId,
+              })),
+            fieldStates: fields.map(({ label, field }) => ({
+              label,
+              status: field.status,
+              verificationCode: field.verificationCode,
+            })),
+          })),
+        },
         mode: "live",
         aiConfigured: Boolean(process.env.OPENAI_API_KEY),
       },

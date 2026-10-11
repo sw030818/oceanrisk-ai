@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { layoutCases, layoutFixture } from "../fixtures/layouts";
 import { groundDocument, verifyField } from "@/modules/evidence/verify";
+import { reviewDocuments } from "@/modules/rules/review";
 import { compareQuantities } from "@/modules/rules/quantity";
 import { parseUploadSlots } from "@/modules/upload/slots";
 describe("actual PDF geometry with synthetic AI extractions, not live Gemini", () => {
@@ -29,9 +30,14 @@ describe("actual PDF geometry with synthetic AI extractions, not live Gemini", (
         }
       }
       const checks = compareQuantities(docs);
-      if (scenario.id === "reference-conflict")
-        expect(checks[0].id).toBe("conflicting-identifiers");
-      else {
+      if (scenario.id === "reference-conflict") {
+        expect(reviewDocuments(docs).summary.referenceWarning).toBe(true);
+        expect(checks).toHaveLength(2);
+        expect(checks.every((c) => c.assessment === "provisional_match")).toBe(
+          true,
+        );
+        expect(checks.every((c) => c.status === "unverifiable")).toBe(true);
+      } else {
         expect(checks).toHaveLength(2);
         expect(checks[0].status).toBe(scenario.outcome);
       }
@@ -107,7 +113,13 @@ describe("actual PDF geometry with synthetic AI extractions, not live Gemini", (
       ...docs[1].invoiceReference!,
       value: "INV-OTHER",
     };
-    expect(compareQuantities(docs)[0].id).toBe("conflicting-identifiers");
+    expect(reviewDocuments(docs).summary.referenceWarning).toBe(true);
+    expect(
+      compareQuantities(docs).every(
+        (c) =>
+          c.status === "unverifiable" && c.assessment === "provisional_match",
+      ),
+    ).toBe(true);
   });
   it("supports legacy requests without slots but validates metadata independently", () => {
     expect(parseUploadSlots(null, 2)).toBeUndefined();
@@ -149,7 +161,13 @@ describe("typed references identify the same transaction without mixing namespac
       ),
     ).toBe(true);
     docs[1].invoiceReference!.value = "INV-CONFLICT";
-    expect(compareQuantities(docs)[0].id).toBe("conflicting-identifiers");
+    expect(reviewDocuments(docs).summary.referenceWarning).toBe(true);
+    expect(
+      compareQuantities(docs).every(
+        (c) =>
+          c.status === "unverifiable" && c.assessment === "provisional_match",
+      ),
+    ).toBe(true);
   });
 });
 
@@ -177,6 +195,11 @@ describe("additional conservative identity and header provenance", () => {
       b = await layoutFixture("party-tables", "packing_list");
     const docs = [groundDocument(a.data, a.pdf), groundDocument(b.data, b.pdf)];
     docs[0].purchaseOrder!.status = "user_edited";
-    expect(compareQuantities(docs)[0].id).toBe("edited-identifiers");
+    expect(
+      compareQuantities(docs).every(
+        (c) =>
+          c.assessment === "provisional_match" && c.status === "unverifiable",
+      ),
+    ).toBe(true);
   });
 });

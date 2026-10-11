@@ -41,6 +41,23 @@ function wire(data: ExtractedDocument, pdf: PdfDocument) {
       : null,
   });
   return {
+    ...Object.fromEntries(
+      [
+        "shipmentReference",
+        "bookingReference",
+        "subtotalAmount",
+        "discountAmount",
+        "freightAmount",
+        "taxAmount",
+        "totalNetWeight",
+        "totalGrossWeight",
+        "totalWeightUnit",
+        "totalPackages",
+        "packageUnit",
+        "totalQuantity",
+        "totalQuantityUnit",
+      ].map((key) => [key, { value: null, evidence: null }]),
+    ),
     type: data.type,
     seller: field(data.seller),
     buyer: field(data.buyer),
@@ -54,7 +71,15 @@ function wire(data: ExtractedDocument, pdf: PdfDocument) {
       data.invoiceReference ?? { value: null, evidence: null },
     ),
     items: data.items.map((i) =>
-      Object.fromEntries(Object.entries(i).map(([k, v]) => [k, field(v)])),
+      Object.fromEntries(
+        Object.entries({
+          sku: { value: null, evidence: null },
+          unitPrice: { value: null, evidence: null },
+          packageQuantity: { value: null, evidence: null },
+          packageUnit: { value: null, evidence: null },
+          ...i,
+        }).map(([k, v]) => [k, field(v)]),
+      ),
     ),
   };
 }
@@ -184,22 +209,20 @@ describe("OpenAI Responses contract and independent grounding (MOCKED AI)", () =
   });
   it("malformed single final output exposes only structural metadata", async () => {
     const text = '{"private-document":"sk-private"} trailing-private';
-    const fetcher = vi
-      .fn()
-      .mockResolvedValue(
-        completed(
-          {},
-          {
-            output: [
-              {
-                type: "message",
-                phase: "final_answer",
-                content: [{ type: "output_text", text }],
-              },
-            ],
-          },
-        ),
-      );
+    const fetcher = vi.fn().mockResolvedValue(
+      completed(
+        {},
+        {
+          output: [
+            {
+              type: "message",
+              phase: "final_answer",
+              content: [{ type: "output_text", text }],
+            },
+          ],
+        },
+      ),
+    );
     try {
       await extractWithOpenAI(
         { id: "x", fileName: "x", pages: [] },
@@ -329,9 +352,15 @@ describe("OpenAI Responses contract and independent grounding (MOCKED AI)", () =
     ]) {
       const raw = wire(f.data, f.pdf);
       raw.seller.evidence = bad;
-      expect(
-        groundDocument(resolveOpenAICitations(raw, f.pdf), f.pdf).seller.status,
-      ).toBe("unverified");
+      const grounded = groundDocument(
+        resolveOpenAICitations(raw, f.pdf),
+        f.pdf,
+      ).seller;
+      expect(grounded.status).toBe("unverified");
+      expect(grounded.verificationCode).toBe(
+        bad.page === 99 ? "page_missing" : "block_missing",
+      );
+      expect(grounded.source).toBeNull();
     }
     const raw = wire(f.data, f.pdf);
     raw.items[0].quantity.value = 999999;
@@ -343,6 +372,10 @@ describe("OpenAI Responses contract and independent grounding (MOCKED AI)", () =
     const ids = dup.seller.evidence!.blockIds;
     dup.seller.evidence!.blockIds = [ids[0], ids[0]];
     expect(resolveOpenAICitations(dup, f.pdf).seller.evidence).toBeNull();
+    expect(
+      groundDocument(resolveOpenAICitations(dup, f.pdf), f.pdf).seller
+        .verificationCode,
+    ).toBe("duplicate_block");
   });
   it("a real carton cell or another product row cannot justify product quantity", async () => {
     const f = await layoutFixture("mixed-packaging", "invoice");

@@ -16,7 +16,6 @@ import {
   Anchor,
   ArrowRight,
   ArrowUpRight,
-  CheckCircle2,
   ChevronRight,
   CircleHelp,
   FileCheck2,
@@ -37,7 +36,9 @@ import { validateUploads } from "@/modules/upload/validate";
 import { safeError } from "@/modules/documents/errors";
 import { editField } from "@/modules/evidence/verify";
 import { summarizeAnalysis } from "@/modules/analysis/summary";
-import { compareQuantities } from "@/modules/rules/quantity";
+import { reviewDocuments } from "@/modules/rules/review";
+import { DocumentExtras } from "./document-extras";
+import { ReviewPanel } from "./review-panel";
 import type {
   AnalysisResult,
   UploadSlot,
@@ -60,9 +61,14 @@ type EvidenceSelection = {
 
 export function Workspace() {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
-  const [slots, setSlots] = useState<Record<UploadSlot, File | null>>({ invoice: null, packing_list: null });
-  const activeSlots = (["invoice", "packing_list"] as UploadSlot[]).filter(slot => slots[slot]);
-  const files = activeSlots.map(slot => slots[slot]!);
+  const [slots, setSlots] = useState<Record<UploadSlot, File | null>>({
+    invoice: null,
+    packing_list: null,
+  });
+  const activeSlots = (["invoice", "packing_list"] as UploadSlot[]).filter(
+    (slot) => slots[slot],
+  );
+  const files = activeSlots.map((slot) => slots[slot]!);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [configured, setConfigured] = useState<boolean | null>(null);
@@ -87,34 +93,56 @@ export function Workspace() {
     };
   }, []);
   const summary = summarizeAnalysis(results);
-  const checks = useMemo(() => compareQuantities(documents), [documents]);
-  const verifiedCount = documents.reduce(
-    (count, doc) =>
-      count +
-      [
-        doc.seller,
-        doc.buyer,
-        doc.documentNumber,
-        doc.transactionReference,
-        doc.partialShipment,
-        doc.currency,
-        doc.totalAmount,
-        ...doc.items.flatMap((item) => Object.values(item)),
-      ].filter((field) => field.status === "verified").length,
-    0,
-  );
+  const review = useMemo(() => {
+    const a = results.filter((r) => r.uploadSlot === "invoice" && r.document);
+    const b = results.filter(
+      (r) => r.uploadSlot === "packing_list" && r.document,
+    );
+    return reviewDocuments(
+      documents,
+      a.length === 1 && b.length === 1
+        ? { invoiceId: a[0].pdf.id, packingId: b[0].pdf.id }
+        : undefined,
+    );
+  }, [documents, results]);
   function selectFile(slot: UploadSlot, incoming: File[]) {
     if (busy || !incoming.length) return;
-    if (incoming.length !== 1) { setError("각 업로드 영역에는 PDF 1개만 넣어 주세요."); return; }
+    if (incoming.length !== 1) {
+      setError("각 업로드 영역에는 PDF 1개만 넣어 주세요.");
+      return;
+    }
     const next = { ...slots, [slot]: incoming[0] };
     try {
-      validateUploads(Object.values(next).filter((file): file is File => file !== null));
-      setSlots(next); setError(null); setResults([]); setDocuments([]);
-    } catch (problem) { setError(safeError(problem).message); }
+      validateUploads(
+        Object.values(next).filter((file): file is File => file !== null),
+      );
+      setSlots(next);
+      setError(null);
+      setResults([]);
+      setDocuments([]);
+    } catch (problem) {
+      setError(safeError(problem).message);
+    }
   }
   function swapSlots() {
     setSlots({ invoice: slots.packing_list, packing_list: slots.invoice });
-    setResults(current=>current.map(result=>result.uploadSlot ? { ...result, uploadSlot: result.uploadSlot === "invoice" ? "packing_list" : "invoice", typeMismatch: !!result.document && result.document.type !== (result.uploadSlot === "invoice" ? "packing_list" : "invoice") } : result));
+    setResults((current) =>
+      current.map((result) =>
+        result.uploadSlot
+          ? {
+              ...result,
+              uploadSlot:
+                result.uploadSlot === "invoice" ? "packing_list" : "invoice",
+              typeMismatch:
+                !!result.document &&
+                result.document.type !==
+                  (result.uploadSlot === "invoice"
+                    ? "packing_list"
+                    : "invoice"),
+            }
+          : result,
+      ),
+    );
   }
   function clearAll() {
     runToken.current++;
@@ -400,12 +428,43 @@ export function Workspace() {
                       텍스트 PDF
                     </span>
                   </div>
-                  <div className="grid gap-4 md:grid-cols-2" data-testid="upload-slots">
-                    {(["invoice", "packing_list"] as UploadSlot[]).map(slot=><UploadSlotCard key={slot} slot={slot} file={slots[slot]} disabled={busy || !ready} onSelect={incoming=>selectFile(slot,incoming)} onRemove={()=>{setSlots(current=>({...current,[slot]:null}));setError(null);setResults([]);setDocuments([]);}} />)}
+                  <div
+                    className="grid gap-4 md:grid-cols-2"
+                    data-testid="upload-slots"
+                  >
+                    {(["invoice", "packing_list"] as UploadSlot[]).map(
+                      (slot) => (
+                        <UploadSlotCard
+                          key={slot}
+                          slot={slot}
+                          file={slots[slot]}
+                          disabled={busy || !ready}
+                          onSelect={(incoming) => selectFile(slot, incoming)}
+                          onRemove={() => {
+                            setSlots((current) => ({
+                              ...current,
+                              [slot]: null,
+                            }));
+                            setError(null);
+                            setResults([]);
+                            setDocuments([]);
+                          }}
+                        />
+                      ),
+                    )}
                   </div>
                   <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                    <p className="text-[11px] leading-5 text-slate-500">하나만 올려도 개별 분석 가능 · 두 파일 합계 4 MB 이내</p>
-                    <button type="button" disabled={busy || !files.length} onClick={swapSlots} className="rounded-lg border border-slate-200 px-3 py-2 text-[11px] font-semibold text-blue-700 disabled:opacity-40">두 업로드 칸 서로 바꾸기</button>
+                    <p className="text-[11px] leading-5 text-slate-500">
+                      하나만 올려도 개별 분석 가능 · 두 파일 합계 4 MB 이내
+                    </p>
+                    <button
+                      type="button"
+                      disabled={busy || !files.length}
+                      onClick={swapSlots}
+                      className="rounded-lg border border-slate-200 px-3 py-2 text-[11px] font-semibold text-blue-700 disabled:opacity-40"
+                    >
+                      두 업로드 칸 서로 바꾸기
+                    </button>
                   </div>
                   <div className="mt-5 flex items-start gap-2 rounded-lg bg-slate-50 px-3 py-3">
                     <LockKeyhole
@@ -414,8 +473,8 @@ export function Workspace() {
                     />
                     <p className="text-[10px] leading-5 text-slate-500">
                       업로드 파일은 이 앱의 데이터베이스에 저장하지 않습니다. AI
-                      분석 시 추출 텍스트가 OpenAI로 전송됩니다. 제공자
-                      데이터 처리 정책을 확인하고 민감정보는 제거해 주세요.
+                      분석 시 추출 텍스트가 OpenAI로 전송됩니다. 제공자 데이터
+                      처리 정책을 확인하고 민감정보는 제거해 주세요.
                     </p>
                   </div>
                   <label className="mt-4 flex cursor-pointer items-start gap-2.5 text-[11px] leading-5 text-slate-600">
@@ -433,17 +492,13 @@ export function Workspace() {
                       role="status"
                       className="mt-4 rounded-lg border border-amber-100 bg-amber-50 p-3 text-[11px] leading-5 text-amber-800"
                     >
-                      OpenAI API 키가 설정되지 않았습니다. PDF 원문 추출은 가능하며
-                      AI 정보 추출·수량 비교 결과는 생성되지 않습니다.
+                      OpenAI API 키가 설정되지 않았습니다. PDF 원문 추출은
+                      가능하며 AI 정보 추출·수량 비교 결과는 생성되지 않습니다.
                     </p>
                   )}
                   <button
                     onClick={analyze}
-                    disabled={
-                      busy ||
-                      !files.length ||
-                      !consent
-                    }
+                    disabled={busy || !files.length || !consent}
                     className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400"
                   >
                     {busy ? (
@@ -526,7 +581,10 @@ export function Workspace() {
                         • 스캔 문서·이미지 PDF·암호화 파일은 지원하지 않습니다.
                       </li>
                       <li>• 서로 다른 거래의 문서를 섞지 마세요.</li>
-                      <li>• 정보가 부족하면 ‘검증 불가’로 표시합니다.</li>
+                      <li>
+                        • 정보가 부족한 항목은 별도로 표시하고 나머지는 계속
+                        비교합니다.
+                      </li>
                     </ul>
                   </section>
                 </div>
@@ -569,120 +627,45 @@ export function Workspace() {
                   {summary.message}
                 </p>
               </section>
-              {results.some(result=>result.typeMismatch) && <section role="alert" className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-6 text-amber-900"><strong>서류 종류 확인 필요</strong><p>선택한 업로드 영역과 AI 판독 유형이 다릅니다. 파일명으로 유형을 판단하지 않았습니다.</p>{results.filter(result=>result.typeMismatch).map(result=><p key={result.pdf.id}>{result.pdf.fileName} · 선택: {typeLabels[result.uploadSlot!]} / AI 판독: {typeLabels[result.document!.type]}</p>)}<div className="mt-3 flex flex-wrap gap-3"><button onClick={swapSlots} className="rounded-lg border border-amber-300 bg-white px-3 py-2 font-semibold">두 업로드 칸 서로 바꾸기</button><button onClick={()=>setTab("upload")} className="rounded-lg bg-blue-600 px-3 py-2 text-white">업로드 영역에서 파일 교체</button></div></section>}
-              <div className="mb-6 grid grid-cols-3 gap-3">
-                {[
-                  {
-                    label: "처리한 문서",
-                    value: results.length,
-                    icon: FileText,
-                  },
-                  {
-                    label: "원문 대조 필드",
-                    value: verifiedCount,
-                    icon: ShieldCheck,
-                  },
-                  {
-                    label: "교차검증 상태",
-                    value: !documents.length ? "분석 미실시" : documents.length===1 ? "대상 서류 부족" : checks.some(check=>check.confidence==='candidate') ? "추가 확인 필요" : checks.every(check=>check.confidence==='confirmed') ? (checks.some(check=>check.status==='mismatch') ? "확인된 불일치" : "확인된 일치") : "비교 불가",
-                    icon: FileCheck2,
-                  },
-                ].map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-xl border border-slate-200 bg-white p-4 md:p-5"
-                  >
-                    <stat.icon size={18} className="mb-3 text-blue-600" />
-                    <p className={`${typeof stat.value === "string" ? "text-sm leading-6" : "text-2xl"} font-bold`}>
-                      {stat.value}
-                      <span className="ml-2 text-[11px] font-normal text-slate-400">
-                        {typeof stat.value === "number" ? "개" : ""}
-                      </span>
-                    </p>
-                    <p className="mt-2 break-all text-[10px] text-slate-500">
-                      {stat.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
-                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                  <h2 className="flex items-center gap-2 text-sm font-bold">
-                    <FileCheck2 size={18} className="text-blue-600" />
-                    수량 교차검증
-                  </h2>
-                  <span className="text-[10px] text-slate-400">
-                    원문 대조 + TypeScript 규칙 · 전체 안전성 평가 아님
-                  </span>
-                </div>
-                <div className="space-y-3">
-                  {checks.map((check) => (
-                    <div
-                      key={check.id}
-                      className={`rounded-xl border p-4 ${check.status === "mismatch" ? "border-red-200 bg-red-50/50" : check.status === "match" ? "border-emerald-100 bg-emerald-50/50" : "border-amber-100 bg-amber-50/50"}`}
+              {results.some((result) => result.typeMismatch) && (
+                <section
+                  role="alert"
+                  className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-6 text-amber-900"
+                >
+                  <strong>서류 종류 확인 필요</strong>
+                  <p>
+                    선택한 업로드 영역과 AI 판독 유형이 다릅니다. 파일명으로
+                    유형을 판단하지 않았습니다.
+                  </p>
+                  {results
+                    .filter((result) => result.typeMismatch)
+                    .map((result) => (
+                      <p key={result.pdf.id}>
+                        {result.pdf.fileName} · 선택:{" "}
+                        {typeLabels[result.uploadSlot!]} / AI 판독:{" "}
+                        {typeLabels[result.document!.type]}
+                      </p>
+                    ))}
+                  <div className="mt-3 flex flex-wrap gap-3">
+                    <button
+                      onClick={swapSlots}
+                      className="rounded-lg border border-amber-300 bg-white px-3 py-2 font-semibold"
                     >
-                      <div className="flex items-start gap-3">
-                        {check.status === "match" ? (
-                          <CheckCircle2
-                            size={18}
-                            className="mt-0.5 shrink-0 text-emerald-600"
-                          />
-                        ) : (
-                          <AlertTriangle
-                            size={18}
-                            className={`mt-0.5 shrink-0 ${check.status === "mismatch" ? "text-red-600" : "text-amber-600"}`}
-                          />
-                        )}
-                        <div className="min-w-0">
-                          <p className="text-xs font-bold">
-                            {check.status === "unverifiable" && (
-                              <span className="mr-2 text-amber-700">
-                                {check.confidence === "candidate"
-                                  ? "비교 후보"
-                                  : "검증 불가"}
-                              </span>
-                            )}
-                            {check.item ? `${check.item} · ` : ""}
-                            {check.title}
-                          </p>
-                          {check.invoiceQuantity !== undefined && (
-                            <p className="mt-2 text-sm font-semibold">
-                              Invoice {check.invoiceQuantity} {check.unit}{" "}
-                              <span className="mx-2 font-normal text-slate-400">
-                                ↔
-                              </span>{" "}
-                              Packing List {check.packingQuantity} {check.unit}
-                            </p>
-                          )}
-                          <p className="mt-2 text-[11px] leading-5 text-slate-600">
-                            {check.explanation}
-                          </p>
-                          <div className="mt-3 rounded-lg bg-white/70 p-3 text-[11px] leading-5">
-                            <span className="font-semibold text-blue-700">
-                              발행자에게 물어보세요
-                            </span>
-                            <p className="mt-1 text-slate-600">
-                              {check.question}
-                            </p>
-                          </div>
-                          {check.sources.filter(Boolean).length > 0 && (
-                            <p className="mt-2 break-all text-[10px] text-slate-500">
-                              근거:{" "}
-                              {check.sources
-                                .filter(Boolean)
-                                .map(
-                                  (source) =>
-                                    `${source!.fileName} p.${source!.page} · “${source!.quote}”`,
-                                )
-                                .join(" / ")}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
+                      두 업로드 칸 서로 바꾸기
+                    </button>
+                    <button
+                      onClick={() => setTab("upload")}
+                      className="rounded-lg bg-blue-600 px-3 py-2 text-white"
+                    >
+                      업로드 영역에서 파일 교체
+                    </button>
+                  </div>
+                </section>
+              )}
+              <ReviewPanel
+                review={review}
+                onEvidence={(field, label) => setSelection({ field, label })}
+              />
               {results.map((result) => {
                 const doc = documents.find((doc) => doc.id === result.pdf.id);
                 return (
@@ -736,8 +719,8 @@ export function Workspace() {
                       <>
                         <p className="mb-5 rounded-lg bg-blue-50 px-3 py-2.5 text-[11px] leading-5 text-blue-800">
                           값을 수정하면 ‘사용자 수정’으로 표시되며 확정 수량
-                          비교에서 제외됩니다. 수정 서류는 새로 업로드해
-                          원문부터 다시 검증하세요.
+                          비교의 잠정 결과에 반영됩니다. 수정 서류는 새로
+                          업로드해 원문부터 다시 검증하세요.
                         </p>
                         {doc.type === "unknown" && (
                           <p className="mb-5 text-xs text-amber-800">
@@ -754,6 +737,8 @@ export function Workspace() {
                               ["transactionReference", "거래 참조"],
                               ["purchaseOrder", "Purchase Order 번호"],
                               ["invoiceReference", "Invoice 참조번호"],
+                              ["shipmentReference", "선적 참조번호"],
+                              ["bookingReference", "Booking 참조번호"],
                               ["currency", "통화"],
                               ["totalAmount", "총 금액"],
                             ] as const
@@ -761,10 +746,25 @@ export function Workspace() {
                             <EditableField
                               key={key}
                               label={label}
-                              field={doc[key] ?? { value: null, source: null, status: "missing", reason: "참조 정보 없음" }}
+                              field={
+                                doc[key] ?? {
+                                  value: null,
+                                  source: null,
+                                  status: "missing",
+                                  reason: "참조 정보 없음",
+                                }
+                              }
                               numeric={key === "totalAmount"}
                               onEvidence={() =>
-                                setSelection({ field: doc[key] ?? { value: null, source: null, status: "missing", reason: "참조 정보 없음" }, label })
+                                setSelection({
+                                  field: doc[key] ?? {
+                                    value: null,
+                                    source: null,
+                                    status: "missing",
+                                    reason: "참조 정보 없음",
+                                  },
+                                  label,
+                                })
                               }
                               onChange={(value) =>
                                 updateDoc(doc.id, (current) =>
@@ -779,7 +779,12 @@ export function Workspace() {
                                     : {
                                         ...current,
                                         [key]: editField(
-                                          current[key] ?? { value: null, source: null, status: "missing", reason: "참조 정보 없음" },
+                                          current[key] ?? {
+                                            value: null,
+                                            source: null,
+                                            status: "missing",
+                                            reason: "참조 정보 없음",
+                                          },
                                           value as string | null,
                                         ),
                                       },
@@ -826,6 +831,13 @@ export function Workspace() {
                             </button>
                           </div>
                         </div>
+                        <DocumentExtras
+                          doc={doc}
+                          onChange={(update) => updateDoc(doc.id, update)}
+                          onEvidence={(field, label) =>
+                            setSelection({ field, label })
+                          }
+                        />
                         <div className="mt-7 border-t border-slate-100 pt-5">
                           <h3 className="mb-4 text-xs font-bold">
                             상품별 추출 정보{" "}
@@ -856,21 +868,42 @@ export function Workspace() {
                                     ["amount", "품목 금액"],
                                     ["netWeight", "순중량"],
                                     ["grossWeight", "총중량"],
+                                    ["sku", "SKU / 제품 코드"],
+                                    ["unitPrice", "단가"],
+                                    ["packageQuantity", "포장 개수"],
+                                    ["packageUnit", "포장 단위"],
                                     ["weightUnit", "중량 단위"],
                                   ] as const
                                 ).map(([key, label]) => (
                                   <EditableField
                                     key={key}
                                     label={`${label} · 품목 ${i + 1}`}
-                                    field={item[key]}
+                                    field={
+                                      item[key] ?? {
+                                        value: null,
+                                        source: null,
+                                        status: "missing",
+                                        reason: "문서에 명시된 값 없음",
+                                      }
+                                    }
                                     numeric={[
                                       "quantity",
                                       "amount",
                                       "netWeight",
                                       "grossWeight",
+                                      "unitPrice",
+                                      "packageQuantity",
                                     ].includes(key)}
                                     onEvidence={() =>
-                                      setSelection({ field: item[key], label })
+                                      setSelection({
+                                        field: item[key] ?? {
+                                          value: null,
+                                          source: null,
+                                          status: "missing",
+                                          reason: "문서에 명시된 값 없음",
+                                        },
+                                        label,
+                                      })
                                     }
                                     onChange={(value) =>
                                       updateDoc(doc.id, (current) => ({
@@ -881,7 +914,13 @@ export function Workspace() {
                                               ? {
                                                   ...row,
                                                   [key]: editField(
-                                                    row[key] as GroundedField<
+                                                    (row[key] ?? {
+                                                      value: null,
+                                                      source: null,
+                                                      status: "missing",
+                                                      reason:
+                                                        "문서에 명시된 값 없음",
+                                                    }) as GroundedField<
                                                       string | number
                                                     >,
                                                     value,

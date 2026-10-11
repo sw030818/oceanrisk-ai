@@ -1,323 +1,232 @@
-import { labelRole } from "../layout/relations";
+import type { GroundedDocument, GroundedItem } from "../documents/schema";
 import { productQuantities } from "../evidence/quantity-evidence";
-import type { GroundedDocument, GroundedField } from "../documents/schema";
-import { normalizeText } from "../evidence/verify";
-export type RuleStatus = "match" | "mismatch" | "unverifiable";
-export interface QuantityCheck {
-  id: string;
-  status: RuleStatus;
-  confidence?: "confirmed" | "candidate" | "unavailable";
-  title: string;
-  explanation: string;
-  question: string;
-  item: string | null;
+import {
+  check,
+  known,
+  hasValue,
+  sameText,
+  canonicalUnit,
+  type ReviewCheck,
+} from "./model";
+import { reviewReferences } from "./references";
+import { matchItem } from "./items";
+export type RuleStatus = ReviewCheck["status"];
+export interface QuantityCheck extends ReviewCheck {
   invoiceQuantity?: number;
   packingQuantity?: number;
-  unit?: string;
-  sources: GroundedField<string | number>["source"][];
 }
-const unitMap: Record<string, string> = {
-  pc: "PCS",
-  pcs: "PCS",
-  piece: "PCS",
-  pieces: "PCS",
-  ea: "PCS",
-  each: "PCS",
-  개: "PCS",
-  kg: "KG",
-  kgs: "KG",
-  kilogram: "KG",
-  kilograms: "KG",
-  ton: "TON",
-  tons: "TON",
-  m: "M",
-  meter: "M",
-  meters: "M",
-};
-function canonicalUnit(unit: string): string | null {
-  return unitMap[normalizeText(unit).replace(/\.$/, "")] ?? null;
+export interface PairSelection {
+  invoiceId: string;
+  packingId: string;
 }
-function known(field: GroundedField<unknown>): boolean {
-  return field.status === "verified" && field.value !== null;
+export function selectPair(
+  documents: GroundedDocument[],
+  selection?: PairSelection,
+) {
+  const invoices = documents.filter((d) => d.type === "invoice"),
+    packing = documents.filter((d) => d.type === "packing_list");
+  const a = selection
+    ? documents.find((d) => d.id === selection.invoiceId)
+    : invoices.length === 1
+      ? invoices[0]
+      : undefined;
+  const b = selection
+    ? documents.find((d) => d.id === selection.packingId)
+    : packing.length === 1
+      ? packing[0]
+      : undefined;
+  return a && b && a.id !== b.id ? { invoice: a, packing: b } : null;
 }
-function referenceRole(field: GroundedField<string>): string | null {
-  if (!known(field) || !field.source) return null;
-  const texts =
-    field.source.blocks?.map((block) => block.text) ??
-    field.source.quote.split(/\r?\n/);
-  const roles = new Set(
-    texts
-      .map((text) => labelRole(text.split(":")[0]))
-      .filter(
-        (role) => role === "purchaseOrder" || role === "invoiceReference",
-      ),
+export function pairContext(
+  invoice: GroundedDocument,
+  packing: GroundedDocument,
+) {
+  const references = reviewReferences(invoice, packing);
+  const parties = ["seller", "buyer"] as const;
+  const partiesConfirmed = parties.every(
+    (k) =>
+      known(invoice[k]) &&
+      known(packing[k]) &&
+      sameText(invoice[k].value!, packing[k].value!),
   );
-  return roles.size === 1 ? [...roles][0]! : null;
+  const scopes = [invoice.partialShipment, packing.partialShipment];
+  const blockers: string[] = [];
+  if (invoice.type !== "invoice" || packing.type !== "packing_list")
+    blockers.push("선택 영역과 판독 문서 유형 확인 필요");
+  if (!partiesConfirmed) blockers.push("거래당사자의 동일성 미확인 또는 충돌");
+  if (references.conflict) blockers.push("같은 의미의 거래 참조 충돌");
+  if (!references.supported)
+    blockers.push("동일 거래의 Invoice / PO 참조 부족");
+  if (references.edited) blockers.push("사용자가 수정한 거래 참조");
+  if (!scopes.every((f) => known(f) && f.value === "no"))
+    blockers.push(
+      scopes.some((f) => f.value === "yes")
+        ? "부분선적·백오더 등 선적 범위 확인 필요"
+        : "전체 선적 범위 미확인 또는 사용자 수정",
+    );
+  return { references, partiesConfirmed, blockers };
 }
-function result(
+function linkedUnit(row: GroundedItem) {
+  if (
+    !row.quantity.source ||
+    !row.unit.source ||
+    row.quantity.source.page !== row.unit.source.page
+  )
+    return false;
+  const layout = row.quantity.source.layout;
+  return layout?.role === "quantity" && layout.unit
+    ? canonicalUnit(layout.unit) === canonicalUnit(row.unit.value)
+    : productQuantities(row.quantity.source.quote).some(
+        (e) =>
+          e.value === row.quantity.value &&
+          canonicalUnit(e.unit) === canonicalUnit(row.unit.value),
+      );
+}
+function unavailable(
   id: string,
   explanation: string,
   item: string | null = null,
+  fields: ReviewCheck["fields"] = [],
+  missing = false,
 ): QuantityCheck {
-  return {
+  return check({
     id,
-    status: "unverifiable",
-    confidence: "unavailable",
-    title: "수량 비교를 확정할 수 없습니다",
+    category: "quantity",
+    scope: "cross",
+    assessment: missing ? "insufficient_information" : "needs_review",
+    title: missing ? "비교 정보 부족" : "품목 수량 확인 필요",
     explanation,
     question:
-      "두 문서가 같은 거래와 선적 범위를 나타내는지, 상품 단위와 수량을 발행자에게 확인해 주세요.",
+      "품목·상품 단위·원문 근거와 같은 선적 범위인지 발행자에게 확인해 주세요.",
     item,
-    sources: [],
-  };
+    fields,
+  });
 }
 export function compareQuantities(
   documents: GroundedDocument[],
+  selection?: PairSelection,
 ): QuantityCheck[] {
-  const invoices = documents.filter((doc) => doc.type === "invoice");
-  const packingLists = documents.filter((doc) => doc.type === "packing_list");
-  if (invoices.length !== 1 || packingLists.length !== 1)
+  const pair = selectPair(documents, selection);
+  if (!pair)
     return [
-      result(
+      unavailable(
         "document-pair",
-        "대상 서류 부족 또는 문서 유형 확인 필요: Invoice 1개와 Packing List 1개가 필요합니다. 여러 거래 문서가 섞인 경우 비교할 한 쌍만 선택해 주세요.",
+        "대상 서류 부족 또는 문서 유형 확인 필요: 비교할 Invoice와 Packing List 한 쌍을 선택해 주세요.",
+        null,
+        [],
+        true,
       ),
     ];
-  const invoice = invoices[0],
-    packing = packingLists[0];
-  for (const key of ["seller", "buyer"] as const) {
-    if (
-      !known(invoice[key]) ||
-      !known(packing[key]) ||
-      normalizeText(invoice[key].value!) !== normalizeText(packing[key].value!)
-    )
-      return [
-        result(
-          "parties",
-          "판매자·구매자가 원문에서 동일하게 확인되지 않아 문서를 연결하지 않았습니다.",
-        ),
-      ];
-  }
-  if (
-    [
-      invoice.documentNumber,
-      invoice.purchaseOrder,
-      packing.purchaseOrder,
-      invoice.invoiceReference,
-      packing.invoiceReference,
-    ].some((field) => field?.status === "user_edited")
-  )
-    return [
-      result(
-        "edited-identifiers",
-        "사용자가 수정한 거래 식별 정보가 있습니다. 원문을 재확인하기 전 확정 비교에 사용하지 않습니다.",
-      ),
-    ];
-  for (const [left, right] of [
-    [invoice.purchaseOrder, packing.purchaseOrder],
-    [invoice.documentNumber, packing.invoiceReference],
-    [invoice.invoiceReference, packing.invoiceReference],
-  ]) {
-    if (
-      left &&
-      right &&
-      known(left) &&
-      known(right) &&
-      normalizeText(left.value!) !== normalizeText(right.value!)
-    )
-      return [
-        result(
-          "conflicting-identifiers",
-          "검증된 주문번호 또는 Invoice 참조번호가 충돌합니다. 같은 거래로 자동 연결하지 않았습니다.",
-        ),
-      ];
-  }
-  const typedReferenceConfirmed =
-    (!!invoice.purchaseOrder &&
-      !!packing.purchaseOrder &&
-      known(invoice.purchaseOrder) &&
-      known(packing.purchaseOrder) &&
-      normalizeText(invoice.purchaseOrder.value!) ===
-        normalizeText(packing.purchaseOrder.value!)) ||
-    (!!packing.invoiceReference &&
-      known(invoice.documentNumber) &&
-      known(packing.invoiceReference) &&
-      normalizeText(invoice.documentNumber.value!) ===
-        normalizeText(packing.invoiceReference.value!));
-  const refs = [invoice.transactionReference, packing.transactionReference];
-  const kinds = refs.map(referenceRole);
-  const distinctVerifiedNamespaces =
-    refs.every(known) &&
-    kinds.every(Boolean) &&
-    kinds[0] !== kinds[1] &&
-    typedReferenceConfirmed;
-  if (
-    refs.some((field) => field.status === "user_edited") ||
-    (!distinctVerifiedNamespaces &&
-      refs.every((field) => field.value) &&
-      normalizeText(refs[0].value!) !== normalizeText(refs[1].value!))
-  )
-    return [
-      result(
-        "transaction-reference",
-        "거래 참조가 다르거나 사용자가 수정했습니다. 서로 다른 거래를 비교하지 않습니다.",
-      ),
-    ];
-  const scopes = [invoice.partialShipment, packing.partialShipment];
-  if (
-    scopes.some(
-      (field) => field.value === "yes" || field.status === "user_edited",
-    )
-  )
-    return [
-      result(
-        "shipment-scope",
-        "부분선적이거나 선적 범위가 사용자 수정값입니다. 전체 거래 수량과 출하 수량을 오류로 비교하지 않습니다.",
-      ),
-    ];
-  const referenceConfirmed =
-    (refs.every(known) &&
-      normalizeText(refs[0].value!) === normalizeText(refs[1].value!)) ||
-    (!!invoice.purchaseOrder &&
-      !!packing.purchaseOrder &&
-      known(invoice.purchaseOrder) &&
-      known(packing.purchaseOrder) &&
-      normalizeText(invoice.purchaseOrder.value!) ===
-        normalizeText(packing.purchaseOrder.value!)) ||
-    (!!packing.invoiceReference &&
-      known(invoice.documentNumber) &&
-      known(packing.invoiceReference) &&
-      normalizeText(invoice.documentNumber.value!) ===
-        normalizeText(packing.invoiceReference.value!));
-  const scopeConfirmed = scopes.every(
-    (field) => known(field) && field.value === "no",
-  );
-  const confirmed = referenceConfirmed && scopeConfirmed;
+  const { invoice, packing } = pair,
+    context = pairContext(invoice, packing);
   if (!invoice.items.length || !packing.items.length)
-    return [result("no-items", "비교할 상품 정보가 부족합니다.")];
-  const results: QuantityCheck[] = [];
-  const matched = new Set<number>();
-  invoice.items.forEach((item, index) => {
-    const id = `quantity-${index}`;
-    const label = item.description.value;
-    if (!known(item.description)) {
-      results.push(result(id, "품명 근거가 검증되지 않았습니다.", label));
-      return;
-    }
-    const name = normalizeText(label!);
-    const duplicate =
-      invoice.items.filter(
-        (other) =>
-          other.description.value &&
-          normalizeText(other.description.value) === name,
-      ).length > 1;
-    const candidates = packing.items
-      .map((other, i) => ({ other, i }))
-      .filter(
-        ({ other }) =>
-          known(other.description) &&
-          normalizeText(other.description.value!) === name,
+    return [
+      unavailable("no-items", "비교할 품목 정보가 없습니다.", null, [], true),
+    ];
+  const matches = invoice.items.map((row) =>
+    matchItem(row, invoice.items, packing.items),
+  );
+  const used = new Set<number>();
+  const checks: QuantityCheck[] = invoice.items.map((row, index) => {
+    const match = matches[index],
+      id = `quantity-${index}`,
+      label = row.description.value;
+    if (!("row" in match) || !match.row || match.index === undefined)
+      return unavailable(id, match.reason, label);
+    if (
+      matches.filter((m) => "index" in m && m.index === match.index).length !==
+      1
+    )
+      return unavailable(
+        id,
+        "여러 Invoice 행이 같은 Packing List 행에 대응하여 임의 연결하지 않았습니다.",
+        label,
       );
-    if (duplicate || candidates.length !== 1) {
-      results.push(
-        result(
+    used.add(match.index);
+    const other = match.row;
+    const fields = [
+      { label: "Invoice 수량", field: row.quantity },
+      { label: "Packing List 수량", field: other.quantity },
+      { label: "Invoice 단위", field: row.unit },
+      { label: "Packing List 단위", field: other.unit },
+    ];
+    if (!hasValue(row.quantity) || !hasValue(other.quantity))
+      return unavailable(
+        id,
+        "한쪽 상품 수량이 없어수치 비교를 실행하지 못했습니다.",
+        label,
+        fields,
+        true,
+      );
+    const unit = canonicalUnit(row.unit.value),
+      otherUnit = canonicalUnit(other.unit.value);
+    if (!unit || unit !== otherUnit)
+      return {
+        ...unavailable(
           id,
-          "동일 품목을 유일하게 연결하지 못했습니다. 품명 차이·중복 행·품목 누락을 확인해 주세요.",
+          "상품 단위가 다르거나 포장 단위입니다. PCS·CTNS·중량을 자동 변환하지 않았습니다.",
           label,
+          fields,
         ),
-      );
-      return;
-    }
-    const { other, i } = candidates[0];
-    matched.add(i);
-    if (![item.quantity, other.quantity, item.unit, other.unit].every(known)) {
-      results.push(
-        result(
-          id,
-          "수량 또는 단위의 원문 근거가 부족하거나 사용자가 수정한 값입니다. 확정 비교에서 제외했습니다.",
-          label,
-        ),
-      );
-      return;
-    }
-    const unit = canonicalUnit(item.unit.value!),
-      otherUnit = canonicalUnit(other.unit.value!);
-    if (!unit || unit !== otherUnit) {
-      results.push(
-        result(
-          id,
-          "상품 단위가 다르거나 포장 단위일 수 있습니다. 단위를 자동 변환하지 않았습니다.",
-          label,
-        ),
-      );
-      return;
-    }
-    const quantityUnitsLinked = [item, other].every(
-      (row) =>
-        row.quantity.source?.page === row.unit.source?.page &&
-        row.quantity.source &&
-        (row.quantity.source.layout?.role === "quantity" &&
-        row.quantity.source.layout.unit
-          ? canonicalUnit(row.quantity.source.layout.unit) ===
-            canonicalUnit(row.unit.value!)
-          : productQuantities(row.quantity.source.quote).some(
-              (evidence) =>
-                evidence.value === row.quantity.value &&
-                evidence.unit &&
-                canonicalUnit(evidence.unit) === canonicalUnit(row.unit.value!),
-            )),
-    );
-    if (!quantityUnitsLinked) {
-      results.push(
-        result(
-          id,
-          "상품 수량 근거에서 해당 상품 단위를 함께 확인하지 못했습니다. 다른 행의 단위를 섞어 사용하지 않습니다.",
-          label,
-        ),
-      );
-      return;
-    }
-    const equal = item.quantity.value === other.quantity.value;
-    results.push({
-      id,
-      status: confirmed ? (equal ? "match" : "mismatch") : "unverifiable",
-      confidence: confirmed ? "confirmed" : "candidate",
-      title: !confirmed
-        ? "수량 비교 후보 · 확정 오류 아님"
-        : equal
-          ? "동일 품목의 수량이 일치합니다"
-          : "동일 품목의 수량 차이를 확인했습니다",
-      explanation: !confirmed
-        ? "상품 수량과 단위는 원문에서 확인했지만 거래 참조 또는 전체 선적 범위가 부족합니다. 수치 차이를 참고하되 같은 거래·선적 범위인지 발행자에게 확인해야 합니다."
-        : equal
-          ? "원문과 대조된 상품 수량·단위가 두 문서에서 일치합니다. 전체 문서가 안전하다는 뜻은 아닙니다."
-          : "동일 거래당사자·거래 참조·품명·단위·전체 선적 범위가 원문에서 확인된 문서 사이에 수량 차이가 있습니다. 발행자 확인이 필요합니다.",
-      question: !confirmed
-        ? "두 서류가 같은 주문 및 같은 선적 범위인가요? 부분선적이나 서류 버전 차이가 있는지 확인해 주세요."
-        : equal
-          ? "실제 출하 수량과 최종 발행 서류도 같은지 확인해 주세요."
-          : "Invoice와 Packing List의 수량이 다릅니다. 실제 출하 수량은 무엇이며 어느 서류를 수정해야 하나요?",
-      item: label,
-      invoiceQuantity: item.quantity.value!,
+        invoiceQuantity: row.quantity.value!,
+        packingQuantity: other.quantity.value!,
+        leftValue: row.quantity.value,
+        rightValue: other.quantity.value,
+      };
+    const blockers = [...context.blockers];
+    if (match.tentative) blockers.push(match.reason);
+    if (![row.quantity, other.quantity, row.unit, other.unit].every(known))
+      blockers.push("수량·단위의 근거 미확인 또는 사용자 수정값");
+    if (![row, other].every(linkedUnit))
+      blockers.push("해당 상품 행의 수량·단위 연결 미확인");
+    const equal = row.quantity.value === other.quantity.value;
+    const assessment = blockers.length
+      ? equal
+        ? "provisional_match"
+        : "provisional_mismatch"
+      : equal
+        ? "confirmed_match"
+        : "confirmed_mismatch";
+    return {
+      ...check({
+        id,
+        category: "quantity",
+        scope: "cross",
+        assessment,
+        title: blockers.length
+          ? "수량 비교 후보 · 확정 오류 아님"
+          : equal
+            ? "동일 품목의 수량이 일치합니다"
+            : "동일 품목의 수량 차이를 확인했습니다",
+        explanation: blockers.length
+          ? `선택한 두 문서의 수치 비교는 수행했습니다. ${[...new Set(blockers)].join(" · ")}. 잠정 결과를 확정 오류 건수에 포함하지 않습니다.`
+          : equal
+            ? "같은 의미의 상품 수량·단위·행과 거래·전체 선적 범위가 원문에서 확인됩니다."
+            : "검증된 동일 품목·단위·거래·선적 범위의 상품 수량이 다릅니다. 실제 출하 수량과 수정할 서류를 확인해 주세요.",
+        question: blockers.length
+          ? "같은 주문·상품 규격·선적 범위인가요? 근거 미확인이나 사용자 수정 항목은 원문 또는 수정 PDF로 다시 확인해 주세요."
+          : equal
+            ? "실제 출하 수량과 최종 문서도 같은지 확인해 주세요."
+            : "실제 출하 수량은 무엇이며 어느 서류를 수정해야 하나요?",
+        item: label,
+        leftValue: row.quantity.value,
+        rightValue: other.quantity.value,
+        unit,
+        fields,
+      }),
+      invoiceQuantity: row.quantity.value!,
       packingQuantity: other.quantity.value!,
-      unit,
-      sources: [
-        item.quantity.source,
-        other.quantity.source,
-        item.unit.source,
-        other.unit.source,
-      ],
-    });
+    };
   });
-  packing.items.forEach((item, i) => {
-    if (!matched.has(i))
-      results.push(
-        result(
-          `packing-${i}`,
+  packing.items.forEach((row, index) => {
+    if (!used.has(index))
+      checks.push(
+        unavailable(
+          `packing-${index}`,
           "Packing List의 이 품목을 Invoice에서 유일하게 연결하지 못했습니다.",
-          item.description.value,
+          row.description.value,
         ),
       );
   });
-  return results;
+  return checks;
 }

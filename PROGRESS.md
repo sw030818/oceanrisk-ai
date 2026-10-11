@@ -364,3 +364,17 @@
 - 검증은 소스3개 SHA에 걸친 기록임: A/B5be24ac, C/D와첫6양식45db98f, 마지막양식/반복64c91ee. 프롬프트·요청설정·스키마·PDF·grounder·수량 엔진 원문이 세 SHA에서 동일함을 Git source 비교로 확인했고 응답 메시지 선택만 수정. 그러나 **최종SHA 단독 전체 live suite는 실행하지 않았으며 report.completed=false를 유지**. 추가비용 승인 없이 재실행하거나 완료 플래그를 바꾸지 않음. 단위/브라우저 전체 검사는 각 ship SHA에서 수행.
 - OpenAI 실제 호출과 각 합성 사례 통과를 확인했으나 이를 전체 실무 무역서류 정확도 보증으로 확대하지 않음. 과거 실패 raw phase는 민감원문 보호상 저장하지 않아 정확한 원문 비교 불가. 스캔OCR/회전·병합표/B/L·법률/견적/비용/이력DB/대시보드는 미구현·미검증 후속범위. PHASE3 기능 추가 없음.
 - [docs/validation/phase22-2026-10-11.json](./docs/validation/phase22-2026-10-11.json)에 모든 실패·성공 메타데이터/예산/토큰/검증범위 보존. 이 최종 결과 문서만 추가 ship으로 main에 저장·자동 배포하고 실제 유료 검사는 재실행하지 않는다. 최종 SHA는 완료보고/Actions에 기록하며 문서가 자기 SHA를 재귀 수정하지 않음.
+
+
+## PHASE 2.3 — 독립 교차검증 재설계
+- 시작 main **16e1d91af0d190f0d7d0091ac54e3ae5c55a5bc4**, 작업 트리 청결/원격 fetch/fast-forward 확인. 저장소 루트에서 실제 업무 PDF 검색 결과0(생성 산출물/node_modules/빌드 제외). 실제 사용자 업로드 문서는 커밋하지 않고 보고된600/400PCS·Invoice/PO·상품/포장/중량 분리 구조를 합성 fixture로 재현.
+- 원인1: 수량 규칙이 당사자·식별자·선적 범위 검사에서 전체 early-return. 원인2: tableLink가 인용한 모든 블록을 같은 열로 묶어 QTY 숫자+분리PCS/헤더 인용을 거부. numericTokens도400PCS/300KG 등을 식별자처럼 거부했고 N.W./G.W./PO No. 등 표준 라벨이 부족. 실제 파일은 없어 그 파일의 정확한 실패 블록 자체를 확인했다고 주장하지 않음.
+- 변경: 선택한 Invoice/PL ID를 비교 의도로 수락하고 실제 type/거래 동일성을 별도로 검증. reference/party/product/unit/quantity/weight/packaging/arithmetic/required를 독립 체크로 분리. 기존status match/mismatch/unverifiable를 보존하며 assessment의 확인일치/확인불일치/잠정일치/잠정불일치/확인필요/정보부족6상태 추가. 참조누락/부분선적/사용자수정/충돌도 항목별 비교 계속, 확정불일치 카운트 보호.
+- 의미 매핑: own Invoice 번호↔PL의Invoice 참조, PO↔PO, Shipment↔Shipment, Booking↔Booking. PL own문서번호는 거래참조로 비교하지 않음. generic 참조는 실제 원문 semanticRole로만 대응하며 모호한 라벨을 재분류하지 않음. 검증된 같은 의미 참조 충돌은 독립경고/잠정수량으로 보호하고 당사자 등 다른 일치 결과 유지.
+- 품목: 유일한 실제SKU/Item Code 또는 표준화품명으로 순서와 무관하게 대응. 중복SKU/품명·여러행↔한행 대응은 임의 확정 금지. 유사품명은 규격숫자/단위/유일성 확인 후 잠정만 허용. PCS/EA동의어 유지, CTNS·중량·총계와 혼동/환산 금지.
+- 근거: 실제값 셀을 앵커로 삼되 실제헤더·열·행을 독립 대조. 다른 상품행의 숫자/단위·여러행에 걸친PCS·CTNS열·상품수량을총액으로인용·없는블록/인용은 계속 거부. 줄바꿈 품명/회사명, 숫자붙은단위, 분리단위, 표준 중량라벨 처리. source.semanticRole과 verificationCode(quote/value/role/row/ambiguous/missing 등)로 원문 없는 구조진단 제공. 원문/API응답/키 로그 없음.
+- 문서별: Invoice 수량×명시적단가·품목소계/총액, PL/item 총중량≥순중량, 포장수량/단위, 명시된총상품/포장 합계, 기본정보 확인. 통화정밀도·할인·운임·세금·총액정의가 부족한 산술차이는 잠정, 없는금액/중량/단가를0으로추정하지 않음. Backorder/과부족납품조건은 전체선적확정 보호.
+- UI: 기존 네이비/화이트·업로드2칸/빨간PDF/모바일/수정/복원/원문 유지. 상단 문서·비교품목·확정일치/불일치·잠정/확인필요·정보부족 카운트, 별도참조경고, quantity핵심카드+독립항목/자체검토접기, 근거버튼 파일/페이지/수정상태 표시. 사용자수정은 즉시잠정재계산. 비교미실시는0건오류로표시하지 않음. 서버도 동일rules를실행하고 원문중복을막는compact결과+evidenceRefs 반환.
+- 초기 검사: 기존검사61개 중6개는 이전early-return/id/unavailable기대와 변경된제품정책 충돌. 삭제하지않고 별도참조경고+계속비교+확정오류금지 강화로 갱신. 전체단위253/253 통과. API slot검사의 불완전mock(type만) 1개는 완전한합성GroundedDocument로보강하고 기존분류/slot안전검사 유지. 첫lint 미사용UIimport/도구prefer-const, live도구nullable타입오류 수정.
+- 실제 npm ci419/type/lint/단위253/build/PDF worker/Playwright **15/15** 모두통과. 이후 총계잘못인용/다른행단위/Backorder3회귀와compactAPI를 보강했고 최종ship에서 전체검사 재실행. 새핵심회귀19개와 기존237개=예정256개, 기존12브라우저+새3개 유지. 모의AI+실제PDF 검증을 실제OpenAI성공으로 합산하지 않음.
+- 새유료검증 사용자명시승인: **2문서/배치1회/최대$0.03/자동재시도0**. 요청byte상한가격사전예약 **$0.0120219**. PHASE2.2의31문서예산과 별도ledger/archive, 호출전예약·중단후예산복원·미확인비용유지. 실행은 새code정확ProductionSHA 후 단1회. live-phase23 도구는 실제API결과를메모리에만보관해 공식ProductionHTML/assets의 실제UI에재생(추가유료호출0), Node의TLS검증프록시전송사용/ignoreHTTPSErrors없음. 아직 실제API성공으로 보고하지 않음.

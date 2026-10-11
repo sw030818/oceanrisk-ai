@@ -2,7 +2,9 @@ import { test, expect } from "@playwright/test";
 import { makePdf, syntheticDocument } from "../fixtures/synthetic";
 test("upload workspace, validation and responsive layout", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeEnabled();
+  await expect(
+    page.getByLabel("Commercial Invoice PDF 파일 선택"),
+  ).toBeEnabled();
   await expect(
     page.getByRole("heading", { name: "서류 검토, 더 명확하게." }),
   ).toBeVisible();
@@ -37,7 +39,9 @@ test("actual server PDF extraction with missing OpenAI key", async ({
     "Missing-key test only applies when key is absent",
   );
   await page.goto("/");
-  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeEnabled();
+  await expect(
+    page.getByLabel("Commercial Invoice PDF 파일 선택"),
+  ).toBeEnabled();
   const pdf = await makePdf([
     ["COMMERCIAL INVOICE", "Quantity: 100 PCS"],
     ["Second page evidence"],
@@ -57,7 +61,9 @@ test("actual server PDF extraction with missing OpenAI key", async ({
     page.getByText("Quantity: 100 PCS", { exact: false }),
   ).toBeVisible();
   await expect(page.getByText("PAGE 2", { exact: true })).toBeVisible();
-  await expect(page.getByText("검증 불가", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("정보 부족", { exact: false }).first(),
+  ).toBeVisible();
 });
 test("synthetic mocked analysis: mismatch evidence, edits and revalidation", async ({
   page,
@@ -81,8 +87,21 @@ test("synthetic mocked analysis: mismatch evidence, edits and revalidation", asy
     }),
   );
   await page.goto("/");
-  await expect(page.getByLabel("Commercial Invoice PDF 파일 선택")).toBeEnabled();
-  for (const [index, fixture] of pair.entries()) await page.getByLabel(index ? "Packing List PDF 파일 선택" : "Commercial Invoice PDF 파일 선택").setInputFiles({ name: fixture.pdf.fileName, mimeType: "application/pdf", buffer: Buffer.from("%PDF-synthetic-ui-test") });
+  await expect(
+    page.getByLabel("Commercial Invoice PDF 파일 선택"),
+  ).toBeEnabled();
+  for (const [index, fixture] of pair.entries())
+    await page
+      .getByLabel(
+        index
+          ? "Packing List PDF 파일 선택"
+          : "Commercial Invoice PDF 파일 선택",
+      )
+      .setInputFiles({
+        name: fixture.pdf.fileName,
+        mimeType: "application/pdf",
+        buffer: Buffer.from("%PDF-synthetic-ui-test"),
+      });
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: "서류 분석 시작" }).click();
   await expect(
@@ -92,7 +111,10 @@ test("synthetic mocked analysis: mismatch evidence, edits and revalidation", asy
     .getByLabel("상품 수량 · 품목 1", { exact: true })
     .first()
     .fill("95");
-  await expect(page.getByText("검증 불가", { exact: true })).toBeVisible();
+  await expect(page.getByTestId("check-quantity-0")).toHaveAttribute(
+    "data-assessment",
+    "provisional_mismatch",
+  );
   await expect(
     page.getByRole("button", { name: "사용자 수정" }).first(),
   ).toBeVisible();

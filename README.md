@@ -94,3 +94,16 @@ npm run test:layouts
 Responses의 중간 `commentary`와 최종 `final_answer` 메시지를 구분합니다. 명시적인 최종 메시지가 하나일 때만 JSON을 파싱하며, 기존 단일 unphased 메시지는 지원합니다. 여러 최종 메시지·알 수 없는 phase·refusal·불완전한 출력은 안전하게 거부합니다. 중간 설명과 최종 JSON을 이어 붙이거나 JSON을 추측 복구하지 않습니다.
 
 이미 다른 단계가 끝난 경우 `test:production -- --sha=<SHA> --stage=ad --scenario=C` 또는 `--stage=repeat`로 해당 최소 검사만 실행할 수 있습니다. 예산과 실패 이력은 모든 실행에서 공유합니다.
+
+## PHASE 2.3 — 선택 의도와 거래 동일성을 분리
+Invoice·Packing List 칸의 선택은 비교 대상 지정입니다. 거래 동일성은 별도로 확인합니다. 참조가 없거나 다른 의미로 표현되어도 모든 품목 비교를 중단하지 않습니다. Invoice 자체 번호와 PL의 Invoice 참조, PO, Shipment, Booking을 각 의미별로 대조하며 PL 자체 번호는 거래번호로 사용하지 않습니다. 같은 의미 참조 충돌은 독립 경고이며 거래에 의존하는 수량·중량은 잠정 상태로 보호합니다.
+
+확인된 일치/불일치, 잠정 일치/불일치, 확인 필요, 정보 부족을 구분합니다. 기존 status는 하위 호환을 유지하고 assessment가 상세 의미를 나타냅니다. SKU/품명/단위/실제 행으로 유일한 상품을 대응하며 중복·유사성만 있는 대응은 확정하지 않습니다. 사용자 수정은 원문 성공으로 표시하지 않고 즉시 잠정 재계산합니다.
+
+실제 PDF 값 셀·열/행·인접 라벨을 검증합니다. 분리된 숫자/단위와400PCS/300KG도 실제 동일 상품행을 확인하며 다른행/CTNS/총계·없는인용은 거부합니다. doc own금액/중량/포장/총계 검사와 교차검사를 분리하고 할인·운임·세금·통화정밀도·총액정의가 부족하면 잠정/정보부족입니다. API의 compact review에 원문 반복을 줄인 evidenceRefs를 반환하고 UI는 수정된문서의 동일규칙을 다시실행합니다.
+
+실제PHASE2.3검증은 이전31문서예산을 재사용하지 않습니다. 새로 승인된2문서/$0.03상한을 scripts/live-phase23.ts와별도ledger/archive로 보존합니다. 정확ProductionSHA 확인 후 한배치만호출하고 재시도하지 않습니다. 실제응답을 메모리에서ProductionUI에재생하는브라우저검사는 추가호출0이며 로컬mock회귀와별도로기록합니다. 승인없이실행/예산초기화하지 마세요.
+
+```sh
+NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run test:phase23:production -- --sha=<exact-deployed-sha> --approved-documents=2 --approved-max-cost-usd=0.03
+```

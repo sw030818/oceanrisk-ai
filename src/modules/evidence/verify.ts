@@ -1,12 +1,17 @@
 import { productQuantities } from "./quantity-evidence";
+import { canonicalUnit } from "../documents/units";
+import { numericTokens } from "./numbers";
 import {
   evidenceBlocks,
   relatedLabel,
   tableLink,
+  labelForValue,
+  labelRole as labelForInline,
   type LayoutRole,
 } from "../layout/relations";
 import type {
   Evidence,
+  EvidenceIssue,
   ExtractedDocument,
   GroundedDocument,
   GroundedField,
@@ -15,16 +20,12 @@ import type {
 export function normalizeText(text: string): string {
   return text.normalize("NFKC").replace(/\s+/g, " ").trim().toLowerCase();
 }
-function numericTokens(text: string): number[] {
-  // Decimal-comma and irregular grouping are deliberately ambiguous, never guessed.
-  return (text.match(/(?<![\w.])[-+]?\d+(?:[.,]\d+)*(?![\w.])/g) ?? [])
-    .filter((token) =>
-      /^[-+]?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(token),
-    )
-    .map((token) => Number(token.replaceAll(",", "")));
-}
-export function verifyField<T extends string | number>(
-  field: { value: T | null; evidence: Evidence | null },
+function verifyFieldCore<T extends string | number>(
+  field: {
+    value: T | null;
+    evidence: Evidence | null;
+    evidenceIssue?: EvidenceIssue;
+  },
   pdf: PdfDocument,
   role?: LayoutRole,
 ): GroundedField<T> {
@@ -42,7 +43,17 @@ export function verifyField<T extends string | number>(
     return {
       ...base,
       status: "unverified",
-      reason: "원문 근거 후보가 없습니다.",
+      reason: field.evidenceIssue
+        ? {
+            page_missing: "AI가 지정한 근거 페이지가 실제 PDF에 없습니다.",
+            block_missing:
+              "AI 근거 블록이 해당 PDF 페이지에 존재하지 않습니다.",
+            duplicate_block:
+              "근거 후보에 중복 블록이 있어 유일한 인용을 확인하지 못했습니다.",
+            citation_too_long:
+              "근거 인용이 너무 길어 안전한 필드 단위로 확인하지 못했습니다.",
+          }[field.evidenceIssue]
+        : "원문 근거 후보가 없습니다.",
     };
   const page = pdf.pages.find((page) => page.page === field.evidence!.page);
   const quote = normalizeText(field.evidence.quote);
@@ -59,7 +70,42 @@ export function verifyField<T extends string | number>(
       status: "unverified",
       reason: "근거 문구가 해당 페이지 원문과 일치하지 않습니다.",
     };
-  const layout = blocks && page ? tableLink(page, blocks) : null;
+  const compatible = (actual: string) =>
+    actual === role ||
+    (role === "unit" && actual === "quantity") ||
+    (role === "weightUnit" && ["netWeight", "grossWeight"].includes(actual)) ||
+    (role === "packageQuantity" && actual === "packaging");
+  // Anchor the field to the literal value cell, not every cited header/unit.
+  // This keeps split numeric/unit blocks valid without accepting another row.
+  const valueBlocks = blocks?.filter((block) =>
+    typeof field.value === "number"
+      ? numericTokens(block.text).includes(field.value)
+      : normalizeText(block.text).includes(normalizeText(String(field.value))),
+  );
+  const anchored =
+    valueBlocks
+      ?.map((block) => tableLink(page!, [block]))
+      .filter((link) => link && compatible(link.role)) ?? [];
+  if (
+    anchored.length > 1 &&
+    new Set(anchored.map((link) => `${link!.tableId}/${link!.rowId}`)).size > 1
+  )
+    return {
+      ...base,
+      status: "unverified",
+      reason:
+        "인용된 값/단위가 서로 다른 상품 행에 걸쳐 있어 유일한 근거를 확인하지 못했습니다.",
+    };
+  const layout =
+    role === "description"
+      ? blocks && page
+        ? tableLink(page, blocks)
+        : null
+      : anchored.length >= 1
+        ? (anchored.find((link) => link?.role === role) ?? anchored[0])
+        : blocks && page
+          ? tableLink(page, blocks)
+          : null;
   const valuePresent =
     typeof field.value === "number"
       ? role === "quantity" && !layout
@@ -78,6 +124,8 @@ export function verifyField<T extends string | number>(
     if (source) {
       source.blocks = blocks;
       if (layout) source.layout = layout;
+      const semanticRole = labelForValue(page, blocks, field.value);
+      if (semanticRole) source.semanticRole = semanticRole;
     }
     if (
       layout &&
@@ -89,8 +137,12 @@ export function verifyField<T extends string | number>(
         "netWeight",
         "grossWeight",
         "weightUnit",
+        "sku",
+        "unitPrice",
+        "packageQuantity",
+        "packageUnit",
       ].includes(role) &&
-      layout.role !== role
+      !compatible(layout.role)
     )
       return {
         ...base,
@@ -98,9 +150,9 @@ export function verifyField<T extends string | number>(
         reason: "추출 필드의 의미가 실제 표 열의 제목과 맞지 않습니다.",
       };
     if (role === "quantity" && layout) {
-      const cells = blocks.filter(
-        (block) => block.row > Number(layout.tableId.split(":t")[1]),
-      );
+      const cells = blocks
+        .filter((block) => block.row > Number(layout.tableId.split(":t")[1]))
+        .filter((block) => tableLink(page, [block])?.role === "quantity");
       const values = cells.flatMap((block) => numericTokens(block.text));
       if (
         layout.role !== "quantity" ||
@@ -128,6 +180,8 @@ export function verifyField<T extends string | number>(
         "purchaseOrder",
         "invoiceReference",
         "documentNumber",
+        "shipmentReference",
+        "bookingReference",
       ].includes(role) &&
       relatedLabel(page, blocks, field.value, role)
     )
@@ -145,6 +199,8 @@ export function verifyField<T extends string | number>(
         "purchaseOrder",
         "invoiceReference",
         "documentNumber",
+        "shipmentReference",
+        "bookingReference",
       ].includes(role)
     )
       return {
@@ -153,6 +209,70 @@ export function verifyField<T extends string | number>(
         reason:
           "인용된 실제 블록의 필드 역할과 값의 위치 관계가 확인되지 않습니다.",
       };
+  }
+  if (
+    role &&
+    [
+      "netWeight",
+      "grossWeight",
+      "amount",
+      "sku",
+      "unitPrice",
+      "packageQuantity",
+      "shipmentReference",
+      "bookingReference",
+      "subtotalAmount",
+      "discountAmount",
+      "freightAmount",
+      "taxAmount",
+      "totalNetWeight",
+      "totalGrossWeight",
+      "totalPackages",
+      "totalQuantity",
+      "totalAmount",
+    ].includes(role) &&
+    (!layout ||
+      ![
+        "netWeight",
+        "grossWeight",
+        "amount",
+        "sku",
+        "unitPrice",
+        "packageQuantity",
+      ].includes(role))
+  ) {
+    const inlineRole =
+      blocks && page
+        ? labelForValue(page, blocks, field.value)
+        : field.evidence.quote
+            .split(/\r?\n/)
+            .map((line) => line.split(":")[0])
+            .map((label) => labelForInline(label))
+            .find(Boolean);
+    if (
+      !(role === "packageQuantity"
+        ? ["packaging", "packageQuantity"].includes(inlineRole ?? "")
+        : inlineRole === role)
+    )
+      return {
+        ...base,
+        status: "unverified",
+        reason:
+          "숫자/값은 존재하지만 해당 필드의 라벨·셀 의미를 확인하지 못했습니다.",
+      };
+    if (source && inlineRole) source.semanticRole = inlineRole;
+    if (
+      source &&
+      ![
+        "netWeight",
+        "grossWeight",
+        "amount",
+        "sku",
+        "unitPrice",
+        "packageQuantity",
+      ].includes(role)
+    )
+      delete source.layout;
   }
   if (role === "quantity") {
     const quantities = productQuantities(field.evidence.quote);
@@ -243,6 +363,37 @@ export function verifyField<T extends string | number>(
       "원문 위치와 값이 대조되었습니다. 문서 자체의 진실성을 보증하지는 않습니다.",
   };
 }
+export function verifyField<T extends string | number>(
+  field: {
+    value: T | null;
+    evidence: Evidence | null;
+    evidenceIssue?: EvidenceIssue;
+  },
+  pdf: PdfDocument,
+  role?: LayoutRole,
+): GroundedField<T> {
+  const result = verifyFieldCore(field, pdf, role);
+  result.verificationCode =
+    result.status === "verified"
+      ? "verified"
+      : result.status === "missing"
+        ? "missing_value"
+        : !field.evidence
+          ? (field.evidenceIssue ?? "missing_evidence")
+          : result.reason.includes("페이지 원문")
+            ? "quote_mismatch"
+            : result.reason.includes("추출값")
+              ? "value_mismatch"
+              : result.reason.includes("서로 다른 상품 행")
+                ? "row_mismatch"
+                : result.reason.includes("열") && result.reason.includes("유일")
+                  ? "ambiguous_cell"
+                  : result.reason.includes("라벨") ||
+                      result.reason.includes("의미")
+                    ? "role_mismatch"
+                    : "context_unverified";
+  return result;
+}
 export function groundDocument(
   data: ExtractedDocument,
   pdf: PdfDocument,
@@ -264,7 +415,18 @@ export function groundDocument(
       );
     const sourceLines = partial.source.quote.split(/\r?\n/);
     const allLines = pdf.pages.flatMap((page) => page.text.split(/\r?\n/));
-    const conflicting = allLines.some(noLine) && allLines.some(yesLine);
+    const scopeQualification = allLines.some(
+      (line) =>
+        /\bback[ -]?orders?\b|balance\s+(?:to|remaining)|remaining\s+(?:quantity|shipment)|over\s*\/\s*under\s*(?:delivery|shipment)|delivery\s+tolerance/i.test(
+          line,
+        ) &&
+        !/\bno back[ -]?orders?\b|back[ -]?orders?\s*[:=-]\s*(?:none|0(?:\s*pcs)?\b)/i.test(
+          line,
+        ),
+    );
+    const conflicting =
+      (allLines.some(noLine) && allLines.some(yesLine)) ||
+      (data.partialShipment.value === "no" && scopeQualification);
     const sourceInActualLine = (line: string) =>
       normalizeText(line).includes(quote);
     const actualSourceLines =
@@ -290,6 +452,12 @@ export function groundDocument(
         ? "원문의 명시적 선적 범위를 확인했습니다."
         : "부분선적 여부를 원문의 명시적 표현으로 확인하지 못했습니다.";
   }
+  partial.verificationCode =
+    partial.status === "verified"
+      ? "verified"
+      : partial.status === "missing"
+        ? "missing_value"
+        : "context_unverified";
   return {
     id: pdf.id,
     fileName: pdf.fileName,
@@ -312,8 +480,42 @@ export function groundDocument(
       pdf,
       "invoiceReference",
     ),
+    shipmentReference: verifyField(
+      data.shipmentReference ?? { value: null, evidence: null },
+      pdf,
+      "shipmentReference",
+    ),
+    bookingReference: verifyField(
+      data.bookingReference ?? { value: null, evidence: null },
+      pdf,
+      "bookingReference",
+    ),
+    ...Object.fromEntries(
+      (
+        [
+          "subtotalAmount",
+          "discountAmount",
+          "freightAmount",
+          "taxAmount",
+          "totalNetWeight",
+          "totalGrossWeight",
+          "totalWeightUnit",
+          "totalPackages",
+          "packageUnit",
+          "totalQuantity",
+          "totalQuantityUnit",
+        ] as const
+      ).map((key) => [
+        key,
+        verifyField<string | number>(
+          data[key] ?? { value: null, evidence: null },
+          pdf,
+          key,
+        ),
+      ]),
+    ),
     currency: verifyField(data.currency, pdf),
-    totalAmount: verifyField(data.totalAmount, pdf),
+    totalAmount: verifyField(data.totalAmount, pdf, "totalAmount"),
     partialShipment: partial,
     items: data.items.map((item) => {
       const row = {
@@ -324,6 +526,26 @@ export function groundDocument(
         grossWeight: verifyField(item.grossWeight, pdf, "grossWeight"),
         weightUnit: verifyField(item.weightUnit, pdf, "weightUnit"),
         amount: verifyField(item.amount, pdf, "amount"),
+        sku: verifyField(
+          item.sku ?? { value: null, evidence: null },
+          pdf,
+          "sku",
+        ),
+        unitPrice: verifyField(
+          item.unitPrice ?? { value: null, evidence: null },
+          pdf,
+          "unitPrice",
+        ),
+        packageQuantity: verifyField(
+          item.packageQuantity ?? { value: null, evidence: null },
+          pdf,
+          "packageQuantity",
+        ),
+        packageUnit: verifyField(
+          item.packageUnit ?? { value: null, evidence: null },
+          pdf,
+          "packageUnit",
+        ),
       };
       const quantityLayout = row.quantity.source?.layout;
       const descriptionLayout = row.description.source?.layout;
@@ -338,9 +560,10 @@ export function groundDocument(
           (unitLayout &&
             (unitLayout.rowId !== quantityLayout.rowId ||
               unitLayout.tableId !== quantityLayout.tableId ||
-              unitLayout.role !== "unit")))
+              !["unit", "quantity"].includes(unitLayout.role))))
       ) {
         row.quantity.status = "unverified";
+        row.quantity.verificationCode = "row_mismatch";
         row.quantity.reason =
           "품명·상품 수량·단위가 같은 표의 동일 상품 행에 연결되지 않습니다.";
       }
@@ -350,6 +573,10 @@ export function groundDocument(
           "grossWeight",
           "weightUnit",
           "amount",
+          "sku",
+          "unitPrice",
+          "packageQuantity",
+          "packageUnit",
         ] as const) {
           const location = row[key].source?.layout;
           if (
@@ -358,10 +585,25 @@ export function groundDocument(
               location.tableId !== quantityLayout.tableId)
           ) {
             row[key].status = "unverified";
+            row[key].verificationCode = "row_mismatch";
             row[key].reason =
               "다른 상품 행의 값을 이 품목과 연결할 수 없습니다.";
           }
         }
+      if (
+        row.weightUnit.value &&
+        [row.netWeight, row.grossWeight].some(
+          (field) =>
+            field.source?.layout?.unit &&
+            canonicalUnit(field.source.layout.unit) !==
+              canonicalUnit(row.weightUnit.value),
+        )
+      ) {
+        row.weightUnit.status = "unverified";
+        row.weightUnit.verificationCode = "role_mismatch";
+        row.weightUnit.reason =
+          "순중량/총중량 열의 실제 단위와 추출 중량 단위가 충돌합니다.";
+      }
       return row;
     }),
   };
@@ -374,6 +616,7 @@ export function editField<T>(
     ...field,
     value,
     status: "user_edited",
+    verificationCode: "user_edited",
     reason: "사용자가 수정한 값입니다. 기존 원문 근거로 재확정하지 않았습니다.",
   };
 }

@@ -94,7 +94,7 @@ describe("PHASE 1.5 actual generated PDFs with MOCKED AI (not live Gemini)", () 
     expect(check.invoiceQuantity).toBe(500);
     expect(check.packingQuantity).toBe(480);
   });
-  it("never makes a candidate from known partial shipment or edited context", () => {
+  it("keeps partial/edited context provisional and never confirms a mismatch", () => {
     for (const mode of ["partial", "edited"] as const) {
       const docs = [
         syntheticDocument("invoice", 500).document,
@@ -102,17 +102,23 @@ describe("PHASE 1.5 actual generated PDFs with MOCKED AI (not live Gemini)", () 
       ];
       if (mode === "partial") docs[1].partialShipment.value = "yes";
       else docs[1].transactionReference.status = "user_edited";
-      expect(compareQuantities(docs)[0].confidence).toBe("unavailable");
+      expect(compareQuantities(docs)[0].confidence).toBe("candidate");
+      expect(compareQuantities(docs)[0].assessment).toBe(
+        "provisional_mismatch",
+      );
+      expect(compareQuantities(docs)[0].status).toBe("unverifiable");
     }
   });
-  it("does not pair different orders even when one reference is unverified", () => {
+  it("continues provisional comparison without confirming identity from an unverified conflicting reference", () => {
     const docs = [
       syntheticDocument("invoice", 500).document,
       syntheticDocument("packing_list", 480).document,
     ];
     docs[1].transactionReference.value = "PO-OTHER";
     docs[1].transactionReference.status = "unverified";
-    expect(compareQuantities(docs)[0].confidence).toBe("unavailable");
+    expect(compareQuantities(docs)[0].confidence).toBe("candidate");
+    expect(compareQuantities(docs)[0].assessment).toBe("provisional_mismatch");
+    expect(compareQuantities(docs)[0].status).toBe("unverifiable");
   });
   it("accepts a full party name followed by a separate address line, not a shortened name", () => {
     const pdf = {
@@ -195,13 +201,28 @@ describe("PHASE 1.5 actual generated PDFs with MOCKED AI (not live Gemini)", () 
       ).toBe("unverified");
   });
   it("rejects a quote that crops the package qualifier from the actual page", () => {
-    const pdf = { ...syntheticDocument().pdf, pages: [{ page: 1, text: "Package quantity: 20 PCS" }] };
-    expect(verifyField({value:20,evidence:{page:1,quote:"quantity: 20 PCS"}},pdf,"quantity").status).toBe("unverified");
+    const pdf = {
+      ...syntheticDocument().pdf,
+      pages: [{ page: 1, text: "Package quantity: 20 PCS" }],
+    };
+    expect(
+      verifyField(
+        { value: 20, evidence: { page: 1, quote: "quantity: 20 PCS" } },
+        pdf,
+        "quantity",
+      ).status,
+    ).toBe("unverified");
   });
   it("rejects a quote that crops the negation from full-shipment text", () => {
     const { data, pdf } = syntheticDocument();
-    pdf.pages[0].text = pdf.pages[0].text.replace("Full shipment", "Not full shipment");
-    data.partialShipment = { value:"no", evidence:{page:1,quote:"full shipment"} };
-    expect(groundDocument(data,pdf).partialShipment.status).toBe("unverified");
+    pdf.pages[0].text = pdf.pages[0].text.replace(
+      "Full shipment",
+      "Not full shipment",
+    );
+    data.partialShipment = {
+      value: "no",
+      evidence: { page: 1, quote: "full shipment" },
+    };
+    expect(groundDocument(data, pdf).partialShipment.status).toBe("unverified");
   });
 });

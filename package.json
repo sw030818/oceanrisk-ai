@@ -20,7 +20,8 @@
     "check:production": "tsx scripts/check-production.ts",
     "test:production": "tsx scripts/live-openai.ts",
     "build:verified": "node scripts/verify.mjs --build-only",
-    "test:gemini:legacy": "tsx scripts/live-gemini.ts"
+    "test:gemini:legacy": "tsx scripts/live-gemini.ts",
+    "test:phase23:production": "tsx scripts/live-phase23.ts"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

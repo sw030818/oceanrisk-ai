@@ -1,4 +1,5 @@
 import type { Evidence, PdfBlock, PdfPage } from "../documents/schema";
+import { numericTokens } from "../evidence/numbers";
 const norm = (text: string) =>
   text.normalize("NFKC").replace(/\s+/g, " ").trim().toLowerCase();
 export type LayoutRole =
@@ -14,25 +15,66 @@ export type LayoutRole =
   | "netWeight"
   | "grossWeight"
   | "amount"
-  | "weightUnit";
+  | "weightUnit"
+  | "sku"
+  | "unitPrice"
+  | "packageQuantity"
+  | "packageUnit"
+  | "shipmentReference"
+  | "bookingReference"
+  | "subtotalAmount"
+  | "discountAmount"
+  | "freightAmount"
+  | "taxAmount"
+  | "totalNetWeight"
+  | "totalGrossWeight"
+  | "totalWeightUnit"
+  | "totalPackages"
+  | "totalQuantity"
+  | "totalQuantityUnit"
+  | "totalAmount";
 const vocabulary: Record<string, RegExp> = {
   seller: /^(?:(?:exporter|seller|shipper|판매자|수출자)(?:\s*\/\s*|\s+|$))+$/,
   buyer: /^(?:(?:importer|buyer|consignee|구매자|수입자)(?:\s*\/\s*|\s+|$))+$/,
   purchaseOrder:
-    /^(?:purchase order(?: no| number)?|p\.?o\.?(?: no| number)?|order reference|order no|주문 번호|거래 참조)$/,
+    /^(?:purchase order(?: no\.?| number| #)?|p\.?o\.?(?: no\.?| number| #)?|order reference|order no\.?|주문 번호)$/,
   invoiceReference:
-    /^(?:invoice reference|invoice no|invoice number|invoice #|송장 번호)$/,
+    /^(?:invoice ref(?:erence)?\.?|invoice no\.?|invoice number|invoice #|송장 번호)$/,
   documentNumber:
-    /^(?:document|document no|invoice no|invoice number|invoice #|packing list no|송장 번호)$/,
+    /^(?:document|document no\.?|invoice no\.?|invoice number|invoice #|packing list no\.?|packing list number|p\.?l\.? no\.?|송장 번호)$/,
   quantity:
     /^(?:qty\.?|quantity|product quantity|상품 수량|수량)(?:\s*\([a-z.]+\))?$|^(?:pcs|pieces|ea)$/,
   unit: /^(?:unit|units|uom|unit of measure|단위)$/,
   description:
     /^(?:description|goods description|item description|product description|commodity|product|item|품명|품목)$/,
   packaging: /^(?:ctns?|cartons?|packages?|boxes|포장|박스|포장 수량)$/,
-  amount: /^(?:amount|line amount|금액)$/,
-  netWeight: /^(?:net weight|net wt|순중량)$/,
-  grossWeight: /^(?:gross weight|gross wt|총중량)$/,
+  shipmentReference: /^(?:shipment (?:no\.?|reference|ref\.?)|선적 번호)$/,
+  bookingReference: /^(?:booking (?:no\.?|reference|ref\.?)|예약 번호)$/,
+  transactionReference:
+    /^(?:transaction reference|transaction ref\.?|contract no\.?|거래 참조)$/,
+  sku: /^(?:sku|item code|product code|item no\.?|제품 코드)$/,
+  unitPrice: /^(?:unit price|price per unit|단가)(?:\s*\([a-z$]+\))?$/,
+  packageQuantity: /^(?:package quantity|carton quantity|포장 수량)$/,
+  packageUnit: /^(?:package unit|포장 단위)$/,
+  subtotalAmount:
+    /^(?:goods subtotal|goods amount|subtotal|sub-total|total goods amount|상품 소계)$/,
+  totalAmount: /^(?:total amount|grand total|invoice total|총 금액)$/,
+  discountAmount: /^(?:discount|discount amount|할인)$/,
+  freightAmount: /^(?:freight|freight amount|shipping cost|운임)$/,
+  taxAmount: /^(?:tax|tax amount|vat|세금)$/,
+  totalNetWeight:
+    /^(?:total net weight|total n\.?w\.?|총 순중량)(?:\s*\([a-z]+\))?$/,
+  totalGrossWeight:
+    /^(?:total gross weight|total g\.?w\.?|총 총중량)(?:\s*\([a-z]+\))?$/,
+  totalWeightUnit: /^(?:total weight unit|총 중량 단위)$/,
+  totalPackages: /^(?:total (?:packages|cartons|ctns)|총 포장 수량)$/,
+  totalQuantity: /^(?:total (?:quantity|qty|pcs)|총 상품 수량)$/,
+  totalQuantityUnit: /^(?:total quantity unit|총 상품 단위)$/,
+  totalLabel: /^(?:total|totals|합계)$/,
+  amount: /^(?:amount|line amount|금액)(?:\s*\([a-z$]+\))?$/,
+  netWeight: /^(?:net weight|net wt\.?|n\.?w\.?|순중량)(?:\s*\([a-z]+\))?$/,
+  grossWeight:
+    /^(?:gross weight|gross wt\.?|g\.?w\.?|총중량)(?:\s*\([a-z]+\))?$/,
   weightUnit: /^(?:weight unit|중량 단위)$/,
   other: /^(?:price|unit price|weight|중량)$/,
 };
@@ -122,24 +164,50 @@ export function relatedLabel(
   value: string | number,
   role: LayoutRole,
 ): boolean {
-  const target = selected.find((b) =>
-    norm(b.text).includes(norm(String(value))),
-  );
-  if (!target) return false;
-  const acceptable = (label: string | null) =>
-    role === "transactionReference"
-      ? ["purchaseOrder", "invoiceReference"].includes(label ?? "")
-      : role === "documentNumber"
-        ? ["documentNumber", "invoiceReference"].includes(label ?? "")
+  const label = labelForValue(page, selected, value);
+  return role === "transactionReference"
+    ? [
+        "purchaseOrder",
+        "invoiceReference",
+        "shipmentReference",
+        "bookingReference",
+        "transactionReference",
+      ].includes(label ?? "")
+    : role === "documentNumber"
+      ? ["documentNumber", "invoiceReference"].includes(label ?? "")
+      : role === "packageQuantity"
+        ? ["packageQuantity", "packaging"].includes(label ?? "")
         : label === role;
+}
+export function labelForValue(
+  page: PdfPage,
+  selected: PdfBlock[],
+  value: string | number,
+): string | null {
+  const target =
+    selected.find((b) =>
+      typeof value === "number"
+        ? numericTokens(b.text).includes(value)
+        : norm(b.text).includes(norm(String(value))),
+    ) ??
+    (typeof value === "string" &&
+    norm(selected.map((b) => b.text).join(" ")).includes(norm(value))
+      ? selected.find(
+          (b) => !labelRole(b.text) && norm(value).startsWith(norm(b.text)),
+        )
+      : undefined);
+  if (!target) return null;
   // Inline fields still use their actual full block, including preceding role context.
   const colon = target.text.indexOf(":");
   if (
     colon >= 0 &&
-    acceptable(labelRole(target.text.slice(0, colon))) &&
-    norm(target.text.slice(colon + 1)) === norm(String(value))
+    labelRole(target.text.slice(0, colon)) &&
+    (typeof value === "number"
+      ? numericTokens(target.text.slice(colon + 1)).length === 1 &&
+        numericTokens(target.text.slice(colon + 1))[0] === value
+      : norm(target.text.slice(colon + 1)) === norm(String(value)))
   )
-    return true;
+    return labelRole(target.text.slice(0, colon));
   const labels = (page.blocks ?? []).filter((b) => labelRole(b.text));
   const inline = labels.filter(
     (h) => sameRow(h, target) && right(h) <= target.x + h.height * 0.25,
@@ -147,7 +215,6 @@ export function relatedLabel(
   const nearest = inline.sort((a, b) => right(b) - right(a))[0];
   if (
     nearest &&
-    acceptable(labelRole(nearest.text)) &&
     target.x - right(nearest) <= (page.width ?? 600) * 0.45 &&
     !(page.blocks ?? []).some(
       (b) =>
@@ -158,7 +225,7 @@ export function relatedLabel(
         right(b) <= target.x,
     )
   )
-    return true;
+    return labelRole(nearest.text);
   const above = labels
     .filter(
       (h) =>
@@ -168,7 +235,7 @@ export function relatedLabel(
     )
     .sort((a, b) => b.y - a.y);
   const header = above[0];
-  if (!header || !acceptable(labelRole(header.text))) return false;
+  if (!header) return null;
   const peers = headersAt(page, header.row);
   // The first value row beneath this label must contain the selected value.
   const between = (page.blocks ?? []).filter(
@@ -178,7 +245,7 @@ export function relatedLabel(
       columnContains(header, b, peers) &&
       !labelRole(b.text),
   );
-  return between.length === 0;
+  return between.length === 0 ? labelRole(header.text) : null;
 }
 export interface TableLink {
   tableId: string;
@@ -203,6 +270,16 @@ export function tableLink(
     const values = selected.filter((b) => b.row > headerRow);
     if (!values.length || selected.some((b) => b.row < headerRow)) return null;
     const first = [...values].sort((a, b) => a.y - b.y || a.x - b.x)[0];
+    if (
+      (page.blocks ?? []).some(
+        (b) =>
+          b.row === first.row &&
+          /^(?:totalLabel|totalAmount|subtotalAmount|totalNetWeight|totalGrossWeight|totalPackages|totalQuantity)$/.test(
+            labelRole(b.text.split(":")[0]) ?? "",
+          ),
+      )
+    )
+      return null;
     const headers = headersAt(page, headerRow);
     if (!headers.some((h) => labelRole(h.text) === "quantity")) continue;
     const header = headers.find((h) => columnContains(h, first, headers));
@@ -214,9 +291,19 @@ export function tableLink(
         (b) =>
           b.row > headerRow &&
           b.row < first.row &&
-          ["seller", "buyer", "purchaseOrder", "invoiceReference"].includes(
-            labelRole(b.text) ?? "",
-          ),
+          [
+            "seller",
+            "buyer",
+            "purchaseOrder",
+            "invoiceReference",
+            "totalLabel",
+            "totalAmount",
+            "subtotalAmount",
+            "totalNetWeight",
+            "totalGrossWeight",
+            "totalPackages",
+            "totalQuantity",
+          ].includes(labelRole(b.text.split(":")[0]) ?? ""),
       )
     )
       return null;
@@ -238,6 +325,8 @@ export function tableLink(
       if (!previous) return null;
       row = previous.row;
     }
+    if (role !== "description" && values.some((b) => b.row !== row))
+      return null;
     // A multiline description cannot cross the next product row.
     if (
       role === "description" &&
@@ -265,7 +354,13 @@ export function tableLink(
       .map((b) => b.text.trim())
       .filter((t) => /^(pcs|ea|pieces?|kg|kgs|m|tons?)$/i.test(t));
     const unit =
-      units.length === 1 ? units[0] : (embeddedUnit ?? headerUnit ?? null);
+      /Weight/.test(role) || role === "netWeight" || role === "grossWeight"
+        ? (header.text.match(/\((KG|KGS|TONS?)\)/i)?.[1] ??
+          first.text.match(/\d\s*(KG|KGS|TONS?)\b/i)?.[1] ??
+          null)
+        : units.length === 1
+          ? units[0]
+          : (embeddedUnit ?? headerUnit ?? null);
     return {
       tableId: `p${page.page}:t${headerRow}`,
       rowId: `p${page.page}:r${row}`,

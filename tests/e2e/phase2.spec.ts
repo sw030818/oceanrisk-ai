@@ -8,13 +8,11 @@ async function upload(
   label: string,
   name = "synthetic.pdf",
 ) {
-  await page
-    .getByLabel(label)
-    .setInputFiles({
-      name,
-      mimeType: "application/pdf",
-      buffer: Buffer.from("%PDF-synthetic-ui-test"),
-    });
+  await page.getByLabel(label).setInputFiles({
+    name,
+    mimeType: "application/pdf",
+    buffer: Buffer.from("%PDF-synthetic-ui-test"),
+  });
 }
 test("independent slots, red PDF indicators, replace/remove, drag-drop and mobile stacking", async ({
   page,
@@ -145,5 +143,8 @@ test("two files send one request, type mismatch is based on AI, swapping correct
   await expect(
     page.getByRole("alert").filter({ hasText: "서류 종류 확인 필요" }),
   ).toHaveCount(0);
-  await expect(page.getByText("확인된 일치", { exact: true })).toBeVisible();
+  await expect(page.getByTestId("check-quantity-0")).toHaveAttribute(
+    "data-assessment",
+    "confirmed_match",
+  );
 });

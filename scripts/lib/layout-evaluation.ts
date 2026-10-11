@@ -3,6 +3,7 @@ import type {
   ExtractedDocument,
   GroundedField,
 } from "../../src/modules/documents/schema";
+import { reviewDocuments } from "../../src/modules/rules/review";
 import { compareQuantities } from "../../src/modules/rules/quantity";
 import { normalizeText } from "../../src/modules/evidence/verify";
 import type { LayoutCaseId } from "../../tests/fixtures/layouts";
@@ -58,7 +59,12 @@ export function evaluateLayoutResults(
   ).length;
   const ruleCorrect =
     id === "reference-conflict"
-      ? checks.length === 1 && checks[0].id === "conflicting-identifiers"
+      ? reviewDocuments(docs).summary.referenceWarning &&
+        checks.length === 2 &&
+        checks.every(
+          (c) =>
+            c.assessment === "provisional_match" && c.status === "unverifiable",
+        )
       : id === "missing-reference"
         ? checks.length === 2 &&
           checks.every((c) => c.confidence === "candidate")
