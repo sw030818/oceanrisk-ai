@@ -37,6 +37,16 @@ const MINIMAL_JSON_INSTRUCTION = SYSTEM_INSTRUCTION +
   "\nReturn one JSON object (no markdown) in exactly this shape: " + MINIMAL_JSON_SHAPE +
   "\nPopulate product items only when supported by exact quoted page evidence. For missing scalar data use value:null and evidence:null; if no product items are evidenced use items:[]. Every evidence object must be {page: 1-based number, quote: exact verbatim line}. Do not copy the example's placeholder items.";
 
+function safeOutputDiagnostics(outputIssue: "MAX_TOKENS" | "NON_STOP" | "EMPTY_TEXT" | "INVALID_JSON" | "SCHEMA_MISMATCH", outputFields: string[] = []) {
+  // Public metadata contains only fixed error categories and Zod field names.
+  // Never log or return raw model output, evidence quotes, or document values.
+  return {
+    httpStatus: 200, status: "UNKNOWN" as const, requestFields: [],
+    quotaWindow: "unknown" as const, quotaLimitZero: false,
+    outputIssue, ...(outputFields.length ? { outputFields } : {}),
+  };
+}
+
 export async function extractWithGemini(
   pdf: PdfDocument,
   options: {
@@ -200,6 +210,7 @@ export async function extractWithGemini(
           ? "AI 응답이 출력 길이 제한으로 중단되었습니다. 필요한 페이지만 분리해 다시 분석해 주세요."
           : "AI 응답이 차단되었거나 완료되지 않았습니다. 원문은 보존되었으며 추출값을 확정하지 않았습니다.",
         502,
+        safeOutputDiagnostics(candidates?.[0]?.finishReason === "MAX_TOKENS" ? "MAX_TOKENS" : "NON_STOP"),
       );
     const text = candidates[0]?.content?.parts
       ?.filter(
@@ -208,8 +219,29 @@ export async function extractWithGemini(
       )
       .map((part: { text: string }) => part.text)
       .join("");
-    if (!text) throw new Error("Missing output");
-    return extractedDocumentSchema.parse(JSON.parse(text));
+    if (!text) throw new AnalysisError(
+      "INVALID_AI_RESPONSE",
+      "AI 응답에 추출 데이터가 없습니다. 원문을 보존했으며 결과를 확정하지 않았습니다.",
+      502, safeOutputDiagnostics("EMPTY_TEXT"),
+    );
+    let json: unknown;
+    try {
+      json = JSON.parse(text);
+    } catch {
+      throw new AnalysisError("INVALID_AI_RESPONSE", "AI 응답이 올바른 JSON 형식이 아닙니다.", 502, safeOutputDiagnostics("INVALID_JSON"));
+    }
+    const checked = extractedDocumentSchema.safeParse(json);
+    if (!checked.success) {
+      const outputFields = [...new Set(checked.error.issues.slice(0, 16).map(issue =>
+        issue.path.map(segment => typeof segment === "number" ? "[]" : String(segment)).join(".")
+      ))].filter(field => /^[A-Za-z0-9_.\[\]]{1,120}$/.test(field));
+      throw new AnalysisError(
+        "INVALID_AI_RESPONSE",
+        "AI가 반환한 필드 구조가 검증 기준을 충족하지 못했습니다. 원문을 보존하고 결과를 확정하지 않았습니다.",
+        502, safeOutputDiagnostics("SCHEMA_MISMATCH", outputFields),
+      );
+    }
+    return checked.data;
   } catch (error) {
     if (error instanceof AnalysisError) throw error;
     if (options.signal?.aborted)
