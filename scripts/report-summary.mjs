@@ -12,7 +12,7 @@ else {
     markdown = `## Production verification\n\nExpected commit: ${sha}\n\nServing expected Production SHA and configured key: **${data.verified === true}**\n\nDeployment ID: ${id}\n\nThis is HTTP serving identity verification, not Vercel control-plane Ready or AI accuracy.\n`;
     if (process.env.GITHUB_ACTIONS === "true") console.log(`::notice title=Production identity::SHA=${sha}; verified=${data.verified === true}; deploymentId=${id}`);
   } else {
-    markdown = `## Actual Gemini synthetic Production validation\n\nServer key presence: ${data.keyConfigured === true ? "configured" : data.keyConfigured === false ? "absent" : "unknown"}\n\nCompleted: **${data.completed === true}**\n\nProduction upload attempts: ${Number.isInteger(data.serverRequestsAttempted) ? data.serverRequestsAttempted : "unknown"}\n\n| Case | Result | Criteria | Safe error codes |\n|---|---|---|---|\n`;
+    markdown = `## Actual Gemini synthetic Production validation\n\nServer key presence: ${data.keyConfigured === true ? "configured" : data.keyConfigured === false ? "absent" : "unknown"}\n\nScope: ${["all", "A", "B", "C", "D"].includes(data.scope) ? data.scope : "unknown"}\n\nCompleted all A-D: **${data.completed === true}**\n\nProduction upload attempts: ${Number.isInteger(data.serverRequestsAttempted) ? data.serverRequestsAttempted : "unknown"}\n\n| Case | Result | Criteria | Safe error codes |\n|---|---|---|---|\n`;
     const safeCode = (value) => typeof value === "string" && /^[A-Z0-9_]{1,60}$/.test(value) ? value : "none";
     for (const item of data.cases ?? []) {
       if (!/^[A-D]$/.test(item.id)) continue;
@@ -25,6 +25,14 @@ else {
         console.log(`::notice title=Actual Gemini case ${item.id}::${status}; HTTP=${http}; ${criteria}; errors=${codes}`);
         const models = (item.modelsUsed ?? []).filter((value) => typeof value === "string" && /^gemini-[a-zA-Z0-9._-]+$/.test(value));
         if (models.length) console.log(`::notice title=Case ${item.id} models::${models.join(", ")}`);
+        for (const [index, diagnostic] of (item.providerDiagnostics ?? []).entries()) {
+          if (!diagnostic) continue;
+          const http = Number.isInteger(diagnostic.httpStatus) ? diagnostic.httpStatus : "unknown";
+          const status = ["INVALID_ARGUMENT", "RESOURCE_EXHAUSTED", "INTERNAL", "UNAVAILABLE", "PERMISSION_DENIED", "NOT_FOUND"].includes(diagnostic.status) ? diagnostic.status : "UNKNOWN";
+          const fields = (diagnostic.requestFields ?? []).filter(field => ["responseJsonSchema", "response_json_schema", "responseSchema", "response_schema", "thinkingConfig", "thinking_config", "maxOutputTokens", "max_output_tokens", "temperature", "generationConfig", "generation_config", "systemInstruction", "system_instruction"].includes(field));
+          const window = ["minute", "day"].includes(diagnostic.quotaWindow) ? diagnostic.quotaWindow : "unknown";
+          console.log(`::notice title=Case ${item.id} provider ${index + 1}::HTTP=${http}; status=${status}; requestFields=${fields.join(",") || "none"}; quotaWindow=${window}; quotaLimitZero=${diagnostic.quotaLimitZero === true}`);
+        }
         for (const [index, doc] of (item.groundingStatuses ?? []).entries()) {
           const states = ["seller", "buyer", "transactionReference", "partialShipment"].map((key) => `${key}=${["verified", "unverified", "missing", "user_edited"].includes(doc[key]) ? doc[key] : "unknown"}`).join("; ");
           console.log(`::notice title=Case ${item.id} context ${index + 1}::${states}`);

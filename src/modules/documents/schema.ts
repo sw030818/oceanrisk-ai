@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { ProviderDiagnostics } from "./errors";
 export const documentTypeSchema = z.enum([
   "invoice",
   "packing_list",
@@ -101,5 +102,5 @@ export interface AnalysisResult {
   aiModel?: string;
   pdf: PdfDocument;
   document: GroundedDocument | null;
-  error: { code: string; message: string } | null;
+  error: { code: string; message: string; diagnostics?: ProviderDiagnostics } | null;
 }

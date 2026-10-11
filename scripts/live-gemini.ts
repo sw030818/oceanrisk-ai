@@ -29,6 +29,8 @@ if (remote) {
   }
 }
 const outputDir = remote ? "test-results/live-gemini-production" : "test-results/live-gemini";
+const selected = process.env.LIVE_GEMINI_CASE ?? "all";
+if (!["all", "A", "B", "C", "D"].includes(selected)) throw new Error("LIVE_GEMINI_CASE must be all or A-D");
 const report: {
   mode: string;
   keyConfigured: boolean | null;
@@ -37,6 +39,8 @@ const report: {
   serverRequestsAttempted: number;
   productionStatusChecked: boolean;
   statusError: string | null;
+  scope: string;
+  selectedCasesPassed: boolean;
   cases: unknown[];
 } = {
   mode: remote ? "production-live-gemini-synthetic-pdf" : "live-gemini-synthetic-pdf",
@@ -46,10 +50,14 @@ const report: {
   serverRequestsAttempted: 0,
   productionStatusChecked: statusChecked,
   statusError,
+  scope: selected,
+  selectedCasesPassed: false,
   cases: [],
 };
 await mkdir(outputDir, { recursive: true });
+let providerQuotaStopped = false;
 for (const id of ["A", "B", "C", "D"] as const) {
+  if (selected !== "all" && id !== selected) continue;
   const scenario = phase15Scenario(id);
   const files = await Promise.all(
     scenario.documents.map((doc) => doc.makeFile()),
@@ -59,11 +67,11 @@ for (const id of ["A", "B", "C", "D"] as const) {
       `${outputDir}/${file.name}`,
       new Uint8Array(await file.arrayBuffer()),
     );
-  if (!configured) {
+  if (!configured || providerQuotaStopped) {
     report.cases.push({
       id,
       status: "not_run",
-      reason: statusError ?? "GEMINI_API_KEY missing; no provider call was made",
+      reason: providerQuotaStopped ? "PROVIDER_QUOTA_STOP" : statusError ?? "GEMINI_API_KEY missing; no provider call was made",
     });
     continue;
   }
@@ -101,6 +109,7 @@ for (const id of ["A", "B", "C", "D"] as const) {
       }),
     );
   try {
+  if (results.some(result => result.error?.code === "API_RATE_LIMIT")) providerQuotaStopped = true;
   const documents = results.flatMap((result) =>
     result.document ? [result.document] : [],
   );
@@ -164,6 +173,7 @@ for (const id of ["A", "B", "C", "D"] as const) {
     criteria,
     errorCodes: results.map((result) => result.error?.code ?? null),
     modelsUsed: results.map((result) => result.aiModel ?? null),
+    providerDiagnostics: results.map((result) => result.error?.diagnostics ?? null),
     ruleStatus: checks.map((check) => ({
       status: check.status,
       confidence: check.confidence,
@@ -178,18 +188,19 @@ for (const id of ["A", "B", "C", "D"] as const) {
     report.cases.push({ id, status: "failed", reason: "INVALID_ANALYSIS_RESULT" });
   }
 }
-report.completed =
+report.selectedCasesPassed =
   configured &&
   report.cases.every(
     (entry) => (entry as { status: string }).status === "passed",
   );
+report.completed = selected === "all" && report.selectedCasesPassed && report.cases.length === 4;
 await writeFile(
   `${outputDir}/report.json`,
   JSON.stringify(report, null, 2),
 );
 console.log(
   configured
-    ? `Live validation ${report.completed ? "passed" : "failed"}; report contains metadata only`
+    ? `Live validation scope=${selected} ${report.selectedCasesPassed ? "passed" : "failed"}; full A-D completed=${report.completed}; report contains metadata only`
     : `${statusError ?? "GEMINI_API_KEY unset"}. A-D PDFs generated; actual API tests NOT RUN.`,
 );
-process.exitCode = report.completed ? 0 : statusError || configured ? 1 : 2;
+process.exitCode = report.selectedCasesPassed ? 0 : statusError || configured ? 1 : 2;
