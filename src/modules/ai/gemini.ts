@@ -35,7 +35,8 @@ const MINIMAL_JSON_SHAPE = JSON.stringify({
 // This fallback removes the *provider* schema constraint, not our local Zod validation.
 const MINIMAL_JSON_INSTRUCTION = SYSTEM_INSTRUCTION +
   "\nReturn one JSON object (no markdown) in exactly this shape: " + MINIMAL_JSON_SHAPE +
-  "\nPopulate product items only when supported by exact quoted page evidence. For missing scalar data use value:null and evidence:null; if no product items are evidenced use items:[]. Every evidence object must be {page: 1-based number, quote: exact verbatim line}. Do not copy the example's placeholder items.";
+  "\nPopulate product items only when supported by exact quoted page evidence. For missing scalar data use value:null and evidence:null; if no product items are evidenced use items:[]. Every evidence object must be {page: 1-based number, quote: exact verbatim line}. Do not copy the example's placeholder items." +
+  "\nThe document type must be EXACTLY invoice, packing_list or unknown (lowercase, underscores). Numeric value fields (totalAmount, quantity, netWeight, grossWeight, amount) must be JSON numbers without quotation marks, currency symbols, units, thousand separators or explanatory text, or null. Every scalar field must be an object with BOTH value and evidence keys. Missing values are null, not empty strings or N/A. Quoted source text must be copied verbatim from the PDF page.";
 
 function safeOutputDiagnostics(outputIssue: "MAX_TOKENS" | "NON_STOP" | "EMPTY_TEXT" | "INVALID_JSON" | "SCHEMA_MISMATCH", outputFields: string[] = []) {
   // Public metadata contains only fixed error categories and Zod field names.
@@ -45,6 +46,42 @@ function safeOutputDiagnostics(outputIssue: "MAX_TOKENS" | "NON_STOP" | "EMPTY_T
     quotaWindow: "unknown" as const, quotaLimitZero: false,
     outputIssue, ...(outputFields.length ? { outputFields } : {}),
   };
+}
+
+function normalizeMachineReadableValues(raw: unknown): unknown {
+  // Only normalize unambiguous machine-readable aliases. The strict Zod and
+  // original-page evidence verifier remain authoritative; never infer figures
+  // or repair values that contain a unit, currency, sign or unknown text.
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return raw;
+  const document = { ...(raw as Record<string, unknown>) };
+  if (typeof document.type === "string") {
+    const label = document.type.trim().toLowerCase().replace(/\s+/g, "_").replace(/-/g, "_");
+    if (["commercial_invoice", "invoice"].includes(label)) document.type = "invoice";
+    if (["packing_list", "packinglist"].includes(label)) document.type = "packing_list";
+  }
+  const numberField = (input: unknown): unknown => {
+    if (!input || typeof input !== "object" || Array.isArray(input)) return input;
+    const field = input as Record<string, unknown>;
+    if (typeof field.value !== "string") return input;
+    const value = field.value.trim();
+    // Reject ambiguous comma-decimal conventions, currency prefixes, unit suffixes,
+    // negatives and scientific notation; never coerce malformed values to zero.
+    if (!/^(?:\d+|[1-9]\d{0,2}(?:,\d{3})+)(?:\.\d+)?$/.test(value)) return input;
+    const n = Number(value.replace(/,/g, ""));
+    if (!Number.isFinite(n) || n < 0 || n > Number.MAX_SAFE_INTEGER) return input;
+    return { ...field, value: n };
+  };
+  document.totalAmount = numberField(document.totalAmount);
+  if (Array.isArray(document.items)) {
+    document.items = document.items.map((item: unknown) => {
+      if (!item || typeof item !== "object" || Array.isArray(item)) return item;
+      const next = { ...(item as Record<string, unknown>) };
+      for (const name of ["quantity", "netWeight", "grossWeight", "amount"])
+        next[name] = numberField(next[name]);
+      return next;
+    });
+  }
+  return document;
 }
 
 export async function extractWithGemini(
@@ -230,7 +267,7 @@ export async function extractWithGemini(
     } catch {
       throw new AnalysisError("INVALID_AI_RESPONSE", "AI 응답이 올바른 JSON 형식이 아닙니다.", 502, safeOutputDiagnostics("INVALID_JSON"));
     }
-    const checked = extractedDocumentSchema.safeParse(json);
+    const checked = extractedDocumentSchema.safeParse(normalizeMachineReadableValues(json));
     if (!checked.success) {
       const outputFields = [...new Set(checked.error.issues.slice(0, 16).map(issue =>
         issue.path.map(segment => typeof segment === "number" ? "[]" : String(segment)).join(".")
