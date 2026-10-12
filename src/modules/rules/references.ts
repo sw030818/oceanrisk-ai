@@ -53,7 +53,7 @@ export function reviewReferences(
     "기타 거래 참조",
   ];
   kinds.forEach((kind, index) => {
-    const fields = (doc: GroundedDocument, isInvoice: boolean) => {
+    const fields = (doc: GroundedDocument) => {
       const candidates = [
         kind === "transactionReference"
           ? referenceKind(doc.transactionReference) === kind
@@ -63,7 +63,7 @@ export function reviewReferences(
         referenceKind(doc.transactionReference) === kind
           ? doc.transactionReference
           : undefined,
-        kind === "invoiceReference" && isInvoice
+        kind === "invoiceReference" && doc.type === "invoice"
           ? doc.documentNumber
           : undefined,
       ].filter((f): f is GroundedField<string> => !!f && hasValue(f));
@@ -81,8 +81,8 @@ export function reviewReferences(
         ambiguous: distinct.size > 1,
       };
     };
-    const a = fields(invoice, true),
-      b = fields(packing, false);
+    const a = fields(invoice),
+      b = fields(packing);
     if (
       kind === "transactionReference" &&
       !referenceKind(invoice.transactionReference) &&

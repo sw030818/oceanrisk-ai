@@ -191,7 +191,7 @@ export function reviewDocument(doc: GroundedDocument): ReviewCheck[] {
               basisKnown
             ? equal
               ? "confirmed_match"
-              : "confirmed_mismatch"
+              : "provisional_mismatch"
             : equal
               ? "provisional_match"
               : "provisional_mismatch",

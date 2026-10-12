@@ -13,6 +13,54 @@ const pair = async (options: Parameters<typeof phase23Fixture>[1] = {}) => [
   await phase23Fixture("packing_list", options),
 ];
 describe("PHASE 2.3 reported structure: actual synthetic PDFs, MOCKED extraction", () => {
+  it.each(["seller", "documentNumber"] as const)(
+    "rejects a truncated %s value despite substring presence in the correct labelled cell",
+    async (key) => {
+      const f = await phase23Fixture("invoice"), d = structuredClone(f.data);
+      d[key].value = key === "seller" ? "Pacific" : "INV-2026-1012";
+      expect(groundDocument(d, f.pdf)[key].status).toBe("unverified");
+      expect(groundDocument(f.data, f.pdf)[key].status).toBe("verified");
+    },
+  );
+  it("requires the whole SKU cell and keeps unknown identifiers provisional", async () => {
+    const f = await pair(), d = structuredClone(f[0].data);
+    d.items[0].sku!.value = "TUM";
+    const g = groundDocument(d, f[0].pdf);
+    expect(g.items[0].sku?.status).toBe("unverified");
+    expect(compareQuantities([g, f[1].document])[0].assessment).toBe("provisional_match");
+    expect(compareQuantities([g, f[1].document])[1].assessment).toBe("confirmed_match");
+  });
+  it("keeps correct weight and SKU evidence independent of a wrong quantity-row citation", async () => {
+    const f = await phase23Fixture("invoice"), d = structuredClone(f.data);
+    d.items[0].quantity = d.items[1].quantity;
+    const row = groundDocument(d, f.pdf).items[0];
+    expect(row.quantity.status).toBe("unverified");
+    for (const key of ["netWeight", "grossWeight", "sku", "packageQuantity"] as const)
+      expect(row[key]?.status).toBe("verified");
+  });
+  it("does not confirm quantity association for multiple products with no row or block structure", () => {
+    const f = syntheticDocument(), d = structuredClone(f.data);
+    f.pdf.pages[0].text += "\nDescription: Brass Nuts\nQuantity: 500 PCS";
+    d.items.push({
+      ...structuredClone(d.items[0]),
+      description: { value: "Brass Nuts", evidence: { page: 1, quote: "Description: Brass Nuts" } },
+      quantity: { value: 500, evidence: { page: 1, quote: "Quantity: 500 PCS" } },
+    });
+    d.items[0].quantity = d.items[1].quantity;
+    expect(groundDocument(d, f.pdf).items.every((row) => row.quantity.status === "unverified")).toBe(true);
+  });
+  it("does not reinterpret an actual Packing List own number as Invoice just from the upload slot", async () => {
+    const f = await pair(), docs = f.map((f) => f.document);
+    const r = reviewDocuments(docs, { invoiceId: docs[1].id, packingId: docs[0].id });
+    expect(r.summary.referenceWarning).toBe(false);
+    expect(r.quantityChecks.every((c) => c.confidence !== "confirmed")).toBe(true);
+  });
+  it("keeps monetary differences provisional when line currency or accounting basis is not explicit", async () => {
+    const f = await phase23Fixture("invoice");
+    f.document.subtotalAmount!.value = 2300;
+    const r = reviewDocuments([f.document]);
+    expect(r.checks.find((c) => c.id.endsWith("amount-total"))?.assessment).toBe("provisional_mismatch");
+  });
   it("never validates a document total or cropped total qualifier as an individual product quantity", () => {
     const f = syntheticDocument();
     f.pdf.pages[0].text += "\nTotal product quantity: 1000 PCS";

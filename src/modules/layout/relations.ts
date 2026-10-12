@@ -188,7 +188,10 @@ export function labelForValue(
     selected.find((b) =>
       typeof value === "number"
         ? numericTokens(b.text).includes(value)
-        : norm(b.text).includes(norm(String(value))),
+        : norm(b.text) === norm(String(value)) ||
+          (b.text.includes(":") &&
+            !!labelRole(b.text.slice(0, b.text.indexOf(":"))) &&
+            norm(b.text.slice(b.text.indexOf(":") + 1)) === norm(String(value))),
     ) ??
     (typeof value === "string" &&
     norm(selected.map((b) => b.text).join(" ")).includes(norm(value))

@@ -1,6 +1,6 @@
 import type { GroundedItem } from "../documents/schema";
 import { normalizeText } from "../evidence/verify";
-import { known, canonicalUnit } from "./model";
+import { known, hasValue, canonicalUnit } from "./model";
 export const productKey = (value: string | null) =>
   normalizeText(value ?? "")
     .replace(/(\d)(\p{L})/gu, "$1 $2")
@@ -56,7 +56,10 @@ export function matchItem(
       return { reason: "같은 품명이지만 검증된 제품 식별자가 다릅니다." };
     return {
       ...b[0],
-      tentative: !known(item.description) || !known(b[0].row.description),
+      tentative:
+        !known(item.description) ||
+        !known(b[0].row.description) ||
+        [item.sku, b[0].row.sku].some((field) => hasValue(field) && !known(field)),
       reason: "유일한 표준화 품명으로 대응했습니다.",
     };
   }

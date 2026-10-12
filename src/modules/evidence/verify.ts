@@ -120,6 +120,22 @@ function verifyFieldCore<T extends string | number>(
       status: "unverified",
       reason: "원문 근거에서 추출값을 확인하지 못했습니다.",
     };
+  if (role === "sku" && layout && blocks) {
+    const cells = blocks.filter(
+      (block) =>
+        block.row > Number(layout.tableId.split(":t")[1]) &&
+        tableLink(page, [block])?.role === "sku",
+    );
+    if (
+      normalizeText(cells.map((block) => block.text).join(" ")) !==
+      normalizeText(String(field.value))
+    )
+      return {
+        ...base,
+        status: "unverified",
+        reason: "제품 식별자의 전체 값이 실제 원문 셀과 일치하지 않습니다.",
+      };
+  }
   if (blocks) {
     if (source) {
       source.blocks = blocks;
@@ -586,6 +602,12 @@ export function groundDocument(
       const quantityLayout = row.quantity.source?.layout;
       const descriptionLayout = row.description.source?.layout;
       const unitLayout = row.unit.source?.layout;
+      if (data.items.length > 1 && !quantityLayout && !descriptionLayout) {
+        row.quantity.status = row.quantity.value === null ? "missing" : "unverified";
+        row.quantity.verificationCode = row.quantity.value === null ? "missing_value" : "row_mismatch";
+        row.quantity.reason =
+          "여러 상품이 있지만 품명과 수량을 같은 원문 행에 유일하게 연결하지 못했습니다.";
+      }
       if (
         (quantityLayout || descriptionLayout) &&
         (!quantityLayout ||
@@ -603,7 +625,10 @@ export function groundDocument(
         row.quantity.reason =
           "품명·상품 수량·단위가 같은 표의 동일 상품 행에 연결되지 않습니다.";
       }
-      if (quantityLayout)
+      // A bad quantity citation must not invalidate correctly cited weights or
+      // identifiers. Anchor each independent item field to its description row.
+      const itemLayout = descriptionLayout ?? quantityLayout;
+      if (itemLayout)
         for (const key of [
           "netWeight",
           "grossWeight",
@@ -617,8 +642,8 @@ export function groundDocument(
           const location = row[key].source?.layout;
           if (
             location &&
-            (location.rowId !== quantityLayout.rowId ||
-              location.tableId !== quantityLayout.tableId)
+            (location.rowId !== itemLayout.rowId ||
+              location.tableId !== itemLayout.tableId)
           ) {
             row[key].status = "unverified";
             row[key].verificationCode = "row_mismatch";

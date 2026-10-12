@@ -172,17 +172,25 @@
     "sameShaProductionVerified": true
   },
   "postLiveSafetyRegression": {
-    "scope": "Wrong semantic unit labels and document-total/cropped-total citations never validate individual product fields. Additional safety changes are mock/PDF regressions, no extra paid calls.",
-    "additionalTests": 2,
+    "scope": "Wrong semantic unit and document-total/cropped-total citations, truncated party/reference/SKU strings, and unlinked multi-product quantities remain unverified. Correct weight/SKU rows stay independent of a bad quantity citation. Reference namespaces use actual document type. Monetary differences without fully explicit line currency/accounting basis remain provisional. These changes were validated locally with synthetic PDFs/mocked extraction; no additional paid calls.",
+    "additionalTests": 9,
     "additionalPaidCalls": 0,
     "targetedTestsPassed": 88,
-    "requiredFinalUnitCount": 258,
+    "requiredFinalUnitCount": 265,
     "requiredFinalBrowserCount": 15,
-    "verificationNote": "Final ship and GitHub Actions enforce full type/lint/unit/build/worker/browser checks before final source is saved; actual live source is recorded separately.",
+    "verificationNote": "The final ship must pass npm ci, typecheck, lint, all 265 unit tests, build, PDF worker checks and 15 browser tests before committing/pushing; exact Production SHA is then checked. The actual paid source remains 5122cb071044df2dcee86f49404ea9c6c9db99cb and its spent two-document budget is unchanged.",
     "intermediateFullGate": {
       "sourceSha": "f17b259b4ce1d921c94a70c9c74c17d267e0b080",
       "unitTestsPassed": 257,
       "browserTestsPassed": 15
+    },
+    "fullUnitRegression": {
+      "testsPassed": 265,
+      "filesPassed": 19,
+      "mockLayoutCasesPassed": 7,
+      "mockGroundedFields": 172,
+      "mockExpectedFields": 172,
+      "type": "synthetic PDF and mocked AI only"
     }
   },
   "tokenTotals": {
