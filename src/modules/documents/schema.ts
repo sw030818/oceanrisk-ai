@@ -89,7 +89,9 @@ export const extractedDocumentSchema = z.object({
 export type ExtractedDocument = z.infer<typeof extractedDocumentSchema>;
 export type DocumentType = z.infer<typeof documentTypeSchema>;
 export type Evidence = z.infer<typeof evidenceSchema>;
+export interface PdfCell { x: number; y: number; width: number; height: number; }
 export interface PdfPage {
+  cells?: PdfCell[];
   textSource?: "pdf_text" | "ocr";
   ocrStatus?: "candidate" | "recognized" | "failed";
   page: number;
@@ -136,6 +138,7 @@ export interface GroundedField<T> {
     | "ocr_unverified"
     | EvidenceIssue;
   source: {
+    scopeBasis?: "document_field" | "entity_row";
     fileId: string;
     fileName: string;
     page: number;

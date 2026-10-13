@@ -76,8 +76,8 @@ test("MOCK AI + real PDF: two types run pair comparison and explicitly lack tria
   await expect(page.getByText("대상 3종 부족", { exact: true })).toBeVisible();
   await expect(page.getByTestId("shipping-review")).toContainText("양자 검사");
   await page
-    .getByRole("button", { name: "일치·정보 부족 포함 전체 보기" })
-    .click();
+    .getByLabel("검토 결과 필터")
+    .selectOption("all");
   await expect(
     page.locator(
       '[data-testid="shipping-check"][data-assessment="confirmed_match"]',
@@ -98,8 +98,8 @@ test("MOCK AI + real PDF: three normal documents show confirmed shared triangle 
     "확정 불일치",
   );
   await page
-    .getByRole("button", { name: "일치·정보 부족 포함 전체 보기" })
-    .click();
+    .getByLabel("검토 결과 필터")
+    .selectOption("all");
   await expect(
     page.locator(
       '[data-testid="shipping-check"][data-scope="triangle"][data-assessment="confirmed_match"]',
@@ -119,10 +119,11 @@ test("MOCK AI + real PDF: multiple actual differences expose file/page/blocks an
     '[data-testid="shipping-check"][data-assessment="confirmed_mismatch"]',
   );
   expect(await errors.count()).toBeGreaterThan(1);
-  await expect(errors.first()).toContainText("다음 확인:");
-  await errors.first().getByRole("button").first().click();
-  await expect(page.getByRole("dialog")).toContainText("실제 PDF 블록 위치");
-  await expect(page.getByRole("dialog")).toContainText("원문 대조 완료");
+  await errors.first().locator("xpath=ancestor::tr").getByRole("button", {name:/상세 분석/}).click();
+  await expect(page.getByRole("dialog", {name:"상세 분석 패널"})).toContainText("다음 확인:");
+  await page.getByRole("dialog", {name:"상세 분석 패널"}).getByRole("button").nth(1).click();
+  await expect(page.getByRole("dialog").last()).toContainText("실제 PDF 블록 위치");
+  await expect(page.getByRole("dialog").last()).toContainText("원문 대조 완료");
   await page.keyboard.press("Escape");
 });
 test("MOCK AI + real PDF: mobile edit/restore recalculates provisional result without another OpenAI request", async ({
@@ -166,8 +167,8 @@ test("MOCK AI + real PDF: uncertain references retain candidates and never prete
   ).toBeVisible();
   await expect(page.getByTestId("shipping-review")).toContainText("확인 필요");
   await page
-    .getByRole("button", { name: "일치·정보 부족 포함 전체 보기" })
-    .click();
+    .getByLabel("검토 결과 필터")
+    .selectOption("all");
   await expect(
     page.locator(
       '[data-testid="shipping-check"][data-assessment="confirmed_mismatch"]',
@@ -186,8 +187,8 @@ test("MOCK AI + real PDF: one provider failure does not stop the remaining pair 
   await expect(page.getByText("오류 코드: API_AUTH_OR_CONFIG")).toBeVisible();
   await expect(page.getByText("대상 3종 부족", { exact: true })).toBeVisible();
   await page
-    .getByRole("button", { name: "일치·정보 부족 포함 전체 보기" })
-    .click();
+    .getByLabel("검토 결과 필터")
+    .selectOption("all");
   await expect(
     page.locator(
       '[data-testid="shipping-check"][data-assessment="confirmed_match"]',

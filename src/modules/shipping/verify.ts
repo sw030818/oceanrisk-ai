@@ -9,7 +9,13 @@ import { verifyField, normalizeText } from "../evidence/verify";
 import { numericTokens } from "../evidence/numbers";
 import { labelForValue, evidenceBlocks } from "../layout/relations";
 import { shippingCell, type EntityScope } from "../layout/shipping-cells";
+import {
+  geometricRole,
+  nativeCell,
+  nativeDocumentField,
+} from "../layout/shipping-geometry";
 import { shippingRole, rootTotalRole, unitParents } from "./roles";
+import { atomRole, countAtoms } from "./count-atoms";
 import type { Candidate } from "./ai-schema";
 import type { ShippingField } from "./schema";
 type Location = NonNullable<
@@ -33,6 +39,9 @@ function inlineRole(text: string, value: string | number): string | null {
 }
 const literal = (text: string, value: string) =>
   normalizeText(text) === normalizeText(value) ||
+  normalizeText(text.replace(/^[()]|[()]$/g, "")) === normalizeText(value) ||
+  normalizeText(text.replace(/^\(?HS\s+/i, "").replace(/\)$/, "")) ===
+    normalizeText(value) ||
   inlineRole(text, value) !== null;
 function anchors(blocks: PdfBlock[], value: string | number) {
   if (typeof value === "number")
@@ -64,7 +73,19 @@ export function verifyShippingField(
 ): ShippingField {
   const resolved = resolveCitation(candidate, pdf);
   let g = verifyField(resolved, pdf);
-  const finish = () => ({ original: g, current: structuredClone(g) });
+  const finish = () => {
+    const p = pdf.pages.find((p) => p.page === g.source?.page);
+    if (g.status === "verified" && g.source && p?.cells?.length) {
+      if (scope !== "document" && g.source.layout)
+        g.source.scopeBasis = "entity_row";
+      else if (
+        scope === "document" &&
+        g.source.blocks?.some((b) => nativeDocumentField(p, b))
+      )
+        g.source.scopeBasis = "document_field";
+    }
+    return { original: g, current: structuredClone(g) };
+  };
   const page = pdf.pages.find((p) => p.page === g.source?.page);
   if (page?.textSource === "ocr") {
     if (g.source) {
@@ -90,10 +111,23 @@ export function verifyShippingField(
     return finish();
   }
   const units = unitParents[role];
+  const contextualAtom = (b: PdfBlock) => {
+    const parent = geometricRole(page, b);
+    return parent &&
+      [
+        "quantity",
+        "packageCount",
+        "totalQuantity",
+        "totalPackageCount",
+      ].includes(parent)
+      ? atomRole(b.text, g.value!, role)
+      : null;
+  };
   const values = units
     ? [
         ...new Set([
           ...anchors(blocks, g.value!),
+          ...blocks.filter((b) => !!contextualAtom(b)),
           ...blocks.filter((b) => {
             // A literal "500PCS" / "320 KG" cell supplies the printed unit,
             // but only its independently checked parent column and owner row can
@@ -106,8 +140,9 @@ export function verifyShippingField(
             const number = b.text.match(/^\s*[-+]?\d+(?:[.,]\d+)*/);
             return (
               !!number &&
-              normalizeText(b.text.slice(number[0].length)) ===
-                normalizeText(g.value)
+              normalizeText(
+                b.text.slice(number[0].length).replace(/[()]/g, ""),
+              ) === normalizeText(g.value)
             );
           }),
         ]),
@@ -144,7 +179,11 @@ export function verifyShippingField(
         shippingCell(page, [b], s as EntityScope),
       ),
     );
-    if (scope === "document" && (entityHeaders || entityCell)) {
+    if (
+      scope === "document" &&
+      (entityHeaders || entityCell) &&
+      !(values.length && values.every((b) => nativeDocumentField(page, b)))
+    ) {
       g = fail(
         g,
         "row_mismatch",
@@ -161,15 +200,28 @@ export function verifyShippingField(
       .filter((r): r is string => !!r);
     const actual =
       location?.role ??
-      values.map((b) => inlineRole(b.text, g.value!)).find(Boolean) ??
+      values
+        .map(
+          (b) =>
+            contextualAtom(b) ??
+            geometricRole(page, b) ??
+            inlineRole(b.text, g.value!),
+        )
+        .find(Boolean) ??
       labelForValue(page, values, g.value!, shippingRole);
     const unitValueRoles = values.map(
       (b) =>
+        contextualAtom(b) ??
         shippingCell(page, [b], scope)?.role ??
+        geometricRole(page, b) ??
         inlineRole(b.text, g.value!) ??
         labelForValue(page, [b], g.value!, shippingRole),
     );
     const allowed =
+      !values.some(
+        (b) =>
+          page.cells?.length && countAtoms(b.text).length && !contextualAtom(b),
+      ) &&
       unitValueRoles.every((r) => r === role || parents.includes(r ?? "")) &&
       (actual === role ||
         parents.includes(actual ?? "") ||
@@ -198,14 +250,22 @@ export function verifyShippingField(
       });
     const rowOkay =
       !owner ||
-      (owner.tableId.startsWith(`p${page.page}:t`) &&
+      ((owner.tableId.startsWith(`p${page.page}:t`) ||
+        owner.tableId.startsWith(`p${page.page}:box`)) &&
         blocks.every((b) => {
           const linked = shippingCell(page, [b], scope);
           if (linked?.tableId === owner.tableId && linked.rowId === owner.rowId)
             return true;
           const h = Number(owner.tableId.split(":t")[1]);
           return (
-            b.row === h &&
+            (b.row === h ||
+              (owner.tableId.startsWith(`p${page.page}:box`) &&
+                (nativeCell(page, b)?.y ===
+                  Number(owner.tableId.split(":box")[1]) ||
+                  blocks.some(
+                    (v) =>
+                      shippingCell(page, [v], scope)?.tableId === owner.tableId,
+                  )))) &&
             (parents.includes(shippingRole(b.text) ?? "") ||
               shippingRole(b.text) === role)
           );
@@ -234,7 +294,7 @@ export function verifyShippingField(
   }
   if (
     typeof g.value === "number" &&
-    values.some((b) => numericTokens(b.text).length !== 1)
+    values.some((b) => numericTokens(b.text).length !== 1 && !contextualAtom(b))
   ) {
     g = fail(
       g,
@@ -257,6 +317,11 @@ export function verifyShippingField(
   if (values.length > 1) {
     const ordered = [...values].sort((a, b) => a.y - b.y || a.x - b.x);
     if (
+      !ordered.every(
+        (b) =>
+          nativeCell(page, b) &&
+          nativeCell(page, b) === nativeCell(page, ordered[0]),
+      ) &&
       ordered.some(
         (b, i) =>
           i > 0 &&
@@ -275,8 +340,16 @@ export function verifyShippingField(
     }
   }
   const actual =
+    values.map((b) => contextualAtom(b)).find(Boolean) ??
     location?.role ??
-    values.map((b) => inlineRole(b.text, g.value!)).find(Boolean) ??
+    values
+      .map(
+        (b) =>
+          contextualAtom(b) ??
+          geometricRole(page, b) ??
+          inlineRole(b.text, g.value!),
+      )
+      .find(Boolean) ??
     labelForValue(page, values, g.value!, shippingRole);
   const compatible =
     actual === role || (scope === "document" && rootTotalRole[role] === actual);
@@ -294,7 +367,11 @@ export function verifyShippingField(
         shippingCell(page, [b], s as EntityScope),
       ),
     );
-    if (tableOwned && !actual?.startsWith("total")) {
+    if (
+      tableOwned &&
+      !actual?.startsWith("total") &&
+      !values.every((b) => nativeDocumentField(page, b))
+    ) {
       g = fail(
         g,
         "row_mismatch",
@@ -329,7 +406,11 @@ export function verifyShippingField(
   return finish();
 }
 function titleType(text: string) {
-  const t = normalizeText(text).replace(/\s*\((?:synthetic|합성)\)\s*$/, "");
+  const t = normalizeText(text)
+    .replace(/\s*\((?:synthetic|합성)\)\s*$/, "")
+    .replace(/^(?:\(\d{1,3}\)|\d{1,3}[.)])\s*(?=[A-Za-z가-힣])/, "")
+    .replace(/^\((.*)\)$/, "$1");
+  const korean = t.replace(/(?<=[가-힣])\s+(?=[가-힣])/g, "");
   if (
     /^(?:house\s+b\/?l|house bill of lading|h\.?b\.?l\.?)\s*(?:draft|초안)?$/.test(
       t,
@@ -337,8 +418,8 @@ function titleType(text: string) {
   )
     return "house_bl" as const;
   if (
-    /^(?:export declaration(?: certificate)?|수출\s*신고\s*필증|수출\s*신고서)$/.test(
-      t,
+    /^(?:export declaration(?: certificate)?|수출신고필증|수출신고서)$/.test(
+      korean,
     )
   )
     return "export_declaration" as const;
@@ -350,12 +431,27 @@ function titleType(text: string) {
     return "house_manifest" as const;
   return null;
 }
-function genuineTitles(page: PdfPage) {
-  return (page.blocks ?? []).filter(
-    (b) =>
-      titleType(b.text) &&
+function titleCandidates(page: PdfPage) {
+  const bs = (page.blocks ?? []).filter(
+    (b) => b.y < (page.height ?? 842) * 0.17,
+  );
+  const groups: PdfBlock[][] = bs.map((b) => [b]);
+  for (const b of bs) {
+    const peers = bs.filter((p) => p.row === b.row).sort((a, b) => a.x - b.x);
+    if (
+      peers.length > 1 &&
+      peers.length <= 12 &&
+      peers.every(
+        (p, i) =>
+          !i || p.x - (peers[i - 1].x + peers[i - 1].width) < p.height * 2,
+      )
+    )
+      groups.push(peers);
+  }
+  return groups.filter(
+    (g) =>
       (page.blocks ?? []).filter(
-        (other) => other.row === b.row && shippingRole(other.text),
+        (b) => b.row === g[0].row && shippingRole(b.text),
       ).length < 2,
   );
 }
@@ -368,26 +464,60 @@ export function verifyClassification(
   const page =
     resolved.evidence &&
     pdf.pages.find((p) => p.page === resolved.evidence!.page);
-  const blocks =
+  let blocks =
     page && resolved.evidence && evidenceBlocks(resolved.evidence, page);
-  const types = new Set(
-    pdf.pages.flatMap((p) => genuineTitles(p).map((b) => titleType(b.text))),
+  const titles = pdf.pages.flatMap((p) =>
+    titleCandidates(p).map((g) => ({
+      p,
+      g,
+      text: g.map((b) => b.text).join(" "),
+    })),
   );
-  const valid =
-    page?.textSource !== "ocr" &&
+  const known = new Set(titles.map((t) => titleType(t.text)).filter(Boolean));
+  const cited = (t: { g: PdfBlock[] }) =>
+    t.g.every((b) => blocks?.some((c) => c.id === b.id));
+  let valid =
+    !!page &&
+    page.textSource !== "ocr" &&
     !!blocks?.length &&
-    blocks.some(
-      (b) =>
-        genuineTitles(page!).some((t) => t.id === b.id) &&
-        titleType(b.text) === type,
-    ) &&
-    types.size === 1 &&
-    type !== "unknown";
+    type !== "unknown" &&
+    known.size <= 1;
+  let title = titles.find(
+    (t) => t.p === page && titleType(t.text) === type && cited(t),
+  );
+  if (type === "house_bl" && !title) {
+    title = titles.find(
+      (t) => t.p === page && /^bill of lading$/i.test(t.text.trim()),
+    );
+    const house = (page?.blocks ?? []).filter((b) =>
+      /^house\s*b\/?l\s*\/\s*(?:ocean|sea) freight$/i.test(b.text.trim()),
+    );
+    const master = titles.some((t) =>
+      /^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(t.text.trim()),
+    );
+    valid =
+      valid &&
+      !!title &&
+      house.length === 1 &&
+      !master &&
+      (cited(title) || house.every((h) => blocks!.some((b) => b.id === h.id)));
+    if (valid)
+      blocks = [...blocks!, ...title!.g, ...house].filter(
+        (b, i, bs) => bs.findIndex((x) => x.id === b.id) === i,
+      );
+  } else valid = valid && !!title;
+  if (known.size && !known.has(type as "house_bl")) valid = false;
   const source = resolved.evidence
     ? {
         fileId: pdf.id,
         fileName: pdf.fileName,
         ...resolved.evidence,
+        ...(valid && blocks
+          ? {
+              quote: blocks.map((b) => b.text).join("\n"),
+              segments: blocks.map((b) => ({ blockId: b.id, quote: b.text })),
+            }
+          : {}),
         blocks: blocks ?? undefined,
         semanticRole: "documentType",
         ...(page?.textSource === "ocr"
@@ -403,8 +533,10 @@ export function verifyClassification(
       : (resolved.evidenceIssue ?? "context_unverified"),
     source,
     reason: valid
-      ? "실제 문서 제목과 블록/페이지에서 문서 유형을 독립 확인했습니다."
-      : "문서 유형 근거가 부족하거나 복합 문서입니다. 선택 영역을 실제 유형으로 간주하지 않습니다.",
+      ? "실제 제목·페이지·House 발행 문맥을 독립 확인했습니다."
+      : type === "unknown"
+        ? "AI 문서 유형 후보가 없습니다. 원문 제목을 확인해 주세요."
+        : "유형 후보는 있으나 실제 제목/발행 문맥 근거를 확인하지 못했습니다. 선택 영역은 유형 근거가 아닙니다.",
   };
   return { original: field, current: structuredClone(field) };
 }

@@ -3,6 +3,7 @@ import {
   VerbosityLevel,
   Util,
 } from "pdfjs-dist/legacy/build/pdf.mjs";
+import { nativePdfCells } from "./cells";
 import { AnalysisError } from "../documents/errors";
 import { MAX_PAGES, MAX_TEXT_CHARS } from "../upload/limits";
 import { validatePdfSignature } from "../upload/validate";
@@ -12,6 +13,7 @@ export async function extractPdfText(
   bytes: Uint8Array,
   signal?: AbortSignal,
   allowSparsePages = false,
+  includeNativeCells = false,
 ): Promise<PdfPage[]> {
   if (signal?.aborted)
     throw new AnalysisError(
@@ -102,7 +104,9 @@ export async function extractPdfText(
         }
         block.row = row;
       }
+      const cells = includeNativeCells ? nativePdfCells(await page.getOperatorList(), viewport.transform) : [];
       pages.push({
+        ...(cells.length ? { cells } : {}),
         page: pageNumber,
         text,
         width: viewport.width,

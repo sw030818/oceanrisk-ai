@@ -103,3 +103,10 @@ PHASE 2.2 실행 결과: OpenAI Responses 기본 전환, phase별 최종 JSON �
 4. 독립 PDF 정답(tuning/holdout)·407단위·41브라우저 목표 및 전체 ship/Actions/Production 동일SHA 검사.
 5. 새$0.10/24문서/30요청 예산에서 기존3종 기준선·신규3종·불일치2·복잡6·불확실2·회전스캔1·Holdout3을 최소 실제 검사한다. 기존성과/예산과 섞지 않고 필요충족시 중단한다.
 6. 실제 증거는 validation/phase33-evidence 별도브랜치. 진짜업무문서 일반정확도·저화질/OCR독립좌표확정·미명시 배분·EDI/법률판정은 지원완료로 주장하지 않는다.
+
+## PHASE 3.4 — 사용자 제공 실패 PDF 및 결과 화면
+1. 최신main/e5f8d7c·첨부ZIP 원본SHA와 스크린샷 확인. 원본3개 실제분석 기준선과45초타임아웃1건을 신규$0.15ledger에 보존.
+2. 제목/House맥락·번호라벨·PDF실제벡터셀·여러블록·count/unit·native기재범위·UN/LOCODE·관계/삼각대조 수정. 잘못된 행/단위/합계/인용과부분/복수신고 보호.
+3. 기존407단위/41브라우저를 보존하며 독립 합성경계/반례와새대시보드/비교표/상세/인쇄·1440/390px 검증.
+4. ship으로 main 일반Push·Actions quality/production·PDFworker·같은ProductionSHA 확인.
+5. 같은SHA에서 원본3개 및최소오류반례 실제OpenAI 재검증. 실제/모의/응답무료재생을 구분하고$0.15이하로종료. 별도validation/phase34-evidence 기록.

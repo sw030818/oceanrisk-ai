@@ -18,12 +18,32 @@ export async function routeShipping(
     const form = await new Response(new Uint8Array(bytes), {
       headers: { "content-type": route.request().headers()["content-type"] },
     }).formData();
-    const subset = form.getAll("files").map((file) => {
+    const requestIds = JSON.parse(
+      String(form.get("documentIds") ?? "[]"),
+    ) as string[];
+    const subset = form.getAll("files").map((file, index) => {
       const r = results.find(
         (r) => r.pdf.fileName === (file as File).name && !used.has(r.pdf.id),
       );
       if (!r) throw new Error("Missing batch regression fixture");
       used.add(r.pdf.id);
+      if (["3.3", "3.4"].includes(phase)) {
+        const clone = structuredClone(r),
+          old = clone.pdf.id,
+          id = requestIds[index];
+        clone.pdf.id = id;
+        if (clone.document) clone.document.id = id;
+        const retag = (v: unknown): void => {
+          if (!v || typeof v !== "object") return;
+          for (const [k, value] of Object.entries(v)) {
+            if (k === "fileId" && value === old)
+              (v as Record<string, unknown>)[k] = id;
+            else retag(value);
+          }
+        };
+        retag(clone);
+        return clone;
+      }
       return r;
     });
     const review =

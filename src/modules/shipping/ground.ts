@@ -34,6 +34,25 @@ export function groundShipping(
   );
   const type = wire.type === "unknown" ? null : wire.type;
   const doc = createShippingDocument(pdf, slot);
+  const nativeText = pdf.pages
+    .filter((p) => p.textSource !== "ocr")
+    .map((p) => p.text)
+    .join("\n");
+  const nativeLines = nativeText.split(/\r?\n/);
+  if (
+    nativeLines.some(
+      (line) =>
+        /partial\s+shipment|부분\s*선적|분할\s*선적/i.test(line) &&
+        !/no[- ]partial|not partial|not permitted|not allowed|부분\s*선적\s*없음|분할\s*선적\s*없음|불가|금지/i.test(
+          line,
+        ),
+    )
+  )
+    doc.nativeScopeLimitation = "partial";
+  else if (
+    /co[- ]?pack|combined packages|공동\s*포장|동시\s*포장/i.test(nativeText)
+  )
+    doc.nativeScopeLimitation = "combined_packages";
   doc.fieldType = type;
   doc.detectedType = type;
   doc.classification = classification;

@@ -596,7 +596,7 @@ it("bilingual summary descriptions and port name/code differences are not defini
   ).toHaveLength(0);
   expect(
     r.checks.some(
-      (c) => c.category === "port" && c.assessment === "provisional_mismatch",
+      (c) => c.category === "port" && c.title?.includes("UN/LOCODE") && c.assessment === "confirmed_match",
     ),
   ).toBe(true);
 });

@@ -1,16 +1,9 @@
 "use client";
 import type { ShippingResult } from "@/modules/shipping/prepare";
 import type { ShippingReview } from "@/modules/shipping/review-model";
-import { shippingLabels } from "@/modules/shipping/catalog";
-const labels = {
-  confirmed_match: "확인된 일치",
-  confirmed_mismatch: "확인된 불일치",
-  provisional_match: "잠정 일치",
-  provisional_mismatch: "잠정 불일치",
-  needs_review: "확인 필요",
-  insufficient_information: "정보 부족",
-  not_comparable: "비교 불가",
-};
+import { shippingLabels, shippingTypes } from "@/modules/shipping/catalog";
+import { comparisonGroups } from "@/modules/shipping/presentation";
+import { assessmentLabels } from "@/modules/rules/model";
 export function ShippingReport({
   results,
   review,
@@ -18,6 +11,9 @@ export function ShippingReport({
   results: ShippingResult[];
   review: ShippingReview;
 }) {
+  const docs = results.flatMap((r) => (r.document ? [r.document] : [])),
+    groups = comparisonGroups(review, docs),
+    labels = { ...assessmentLabels, not_comparable: "비교 불가" };
   return (
     <>
       <button
@@ -26,7 +22,7 @@ export function ShippingReport({
       >
         검토 보고서 인쇄 / PDF 저장
       </button>
-      <style>{`@media print {body * {visibility:hidden} #shipping-print-report,#shipping-print-report * {visibility:visible} #shipping-print-report {display:block;position:absolute;left:0;top:0;width:100%;font-size:10pt} #shipping-print-report tr {break-inside:avoid} dialog {display:none}}`}</style>
+      <style>{`@media print {body * {visibility:hidden} #shipping-print-report,#shipping-print-report * {visibility:visible} #shipping-print-report {display:block;position:absolute;left:0;top:0;width:100%;font-size:9pt} #shipping-print-report tr,#shipping-print-report li {break-inside:avoid} #shipping-print-report th,#shipping-print-report td{padding:6pt;border:1px solid #cbd5e1} #shipping-print-report thead{display:table-header-group} dialog {display:none}}`}</style>
       <article
         id="shipping-print-report"
         className="hidden bg-white p-6 text-slate-900 print:block"
@@ -39,72 +35,127 @@ export function ShippingReport({
           </p>
         ) : (
           <p className="my-3">
-            확정 불일치 {review.summary?.confirmedMismatches ?? 0} · 잠정{" "}
-            {review.summary?.provisional ?? 0} · 확인 필요{" "}
-            {review.summary?.needsReview ?? 0} · 정보 부족{" "}
-            {review.summary?.insufficient ?? 0}
+            확정 불일치 {review.summary?.confirmedMismatches ?? 0} · 확인된 일치{" "}
+            {review.summary?.matches ?? 0} · 잠정/확인 필요{" "}
+            {(review.summary?.provisional ?? 0) +
+              (review.summary?.needsReview ?? 0)}{" "}
+            · 정보 부족/비교 불가{" "}
+            {(review.summary?.insufficient ?? 0) +
+              (review.summary?.notComparable ?? 0)}{" "}
+            (원본 검사 기준)
           </p>
         )}
-        <p>
-          AI 추출과 원문 근거 확인을 구분한 보조 검토입니다. 사용자 수정·OCR
-          인식은 원문 검증 성공이 아닙니다. 세관 신고·법률 판단을 대신하지
-          않습니다.
-        </p>
-        <ul className="my-4">
+        <h2 className="mt-4 font-bold">분석 대상</h2>
+        <ul>
           {results.map((r) => (
             <li key={r.pdf.id}>
               {r.pdf.fileName} ·{" "}
-              {shippingLabels[r.detectedType ?? r.uploadSlot].title} ·{" "}
+              {r.detectedType
+                ? shippingLabels[r.detectedType].title
+                : "실제 유형 미확인"}{" "}
+              ·{" "}
               {r.error
                 ? "실패"
-                : r.document?.extractionStatus === "partial"
-                  ? "일부 성공"
-                  : r.document?.extractionStatus === "not_performed"
-                    ? "PDF 원문만 준비"
-                    : "분석 완료"}
+                : r.document?.extractionStatus === "not_performed"
+                  ? "PDF 원문만 준비"
+                  : r.document?.extractionStatus === "partial"
+                    ? "일부 성공"
+                    : "분석 완료"}{" "}
+              · 분류{" "}
+              {r.document?.classificationStatus === "classified"
+                ? "근거 확인"
+                : r.document?.classificationStatus === "needs_review"
+                  ? "불확실"
+                  : "미실시"}
             </li>
           ))}
         </ul>
-        <table className="w-full border-collapse text-left">
+        <h2 className="my-3 font-bold">서류별 통합 비교표</h2>
+        <table className="w-full border-collapse text-left text-[9px]">
           <thead>
             <tr>
-              <th>검토 항목 / 상태</th>
-              <th>값 및 원문 참조</th>
-              <th>판정 이유 / 다음 확인</th>
+              <th>항목</th>
+              {shippingTypes.map((t) => (
+                <th key={t}>{shippingLabels[t].title}</th>
+              ))}
+              <th>판정</th>
             </tr>
           </thead>
           <tbody>
-            {review.checks.map((c) => (
-              <tr key={c.id} className="border-t border-slate-300">
-                <td className="p-2 align-top">
-                  {c.title ?? c.category}
-                  <br />
-                  {labels[c.assessment]}
-                </td>
-                <td className="p-2 align-top">
-                  {c.fields.map((f, i) => (
-                    <p key={i}>
-                      {String(f.field.current.value ?? "정보 없음")} ·{" "}
-                      {f.field.current.status === "user_edited"
-                        ? "사용자 수정"
-                        : f.field.current.status === "verified"
-                          ? "원문 확인"
-                          : "근거 미확인"}
-                      <br />
-                      {f.field.original.source?.fileName ?? f.documentId} ·{" "}
-                      {f.field.original.source?.page ?? "?"}페이지
-                    </p>
-                  ))}
-                </td>
-                <td className="p-2 align-top">
-                  {c.explanation}
-                  <br />
-                  {c.followUp}
+            {groups.map((g) => (
+              <tr key={g.id}>
+                <th className="align-top">{g.title}</th>
+                {shippingTypes.map((t) => (
+                  <td key={t} className="align-top">
+                    {g.fields
+                      .filter(
+                        (f) =>
+                          docs.find((d) => d.id === f.documentId)
+                            ?.detectedType === t,
+                      )
+                      .map((f, i) => (
+                        <p key={i}>
+                          {String(f.field.current.value ?? "정보 없음")} ·{" "}
+                          {f.field.current.status === "verified"
+                            ? "원문 확인"
+                            : f.field.current.status === "user_edited"
+                              ? "사용자 수정"
+                              : "근거 미확인"}
+                          <br />
+                          {f.field.original.source?.fileName ?? f.documentId} ·
+                          p.{f.field.original.source?.page ?? "?"} ·{" "}
+                          {f.field.original.source?.segments
+                            ?.map((s) => s.blockId)
+                            .join(", ") ?? "블록 없음"}
+                        </p>
+                      ))}
+                  </td>
+                ))}
+                <td className="align-top">
+                  {labels[g.assessment]} · {g.checks.length}개 검사
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <h2 className="my-3 font-bold">불일치 및 확인 필요 사항</h2>
+        <ul>
+          {groups
+            .filter(
+              (g) =>
+                ![
+                  "confirmed_match",
+                  "insufficient_information",
+                  "not_comparable",
+                ].includes(g.assessment),
+            )
+            .map((g) => (
+              <li key={g.id} className="mb-3">
+                <strong>
+                  {g.title} · {labels[g.assessment]}
+                </strong>
+                {[...new Set(g.checks.map((c) => c.explanation))].map((w) => (
+                  <p key={w}>{w}</p>
+                ))}
+                <p>
+                  {[
+                    ...new Set(g.checks.flatMap((c) => c.uncertainties ?? [])),
+                  ].join(" ")}
+                </p>
+                <p>
+                  다음 확인:{" "}
+                  {[...new Set(g.checks.map((c) => c.followUp))].join(" ")}
+                </p>
+              </li>
+            ))}
+        </ul>
+        <h2 className="my-3 font-bold">분석 제한 사항</h2>
+        <p>
+          검증된 참조 범위의 자료 정합성 보조 검토입니다. 누락
+          필드·부분선적·미명시 배분은 정상 일치로 취급하지 않습니다. 사용자
+          수정·OCR 인식은 원문 검증 성공이 아닙니다. PDF 전문은 보고서에
+          포함하지 않습니다. 세관 신고·법률 판단을 대신하지 않습니다.
+        </p>
       </article>
     </>
   );

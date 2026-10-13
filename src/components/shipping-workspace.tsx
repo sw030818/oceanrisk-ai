@@ -282,7 +282,10 @@ export function ShippingWorkspace() {
                 throw new Error("문서 응답 형식이 올바르지 않습니다.");
               // Older mocked contracts have server-generated IDs; retain their source
               // identity. PHASE3.3 responses must echo each stable upload ID.
-              if (data.phase === "3.3" && r.pdf.id !== batch[i].id)
+              if (
+                ["3.3", "3.4"].includes(data.phase) &&
+                r.pdf.id !== batch[i].id
+              )
                 throw new Error("문서 식별자가 요청과 다릅니다.");
               if (r.document) shippingDocumentSchema.parse(r.document);
               return r;
@@ -290,10 +293,10 @@ export function ShippingWorkspace() {
             if (analyze)
               setComparisonEnabled(
                 data.capabilities?.pairComparison === true &&
-                  ["3.2", "3.3"].includes(data.phase),
+                  ["3.2", "3.3", "3.4"].includes(data.phase),
               );
             stopAI =
-              data.phase === "3.3" &&
+              ["3.3", "3.4"].includes(data.phase) &&
               incoming.some(
                 (r) =>
                   r.error &&
@@ -678,35 +681,64 @@ export function ShippingWorkspace() {
               <div className="mb-5">
                 <ShippingReport results={results} review={review} />
               </div>
-              <div className="mb-5 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <p className="text-xs text-slate-500">
-                    업로드 문서 / PDF 원문 준비
+              <div className="mb-4 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs leading-6 text-slate-600">
+                <strong className="text-[#142744]">
+                  {results.length}개 파일
+                </strong>{" "}
+                · PDF 원문 준비{" "}
+                {results.filter((r) => r.pdf.pages.length > 0).length} · 선택{" "}
+                {summary.uploadedTypes}종 · 실제 분류 {summary.classifiedTypes}
+                종 · AI 분석 {summary.analyzedDocuments} · 부분{" "}
+                {summary.partialDocuments} · 실패 {summary.failedDocuments}
+                <p>
+                  유형 분류 성공{" "}
+                  {
+                    results.filter(
+                      (r) => r.document?.classificationStatus === "classified",
+                    ).length
+                  }{" "}
+                  · 불확실{" "}
+                  {
+                    results.filter(
+                      (r) =>
+                        r.document?.classificationStatus === "needs_review",
+                    ).length
+                  }{" "}
+                  · 미실시/실패{" "}
+                  {
+                    results.filter(
+                      (r) =>
+                        !r.document ||
+                        r.document.classificationStatus === "not_performed",
+                    ).length
+                  }
+                </p>
+                {results.some(
+                  (r) => r.document?.classificationStatus === "needs_review",
+                ) && (
+                  <p className="text-orange-800">
+                    {results.length}개 파일을 검토했으나{" "}
+                    {
+                      results.filter(
+                        (r) =>
+                          r.document?.classificationStatus === "needs_review",
+                      ).length
+                    }
+                    개 문서의 유형 근거를 확인하지 못했습니다. 문서 분류
+                    근거에서 실제 이유를 확인해 주세요.
                   </p>
-                  <p className="mt-2 text-2xl font-semibold">
-                    {results.length} /{" "}
-                    {results.filter((r) => r.pdf.pages.length > 0).length}
-                  </p>
-                  <p className="mt-2 text-xs text-slate-500">
-                    선택 {summary.uploadedTypes}종 · 실제 분류{" "}
-                    {summary.classifiedTypes}종 · AI 분석{" "}
-                    {summary.analyzedDocuments} · 부분{" "}
-                    {summary.partialDocuments} · 실패 {summary.failedDocuments}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <p className="text-xs text-slate-500">대조 준비 상태</p>
-                  <p className="mt-3 text-sm font-semibold">
+                )}
+                <p>
+                  대조 준비 상태:{" "}
+                  <span>
                     {summary.comparisonReadiness === "ready_for_triangle"
                       ? "3종 삼각대조 자료 준비"
                       : summary.comparisonReadiness === "ready_for_pair"
                         ? "2종 대조 자료 준비"
                         : "대상 서류 부족"}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <p className="text-xs text-slate-500">서류 간 삼각대조</p>
-                  <p className="mt-3 text-sm font-semibold">
+                  </span>{" "}
+                  · 서류 간 삼각대조:{" "}
+                  <span>
                     {!comparisonEnabled
                       ? "분석 미실시"
                       : review.triangleStatus === "performed"
@@ -714,13 +746,64 @@ export function ShippingWorkspace() {
                         : review.triangleStatus === "insufficient_documents"
                           ? "대상 3종 부족"
                           : "공통 연결 확인 필요"}
-                  </p>
-                </div>
+                  </span>
+                </p>
               </div>
+              {comparisonEnabled && (
+                <div className="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+                  {[
+                    [
+                      "확정 불일치",
+                      review.summary?.confirmedMismatches ?? 0,
+                      "text-red-700",
+                    ],
+                    [
+                      "잠정·확인 필요",
+                      (review.summary?.provisional ?? 0) +
+                        (review.summary?.needsReview ?? 0),
+                      "text-orange-800",
+                    ],
+                    [
+                      "정보 부족·비교 불가",
+                      (review.summary?.insufficient ?? 0) +
+                        (review.summary?.notComparable ?? 0),
+                      "text-slate-600",
+                    ],
+                    [
+                      "확인된 일치",
+                      review.summary?.matches ?? 0,
+                      "text-emerald-800",
+                    ],
+                  ].map(([label, n, color]) => (
+                    <div
+                      key={label}
+                      className="rounded-xl border border-slate-200 bg-white p-4"
+                    >
+                      <p className="text-xs text-slate-500">{label}</p>
+                      <p className={`mt-2 text-3xl font-semibold ${color}`}>
+                        {n}
+                      </p>
+                      <p className="mt-1 text-[10px] text-slate-400">
+                        원본 검사 기준 · 통합 비교표와 건수 구분
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
               {pending}
               {comparisonEnabled && (
                 <ShippingReviewPanel
                   review={review}
+                  documents={results.flatMap((r) =>
+                    r.document ? [r.document] : [],
+                  )}
+                  onUpdate={(doc) =>
+                    setResults((current) =>
+                      current.map((r) =>
+                        r.pdf.id === doc.id ? { ...r, document: doc } : r,
+                      ),
+                    )
+                  }
                   onConfirmRelationship={(id) =>
                     setConfirmedRelationships((current) => [
                       ...new Set([...current, id]),

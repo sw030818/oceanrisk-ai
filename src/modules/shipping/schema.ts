@@ -11,6 +11,7 @@ import {
 import type { PdfDocument } from "../documents/schema";
 export const shippingTypeSchema = z.enum(shippingTypes);
 const sourceSchema = evidenceSchema.extend({
+  scopeBasis: z.enum(["document_field", "entity_row"]).optional(),
   fileId: z.string().min(1),
   fileName: z.string().min(1),
   blocks: z
@@ -208,6 +209,7 @@ const common = {
 };
 export const shippingDocumentSchema = z
   .object({
+    nativeScopeLimitation: z.enum(["partial", "combined_packages"]).optional(),
     ...common,
     uploadType: shippingTypeSchema,
     fieldType: shippingTypeSchema.nullable().optional(),

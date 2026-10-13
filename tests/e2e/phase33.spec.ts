@@ -150,10 +150,10 @@ test("six documents in three batches retain qualified sources and cross-batch de
   expect(calls()).toBe(3);
   await expect(page.getByTestId("shipping-review")).toBeVisible();
   await page
-    .getByRole("button", { name: "일치·정보 부족 포함 전체 보기" })
-    .click();
+    .getByLabel("검토 결과 필터")
+    .selectOption("all");
   await expect(
-    page.getByText("복수 신고 물품 수량 합계", { exact: true }),
+    page.getByRole("button", { name: "복수 신고 물품 수량 합계", exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "원본 PDF 열기 (브라우저 내 파일)" }),
@@ -163,7 +163,7 @@ test("six documents in three batches retain qualified sources and cross-batch de
       '[data-testid="shipping-check"][data-assessment="confirmed_match"]',
     )
     .first();
-  await source.getByRole("button").first().click();
+  await source.locator("xpath=ancestor::tr").getByRole("button").nth(1).click();
   await expect(page.getByRole("dialog")).toContainText("실제 PDF 블록 위치");
 });
 test("a failed middle batch preserves four successes and continues later independent documents", async ({

@@ -105,3 +105,10 @@ House B/L·수출신고필증·House 적하목록 각 영역에 여러 PDF를 �
 복수신고는 명시된 전체신고목록·원문 전체품목·서로다른품명/HS·동일수량단위·전체범위가 모두 확인된 경우에만 물품수량을집계합니다. 중복품목/공동포장/미명시배분은 보류합니다. 검토 보고서는 브라우저 인쇄/PDF저장으로 출력하며 PDF전문을 포함하지 않습니다.
 
 실제 검증: `NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run test:phase33:production -- --sha=<ProductionSHA> --stage=normal --approved-documents=24 --approved-requests=30 --approved-max-cost-usd=0.10`. 신규 예산$0.10/24문서/30공급자요청을 전체 단계가 공유합니다. 명령플래그는 새로운 승인을 대신하지 않고 소모예산을 복원하지 않습니다. baseline/normal/mismatch/complex/uncertain/ocr/holdout은 각각 결과를 보존하며 OCR합성회전스캔 생성은 개발환경의pdftoppm을사용하고ProductionOCR은별도native실행파일을요구하지않습니다.
+
+### PHASE 3.4 결과 워크스페이스
+현재 버전은 업로드 3영역·유형별 여러PDF·개별 추가/교체/삭제·안전한 순차배치를 유지하며 결과를 KPI, 서류 비교표, 상세 패널, 선적 그룹, 통합 인쇄 보고서로 표시합니다. 개별 문서1개도 분석할 수 있습니다. 검토공간24개/64MB, 파일4MB/30페이지, 요청4MB/최대4개(클라이언트기본2개) 제한은 서로 다릅니다.
+
+선적 분석은 실제 PDF 텍스트 블록과 선으로 닫힌 셀 경계를 사용합니다. 일반 Bill of Lading만으로 House를 확정하지 않고 House 발행 문맥을 함께 대조합니다. 번호/분리라벨·단위·품목행/전체합계를 구분하며 CT는 포장문맥, 항구는명시 UN/LOCODE 별칭에서만 정규화합니다. 같은 검증 HBL의 문서 기재 수치 비교는 전량 선적 또는 계약 이행 입증이 아닙니다. 부분선적·복수신고·근거 부족·사용자 수정은 해당 판정을 보호합니다.
+
+사용자 제공 실패PDF는 공개저장하지 않습니다. 독립합성 CI, 기존회귀, 실제사용자첨부 OpenAI 분석, 실제응답의무료UI재생은 각각구분합니다. 새 PHASE3.4 검증예산은최대$0.15이며이전소진예산과분리합니다. 예산예약·토큰·미확인usage비용을보존하고자동재시도하지않습니다. 실제결과는 validation/phase34-evidence에별도보존해테스트한ProductionSHA를유지합니다.

@@ -82,6 +82,7 @@ export function identifiers32(doc: ShippingDocument, role: string): FieldRef[] {
   );
 }
 export function scope32(doc: ShippingDocument) {
+  if (doc.nativeScopeLimitation) return doc.nativeScopeLimitation;
   const f = root32(doc, "shipmentScope");
   if (!f || !verified32(f)) return "unknown" as const;
   const v = text32(f.field.current.value);

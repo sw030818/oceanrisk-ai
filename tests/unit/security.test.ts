@@ -164,7 +164,7 @@ describe("public analysis retains request safety without local auth or quotas", 
     const response = GET();
     const body = await response.json();
     expect(body).toEqual({
-      phase: "3.3",
+      phase: "3.4",
       capabilities: {
         multiFileBatches: true,
         selectiveOCR: true,

@@ -1,5 +1,6 @@
 import type { PdfPage, PdfBlock } from "../documents/schema";
 import { columnContains, type TableLink } from "./relations";
+import { nativeTableLink } from "./shipping-geometry";
 import { shippingRole } from "../shipping/roles";
 export type EntityScope = "document" | "item" | "container" | "cargo";
 const tableAnchor: Record<Exclude<EntityScope, "document">, string[]> = {
@@ -22,6 +23,7 @@ export function shippingCell(
   scope: EntityScope,
 ): TableLink | null {
   if (scope === "document" || !selected.length) return null;
+  if (page.cells?.length) return nativeTableLink(page, selected, scope);
   const blocks = page.blocks ?? [],
     first = [...selected].sort((a, b) => a.y - b.y || a.x - b.x)[0];
   if (totalRow(page, first.row)) return null;

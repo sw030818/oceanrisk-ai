@@ -14,7 +14,13 @@ import type {
 } from "../../src/modules/shipping/ai-schema";
 import type { PdfDocument } from "../../src/modules/documents/schema";
 type Cell = { text: string; x: number; y: number; size?: number };
-export function unicodePdf(pages: Cell[][]): Uint8Array {
+export function unicodePdf(
+  pages: Cell[][],
+  options: {
+    borders?: { x: number; y: number; width: number; height: number }[][];
+    sizes?: [number, number][];
+  } = {},
+): Uint8Array {
   const objects: string[] = [];
   const obj = (text: string) => {
     objects.push(text);
@@ -37,21 +43,30 @@ export function unicodePdf(pages: Cell[][]): Uint8Array {
     `<< /Type /Font /Subtype /Type0 /BaseFont /SyntheticUnicode /Encoding /Identity-H /DescendantFonts [${descendant} 0 R] /ToUnicode ${cmapId} 0 R >>`,
   );
   const ids: number[] = [];
-  for (const cells of pages) {
-    const commands = cells
-      .map((c) => {
-        const hex = [...c.text]
-          .map((char) => char.charCodeAt(0).toString(16).padStart(4, "0"))
-          .join("");
-        return `BT /F1 ${c.size ?? 9} Tf 1 0 0 1 ${c.x} ${842 - c.y} Tm <${hex}> Tj ET`;
-      })
-      .join("\n");
+  for (const [pageIndex, cells] of pages.entries()) {
+    const [pageWidth, pageHeight] = options.sizes?.[pageIndex] ?? [842, 842];
+    const commands =
+      (options.borders?.[pageIndex] ?? [])
+        .map(
+          (c) =>
+            `${c.x} ${pageHeight - c.y - c.height} ${c.width} ${c.height} re S`,
+        )
+        .join("\n") +
+      "\n" +
+      cells
+        .map((c) => {
+          const hex = [...c.text]
+            .map((char) => char.charCodeAt(0).toString(16).padStart(4, "0"))
+            .join("");
+          return `BT /F1 ${c.size ?? 9} Tf 1 0 0 1 ${c.x} ${pageHeight - c.y} Tm <${hex}> Tj ET`;
+        })
+        .join("\n");
     const stream = obj(
       `<< /Length ${Buffer.byteLength(commands)} >>\nstream\n${commands}\nendstream`,
     );
     ids.push(
       obj(
-        `<< /Type /Page /Parent ${tree} 0 R /MediaBox [0 0 842 842] /Resources << /Font << /F1 ${font} 0 R >> >> /Contents ${stream} 0 R >>`,
+        `<< /Type /Page /Parent ${tree} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${font} 0 R >> >> /Contents ${stream} 0 R >>`,
       ),
     );
   }

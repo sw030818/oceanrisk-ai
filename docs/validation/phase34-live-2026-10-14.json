@@ -1,0 +1,49 @@
+{
+  "phase": "3.4",
+  "date": "2026-10-14",
+  "kind": "baseline-only-before-new-deployment",
+  "budget": {
+    "documents": 4,
+    "requests": 4,
+    "measuredCostUsd": 0.00255067,
+    "unresolvedCostUpperUsd": 0.011764225000000001,
+    "maxDocuments": 30,
+    "maxRequests": 40,
+    "maxCostUsd": 0.15
+  },
+  "before": {
+    "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+    "classification": 0,
+    "verified": 15,
+    "candidates": 106,
+    "review": {
+      "matches": 0,
+      "confirmedMismatches": 0,
+      "provisional": 25,
+      "needsReview": 5,
+      "insufficient": 18,
+      "notComparable": 2,
+      "confirmedRelationships": 0,
+      "userConfirmedRelationships": 0,
+      "proposedRelationships": 3,
+      "conflictingRelationships": 0,
+      "pairChecks": 50,
+      "triangleChecks": 0
+    },
+    "triangle": "not_comparable"
+  },
+  "after": null,
+  "privacy": "No uploaded PDFs, full text, raw provider response, business identifiers or secrets archived. Native PDFs remain private immutable attachments.",
+  "actualOpenAI": {
+    "structuredDocuments": 3,
+    "documentAttempts": 4,
+    "supplierRequests": 4,
+    "failures": {
+      "API_UNAVAILABLE": 1
+    },
+    "knownUsageCostUsd": 0.00255067,
+    "unknownUsageReservationUsd": 0.011764225000000001,
+    "automaticRetries": 0,
+    "manualRecheckReason": "One 45s provider timeout; single declaration succeeded."
+  }
+}

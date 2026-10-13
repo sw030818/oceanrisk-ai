@@ -5,6 +5,12 @@ import type {
   ShippingAssessment,
   ShippingRelationship,
 } from "./review-model";
+import {
+  portCode,
+  goodsEquivalent,
+  hsSix,
+  contextualCarton,
+} from "./equivalence";
 import { declarationGroupChecks } from "./declaration-groups";
 import { relateShipping } from "./relationships";
 import {
@@ -231,7 +237,9 @@ export function reviewShipping(
       return;
     }
     const normalized = units.map((f) =>
-      unit32(f!.field.current.value, category),
+      category === "packaging" && contextualCarton(f)
+        ? { unit: "CTNS", factor: 1 }
+        : unit32(f!.field.current.value, category),
     );
     if (
       normalized.some((u) => !u) ||
@@ -274,8 +282,59 @@ export function reviewShipping(
           Math.abs(v - nums[0]) <=
           Math.max(1, Math.abs(v), Math.abs(nums[0])) * 1e-9,
       ),
+      reportedDocumentScope =
+        values.every(
+          (v) =>
+            v &&
+            !v.itemId &&
+            !v.cargoId &&
+            !v.containerId &&
+            v.field.original.source?.scopeBasis === "document_field",
+        ) &&
+        fs.every(verified32) &&
+        values.every((v) => {
+          const doc = documents.find((d) => d.id === v!.documentId);
+          if (
+            !doc ||
+            scope32(doc) === "partial" ||
+            scope32(doc) === "combined_packages" ||
+            !whole32(doc)
+          )
+            return false;
+          const hbls = new Set(
+            identifiers32(doc, "houseBlNumber")
+              .filter(verified32)
+              .map((f) => text32(f.field.current.value)),
+          );
+          if (hbls.size !== 1) return false;
+          if (doc.detectedType === "export_declaration") {
+            const siblings = documents.filter(
+              (d) =>
+                d.detectedType === "export_declaration" &&
+                identifiers32(d, "houseBlNumber")
+                  .filter(verified32)
+                  .some((f) => hbls.has(text32(f.field.current.value))),
+            );
+            if (
+              new Set(
+                siblings.flatMap((d) =>
+                  identifiers32(d, "declarationNumber")
+                    .filter(verified32)
+                    .map((f) => text32(f.field.current.value)),
+                ),
+              ).size > 1
+            )
+              return false;
+          }
+          return true;
+        }),
       guard = [
-        ...why,
+        ...why.filter(
+          (w) =>
+            !reportedDocumentScope ||
+            w !==
+              "전체 선적 범위가 양쪽 원문에서 확인되지 않았거나 부분/동시포장 범위입니다.",
+        ),
         ...(!fs.every(verified32)
           ? ["수치/단위의 근거 미확인 또는 사용자 수정값이 포함됩니다."]
           : []),
@@ -293,7 +352,7 @@ export function reviewShipping(
           ? "confirmed_match"
           : "confirmed_mismatch",
       title,
-      `${title}를 같은 단위(${normalized[0]!.unit})로 비교했습니다. ${same ? "수치가 일치합니다." : "수치가 다릅니다."}`,
+      `${title}를 같은 단위(${normalized[0]!.unit})로 비교했습니다. ${same ? "수치가 일치합니다." : "수치가 다릅니다."}${reportedDocumentScope ? " 동일 HBL의 명시된 문서 기재값 비교이며 전체 계약 이행/전량 선적을 입증하지 않습니다." : ""}`,
       guard,
       links,
     );
@@ -484,8 +543,23 @@ export function reviewShipping(
           right &&
           text32(left.field.current.value) !==
             text32(right.field.current.value);
+      const mappedPort =
+        role.startsWith("portOf") &&
+        left &&
+        right &&
+        portCode(left.field.current.value) &&
+        portCode(left.field.current.value) ===
+          portCode(right.field.current.value);
+      const similarGoods =
+        role === "goodsDescription" &&
+        left &&
+        right &&
+        goodsEquivalent(left.field.current.value, right.field.current.value) ===
+          "partial";
       const representationGuard =
-        different && (role === "goodsDescription" || role.startsWith("portOf"))
+        different &&
+        !mappedPort &&
+        (role === "goodsDescription" || role.startsWith("portOf"))
           ? [
               "언어·요약·항구명/코드 등 표기 차이일 수 있습니다. 문자열 차이를 물품 또는 항구의 확정 오류로 단정하지 않습니다.",
             ]
@@ -501,7 +575,8 @@ export function reviewShipping(
         [left, right],
         [...base, ...representationGuard],
         links,
-        label(role),
+        mappedPort ? label(role) + " · UN/LOCODE 표준화" : label(role),
+        mappedPort || similarGoods ? true : undefined,
       );
     }
     for (const [name, unit, category] of [
@@ -690,7 +765,19 @@ export function reviewShipping(
         name = text32(description?.field.current.value),
         matches = br.filter(
           (row) =>
-            name && text32(row.fields.goodsDescription.current.value) === name,
+            name &&
+            (text32(row.fields.goodsDescription.current.value) === name ||
+              (r.status === "evidence_confirmed" &&
+                goodsEquivalent(
+                  description?.field.current.value,
+                  row.fields.goodsDescription.current.value,
+                ) === "partial" &&
+                !!ra.fields.hsCode &&
+                !!row.fields.hsCode &&
+                verified32(rowRef(a, ra, "hsCode")!) &&
+                verified32(rowRef(b, row, "hsCode")!) &&
+                text32(ra.fields.hsCode.current.value) ===
+                  text32(row.fields.hsCode.current.value))),
         ),
         dups =
           ar.filter(
@@ -715,6 +802,11 @@ export function reviewShipping(
         continue;
       }
       const rb = matches[0],
+        partialName =
+          goodsEquivalent(
+            description?.field.current.value,
+            rb.fields.goodsDescription.current.value,
+          ) === "partial",
         descB = rowRef(b, rb, "goodsDescription"),
         hsA = rowRef(a, ra, "hsCode"),
         hsB = rowRef(b, rb, "hsCode"),
@@ -726,6 +818,11 @@ export function reviewShipping(
           text32(hsA.field.current.value) !== text32(hsB.field.current.value),
         guard = [
           ...numeric,
+          ...(partialName
+            ? [
+                "영문 핵심 품명과 HS는 대응하지만 전체 설명은 부분 일치입니다. 규격/번역을 확인해 주세요.",
+              ]
+            : []),
           ...(hsConflict
             ? ["같은 품명이지만 HS 식별자가 달라 품목 대응을 확인해야 합니다."]
             : []),
@@ -759,9 +856,10 @@ export function reviewShipping(
         prefix + "/name",
         "goods",
         [description, descB],
-        base,
+        partialName ? [...base, "전체 품명은 부분 의미 일치입니다."] : base,
         links,
         `품목 ${description!.field.current.value} 품명`,
+        partialName ? true : undefined,
       );
       compare(
         scope,
@@ -774,6 +872,23 @@ export function reviewShipping(
         links,
         `품목 ${name} HS Code`,
       );
+      if (
+        hsA &&
+        hsB &&
+        hsSix(hsA.field.current.value) &&
+        hsSix(hsA.field.current.value) === hsSix(hsB.field.current.value) &&
+        text32(hsA.field.current.value) !== text32(hsB.field.current.value)
+      )
+        compare(
+          scope,
+          prefix + "/hs6",
+          "goods",
+          [hsA, hsB],
+          base,
+          links,
+          `품목 ${name} HS 공통 6단위 (전체 세번과 구분)`,
+          true,
+        );
       for (const [value, unit, category] of [
         ["quantity", "quantityUnit", "quantity"],
         ["packageCount", "packageUnit", "packaging"],

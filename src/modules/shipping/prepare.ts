@@ -33,6 +33,7 @@ export async function prepareShippingFile(
       new Uint8Array(await file.arrayBuffer()),
       signal,
       true,
+      true,
     );
     return {
       pdf,
