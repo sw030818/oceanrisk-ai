@@ -1,16 +1,15 @@
 {
-  "mode": "phase33-historical-live-observations-and-shared-budget",
+  "mode": "phase33-actual-live-validation-evidence",
+  "testedProductionSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
   "budget": {
-    "documents": 6,
-    "requests": 6,
-    "measuredCostUsd": 0.00759725,
-    "unresolvedCostUpperUsd": 0,
+    "documents": 17,
+    "requests": 17,
+    "measuredCostUsd": 0.018340255,
+    "unresolvedCostUpperUsd": 1.734723475976807e-18,
     "maxDocuments": 24,
     "maxRequests": 30,
     "maxCostUsd": 0.1
   },
-  "automaticRetries": 0,
-  "priorBudgetsReused": false,
   "stages": [
     {
       "browser": {
@@ -260,6 +259,572 @@
         "reason": null
       },
       "mode": "phase33-actual-production-openai",
+      "stage": "complex",
+      "partition": "tuning",
+      "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+      "sourceShaStable": true,
+      "recordedAtUtc": "2026-10-13T14:26:19.685Z",
+      "budget": {
+        "documents": 17,
+        "requests": 17,
+        "measuredCostUsd": 0.018340255,
+        "unresolvedCostUpperUsd": 1.734723475976807e-18,
+        "maxDocuments": 24,
+        "maxRequests": 30,
+        "maxCostUsd": 0.1
+      },
+      "batchRequests": 3,
+      "batchDurationsMs": [
+        21456,
+        20571,
+        26130
+      ],
+      "automaticRetries": 0,
+      "measurements": [
+        {
+          "type": "house_bl",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 27,
+          "correct": 27,
+          "groundedCorrect": 27,
+          "returned": 28,
+          "returnedGrounded": 28,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        },
+        {
+          "type": "house_bl",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 22,
+          "correct": 22,
+          "groundedCorrect": 22,
+          "returned": 23,
+          "returnedGrounded": 23,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        },
+        {
+          "type": "export_declaration",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 28,
+          "correct": 28,
+          "groundedCorrect": 28,
+          "returned": 30,
+          "returnedGrounded": 30,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        },
+        {
+          "type": "export_declaration",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 28,
+          "correct": 28,
+          "groundedCorrect": 28,
+          "returned": 30,
+          "returnedGrounded": 30,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        },
+        {
+          "type": "export_declaration",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 28,
+          "correct": 28,
+          "groundedCorrect": 28,
+          "returned": 32,
+          "returnedGrounded": 30,
+          "issues": [],
+          "unverifiedPaths": [
+            "row_mismatch",
+            "row_mismatch"
+          ],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "partial"
+        },
+        {
+          "type": "house_manifest",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 51,
+          "correct": 51,
+          "groundedCorrect": 51,
+          "returned": 53,
+          "returnedGrounded": 53,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        }
+      ],
+      "usage": [
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 12375,
+            "inputTokens": 7104,
+            "outputTokens": 1321,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 1952,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.0009562899999999999,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 7758,
+            "inputTokens": 6886,
+            "outputTokens": 1056,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 1734,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.00079654,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 9729,
+            "inputTokens": 7444,
+            "outputTokens": 1254,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 2292,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.0009652899999999999,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 10344,
+            "inputTokens": 7440,
+            "outputTokens": 1252,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 2288,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.00096379,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 9937,
+            "inputTokens": 7436,
+            "outputTokens": 1288,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 2284,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.00098129,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 15681,
+            "inputTokens": 8119,
+            "outputTokens": 2271,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 2967,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.001558165,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        }
+      ],
+      "classificationCandidatesCorrect": 6,
+      "relation": {
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "expected": 8,
+        "predicted": 8,
+        "precision": 1,
+        "recall": 1
+      },
+      "mismatch": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "expected": 0,
+        "predicted": 0,
+        "precision": null,
+        "recall": null
+      },
+      "comparison": {
+        "matches": 81,
+        "confirmedMismatches": 0,
+        "provisional": 71,
+        "needsReview": 19,
+        "insufficient": 41,
+        "notComparable": 0,
+        "confirmedRelationships": 8,
+        "userConfirmedRelationships": 0,
+        "proposedRelationships": 0,
+        "conflictingRelationships": 3,
+        "pairChecks": 203,
+        "triangleChecks": 9
+      },
+      "triangleStatus": "performed",
+      "coverage": [
+        {
+          "id": "complex-bl-a",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "complex-bl-b",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "complex-declaration-0",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "complex-declaration-1",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "complex-declaration-2",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "complex-manifest",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 3
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "cargoRecords": {
+              "complete": true,
+              "rowCount": 2
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        }
+      ],
+      "rawResponsesArchived": false,
+      "realBusinessDocumentsUsed": false,
+      "passed": true
+    },
+    {
+      "browser": {
+        "passed": true,
+        "desktopWidth": 1440,
+        "mobileWidth": 390,
+        "pdfEvidence": true,
+        "editRestore": true,
+        "additionalPaidCalls": 0,
+        "responseReplay": true,
+        "reason": null
+      },
+      "mode": "phase33-actual-production-openai",
+      "stage": "mismatch",
+      "partition": "tuning",
+      "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+      "sourceShaStable": true,
+      "recordedAtUtc": "2026-10-13T14:11:28.472Z",
+      "budget": {
+        "documents": 11,
+        "requests": 11,
+        "measuredCostUsd": 0.01211889,
+        "unresolvedCostUpperUsd": 1.734723475976807e-18,
+        "maxDocuments": 24,
+        "maxRequests": 30,
+        "maxCostUsd": 0.1
+      },
+      "batchRequests": 1,
+      "batchDurationsMs": [
+        25661
+      ],
+      "automaticRetries": 0,
+      "measurements": [
+        {
+          "type": "house_bl",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 26,
+          "correct": 26,
+          "groundedCorrect": 26,
+          "returned": 29,
+          "returnedGrounded": 27,
+          "issues": [],
+          "unverifiedPaths": [
+            "row_mismatch",
+            "row_mismatch"
+          ],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "partial"
+        },
+        {
+          "type": "house_manifest",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 33,
+          "correct": 33,
+          "groundedCorrect": 33,
+          "returned": 36,
+          "returnedGrounded": 36,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        }
+      ],
+      "usage": [
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 11678,
+            "inputTokens": 7079,
+            "outputTokens": 1343,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 1927,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.000964165,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 12857,
+            "inputTokens": 7445,
+            "outputTokens": 1604,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 2293,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.0011404149999999999,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        }
+      ],
+      "classificationCandidatesCorrect": 2,
+      "relation": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "expected": 1,
+        "predicted": 1,
+        "precision": 1,
+        "recall": 1
+      },
+      "mismatch": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "expected": 3,
+        "predicted": 3,
+        "precision": 1,
+        "recall": 1
+      },
+      "comparison": {
+        "matches": 12,
+        "confirmedMismatches": 3,
+        "provisional": 0,
+        "needsReview": 2,
+        "insufficient": 2,
+        "notComparable": 0,
+        "confirmedRelationships": 1,
+        "userConfirmedRelationships": 0,
+        "proposedRelationships": 0,
+        "conflictingRelationships": 0,
+        "pairChecks": 19,
+        "triangleChecks": 0
+      },
+      "triangleStatus": "insufficient_documents",
+      "coverage": [
+        {
+          "id": "new-mismatch-bl",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "new-mismatch-manifest",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": true,
+              "rowCount": 1
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        }
+      ],
+      "rawResponsesArchived": false,
+      "realBusinessDocumentsUsed": false,
+      "passed": true
+    },
+    {
+      "browser": {
+        "passed": true,
+        "desktopWidth": 1440,
+        "mobileWidth": 390,
+        "pdfEvidence": true,
+        "editRestore": true,
+        "additionalPaidCalls": 0,
+        "responseReplay": true,
+        "reason": null
+      },
+      "mode": "phase33-actual-production-openai",
       "stage": "normal",
       "partition": "tuning",
       "sourceSha": "bb2b9946992f682fb7fa9e557638ccd8c075efee",
@@ -476,9 +1041,243 @@
       "rawResponsesArchived": false,
       "realBusinessDocumentsUsed": false,
       "passed": true
+    },
+    {
+      "browser": {
+        "passed": true,
+        "desktopWidth": 1440,
+        "mobileWidth": 390,
+        "pdfEvidence": true,
+        "editRestore": true,
+        "additionalPaidCalls": 0,
+        "responseReplay": true,
+        "reason": null
+      },
+      "mode": "phase33-actual-production-openai",
+      "stage": "normal",
+      "partition": "tuning",
+      "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+      "sourceShaStable": true,
+      "recordedAtUtc": "2026-10-13T14:09:05.540Z",
+      "budget": {
+        "documents": 9,
+        "requests": 9,
+        "measuredCostUsd": 0.01001431,
+        "unresolvedCostUpperUsd": 0,
+        "maxDocuments": 24,
+        "maxRequests": 30,
+        "maxCostUsd": 0.1
+      },
+      "batchRequests": 2,
+      "batchDurationsMs": [
+        26528,
+        19348
+      ],
+      "automaticRetries": 0,
+      "measurements": [
+        {
+          "type": "house_bl",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 26,
+          "correct": 26,
+          "groundedCorrect": 26,
+          "returned": 27,
+          "returnedGrounded": 27,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        },
+        {
+          "type": "export_declaration",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 32,
+          "correct": 32,
+          "groundedCorrect": 32,
+          "returned": 36,
+          "returnedGrounded": 34,
+          "issues": [],
+          "unverifiedPaths": [
+            "row_mismatch",
+            "row_mismatch"
+          ],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "partial"
+        },
+        {
+          "type": "house_manifest",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 33,
+          "correct": 33,
+          "groundedCorrect": 33,
+          "returned": 35,
+          "returnedGrounded": 35,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        }
+      ],
+      "usage": [
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 11405,
+            "inputTokens": 7013,
+            "outputTokens": 1280,
+            "cachedInputTokens": 7010,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.0007104,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 13943,
+            "inputTokens": 7771,
+            "outputTokens": 1530,
+            "cachedInputTokens": 7768,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.00084298,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 18900,
+            "inputTokens": 7441,
+            "outputTokens": 1578,
+            "cachedInputTokens": 7438,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.0008636799999999999,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        }
+      ],
+      "classificationCandidatesCorrect": 3,
+      "relation": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "expected": 3,
+        "predicted": 3,
+        "precision": 1,
+        "recall": 1
+      },
+      "mismatch": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "expected": 0,
+        "predicted": 0,
+        "precision": null,
+        "recall": null
+      },
+      "comparison": {
+        "matches": 50,
+        "confirmedMismatches": 0,
+        "provisional": 0,
+        "needsReview": 4,
+        "insufficient": 12,
+        "notComparable": 0,
+        "confirmedRelationships": 3,
+        "userConfirmedRelationships": 0,
+        "proposedRelationships": 0,
+        "conflictingRelationships": 0,
+        "pairChecks": 63,
+        "triangleChecks": 3
+      },
+      "triangleStatus": "performed",
+      "coverage": [
+        {
+          "id": "new-normal-bl",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "new-normal-declaration",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "new-normal-manifest",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": true,
+              "rowCount": 1
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        }
+      ],
+      "rawResponsesArchived": false,
+      "realBusinessDocumentsUsed": false,
+      "passed": true
     }
   ],
-  "latestObservedProductionSha": "bb2b9946992f682fb7fa9e557638ccd8c075efee",
+  "automaticRetries": 0,
+  "priorBudgetsReused": false,
   "rawResponsesArchived": false,
-  "note": "These six paid documents were analyzed on bb2b994; do not claim they verify a later SHA. Further stages share this consumed budget."
+  "realBusinessDocumentsUsed": false,
+  "note": "First six documents on bb2b994 are historical observations; metrics for the final SHA are separate. Unreadable OCR, low-quality OCR and real business forms are not claimed verified."
 }
