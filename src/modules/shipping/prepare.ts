@@ -1,11 +1,14 @@
 import { extractPdfText } from "../pdf/extract";
 import { safeError } from "../documents/errors";
-import type { PdfDocument } from "../documents/schema";
+import type { AIUsage, PdfDocument } from "../documents/schema";
 import { createShippingDocument, type ShippingDocument } from "./schema";
 import type { ShippingType } from "./catalog";
 export interface ShippingResult {
+  aiUsage?: AIUsage;
+  aiModel?: string;
   pdf: PdfDocument;
   uploadSlot: ShippingType;
+  originalUploadSlot?: ShippingType;
   document: ShippingDocument | null;
   detectedType: ShippingType | null;
   typeMismatch: boolean | null;
@@ -29,6 +32,7 @@ export async function prepareShippingFile(
     return {
       pdf,
       uploadSlot: slot,
+      originalUploadSlot: slot,
       document: createShippingDocument(pdf, slot),
       detectedType: null,
       typeMismatch: null,
@@ -38,6 +42,7 @@ export async function prepareShippingFile(
     return {
       pdf,
       uploadSlot: slot,
+      originalUploadSlot: slot,
       document: null,
       detectedType: null,
       typeMismatch: null,

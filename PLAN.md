@@ -1,8 +1,8 @@
-# 현재 방향 — PHASE 3.0
+# 현재 방향 — PHASE 3.1
 
 OceanRisk AI는 중소 포워더의 **House B/L·수출신고필증·House 적하목록 신고 전 정합성 검토**로 전환한다. 아래 PHASE 0~2.3 계획과 실행 결과는 당시 이력이며 현재 제공 기능을 뜻하지 않는다.
 
-## PHASE 3.0 구현 범위
+## PHASE 3.0 완료 기반
 
 - 최신 main/HEAD/변경 확인, 기존 PDF·OpenAI·근거·규칙·UI/테스트 재사용 범위 조사.
 - 새 3종 업로드 UI, 최소 2종 자료 준비, 3종 삼각대조 자료 준비 상태.
@@ -10,6 +10,10 @@ OceanRisk AI는 중소 포워더의 **House B/L·수출신고필증·House 적�
 - 실제 PDF 텍스트·위치 추출/원문 보기/사용자 입력. 새 분류·AI 추출·양자/삼각대조는 안전하게 비활성화. 공개 Invoice/PL 경로 종료, 기존 핵심 모듈은 내부 회귀로 보존.
 - 유료 OpenAI 호출 **0회**. 설치/타입/린트/전체 단위/전체 브라우저/build/worker/보안/모바일·데스크톱 검사.
 - ship 전체 검사 후 main 일반 Commit/Push, Actions quality/production, Vercel Git 자동 배포 및 동일 SHA/공식 새 UI 확인.
+
+## PHASE 3.1 구현 상태
+
+3종 전용 strict 추출·실제 제목 분류·블록 복원·독립 의미/행/열/단위 검증과 다중 결과·수정/복원·불일치 UI를 구현했다. 기존 공통 OpenAI transport/최종 JSON 파서·PDF/보안·원문 UI·과거 회귀는 유지한다. 무료 회귀/Production build/worker·main ship·Actions/동일 Production SHA를 확인해 결과를 PROGRESS에 기록한다. 유료 호출은 새 승인 전 미실행이다. 사전예약 예산은 합성3문서/한 배치/최대$0.05/자동재시도0이며 이전 예산과 분리한다.
 
 ## PHASE 3.1 상세 작업
 

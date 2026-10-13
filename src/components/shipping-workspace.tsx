@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { shippingValues } from "@/modules/shipping/fields";
 import { useEffect, useRef, useState } from "react";
 import {
   Anchor,
@@ -11,30 +12,21 @@ import {
   ChevronRight,
   LoaderCircle,
   Info,
-  RotateCcw,
   ScanText,
 } from "lucide-react";
 import { UploadSlotCard } from "./upload-slot";
-import { EditableField } from "./editable-field";
+import { ShippingFields } from "./shipping-fields";
 import { EvidenceDialog } from "./evidence-dialog";
 import {
   shippingTypes,
   shippingLabels,
-  shippingFields,
-  shippingFieldLabels,
-  numericShippingFields,
   type ShippingType,
-  type ShippingFieldKey,
 } from "@/modules/shipping/catalog";
 import { validateUploads } from "@/modules/upload/validate";
 import { safeError } from "@/modules/documents/errors";
 import { summarizeShipping } from "@/modules/shipping/summary";
 import type { ShippingResult } from "@/modules/shipping/prepare";
 import { shippingDocumentSchema } from "@/modules/shipping/schema";
-import {
-  editShippingField,
-  restoreShippingField,
-} from "@/modules/shipping/edit";
 import type { GroundedField, PdfPage } from "@/modules/documents/schema";
 const emptySlots = () =>
   ({
@@ -50,6 +42,7 @@ type Selection = {
 };
 export function ShippingWorkspace() {
   const [slots, setSlots] = useState(emptySlots);
+  const [analysisMode, setAnalysisMode] = useState(true);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState<string | null>(null),
     [consent, setConsent] = useState(false);
@@ -116,6 +109,7 @@ export function ShippingWorkspace() {
       const form = new FormData();
       files.forEach((f) => form.append("files", f));
       form.append("slots", JSON.stringify(active));
+      form.append("operation", analysisMode ? "analyze" : "prepare");
       const response = await fetch("/api/analyze", {
         method: "POST",
         body: form,
@@ -127,8 +121,7 @@ export function ShippingWorkspace() {
           data.error?.message ?? "자료 준비 요청을 처리하지 못했습니다.",
         );
       if (
-        data.mode !== "pdf-preparation" ||
-        data.aiCalled !== false ||
+        !["pdf-preparation", "shipping-analysis"].includes(data.mode) ||
         !Array.isArray(data.results) ||
         data.results.length !== files.length
       )
@@ -156,49 +149,34 @@ export function ShippingWorkspace() {
       if (token === run.current) setBusy(false);
     }
   }
-  function edit(
-    id: string,
-    key: ShippingFieldKey,
-    value: string | number | null,
-  ) {
+  function fixSlot(id: string, target: ShippingType) {
+    const old = results.find((r) => r.pdf.id === id)?.uploadSlot;
+    if (!old || old === target) return;
+    setSlots((current) => ({
+      ...current,
+      [old]: current[target],
+      [target]: current[old],
+    }));
     setResults((current) =>
-      current.map((r) =>
-        r.pdf.id === id && r.document
-          ? {
-              ...r,
-              document: {
-                ...r.document,
-                fields: {
-                  ...r.document.fields,
-                  [key]: editShippingField(r.document.fields[key], value),
-                },
-              },
-            }
-          : r,
-      ),
+      current.map((r) => {
+        const slot =
+          r.pdf.id === id
+            ? target
+            : r.uploadSlot === target
+              ? old
+              : r.uploadSlot;
+        return {
+          ...r,
+          originalUploadSlot: r.originalUploadSlot ?? r.uploadSlot,
+          uploadSlot: slot,
+          document: r.document ? { ...r.document, uploadType: slot } : null,
+          typeMismatch:
+            r.document?.classificationStatus === "classified"
+              ? r.detectedType !== slot
+              : null,
+        };
+      }),
     );
-    setSelection(null);
-  }
-  function restore(id: string) {
-    setResults((current) =>
-      current.map((r) =>
-        r.pdf.id === id && r.document
-          ? {
-              ...r,
-              document: {
-                ...r.document,
-                fields: Object.fromEntries(
-                  Object.entries(r.document.fields).map(([key, f]) => [
-                    key,
-                    restoreShippingField(f),
-                  ]),
-                ),
-              },
-            }
-          : r,
-      ),
-    );
-    setSelection(null);
   }
   const pending = (
     <div
@@ -207,10 +185,11 @@ export function ShippingWorkspace() {
     >
       <Info size={17} className="mt-1 shrink-0" />
       <p>
-        <strong>현재는 PDF 자료 준비 단계입니다.</strong>
+        <strong>문서 분석과 서류 간 대조는 별도 단계입니다.</strong>
         <br />
-        AI 문서 분류·필드 추출·삼각대조는 아직 실행하지 않습니다. 원문 확인과
-        사용자 입력만 가능하며, 입력값을 검증된 AI 결과로 표시하지 않습니다.
+        AI는 문서 분류·값·근거 후보를 추출하고, 코드가 실제 원문을 대조합니다.
+        삼각대조는 아직 실행하지 않습니다. 사용자 수정값은 원문 검증 완료로
+        표시하지 않습니다.
       </p>
     </div>
   );
@@ -227,7 +206,7 @@ export function ShippingWorkspace() {
           OceanRisk <span className="text-blue-600">AI</span>
         </Link>
         <span className="rounded-full bg-blue-50 px-3 py-1.5 text-[11px] font-semibold text-blue-700">
-          신고 전 자료 검토 · PDF 준비
+          신고 전 문서 분석
         </span>
       </header>
       <div className="mx-auto flex max-w-[1600px]">
@@ -248,7 +227,7 @@ export function ShippingWorkspace() {
             className={`mt-2 flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold ${tab === "results" ? "bg-blue-50 text-blue-700" : "text-slate-500 disabled:text-slate-300"}`}
           >
             <FileCheck2 size={18} />
-            자료 준비 결과
+            문서 검토 결과
           </button>
           <div className="mt-auto rounded-xl border border-slate-100 bg-slate-50 p-4">
             <ShieldCheck size={20} className="text-blue-600" />
@@ -268,7 +247,7 @@ export function ShippingWorkspace() {
             워크스페이스
             <ChevronRight size={12} />
             <span className="text-slate-600">
-              {tab === "upload" ? "서류 업로드" : "자료 준비 결과"}
+              {tab === "upload" ? "서류 업로드" : "문서 검토 결과"}
             </span>
           </div>
           <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
@@ -297,7 +276,7 @@ export function ShippingWorkspace() {
                 onClick={() => setTab("results")}
                 className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs disabled:opacity-40"
               >
-                자료 준비 결과
+                문서 검토 결과
               </button>
             </div>
           </div>
@@ -350,7 +329,7 @@ export function ShippingWorkspace() {
                   <h2 className="text-sm font-bold">검토할 선적서류 업로드</h2>
                   <p className="mt-2 text-xs leading-6 text-slate-500">
                     서류 종류는 사용자가 선택한 영역입니다. AI 판독 유형은 아직
-                    확인하지 않았습니다.
+                    분석 후 원문 제목과 독립적으로 확인합니다.
                   </p>
                 </div>
                 <div
@@ -375,11 +354,34 @@ export function ShippingWorkspace() {
                   최소 2종 · 화면에서 최대 3개 · 파일당 4 MB / 30페이지 · 모든
                   파일 합계 4 MB 이내
                 </p>
+                <fieldset className="mt-5 flex flex-wrap gap-4 text-xs">
+                  <legend className="mb-3 font-semibold">처리 방식</legend>
+                  <label>
+                    <input
+                      type="radio"
+                      name="processing"
+                      checked={analysisMode}
+                      disabled={busy}
+                      onChange={() => setAnalysisMode(true)}
+                    />{" "}
+                    AI 문서 분석
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="processing"
+                      checked={!analysisMode}
+                      disabled={busy}
+                      onChange={() => setAnalysisMode(false)}
+                    />{" "}
+                    PDF 원문만 확인
+                  </label>
+                </fieldset>
                 <div className="mt-5 rounded-xl bg-slate-50 p-4 text-xs leading-6 text-slate-600">
                   <p>
                     기업 내부 자료의 사용·처리 및 외부 전송 권한을 확인해
-                    주세요. 후속 AI 분석에서는 추출 텍스트·위치 정보가 외부
-                    OpenAI API로 전송됩니다. 현재 PDF 준비 단계에서는 OpenAI로
+                    주세요. AI 분석에서는 추출 텍스트·위치 정보가 외부 OpenAI
+                    API로 전송됩니다. PDF 원문만 확인을 선택하면 OpenAI로
                     전송하지 않습니다.
                   </p>
                   <label className="mt-3 flex items-start gap-2">
@@ -410,11 +412,13 @@ export function ShippingWorkspace() {
                     {busy ? (
                       <>
                         <LoaderCircle className="animate-spin" size={16} />
-                        PDF 원문을 확인하는 중
+                        {analysisMode
+                          ? "PDF 원문·AI 응답을 확인하는 중"
+                          : "PDF 원문을 확인하는 중"}
                       </>
                     ) : (
                       <>
-                        비교 자료 준비
+                        {analysisMode ? "서류 분석 시작" : "비교 자료 준비"}
                         <ArrowRight size={16} />
                       </>
                     )}
@@ -422,8 +426,9 @@ export function ShippingWorkspace() {
                 </div>
                 {busy && (
                   <p role="status" className="mt-4 text-xs text-blue-700">
-                    파일 형식과 페이지별 텍스트·위치 블록을 읽고 있습니다. AI
-                    추출·수량 대조는 실행하지 않습니다.
+                    PDF를 읽고 있습니다. AI 분석 선택 시 GPT-6 Luna 응답을
+                    기다린 뒤 원문 근거를 대조합니다. 서류 간 삼각대조는
+                    실행하지 않습니다.
                   </p>
                 )}
               </section>
@@ -431,7 +436,7 @@ export function ShippingWorkspace() {
                 {[
                   "자료 선택",
                   "PDF 원문 확인",
-                  "필드 추출·삼각대조 준비 중",
+                  "AI 추출·근거 검증 (삼각대조 미실시)",
                 ].map((label, i) => (
                   <div
                     key={label}
@@ -450,10 +455,17 @@ export function ShippingWorkspace() {
               <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-lg font-bold">
                   {summary.failedDocuments === results.length
-                    ? "자료 준비 실패"
-                    : summary.failedDocuments
-                      ? "자료 준비 일부 완료"
-                      : "PDF 자료 준비 완료"}
+                    ? analysisMode
+                      ? "문서 분석 실패"
+                      : "자료 준비 실패"
+                    : summary.failedDocuments ||
+                        (analysisMode && summary.partialDocuments)
+                      ? analysisMode
+                        ? "문서 분석 일부 성공 · 확인 필요"
+                        : "자료 준비 일부 완료"
+                      : analysisMode
+                        ? "문서별 분석 완료 · 삼각대조 미실시"
+                        : "PDF 자료 준비 완료"}
                 </h2>
                 <button
                   onClick={reset}
@@ -464,9 +476,13 @@ export function ShippingWorkspace() {
               </div>
               <div className="mb-5 grid gap-3 sm:grid-cols-3">
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <p className="text-xs text-slate-500">원문 확인 가능 문서</p>
+                  <p className="text-xs text-slate-500">PDF 원문 준비 문서</p>
                   <p className="mt-2 text-2xl font-semibold">
-                    {summary.successfulDocuments}
+                    {results.filter((r) => r.pdf.pages.length > 0).length}
+                  </p>
+                  <p className="mt-2 text-xs text-slate-500">
+                    AI 분석 {summary.analyzedDocuments} · 부분{" "}
+                    {summary.partialDocuments} · 실패 {summary.failedDocuments}
                   </p>
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
@@ -480,7 +496,7 @@ export function ShippingWorkspace() {
                   </p>
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <p className="text-xs text-slate-500">정합성 검증</p>
+                  <p className="text-xs text-slate-500">서류 간 삼각대조</p>
                   <p className="mt-3 text-sm font-semibold">분석 미실시</p>
                 </div>
               </div>
@@ -489,6 +505,7 @@ export function ShippingWorkspace() {
                 {results.map((result) => (
                   <section
                     key={result.pdf.id}
+                    data-testid="shipping-document"
                     className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 md:p-6"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -497,12 +514,40 @@ export function ShippingWorkspace() {
                           {result.pdf.fileName}
                         </h3>
                         <p className="mt-2 text-[11px] text-slate-500">
-                          선택 영역: {shippingLabels[result.uploadSlot].title} ·
-                          실제 분류 미실시 · {result.pdf.pages.length}페이지
+                          선택 영역: {shippingLabels[result.uploadSlot].title} ·{" "}
+                          {result.detectedType
+                            ? `AI 분류: ${shippingLabels[result.detectedType].title}`
+                            : result.document?.classificationStatus ===
+                                "needs_review"
+                              ? "AI 분류 미확인"
+                              : "실제 분류 미실시"}{" "}
+                          ·{" "}
+                          {result.document?.classificationStatus ===
+                          "needs_review"
+                            ? "분류 불확실 · "
+                            : ""}
+                          {result.pdf.pages.length}페이지
+                          {result.originalUploadSlot &&
+                            result.originalUploadSlot !== result.uploadSlot &&
+                            ` · 최초 선택: ${shippingLabels[result.originalUploadSlot].title}`}
                         </p>
                       </div>
                       <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] text-slate-600">
-                        {result.error ? "PDF 판독 실패" : "PDF 원문 준비 완료"}
+                        {result.error
+                          ? result.pdf.pages.length
+                            ? "AI 분석 실패 · PDF 보존"
+                            : "PDF 판독 실패"
+                          : result.document?.extractionStatus ===
+                              "not_performed"
+                            ? "PDF 원문 준비 완료"
+                            : result.document &&
+                                shippingValues(result.document).some(
+                                  (f) => f.current.status === "user_edited",
+                                )
+                              ? "사용자 수정 · 원문 근거 상태 유지"
+                              : result.document?.extractionStatus === "partial"
+                                ? "분석 일부 성공 · 근거 확인 필요"
+                                : "문서 분석·원문 근거 검증 완료"}
                       </span>
                     </div>
                     {result.error && (
@@ -514,42 +559,57 @@ export function ShippingWorkspace() {
                         <p>오류 코드: {result.error.code}</p>
                       </div>
                     )}
-                    {result.document && (
-                      <details className="mt-5 rounded-xl border border-slate-200 p-4">
-                        <summary className="cursor-pointer text-xs font-semibold">
-                          문서별 필드 확인·사용자 입력 (AI 추출 미실시)
-                        </summary>
-                        <p className="mt-3 text-xs leading-6 text-slate-500">
-                          아직 추출된 AI 값이 없습니다. 입력값은 사용자 수정으로
-                          구분하며, 원문 검증 성공이나 불일치 판정으로 사용하지
-                          않습니다.
-                        </p>
-                        <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                          {shippingFields[result.uploadSlot].map((key) => (
-                            <EditableField
-                              missingLabel="AI 미추출"
-                              key={key}
-                              label={`${shippingLabels[result.uploadSlot].title} · ${shippingFieldLabels[key]}`}
-                              field={result.document!.fields[key].current}
-                              numeric={numericShippingFields.has(key)}
-                              onChange={(v) => edit(result.pdf.id, key, v)}
-                              onEvidence={() =>
-                                setSelection({
-                                  field: result.document!.fields[key].current,
-                                  label: shippingFieldLabels[key],
-                                })
-                              }
-                            />
-                          ))}
-                        </div>
+                    {result.typeMismatch && (
+                      <div
+                        role="alert"
+                        className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs leading-6 text-amber-900"
+                      >
+                        문서 유형 불일치: 선택 영역과 원문에서 확인된 AI 분류가
+                        다릅니다. 실제 분류의 필드를 표시했습니다. 파일을
+                        교체하거나 영역을 수정해 주세요.
                         <button
-                          onClick={() => restore(result.pdf.id)}
-                          className="mt-5 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs"
+                          className="ml-2 underline"
+                          onClick={() =>
+                            fixSlot(result.pdf.id, result.detectedType!)
+                          }
                         >
-                          <RotateCcw size={12} />
-                          사용자 입력 초기화
+                          분류된 유형으로 영역 변경 (기존 파일과 교환)
                         </button>
-                      </details>
+                      </div>
+                    )}
+                    {result.document?.classificationStatus ===
+                      "needs_review" && (
+                      <p
+                        role="status"
+                        className="mt-4 rounded-lg bg-amber-50 p-3 text-xs text-amber-900"
+                      >
+                        분류 불확실: 원문 제목 근거가 충분하지 않습니다. 선택
+                        영역을 실제 유형으로 간주하지 않았습니다.
+                      </p>
+                    )}
+                    {result.document && (
+                      <ShippingFields
+                        document={result.document}
+                        onUpdate={(doc) => {
+                          setResults((current) =>
+                            current.map((r) =>
+                              r.pdf.id === result.pdf.id
+                                ? { ...r, document: doc }
+                                : r,
+                            ),
+                          );
+                          setSelection(null);
+                        }}
+                        onEvidence={(field, label) =>
+                          setSelection({
+                            field,
+                            label,
+                            page: result.pdf.pages.find(
+                              (p) => p.page === field.source?.page,
+                            ),
+                          })
+                        }
+                      />
                     )}
                     {!!result.pdf.pages.length && (
                       <details className="mt-5 rounded-xl border border-slate-200 p-4">

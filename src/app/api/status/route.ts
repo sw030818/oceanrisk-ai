@@ -3,8 +3,8 @@ export const dynamic = "force-dynamic";
 export function GET() {
   return NextResponse.json(
     {
-      phase: "3.0",
-      capabilities: {pdfPreparation:true, documentClassification:false, aiExtraction:false, triangularComparison:false},
+      phase: "3.1",
+      capabilities: {pdfPreparation:true, documentClassification:true, aiExtraction:true, triangularComparison:false},
       aiConfigured: Boolean(process.env.OPENAI_API_KEY),
       provider: "openai",
       model: /^[a-zA-Z0-9._-]{1,80}$/.test(

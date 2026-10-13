@@ -9,6 +9,7 @@ test("shipping workspace validates formats, has three slots and fits mobile", as
   page,
 }) => {
   await page.goto("/");
+  await page.getByRole("radio", { name: "PDF 원문만 확인" }).check();
   await expect(
     page.getByRole("heading", { name: "적하목록 신고 전, 원문부터 정확하게." }),
   ).toBeVisible();

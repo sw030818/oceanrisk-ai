@@ -1,19 +1,19 @@
 import { test, expect } from "@playwright/test";
 import { choose, start } from "../fixtures/shipping-ui";
-test("external OpenAI disclosure and current no-transmission state are explicit, without an access code", async ({
+test("external OpenAI disclosure and explicit free PDF-only mode are explicit, without an access code", async ({
   page,
 }) => {
   await page.goto("/");
   await expect(
     page.getByText(
-      /후속 AI 분석에서는 추출 텍스트·위치 정보가 외부 OpenAI API로 전송/,
+      /AI 분석에서는 추출 텍스트·위치 정보가 외부 OpenAI API로 전송/,
     ),
   ).toBeVisible();
   await expect(page.getByRole("status")).toContainText(
-    "아직 실행하지 않습니다",
+    "삼각대조는 아직 실행하지 않습니다",
   );
   await expect(
-    page.getByText(/현재 PDF 준비 단계에서는 OpenAI로 전송하지 않습니다/),
+    page.getByText(/PDF 원문만 확인을 선택하면 OpenAI로 전송하지 않습니다/),
   ).toBeVisible();
   await expect(page.getByLabel(/접근 코드/)).toHaveCount(0);
   await expect(page.getByText(/Google Gemini로 전송/)).toHaveCount(0);

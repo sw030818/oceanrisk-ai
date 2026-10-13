@@ -141,11 +141,11 @@ export function evidenceBlocks(
 }
 const right = (b: PdfBlock) => b.x + b.width;
 const sameRow = (a: PdfBlock, b: PdfBlock) => a.row === b.row;
-const headersAt = (page: PdfPage, row: number) =>
+const headersAt = (page: PdfPage, row: number, classify: (text:string)=>string|null = labelRole) =>
   (page.blocks ?? [])
-    .filter((b) => b.row === row && labelRole(b.text))
+    .filter((b) => b.row === row && classify(b.text))
     .sort((a, b) => a.x - b.x);
-function columnContains(
+export function columnContains(
   header: PdfBlock,
   value: PdfBlock,
   headers: PdfBlock[],
@@ -183,6 +183,7 @@ export function labelForValue(
   page: PdfPage,
   selected: PdfBlock[],
   value: string | number,
+  classify: (text:string)=>string|null = labelRole,
 ): string | null {
   const target =
     selected.find((b) =>
@@ -190,13 +191,13 @@ export function labelForValue(
         ? numericTokens(b.text).includes(value)
         : norm(b.text) === norm(String(value)) ||
           (b.text.includes(":") &&
-            !!labelRole(b.text.slice(0, b.text.indexOf(":"))) &&
+            !!classify(b.text.slice(0, b.text.indexOf(":"))) &&
             norm(b.text.slice(b.text.indexOf(":") + 1)) === norm(String(value))),
     ) ??
     (typeof value === "string" &&
     norm(selected.map((b) => b.text).join(" ")).includes(norm(value))
       ? selected.find(
-          (b) => !labelRole(b.text) && norm(value).startsWith(norm(b.text)),
+          (b) => !classify(b.text) && norm(value).startsWith(norm(b.text)),
         )
       : undefined);
   if (!target) return null;
@@ -204,14 +205,14 @@ export function labelForValue(
   const colon = target.text.indexOf(":");
   if (
     colon >= 0 &&
-    labelRole(target.text.slice(0, colon)) &&
+    classify(target.text.slice(0, colon)) &&
     (typeof value === "number"
       ? numericTokens(target.text.slice(colon + 1)).length === 1 &&
         numericTokens(target.text.slice(colon + 1))[0] === value
       : norm(target.text.slice(colon + 1)) === norm(String(value)))
   )
-    return labelRole(target.text.slice(0, colon));
-  const labels = (page.blocks ?? []).filter((b) => labelRole(b.text));
+    return classify(target.text.slice(0, colon));
+  const labels = (page.blocks ?? []).filter((b) => classify(b.text));
   const inline = labels.filter(
     (h) => sameRow(h, target) && right(h) <= target.x + h.height * 0.25,
   );
@@ -228,27 +229,27 @@ export function labelForValue(
         right(b) <= target.x,
     )
   )
-    return labelRole(nearest.text);
+    return classify(nearest.text);
   const above = labels
     .filter(
       (h) =>
         h.row < target.row &&
         target.y - h.y <= Math.max(h.height, target.height) * 5 &&
-        columnContains(h, target, headersAt(page, h.row)),
+        columnContains(h, target, headersAt(page, h.row, classify)),
     )
     .sort((a, b) => b.y - a.y);
   const header = above[0];
   if (!header) return null;
-  const peers = headersAt(page, header.row);
+  const peers = headersAt(page, header.row, classify);
   // The first value row beneath this label must contain the selected value.
   const between = (page.blocks ?? []).filter(
     (b) =>
       b.row > header.row &&
       b.row < target.row &&
       columnContains(header, b, peers) &&
-      !labelRole(b.text),
+      !classify(b.text),
   );
-  return between.length === 0 ? labelRole(header.text) : null;
+  return between.length === 0 ? classify(header.text) : null;
 }
 export interface TableLink {
   tableId: string;

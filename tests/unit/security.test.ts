@@ -164,8 +164,8 @@ describe("public analysis retains request safety without local auth or quotas", 
     const response = GET();
     const body = await response.json();
     expect(body).toEqual({
-      phase: "3.0",
-      capabilities: {pdfPreparation:true, documentClassification:false, aiExtraction:false, triangularComparison:false},
+      phase: "3.1",
+      capabilities: {pdfPreparation:true, documentClassification:true, aiExtraction:true, triangularComparison:false},
       provider: "openai",
       model: "gpt-6-luna",
       aiConfigured: true,

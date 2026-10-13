@@ -13,15 +13,26 @@ seller/exporter and buyer/consignee are distinct roles; use the actual correspon
 Product quantity means pieces/items in that product's row, NOT CTNS/cartons/packages/container counts. Cite only the actual product quantity cell, not the carton cell or all rows. The independent verifier connects its QTY header. Cite the same row's unit separately (or its quantity-with-unit block); retain PCS/EA as printed. A row may have both PCS and CTNS; choose product quantity, not packaging. Do not sum, convert, calculate or infer numbers. Include each genuine product item once, exclude package totals. Numeric values are JSON numbers, not formatted strings. Preserve amounts, weights, currency only when actually present.
 Map references by actual labels: shipmentReference only Shipment No/Ref; bookingReference only Booking No/Ref. A packing-list documentNumber is its OWN PL number, never an invoice or PO reference. Generic Reference without a clear role stays without evidence. sku is the explicit SKU/Item Code of that row; do not create a code from its description. unitPrice, packageQuantity and packageUnit are separate actual labelled row cells. Do not confuse product totals, carton totals and weight totals with individual item rows. Extract subtotalAmount, discountAmount, freightAmount, taxAmount, totalNetWeight, totalGrossWeight, totalWeightUnit, totalPackages, packageUnit, totalQuantity and totalQuantityUnit only from explicit corresponding totals/labels; missing fields remain null. Full shipment is never inferred from matching quantities.\npartialShipment:"no" requires explicit full/complete shipment or no-partial wording; "yes" requires explicit partial shipment; otherwise "unknown". Classify invoice, packing_list or unknown by document content, not filename or selected upload slot.`;
 
-export function openAIRequest(pdf: PdfDocument, model: string) {
+export interface StructuredExtraction<T> {
+  instructions: string;
+  name: string;
+  schema: () => object;
+  resolve: (raw: unknown, pdf: PdfDocument) => T;
+  maxOutputTokens?: number;
+}
+export function structuredOpenAIRequest<T>(
+  pdf: PdfDocument,
+  model: string,
+  format: StructuredExtraction<T>,
+) {
   return {
     model,
     store: false,
     service_tier: "default",
     reasoning: { effort: "none" },
-    max_output_tokens: OPENAI_MAX_OUTPUT_TOKENS,
+    max_output_tokens: format.maxOutputTokens ?? OPENAI_MAX_OUTPUT_TOKENS,
     input: [
-      { role: "developer", content: OPENAI_EXTRACTION_INSTRUCTIONS },
+      { role: "developer", content: format.instructions },
       {
         role: "user",
         content: JSON.stringify({ untrustedDocument: { pages: pdf.pages } }),
@@ -30,12 +41,21 @@ export function openAIRequest(pdf: PdfDocument, model: string) {
     text: {
       format: {
         type: "json_schema",
-        name: "maritime_trade_document",
+        name: format.name,
         strict: true,
-        schema: openAIResponseSchema(),
+        schema: format.schema(),
       },
     },
   };
+}
+const legacyFormat: StructuredExtraction<ExtractedDocument> = {
+  instructions: OPENAI_EXTRACTION_INSTRUCTIONS,
+  name: "maritime_trade_document",
+  schema: openAIResponseSchema,
+  resolve: resolveOpenAICitations,
+};
+export function openAIRequest(pdf: PdfDocument, model: string) {
+  return structuredOpenAIRequest(pdf, model, legacyFormat);
 }
 function outputError(
   issue:
@@ -54,17 +74,25 @@ function outputError(
     outputIssue: issue,
   };
 }
-export async function extractWithOpenAI(
+export type OpenAIOptions = {
+  apiKey?: string;
+  model?: string;
+  fetcher?: typeof fetch;
+  signal?: AbortSignal;
+  onModelUsed?: (model: string) => void;
+  onUsage?: (usage: AIUsage) => void;
+};
+export function extractWithOpenAI(
   pdf: PdfDocument,
-  options: {
-    apiKey?: string;
-    model?: string;
-    fetcher?: typeof fetch;
-    signal?: AbortSignal;
-    onModelUsed?: (model: string) => void;
-    onUsage?: (usage: AIUsage) => void;
-  } = {},
+  options: OpenAIOptions = {},
 ): Promise<ExtractedDocument> {
+  return extractStructuredWithOpenAI(pdf, legacyFormat, options);
+}
+export async function extractStructuredWithOpenAI<T>(
+  pdf: PdfDocument,
+  format: StructuredExtraction<T>,
+  options: OpenAIOptions = {},
+): Promise<T> {
   const apiKey = options.apiKey ?? process.env.OPENAI_API_KEY;
   if (!apiKey)
     throw new AnalysisError(
@@ -93,7 +121,7 @@ export async function extractWithOpenAI(
   try {
     let response: Response;
     try {
-      const request = openAIRequest(pdf, model);
+      const request = structuredOpenAIRequest(pdf, model, format);
       const body: Record<string, unknown> = { ...request };
       if (model !== "gpt-6-luna") delete body.reasoning;
       response = await (options.fetcher ?? fetch)(
@@ -322,7 +350,7 @@ export async function extractWithOpenAI(
       );
     }
     try {
-      return resolveOpenAICitations(raw, pdf);
+      return format.resolve(raw, pdf);
     } catch {
       throw new AnalysisError(
         "INVALID_AI_RESPONSE",

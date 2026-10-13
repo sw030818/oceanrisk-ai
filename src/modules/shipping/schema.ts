@@ -5,6 +5,7 @@ import {
   shippingFields,
   numericShippingFields,
   type ShippingFieldKey,
+  shippingFieldLabels,
   type ShippingType,
 } from "./catalog";
 import type { PdfDocument } from "../documents/schema";
@@ -122,6 +123,9 @@ export const shipmentItemSchema = z.object({
   fields: textFields([
     "goodsDescription",
     "hsCode",
+    "tradeDescription",
+    "netWeight",
+    "netWeightUnit",
     "quantity",
     "quantityUnit",
     "packageCount",
@@ -136,6 +140,7 @@ export const containerSchema = z.object({
   id: z.string().min(1),
   containerNumber: semanticField("containerNumber"),
   sealNumber: semanticField("sealNumber"),
+  sealNumbers: z.array(semanticField("sealNumber")).max(30).optional(),
   packageCount: semanticField("packageCount"),
   packageUnit: semanticField("packageUnit"),
   grossWeight: semanticField("grossWeight"),
@@ -174,31 +179,42 @@ const common = {
   items: z.array(shipmentItemSchema).max(100),
   containers: z.array(containerSchema).max(100),
   references: z.array(shipmentReferenceSchema).max(100),
+  informationWarnings: z.array(z.string().max(200)).max(100).default([]),
   extractionStatus: z.enum(["not_performed", "partial", "complete"]),
 };
-export const shippingDocumentSchema = z.discriminatedUnion("uploadType", [
-  z
-    .object({
-      ...common,
-      uploadType: z.literal("house_bl"),
-      fields: textFields(shippingFields.house_bl),
-    })
-    .strict(),
-  z
-    .object({
-      ...common,
-      uploadType: z.literal("export_declaration"),
-      fields: textFields(shippingFields.export_declaration),
-    })
-    .strict(),
-  z
-    .object({
-      ...common,
-      uploadType: z.literal("house_manifest"),
-      fields: textFields(shippingFields.house_manifest),
-    })
-    .strict(),
-]);
+export const shippingDocumentSchema = z
+  .object({
+    ...common,
+    uploadType: shippingTypeSchema,
+    fieldType: shippingTypeSchema.nullable().optional(),
+    classification: shippingFieldSchema.optional(),
+    cargoRecords: z
+      .array(
+        z.object({
+          id: z.string().min(1),
+          fields: textFields([
+            ...shippingFields.house_manifest,
+            "containerNumber",
+            "sealNumber",
+          ]),
+        }),
+      )
+      .max(100)
+      .default([]),
+  })
+  .strict()
+  .superRefine((doc, ctx) => {
+    const type = doc.fieldType === undefined ? doc.uploadType : doc.fieldType;
+    const allowed = type
+      ? shippingFields[type]
+      : Object.keys(shippingFieldLabels);
+    const parsed = textFields(allowed).safeParse(doc.fields);
+    if (!parsed.success)
+      ctx.addIssue({
+        code: "custom",
+        message: "Fields do not match their classified semantic document type",
+      });
+  });
 export type ShippingDocument = z.infer<typeof shippingDocumentSchema>;
 // Many-to-many, explicit scope links; never assume a BL/declaration is 1:1.
 export const shipmentRelationshipSchema = z.object({
@@ -264,7 +280,7 @@ export function emptyShippingField(): ShippingField {
     value: null,
     status: "missing" as const,
     reason:
-      "AI 필드 추출은 아직 제공하지 않습니다. PDF 원문 확인 또는 사용자 입력이 필요합니다.",
+      "AI가 이 필드를 아직 추출하지 않았습니다. PDF 원문에서 직접 확인할 수 있습니다.",
     verificationCode: "missing_value" as const,
     source: null,
   };

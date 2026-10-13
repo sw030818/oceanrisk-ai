@@ -425,3 +425,18 @@
 - GitHub Actions **38349262468**의 quality·production 모두 success. Vercel Git 상태 **success / Deployment has completed**, 공식 Production의 SHA 일치 및 ID **dpl_3HPxwsvZanaGjzYY1vJFrzc2AV35** 확인. OpenAI 키 설정은 유지됐지만 추출 capability는 false이다. 관리 API Ready 직접 조회를 주장하지 않는다.
 - `check:phase30:ui --sha=a7f0e9899e6c6bee072a7864e1b8beb0d6db71c0` 실제 실행 성공. 공식 HTML/assets·실제 무료 PDF 준비 API에 합성3문서/배치1회를 제출해 원문 준비3개·블록/위치·사용자 수정 구분·1440px 3열·390px 넘침 없음 확인. AI/삼각대조 미실시, **유료 공급자 호출0·재시도0**. 이 검사는 모의 API 재생이 아니라 실제 Production PDF 준비이며, 실제 OpenAI 분석 성공을 뜻하지 않는다.
 - 안전 메타데이터는 `docs/validation/phase30-2026-10-13.json`에 보존한다. 이 결과 보존의 마지막 변경은 PROGRESS/검증 JSON만으로 실행 코드가 같으며, 문서 저장도 동일 ship 검사를 거쳐 Push/자동 배포 후 최종 SHA를 완료 보고한다. 다음 개발은 PHASE 3.1의 새 서류 전용 추출·근거 검증부터 시작하며 이번 단계에서 수행하지 않는다.
+
+## PHASE 3.1 — 선적서류 OpenAI 추출·독립 원문 근거 (2026-10-13 KST)
+
+- 깨끗한 main/원격 `ed9840cb128281806c20c250d13af0fd4dadaa30`에서 기존 모델·API·Responses·PDF·근거·UI·291개 단위/15개 브라우저와 기록을 조사했다. 저장소·Vercel·키·과거 ledger 초기화 없음. 로컬 OPENAI_API_KEY/GEMINI_API_KEY는 설정되지 않았고 값은 출력하지 않았다.
+- 기존 OpenAI transport를 generic strict format으로 확장하고 Invoice/PL 포맷은 그대로 wrapper로 보존했다. `ai/citations` 공통 블록 복원, `shipping/ai-schema`·`openai`·`analysis`·`ground`·`verify`·`roles`·`layout/shipping-cells`를 추가했다. store:false/서버 키/final_answer-only/안전 usage·오류/45초·전체105초를 유지하며 선적 전용 출력 상한8192, 자동 재시도/유료 폴백0이다.
+- House B/L·수출신고필증·House Manifest 실제 제목 근거 분류, 문서별 필드·다중 품목/컨테이너/Seal/화물/신고 참조를 구조화한다. 신고/HS/B/L/컨테이너/Seal은 문자열, 수치와 단위·문서 전체 합계/개별 행을 분리했다. 분류 후보와 사용자 슬롯/최초 슬롯/실제 필드 유형을 독립 보존하고 불일치는 실제 유형의 필드+교체/영역 교환 UI로 안내한다.
+- 실제 페이지·ID에서 인용 복원 후 문자 전체값/숫자·라벨 의미·열·동일 데이터 행·단위를 TypeScript로 독립 검사한다. PCS/CTNS, 순/총중량, 다른 상품·컨테이너·화물행, 개별 행을 문서 총계/단위로 인용, 여러 수치가 합쳐진 블록·중복 원문 행/Seal·허위/누락 근거는 확정하지 않는다. 줄바꿈 품명을 수량/HS 셀이 있는 실제 데이터 행에 연결했으며 특정 회사 좌표 하드코딩은 없다.
+- `/api/analyze`는 명시적 `operation:analyze`에서 새 추출을 실행한다. `prepare`/생략은 기존 무료 PDF 준비 계약이다. 키/권한/할당량 오류는 배치의 후속 AI를 중단하고 PDF는 보존한다. 문서별 완료/부분 성공/실패·중요 정보 누락·근거 상태·원문 페이지/위치·수정/복원을 연결했다. 사용자 수정은 원문 검증 성공과 구분하며 삼각대조는 언제나 not_performed/checks[]이다. 후속 PHASE 3.2 로직을 추가하지 않았다.
+- 검색 가능한 한영 혼합 **실제 2페이지 합성 PDF 3종**과 유형별 정보누락·잘못된 근거·복수Seal 변형을 생성했다. 두 품목/HS선행0/분리수량·단위/두 컨테이너/반복500/순·총중량/Manifest 화물/복수신고 참조를 실제 PDF.js로 추출한다. 공식 세관 진본·업무PDF로 가장하지 않는다.
+- 초기 새41회귀 중 줄바꿈 품명과 연관 HS 검사가 실패했다. 모든 설명 블록을 새 행으로 보던 문제를 실제 수치/HS행 앵커로 수정했다. 타입mock fetch인자/const lint, 브라우저 반복문서 selector·숨겨진 복원버튼 index·실제2페이지문구·로딩상태 문구 문제를 수정했다. 근거검사 삭제·무조건 승인·자동 유료 재시도로 해결하지 않았다.
+- 무료 실행 관측: 전체 단위 **327/327**, 추가 보강 선적39회귀 **39/39**, 전체 개발 서버 Playwright **21/21**(기존15+새6), typecheck/lint/Production build/PDF worker PASS. 마지막 숫자블록·출력예산2회귀를 더한 최종 **332개 단위/21개 브라우저**·npm ci·타입·린트·Production build·worker 전체는 `ship` 재검사를 통과한 경우에만 main에 저장한다. 실제 완료 SHA/Actions/배포는 후속 관측 기록으로 분리한다.
+- 유료 OpenAI 호출 **아직0회**. 이번 사용자 지시9절에 따라 무료 구현/검사를 먼저 완료한 후 새 승인 요청을 한다. 예상 합성3문서(유형별1)/배치1회/최대$0.05/실패재시도0, 이전31개·2개 소진 예산과 별도live-phase31 ledger/archive. 실제 요청 bytes와8192출력 상한을 사전예약한 3문서 보수적상한 **$0.0335478**를 확인했다. 실제 호출 전 exact ProductionSHA/model/key presence와 새 승인·예산을 확인하고 usage미확인 비용은 예약 유지한다. 모의 통과를 실제 OpenAI 정확도로 합산하지 않는다.
+- 무료 Production 도구 `check:phase31:ui`는 exactSHA+3.1 capability 뒤 공식HTML/assets에서 prepare만 실제 전송하도록 방어한다. 모바일/데스크톱·원문 블록·사용자수정, 잘못된PDF analyze의 공급자 호출 전 실패를 확인하며 유료호출0이어야 통과한다. 문서/APIraw응답/키를 보고서에 저장하지 않는다.
+- 기록: README/PLAN/AGENTS 및 `docs/validation/phase31-2026-10-13.json`. 기존 유료 archives/실행 기록은 보존했다. main 일반Push·GitHub quality/production·Vercel Git 완료·같은ProductionSHA를 확인하고 추가 관측을 기록한다. 미실행 실제유료·관리APIReady 직접조회·실무전체정확도는 완료로 표시하지 않는다.
+- 남은 범위: 복잡한 병합/회전 표·스캔OCR·모호한 제목/라벨의 근거확인 한계, 실제 업무양식 일반정확도와 유료실증(새 승인 전 미실행). PHASE3.2 다대다 대응·양자/삼각대조·분할선적/동시포장·위험 판정, CSV/EDI·세관자동신고·실시간/온프레미스는 미구현.

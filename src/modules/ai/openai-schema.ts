@@ -1,3 +1,4 @@
+import { resolveCitation } from "./citations";
 import { z } from "zod";
 import { extractedDocumentSchema, type PdfDocument } from "../documents/schema";
 
@@ -72,45 +73,8 @@ export function openAIResponseSchema() {
 }
 export function resolveOpenAICitations(raw: unknown, pdf: PdfDocument) {
   const wire = openAIWireSchema.parse(raw);
-  const field = (candidate: {
-    value: string | number | null;
-    evidence: z.infer<typeof evidence>;
-  }) => {
-    const source = candidate.evidence;
-    const page = source && pdf.pages.find((p) => p.page === source.page);
-    const blocks = source?.blockIds.map((id) =>
-      page?.blocks?.find((b) => b.id === id),
-    );
-    // Missing/duplicated IDs or an overlong quote retain the value as UNVERIFIED.
-    // Never search another page, fill missing values, or trust an AI-supplied quote.
-    if (
-      !source ||
-      !blocks?.length ||
-      blocks.some((b) => !b) ||
-      new Set(source.blockIds).size !== blocks.length
-    )
-      return {
-        value: candidate.value,
-        evidence: null,
-        evidenceIssue: !source
-          ? undefined
-          : !page
-            ? "page_missing"
-            : blocks?.some((b) => !b)
-              ? "block_missing"
-              : "duplicate_block",
-      };
-    const segments = blocks.map((b) => ({ blockId: b!.id, quote: b!.text }));
-    const quote = segments.map((s) => s.quote).join("\n");
-    return {
-      value: candidate.value,
-      evidence:
-        quote.length && quote.length <= 800
-          ? { page: source.page, quote, segments }
-          : null,
-      ...(quote.length > 800 ? { evidenceIssue: "citation_too_long" } : {}),
-    };
-  };
+  const field = (candidate: Parameters<typeof resolveCitation>[0]) =>
+    resolveCitation(candidate, pdf);
   const { items, ...root } = wire;
   return extractedDocumentSchema.parse({
     ...root,

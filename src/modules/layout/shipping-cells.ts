@@ -1,0 +1,148 @@
+import type { PdfPage, PdfBlock } from "../documents/schema";
+import { columnContains, type TableLink } from "./relations";
+import { shippingRole } from "../shipping/roles";
+export type EntityScope = "document" | "item" | "container" | "cargo";
+const tableAnchor: Record<Exclude<EntityScope, "document">, string[]> = {
+  item: ["goodsDescription", "tradeDescription"],
+  container: ["containerNumber"],
+  cargo: ["houseBlNumber"],
+};
+export function shippingCell(
+  page: PdfPage,
+  selected: PdfBlock[],
+  scope: EntityScope,
+): TableLink | null {
+  if (scope === "document" || !selected.length) return null;
+  const blocks = page.blocks ?? [],
+    first = [...selected].sort((a, b) => a.y - b.y || a.x - b.x)[0];
+  const rows = [
+    ...new Set(
+      blocks
+        .filter(
+          (b) =>
+            b.row < first.row &&
+            tableAnchor[scope].includes(shippingRole(b.text) ?? ""),
+        )
+        .map((b) => b.row),
+    ),
+  ].sort((a, b) => b - a);
+  for (const headerRow of rows) {
+    const headers = blocks
+      .filter((b) => b.row === headerRow && shippingRole(b.text))
+      .sort((a, b) => a.x - b.x);
+    if (
+      headers.some((h) => shippingRole(h.text) === "houseBlNumber") &&
+      scope !== "cargo"
+    )
+      continue;
+    if (
+      headers.length < 2 ||
+      !headers.some((h) =>
+        [
+          "quantity",
+          "packageCount",
+          "grossWeight",
+          "netWeight",
+          "hsCode",
+          "containerNumber",
+        ].includes(shippingRole(h.text)!),
+      )
+    )
+      continue;
+    if (
+      blocks.some(
+        (b) =>
+          b.row > headerRow &&
+          b.row <= first.row &&
+          /^total|^합계|^총계/i.test(shippingRole(b.text.split(":")[0]) ?? ""),
+      )
+    )
+      continue;
+    const header = headers.find((h) => columnContains(h, first, headers));
+    if (!header) continue;
+    const role = shippingRole(header.text)!;
+    const inline = first.text.includes(":")
+      ? shippingRole(first.text.split(":")[0])
+      : null;
+    if (inline && inline !== role) continue;
+    if (
+      blocks.some(
+        (b) =>
+          b.row > headerRow &&
+          b.row < first.row &&
+          tableAnchor.item
+            .concat(tableAnchor.container, tableAnchor.cargo)
+            .includes(shippingRole(b.text) ?? "") &&
+          blocks.filter((h) => h.row === b.row && shippingRole(h.text))
+            .length >= 2,
+      )
+    )
+      continue;
+    if (!selected.every((b) => columnContains(header, b, headers))) return null;
+    const anchorHeader = headers.find((h) =>
+      tableAnchor[scope].includes(shippingRole(h.text)!),
+    )!;
+    // A wrapped description line is a continuation, not a new product row.
+    // Only rows containing an independently located data cell establish an
+    // item anchor; this also prevents matching two distinct product rows.
+    const dataHeaders = headers.filter((h) =>
+      [
+        "quantity",
+        "hsCode",
+        "packageCount",
+        "netWeight",
+        "grossWeight",
+      ].includes(shippingRole(h.text)!),
+    );
+    const anchors = blocks.filter(
+      (b) =>
+        b.row > headerRow &&
+        columnContains(anchorHeader, b, headers) &&
+        !shippingRole(b.text) &&
+        (scope !== "item" ||
+          blocks.some(
+            (cell) =>
+              cell.row === b.row &&
+              !shippingRole(cell.text) &&
+              dataHeaders.some((h) => columnContains(h, cell, headers)),
+          )),
+    );
+    let row = first.row;
+    if (!anchors.some((a) => a.row === row)) {
+      const prior = anchors
+        .filter(
+          (a) =>
+            a.row < row &&
+            first.y - a.y <= Math.max(a.height, first.height) * 2,
+        )
+        .sort((a, b) => b.y - a.y)[0];
+      if (!prior) return null;
+      row = prior.row;
+    }
+    const wrap = ["goodsDescription", "tradeDescription"].includes(role);
+    if (!wrap && selected.some((b) => b.row !== row)) return null;
+    if (
+      wrap &&
+      selected.some((b) =>
+        anchors.some(
+          (a) =>
+            a.row > row &&
+            a.row <= b.row &&
+            a.y - first.y > Math.max(a.height, first.height) * 2,
+        ),
+      )
+    )
+      return null;
+    const unit =
+      header.text.match(/\(([^)]+)\)/)?.[1] ??
+      first.text.match(/\d\s*(KG|KGS|PCS|EA|CTNS|PKGS)\b/i)?.[1] ??
+      null;
+    return {
+      tableId: `p${page.page}:t${headerRow}`,
+      rowId: `p${page.page}:r${row}`,
+      role,
+      unit,
+    };
+  }
+  return null;
+}

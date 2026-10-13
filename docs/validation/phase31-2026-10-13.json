@@ -1,0 +1,20 @@
+{
+  "mode": "phase31-implementation-and-free-regression",
+  "recordedDateKst": "2026-10-13",
+  "baseSha": "ed9840cb128281806c20c250d13af0fd4dadaa30",
+  "provider": "openai",
+  "model": "gpt-6-luna",
+  "localKeyConfigured": false,
+  "actualPaidApiCalls": 0,
+  "paidValidationStatus": "NOT_EXECUTED_NEW_APPROVAL_REQUIRED",
+  "pastPaidBudgetsReused": false,
+  "expectedReleaseGate": {"unitTests": 332, "browserTests": 21, "npmCi": true, "typecheck": true, "lint": true, "productionBuild": true, "pdfWorker": true},
+  "freeObservedBeforeShip": {"unitTests": 327, "additionalShippingTests": 39, "browserTests": 21, "typecheck": true, "lint": true, "productionBuild": true, "pdfWorker": true},
+  "syntheticFixtures": {"types": ["house_bl", "export_declaration", "house_manifest"], "pagesPerDocument": 2, "languages": ["Korean", "English"], "items": 2, "containers": 2, "cargoRecords": 2, "references": 2, "separateSealVariant": true, "missingInformationVariants": true},
+  "mockedAiTests": ["classification and actual field type", "selected/actual type mismatch", "PCS/CTNS and net/gross separation", "wrong container/item row", "wrapped descriptions", "split quantities/units", "leading-zero HS Code", "fake/missing/duplicate page or block", "multiple seals and declarations", "original/current edit restore", "final_answer only", "401/429/500 timeout incomplete JSON"],
+  "triangularComparison": "not_performed",
+  "automaticRetries": 0,
+  "sourceDocumentsOrRawResponsesArchived": false,
+  "deploymentStatus": "PENDING_SHIP_AND_INDEPENDENT_PRODUCTION_CHECK",
+  "limitations": ["Paid GPT-6 Luna accuracy not tested before new approval", "Searchable synthetic PDF only; not a genuine customs certificate", "No OCR, complex merged/rotated-table guarantee or EDI/CSV", "No inter-document/triangle algorithm in PHASE 3.1"]
+}

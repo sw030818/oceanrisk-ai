@@ -1,18 +1,40 @@
 # OceanRisk AI
 
-**중소 포워더를 위한 적하목록 신고 전 AI 정합성 사전검증 시스템**
+**중소 포워더를 위한 적하목록 신고 전 선적서류 검토 도구**
 
-House B/L 초안, 별도 출처의 수출신고필증, House 적하목록 신고 예정자료의 원문과 연결관계를 신고 전에 검토하는 보조 도구입니다. 현재 **PHASE 3.0: 문서 모델·업로드·PDF 준비 기반**입니다. 새 서류의 AI 분류·필드 추출·양자 및 삼각대조는 아직 제공하지 않습니다.
+현재 PHASE 3.1은 **House B/L·수출신고필증·House Manifest의 AI 분류·정보 추출·PDF 원문 근거 확인**을 제공합니다. 서류 간 양자·삼각대조와 위험 판정은 PHASE 3.2 대상이며 현재 실행하지 않습니다. 세관 신고를 직접 수행하거나 과태료 예방을 보장하지 않습니다.
 
-## 현재 사용 가능한 기능
+## 사용 흐름
 
-- 3개 업로드 영역: House B/L / 수출신고필증 / House 적하목록. PDF 드래그·드롭, 교체·삭제, 빨간 PDF 표시, 모바일 대응.
-- 서로 다른 종류의 서류 최소 2종으로 자료 준비 시작. 3종이면 삼각대조를 위한 자료 준비 상태로 표시합니다. 실제 대조 완료를 뜻하지 않습니다.
-- PDF.js의 페이지별 텍스트·블록 ID·좌표·행 추출, 판독 실패 및 부분 성공, 페이지 원문·위치 확인.
-- 문서별 필드 틀과 사용자 입력/초기화. 원본 추출값과 현재 수정값을 분리하며 사용자 입력을 원문 대조 완료로 표시하지 않습니다. 현재 AI 원본값은 모두 미추출입니다.
-- 공개 `/api/analyze`는 PDF 준비만 실행합니다. OpenAI 키가 있어도 공급자를 호출하지 않습니다. Invoice/PL 요청은 안전하게 거부하며 과거 모델·Responses·근거·규칙 코드는 내부 회귀용으로 보존했습니다.
+3개 업로드 영역에서 서로 다른 종류의 PDF 최소 2종을 선택합니다. 기본 `AI 문서 분석`은 추출 텍스트·페이지 위치 블록을 외부 OpenAI API로 전송합니다. `PDF 원문만 확인`은 공급자 호출 없이 원문을 준비합니다. 기업 자료의 처리·외부 전송 권한을 먼저 확인해야 합니다.
 
-## 실행 및 검증
+- 파일 선택·드롭·교체·삭제·빨간 PDF 표시, 데스크톱 3열/모바일 화면을 유지했습니다.
+- 문서별 실제 유형·완료/부분 성공/실패, 추출 필드·품목·컨테이너·Seal·화물 기록·복수 신고 참조를 표시합니다.
+- 선택 영역과 실제 제목에 근거한 분류는 별개입니다. 불일치하면 실제 유형 필드를 표시하고 파일 교체/영역 교환을 지원합니다. 최초 선택값을 보존하며 교환은 추가 API 호출을 만들지 않습니다.
+- 모든 값에 원문 대조 완료/근거 미확인/정보 없음/사용자 수정 상태를 표시합니다. 근거 버튼에서 PDF 파일·페이지·블록 좌표·실제 인용을 확인하고 원래 AI 값으로 복원할 수 있습니다.
+- 사용자 수정은 `original`과 분리한 `current`에 기록합니다. 원래 인용을 수정값의 검증 성공으로 재사용하지 않습니다.
+- AI 실패 시 읽을 수 있는 PDF를 보존합니다. 인증/이용 한도/키 설정 오류가 나면 같은 배치의 추가 AI 호출을 중단하고 원문 준비는 계속합니다.
+
+## 문서 스키마
+
+| 유형 | 주요 문서 필드 | 반복 구조 |
+|---|---|---|
+| House B/L | HBL 번호, Shipper/Consignee/Notify, Vessel/Voyage, 품명, 포장 개수/단위, 총중량/단위, POL/POD | 품목, 컨테이너, 복수 Seal, 신고·선적 참조 |
+| 수출신고필증 | 신고번호/일자, 수출자/신고인, 품명/거래품명, HS Code, 물품 수량/단위, 명시된 순·총·신고 중량 | 여러 품목의 신고 필드, 컨테이너, 신고 참조 |
+| House Manifest | HBL 번호, Shipper/Consignee, 품명, 포장/총중량, POL/POD | 화물 기록별 HBL/컨테이너/Seal/품명/수치, 컨테이너, 신고 참조 |
+
+HS Code·신고번호·B/L·컨테이너·Seal 번호는 문자열로 보존합니다. 문서 합계와 개별 행, PCS 물품 수량과 CTNS 포장 개수는 분리하며 계산·환산·연결을 추정하지 않습니다. 누락은 null입니다. 다대다 관계 모델은 보존하지만 실제 대응 알고리즘은 아직 없습니다.
+
+## 분석 및 독립 근거 검증
+
+- 기존 공통 OpenAI Responses transport를 재사용합니다. 서버 전용 `OPENAI_API_KEY`, 기본 `gpt-6-luna`, `store:false`, strict JSON schema, 기본 티어, 요청별 45초·전체 105초 제한, 출력 상한 8,192토큰입니다. 자동 재시도·Gemini 폴백은 없습니다.
+- 중간 commentary를 제외하고 최종 구조화 메시지만 파싱합니다. JSON/스키마 오류·미완료·출력 제한·거부·인증·429·연결 실패를 구분합니다. 사용자 문서 전문·키·raw 응답을 로그에 남기지 않습니다.
+- AI에는 파일명·사용자 슬롯을 분류 힌트로 보내지 않습니다. 문서 명령문은 신뢰하지 않는 데이터이며 시스템 지시가 아닙니다.
+- `ai/citations`가 AI의 페이지/블록 ID 후보를 실제 PDF 블록에서만 복원합니다. 없는 페이지/ID·중복 ID·너무 긴 인용은 미확인으로 남깁니다.
+- `shipping/verify`와 `layout/shipping-cells`가 문자·숫자 전체 값, 한영 라벨의 역할, 상대 열 위치, 정확한 품목/컨테이너/화물 행, 단위를 독립 검사합니다. 다른 행의 같은 숫자, 순중량을 총중량으로 인용, 개별 값/단위를 문서 합계로 인용하는 경우 거부합니다. 줄바꿈 품명은 숫자/HS 셀이 있는 실제 데이터 행에 연결합니다.
+- `shipping/ground`는 실제 분류 유형에 맞는 필드를 구성하고 중요 정보 누락·근거 미확인·분류 불확실을 부분 성공으로 표시합니다. 분류 제목 근거가 없으면 업로드 선택을 사실로 간주하지 않습니다.
+
+## 실행과 무료 품질 검사
 
 Node.js 24 / Next.js App Router / TypeScript strict / Tailwind CSS / Zod.
 
@@ -24,58 +46,35 @@ npm run lint
 npm test
 npm run build
 npm run verify:runtime
-PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium PLAYWRIGHT_SERVER_MODE=production npm run test:e2e
+OPENAI_API_KEY= GEMINI_API_KEY= PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium PLAYWRIGHT_SERVER_MODE=production npm run test:e2e
 ```
 
-`npm run verify`는 설치·타입·린트·전체 단위·Production 빌드·PDF worker·브라우저 검사 전체를 실행합니다. 키를 비워 유료 호출을 방지합니다. 합성 PDF만 테스트하며 PHASE 3.0에서는 실제 OpenAI 검증을 실행하지 않습니다. 기존 265개 단위 회귀를 유지하고 새 모델·공개 API 안전 검사를 추가했습니다. 브라우저 검사는 의도적으로 바뀐 3종 UI 계약과 **분석 미실시**를 검증하도록 갱신했습니다.
+`npm run verify`는 키를 비운 설치·타입·린트·전체 단위·Production build·PDF worker·Playwright 검사를 실행합니다. 기존 단위 291개와 브라우저 15개를 보존하며 전용 회귀를 추가했습니다. 새 테스트는 한영 혼합 검색 가능한 2페이지 합성 PDF, 여러 품목/컨테이너/Seal/신고 참조, 정보 부족, 허위 근거·다른 행·단위, 모의 Responses 오류와 UI를 검사합니다. 실제 세관 발급 진본으로 가장하지 않습니다. **모의 AI/원문 검사 통과는 실제 OpenAI 정확도 검증이 아닙니다.**
 
-## 문서 데이터 구조
+## API 계약과 제한
 
-`src/modules/shipping`은 기존 Invoice/PL 스키마를 확장해 혼용하지 않고 별도의 Zod 문서 모델을 제공합니다.
+- `GET /api/status`: PHASE 3.1, provider/model, 키 설정 여부, capability, 배포 SHA/ID/environment. 키 값·유효성은 반환하지 않습니다.
+- `POST /api/analyze`: multipart `files` + JSON `slots` (`house_bl`, `export_declaration`, `house_manifest`) + `operation`.
+- `operation:analyze`: `mode:shipping-analysis`, 개별 문서 분류/필드/근거/usage 또는 안전한 오류. `operation:prepare`(생략 시 하위 호환 기본값): `mode:pdf-preparation`, AI 호출 0회. 지원하지 않는 operation은 거부합니다.
+- 두 모드 모두 `review:{status:not_performed,checks:[]}`, 삼각대조 capability false입니다. 분석 가능한 기능과 실제 파일별 수행 여부를 구분합니다.
+- 최소 서로 다른 2종, UI 최대 3개/API 최대 4개, 파일당 및 합계 4 MB, 파일당 30페이지/100,000자/10,000블록. 기존 형식·본문 길이·Origin·취소·no-store 보호를 유지합니다.
+- 로그인·접근 코드·자체 시간당/일일 분석 횟수 제한은 없습니다. 제공자 한도는 우회하지 않습니다. Invoice/PL 공개 경로는 종료했으며 기존 모듈과 회귀는 내부 검증용으로 유지합니다.
 
-- `uploadType`은 사용자가 지정한 영역, `detectedType`은 실제 분류 결과입니다. 현재 `detectedType:null`, `classificationStatus:not_performed`로 반환하며 파일명으로 분류하지 않습니다.
-- 문서별 필드: HBL 번호·Shipper/Consignee/Notify Party·수출신고번호/수출자/HS Code·물품 수량/단위·포장 개수/단위·신고 중량 또는 총중량/단위·POL/POD·선적 범위. 문서 성격에 따라 서로 다른 필드 틀입니다.
-- 각 필드는 `original`과 `current`에 값·근거 상태·파일/페이지/블록/좌표/의미를 보존합니다. 사용자 입력은 `user_edited`이며 AI 원문 검증 성공으로 승격하지 않습니다. 이 스키마만으로 원문 의미 검증을 수행한 것은 아닙니다.
-- 별도 의미/라벨/근거를 갖는 `additionalFields`로 실제 문서의 추가 필드를 확장할 수 있습니다. 복수 `items`, `containers`(컨테이너·Seal·포장·중량), `references`(HBL·복수 신고·선적 등). 현재 목록은 미추출이므로 비어 있습니다. 물품 수량과 포장 개수는 별도 필드이며 환산하지 않습니다.
-- `relationships`는 여러 문서·품목·컨테이너·참조의 명시적 다대다 연결입니다. 분할선적·동시포장·제안/사용자확인/근거확인/충돌 상태를 표현할 수 있고, HBL 한 건과 신고 한 건의 1:1을 가정하지 않습니다. 문서 그룹 밖의 항목 연결은 거부합니다. 실제 대응 판정은 아직 구현하지 않았습니다.
-- 후속 검증 계약은 기존 6개 판정 상태를 재사용하고 양자 3종·삼각·문서 자체 검토를 구분합니다. 현재는 판정이나 오류 0건을 생성하지 않습니다.
+## 저장·배포·유료 검증
 
-## API 및 제한
-
-- `GET /api/status`: 활성 provider/model, 키 설정 여부, PHASE 3.0 capability, 배포 SHA/ID/environment. 키의 값 또는 유효성을 반환하지 않습니다.
-- `POST /api/analyze`: multipart `files` + 필수 JSON `slots` 배열(`house_bl`, `export_declaration`, `house_manifest`). 서로 다른 종류 최소 2종, 파일과 같은 길이. 향후 복수 수출신고필증을 위해 API는 동일 슬롯 반복을 허용합니다.
-- 반환 `mode:pdf-preparation`, `aiCalled:false`, 파일별 PDF/준비된 문서 틀/오류와 준비 요약. 분류·AI 추출·삼각대조 capability는 모두 false입니다.
-- UI: 영역당 1개, 최대 3개. API: 최대 4개. 파일당 및 합계 4 MB, 파일당 30페이지 / 100,000자 / 10,000블록. 파일 형식·본문 길이·Origin·취소·105초 처리 제한·no-store를 유지합니다.
-- 로그인·접근 코드·애플리케이션 자체 시간당/일일 분석 한도를 추가하지 않았습니다. 제공자 할당량을 변경하거나 우회하지 않습니다.
-
-## 보안 및 사용 범위
-
-기업 내부 자료의 사용·처리·외부 전송 권한을 확인해야 합니다. 현재 단계의 PDF 준비는 서버에서 처리하며 OpenAI로 보내지 않습니다. 후속 AI 분석에서는 추출 텍스트와 위치 정보가 외부 OpenAI API로 전송되며 실행 전에 명확히 안내합니다. API 키는 서버에서만 접근합니다. 기존 `.env.example`/Vercel 키 설정을 삭제하거나 초기화하지 않습니다.
-
-문서 DB·영구 파일 저장·문서/API 응답 로그를 만들지 않습니다. 준비 결과와 사용자 입력은 현재 브라우저 세션에만 있으며 새로고침 후 유지되지 않습니다. 실제 업무 PDF를 테스트/Git에 넣지 않습니다.
-
-세관 신고를 직접 수행하지 않고 과태료 예방을 보장하지 않습니다. 관세청/EDI 자동 제출·결과 조회·Booking 연결·외부 실시간 업무 연동·온프레미스 배포·OCR은 제공하지 않습니다. 기존 EDI의 사전검증 기능 유무를 단정하지 않습니다.
-
-## 저장 및 Production 배포
-
-AGENTS.md의 `ship` 절차를 사용합니다. 작업 파일만 검토·Stage하고 전체 품질 검사 통과 후 main 일반 Commit/Push → 원격 SHA 확인 → 기존 Vercel Git 자동 배포 → Production 동일 SHA 확인 → GitHub Actions quality/production을 확인합니다. Force Push·기존 기록/설정 삭제·실패 코드 배포는 하지 않습니다.
+AGENTS.md의 `ship`은 검토한 파일만 Stage한 뒤 전체 검사를 통과해야 main 일반 Commit/Push·원격 SHA 대조·기존 Vercel Git 자동 배포와 정확한 Production SHA 확인을 수행합니다. Force Push·실패 코드 배포·기존 설정/키 초기화는 하지 않습니다.
 
 ```sh
-NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run ship -- --message "feat: prepare manifest filing document workspace"
+NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run ship -- --message "feat: analyze shipping PDFs with grounded OpenAI extraction"
+NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run check:phase31:ui -- --sha=<deployed-main-sha>
 ```
 
-배포 후 새 화면과 실제 합성 PDF 준비를 무료로 확인할 수 있습니다. 이 도구는 정확한 SHA와 PHASE 3.0의 AI 비활성 capability를 먼저 확인하며, 조건이 다르면 업로드 전에 중단합니다. 재시도나 실제 AI 검증은 하지 않습니다.
+무료 Production 검사는 정확한 SHA를 먼저 확인하고 **prepare만** 실제 전송합니다. 잘못된 PDF의 분석 오류 경로도 PDF 추출 단계에서 차단되는지 검사하며 공급자 호출은 0회입니다.
 
-```sh
-NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run check:phase30:ui -- --sha=<deployed-main-sha>
-```
+실제 유료 검증은 **새 승인 후에만** `test:phase31:production`으로 실행합니다. 사전 비용 확인 `--dry-run`은 호출 0회입니다. 합성 3문서/배치 1회/최대 $0.05/자동 재시도 0의 별도 ledger를 호출 전에 예약하며 usage가 불명확하면 예약을 유지합니다. 기존 PHASE 2.2의 31개/PHASE 2.3의 2개 소진 예산과 공유하지 않습니다. 재실행/예산 초기화는 금지합니다. 실행 결과는 안전한 상태·개수·토큰/비용 메타데이터만 보존합니다.
 
-## PHASE 3.1~3.2 남은 작업
+## 남은 범위
 
-1. 새 3종 전용 Responses strict 응답 스키마·분류/추출 프롬프트와 블록 후보 복원. 기존 Invoice/PL 프롬프트를 적용하지 않습니다.
-2. 선적/신고 역할별 독립 근거 검증: HBL·신고 참조·컨테이너/Seal·당사자·항만·품목·물품/포장 수량·중량의 행·열·단위 연결.
-3. 별도 승인을 받은 최소 합성 유료 검증과 모의/PDF 검증 지표 분리. 이전 유료 예산을 재사용하지 않습니다.
-4. 다대다 관계·복수 신고·분할선적·동시포장·복수 컨테이너를 고려한 TS 결정적 양자 및 삼각대조. 근거 부족/수정값/거래 충돌은 잠정 상태로 보호합니다.
-5. 실제 분류와 업로드 영역 불일치 경고, 의미별 판정·후속 질문·근거 UI와 수정 후 재검토.
+PHASE 3.2의 TS 다대다 대응·양자/삼각대조·분할선적/동시포장 판단·위험 판정은 미구현입니다. CSV/EDI·OCR·세관 자동 신고·업무시스템/온프레미스 연동은 제공하지 않습니다. 복잡한 병합/회전 표·모호한 라벨·스캔 문서는 근거 미확인 또는 판독 실패가 정상이며 실무 전체 양식의 정확도를 보장하지 않습니다. 문서 DB/영구 업로드 저장은 없고 사용자 수정값은 브라우저 세션에만 존재합니다.
 
-상세 실행 결과는 [PROGRESS.md](./PROGRESS.md), 계획은 [PLAN.md](./PLAN.md), 이전 제품 문서는 [보존 README](./docs/legacy-phase23-readme.md)에 있습니다. 과거 유료 호출 ledger/메타데이터는 보존하며 이번 단계에서 호출하지 않습니다.
+실제 실행/미검증/배포 기록은 [PROGRESS.md](./PROGRESS.md), 계획은 [PLAN.md](./PLAN.md), 이전 제품 이력은 [보존 README](./docs/legacy-phase23-readme.md)에 있습니다.

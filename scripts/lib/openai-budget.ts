@@ -6,13 +6,22 @@ export interface TestBudget {
   maxDocuments: number;
   maxCostUsd: number;
 }
-export function requestUpperCost(requestBytes: number) {
+export function requestUpperCost(
+  requestBytes: number,
+  maxOutputTokens = OPENAI_MAX_OUTPUT_TOKENS,
+) {
+  if (
+    !Number.isSafeInteger(maxOutputTokens) ||
+    maxOutputTokens < 1 ||
+    maxOutputTokens > 32768
+  )
+    throw new Error("INVALID_OUTPUT_RESERVATION");
   // UTF-8 bytes upper-bound text tokens, plus framing, highest input/cache-write
   // rate and a regional 10% reserve. Standard tier, no tools/images.
   const long = requestBytes + 1024 > 272000;
   return (
     (((requestBytes + 1024) * 0.125 * (long ? 2 : 1) +
-      OPENAI_MAX_OUTPUT_TOKENS * 0.5 * (long ? 1.5 : 1)) /
+      maxOutputTokens * 0.5 * (long ? 1.5 : 1)) /
       1e6) *
     1.1
   );

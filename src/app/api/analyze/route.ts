@@ -1,4 +1,5 @@
 import type { ShippingReview } from "@/modules/shipping/review-model";
+import { analyzeShippingFile } from "@/modules/shipping/analysis";
 import { NextResponse } from "next/server";
 import { requireSameOrigin } from "@/modules/security/origin";
 import { boundedFormData } from "@/modules/upload/request";
@@ -14,7 +15,8 @@ export const runtime = "nodejs";
 export const maxDuration = 120;
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "no-store, private" };
-// PHASE 3.0 intentionally imports NO AI extractor or Invoice/PL rule engine.
+// Explicit analysis uses the shipping schema; the preparation operation stays
+// free of provider calls. Neither path invokes inter-document comparison.
 export async function POST(request: Request) {
   try {
     requireSameOrigin(request);
@@ -33,24 +35,47 @@ export async function POST(request: Request) {
     const files = entries as File[];
     validateUploads(files);
     const slots = parseShippingSlots(form.get("slots"), files.length);
+    const operation = form.get("operation") ?? "prepare";
+    if (!["prepare", "analyze"].includes(String(operation)))
+      throw new AnalysisError(
+        "INVALID_OPERATION",
+        "지원하지 않는 분석 요청입니다.",
+        400,
+      );
+    const analyze = operation === "analyze";
     const results: ShippingResult[] = [];
-    for (const [i, file] of files.entries())
-      results.push(await prepareShippingFile(file, slots[i], signal));
+    let stopAI = false;
+    for (const [i, file] of files.entries()) {
+      const result = await (analyze
+        ? analyzeShippingFile(file, slots[i], { signal, skipAI: stopAI })
+        : prepareShippingFile(file, slots[i], signal));
+      results.push(result);
+      if (
+        result.error &&
+        [
+          "API_AUTH_OR_CONFIG",
+          "API_RATE_LIMIT",
+          "INVALID_MODEL",
+          "API_NOT_CONFIGURED",
+        ].includes(result.error.code)
+      )
+        stopAI = true;
+    }
     const review: ShippingReview = { status: "not_performed", checks: [] };
     return NextResponse.json(
       {
-        mode: "pdf-preparation",
-        phase: "3.0",
+        mode: analyze ? "shipping-analysis" : "pdf-preparation",
+        phase: "3.1",
         results,
         summary: summarizeShipping(results),
         review,
         capabilities: {
           pdfPreparation: true,
-          documentClassification: false,
-          aiExtraction: false,
+          documentClassification: analyze,
+          aiExtraction: analyze,
           triangularComparison: false,
         },
-        aiCalled: false,
+        aiCalled: results.some((r) => !!r.aiModel),
       },
       { headers },
     );

@@ -28,6 +28,7 @@ export async function choose(
   page: Page,
   types: ShippingType[] = ["house_bl", "house_manifest"],
 ) {
+  await page.getByRole("radio", { name: "PDF 원문만 확인" }).check();
   const bytes = await shippingPdf();
   for (const [i, type] of types.entries())
     await page
