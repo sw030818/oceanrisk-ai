@@ -1,3 +1,4 @@
+import { partyMatch32 } from "./parties";
 import type { ShippingDocument } from "./schema";
 import type {
   ShippingReview,
@@ -546,6 +547,19 @@ export function reviewShipping(
           right &&
           text32(left.field.current.value) !==
             text32(right.field.current.value);
+      const party = ["shipper", "consignee"].includes(role)
+        ? partyMatch32(left, right)
+        : null;
+      const projectedParty =
+        !!party?.certain && party.same === true && !!different;
+      const partyGuard =
+        party &&
+        left &&
+        right &&
+        different &&
+        (!party.certain || party.addressConflict)
+          ? ["원문 당사자명과 주소를 구분하거나 주소 차이를 확인해야 합니다."]
+          : [];
       const mappedPort =
         role.startsWith("portOf") &&
         left &&
@@ -576,10 +590,14 @@ export function reviewShipping(
             ? "goods"
             : "party",
         [left, right],
-        [...base, ...representationGuard],
+        [...base, ...representationGuard, ...partyGuard],
         links,
-        mappedPort ? label(role) + " · UN/LOCODE 표준화" : label(role),
-        mappedPort || similarGoods ? true : undefined,
+        mappedPort
+          ? label(role) + " · UN/LOCODE 표준화"
+          : projectedParty
+            ? label(role) + " · 회사명 (주소 제외)"
+            : label(role),
+        mappedPort || similarGoods || projectedParty ? true : undefined,
       );
     }
     const quantityRef = (d: ShippingDocument, name: string) => {

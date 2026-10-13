@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { unicodePdf } from "../fixtures/shipping31";
 import { extractPdfText } from "../../src/modules/pdf/extract";
+import { shipping32Fixture } from "../fixtures/shipping32";
 import { shipping34Fixture } from "../fixtures/shipping34";
 import { shippingTypes } from "../../src/modules/shipping/catalog";
 import { groundShipping } from "../../src/modules/shipping/ground";
@@ -535,5 +536,91 @@ describe("PHASE 3.4 independent native PDF cells and negative controls", () => {
         pdf,
       ).original.status,
     ).toBe("unverified");
+  });
+  it("company-name line and address suffix do not become a different party", async () => {
+    const build = async (
+      type: "house_bl" | "house_manifest",
+      address: boolean,
+    ) => {
+      const cells = [
+        {
+          text: type === "house_bl" ? "HOUSE BILL OF LADING" : "HOUSE MANIFEST",
+          x: 150,
+          y: 30,
+          size: 16,
+        },
+        { text: "House B/L No", x: 35, y: 105 },
+        { text: "HB-PARTY-SYN-01", x: 35, y: 125 },
+        { text: "Shipper", x: 35, y: 170 },
+        { text: "SYNTHETIC SUPPLIER LTD.", x: 35, y: 190 },
+        ...(address ? [{ text: "100 TEST ROAD", x: 35, y: 210 }] : []),
+      ];
+      const bytes = unicodePdf([cells], {
+        borders: [
+          [
+            { x: 30, y: 95, width: 260, height: 45 },
+            { x: 30, y: 160, width: 260, height: 75 },
+          ],
+        ],
+      });
+      const pdf = {
+        id: "party-" + type,
+        fileName: "independent-party-" + type + ".pdf",
+        pages: await extractPdfText(bytes, undefined, false, true),
+      };
+      const { emptyShippingWire } = await import(
+        "../../src/modules/shipping/ground"
+      );
+      const wire = emptyShippingWire(type);
+      const evidence = (ts: string[]) => ({
+        page: 1,
+        blockIds: ts.map(
+          (t) => pdf.pages[0].blocks!.find((b) => b.text === t)!.id,
+        ),
+      });
+      wire.typeEvidence = evidence([cells[0].text]);
+      wire.fields.houseBlNumber = {
+        value: "HB-PARTY-SYN-01",
+        evidence: evidence(["HB-PARTY-SYN-01"]),
+      };
+      wire.fields.shipper = {
+        value: "SYNTHETIC SUPPLIER LTD." + (address ? " 100 TEST ROAD" : ""),
+        evidence: evidence([
+          "SYNTHETIC SUPPLIER LTD.",
+          ...(address ? ["100 TEST ROAD"] : []),
+        ]),
+      };
+      return groundShipping(wire, pdf, type);
+    };
+    const a = await build("house_bl", true),
+      b = await build("house_manifest", false);
+    expect(a.fields.shipper.original.status).toBe("verified");
+    const r = reviewShipping([a, b]);
+    expect(r.relationships?.[0].status).toBe("evidence_confirmed");
+    expect(
+      r.checks.some(
+        (c) =>
+          c.category === "party" &&
+          c.assessment === "confirmed_match" &&
+          c.title?.includes("회사명"),
+      ),
+    ).toBe(true);
+  });
+  it("explicitly different native company names still conflict and protect counts", async () => {
+    const a = await shipping32Fixture("house_bl", "normal", {
+        roots: { shipper: "SYNTHETIC ALPHA LTD." },
+      }),
+      b = await shipping32Fixture("house_manifest", "mismatch", {
+        roots: { shipper: "SYNTHETIC BETA LTD." },
+      });
+    const r = reviewShipping([a.document, b.document]);
+    expect(r.relationships?.[0].status).toBe("conflict");
+    expect(r.relationships?.[0].conflictRoles).toContain("shipper");
+    expect(
+      r.checks.some(
+        (c) =>
+          c.category === "packaging" && c.assessment === "confirmed_mismatch",
+      ),
+    ).toBe(false);
   });
 });

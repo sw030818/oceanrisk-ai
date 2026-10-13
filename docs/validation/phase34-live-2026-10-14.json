@@ -3,10 +3,10 @@
   "date": "2026-10-14",
   "kind": "baseline-and-first-deployment-observations-final-verification-pending",
   "budget": {
-    "documents": 7,
-    "requests": 7,
-    "measuredCostUsd": 0.00778299,
-    "unresolvedCostUpperUsd": 0.011764225000000003,
+    "documents": 12,
+    "requests": 12,
+    "measuredCostUsd": 0.015916305,
+    "unresolvedCostUpperUsd": 0.011764225000000007,
     "maxDocuments": 30,
     "maxRequests": 40,
     "maxCostUsd": 0.15
@@ -359,6 +359,552 @@
     ],
     "errors": [
       null,
+      null,
+      null
+    ],
+    "automaticRetries": 0
+  },
+  "secondAfter": {
+    "stage": "original",
+    "sourceSha": "6700bf2e93f9c6ed5475c4e278fb73e6339c9323",
+    "inputHashes": [
+      "d1559910f371e1c10b8613a198085c1006b2c1949621dfc9cff3384f22c301d5",
+      "9f15bc729a940d23a61a488262d32b72fda464cec2d431802646f0dc9361d6a0",
+      "04998575325ee7cd3e013fa146f130d65449b14071476b23217195284e389326"
+    ],
+    "budget": {
+      "documents": 10,
+      "requests": 10,
+      "measuredCostUsd": 0.014101985,
+      "unresolvedCostUpperUsd": 0.01176422500000001,
+      "maxDocuments": 30,
+      "maxRequests": 40,
+      "maxCostUsd": 0.15
+    },
+    "classification": 3,
+    "documents": 3,
+    "verified": 83,
+    "candidates": 97,
+    "verificationCodes": [
+      {
+        "verified": 25,
+        "block_missing": 1,
+        "value_mismatch": 1,
+        "role_mismatch": 3,
+        "row_mismatch": 2
+      },
+      {
+        "verified": 27,
+        "row_mismatch": 2,
+        "role_mismatch": 1
+      },
+      {
+        "verified": 31,
+        "row_mismatch": 1,
+        "role_mismatch": 3
+      }
+    ],
+    "review": {
+      "matches": 17,
+      "confirmedMismatches": 0,
+      "provisional": 20,
+      "needsReview": 1,
+      "insufficient": 25,
+      "notComparable": 0,
+      "confirmedRelationships": 2,
+      "userConfirmedRelationships": 0,
+      "proposedRelationships": 0,
+      "conflictingRelationships": 1,
+      "pairChecks": 63,
+      "triangleChecks": 0
+    },
+    "triangle": "not_comparable",
+    "checks": [
+      {
+        "category": "party",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "quantity",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "quantity",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_mismatch"
+      },
+      {
+        "category": "weight",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "packaging",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "party",
+        "assessment": "provisional_mismatch"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "needs_review"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_mismatch"
+      },
+      {
+        "category": "weight",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "port",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "port",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "provisional_mismatch"
+      }
+    ],
+    "batchRequests": 2,
+    "batchDurationsMs": [
+      27234,
+      9605
+    ],
+    "usage": [
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 16240,
+        "inputTokens": 13932,
+        "outputTokens": 3078,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 13929,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.003280425,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 8661,
+        "inputTokens": 11968,
+        "outputTokens": 1275,
+        "cachedInputTokens": 5561,
+        "cacheWriteTokens": 6404,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0014939099999999998,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 9163,
+        "inputTokens": 11130,
+        "outputTokens": 1586,
+        "cachedInputTokens": 5561,
+        "cacheWriteTokens": 5566,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0015446599999999998,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      }
+    ],
+    "errors": [
+      null,
+      null,
+      null
+    ],
+    "automaticRetries": 0
+  },
+  "intermediateNegative": {
+    "stage": "negative",
+    "sourceSha": "6700bf2e93f9c6ed5475c4e278fb73e6339c9323",
+    "inputHashes": [
+      "ac42157ee11b1af25731404e867a491a61c504032e30a542e3d7a2df9718f68a",
+      "b1afd4cd41158531e8a6b2f7584cebaa4a122d3868ddcd128ae77e1085acfd09"
+    ],
+    "budget": {
+      "documents": 12,
+      "requests": 12,
+      "measuredCostUsd": 0.015916305,
+      "unresolvedCostUpperUsd": 0.011764225000000007,
+      "maxDocuments": 30,
+      "maxRequests": 40,
+      "maxCostUsd": 0.15
+    },
+    "classification": 2,
+    "documents": 2,
+    "verified": 56,
+    "candidates": 56,
+    "verificationCodes": [
+      {
+        "verified": 25
+      },
+      {
+        "verified": 31
+      }
+    ],
+    "review": {
+      "matches": 8,
+      "confirmedMismatches": 5,
+      "provisional": 3,
+      "needsReview": 0,
+      "insufficient": 8,
+      "notComparable": 0,
+      "confirmedRelationships": 1,
+      "userConfirmedRelationships": 0,
+      "proposedRelationships": 0,
+      "conflictingRelationships": 0,
+      "pairChecks": 24,
+      "triangleChecks": 0
+    },
+    "triangle": "insufficient_documents",
+    "checks": [
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "party",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "weight",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "provisional_mismatch"
+      },
+      {
+        "category": "goods",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "provisional_mismatch"
+      },
+      {
+        "category": "quantity",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "confirmed_match"
+      }
+    ],
+    "batchRequests": 1,
+    "batchDurationsMs": [
+      17898
+    ],
+    "usage": [
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 6981,
+        "inputTokens": 7167,
+        "outputTokens": 1143,
+        "cachedInputTokens": 5561,
+        "cacheWriteTokens": 1603,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0008277849999999999,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 9581,
+        "inputTokens": 7461,
+        "outputTokens": 1387,
+        "cachedInputTokens": 5561,
+        "cacheWriteTokens": 1897,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.000986535,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      }
+    ],
+    "errors": [
       null,
       null
     ],

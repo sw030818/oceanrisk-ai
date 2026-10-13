@@ -15,6 +15,7 @@ import {
   type ComparisonGroup,
 } from "@/modules/shipping/presentation";
 import { portCode, contextualCarton } from "@/modules/shipping/equivalence";
+import { partyName32 } from "@/modules/shipping/parties";
 import { unit32 } from "@/modules/shipping/review-evidence";
 import { ShippingFields } from "./shipping-fields";
 import type { GroundedField } from "@/modules/documents/schema";
@@ -502,6 +503,9 @@ export function ShippingReviewPanel({
                   <p className="mt-1 text-xs text-slate-600">
                     정규화:{" "}
                     {portCode(f.field.current.value) ??
+                      (["shipper", "consignee"].includes(f.fieldName)
+                        ? partyName32(f)?.name
+                        : null) ??
                       (contextualCarton(f) ? "CTNS" : null) ??
                       (f.fieldName.endsWith("Unit")
                         ? unit32(

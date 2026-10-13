@@ -1,3 +1,4 @@
+import { partyMatch32 } from "./parties";
 import type { ShippingDocument } from "./schema";
 import type { ShippingRelationship, ShippingCheck } from "./review-model";
 import {
@@ -76,41 +77,56 @@ export function relateShipping(
           r &&
           verified32(l) &&
           verified32(r) &&
-          text32(l.field.current.value) !== text32(r.field.current.value)
+          partyMatch32(l, r).certain &&
+          partyMatch32(l, r).same === false
         );
       });
       if (strong && parties.length) conflicts.push(...parties);
+      const ambiguousParties = ["shipper", "consignee"].filter((role) => {
+        const l = root32(a, role),
+          r = root32(b, role);
+        if (!l || !r || !verified32(l) || !verified32(r)) return false;
+        const match = partyMatch32(l, r);
+        return !match.certain || match.addressConflict;
+      });
       const completeClass =
         a.classificationStatus === "classified" &&
         b.classificationStatus === "classified";
-      const editedIdentity = [a, b].some((d) =>
-        d.references.some(r=>['house_bl','export_declaration','shipment'].includes(r.kind)&&r.number.current.status==='user_edited') ||
-        [
-          "houseBlNumber",
-          "declarationNumber",
-          "shipmentReference",
-          "shipper",
-          "consignee",
-          "exporter",
-          "exporterIdentifier",
-        ].some(
-          (role) =>
-            d.fields[role]?.current.status === "user_edited" ||
-            d.additionalFields.some(
-              (f) =>
-                f.meaning === role && f.field.current.status === "user_edited",
-            ) ||
-            identifiers32(d, role).some(
-              (f) => f.field.current.status === "user_edited",
-            ),
-        ),
+      const editedIdentity = [a, b].some(
+        (d) =>
+          d.references.some(
+            (r) =>
+              ["house_bl", "export_declaration", "shipment"].includes(r.kind) &&
+              r.number.current.status === "user_edited",
+          ) ||
+          [
+            "houseBlNumber",
+            "declarationNumber",
+            "shipmentReference",
+            "shipper",
+            "consignee",
+            "exporter",
+            "exporterIdentifier",
+          ].some(
+            (role) =>
+              d.fields[role]?.current.status === "user_edited" ||
+              d.additionalFields.some(
+                (f) =>
+                  f.meaning === role &&
+                  f.field.current.status === "user_edited",
+              ) ||
+              identifiers32(d, role).some(
+                (f) => f.field.current.status === "user_edited",
+              ),
+          ),
       );
       const status = conflicts.length
         ? "conflict"
         : strong &&
             completeClass &&
             !declarationMappingMissing &&
-            !editedIdentity
+            !editedIdentity &&
+            !ambiguousParties.length
           ? "evidence_confirmed"
           : "proposed";
       const scopes = [scope32(a), scope32(b)],
@@ -189,15 +205,17 @@ export function relateShipping(
         reason:
           editedIdentity && status === "proposed"
             ? "선적/당사자 식별 필드가 사용자 수정값입니다. 변경된 연결 범위를 원문 검증 성공으로 승격하지 않습니다."
-            : declarationMappingMissing
-              ? "같은 HBL이지만 해당 신고번호가 상대 문서 참조 목록에서 확인되지 않았습니다. 복수 신고/부분 범위를 확인합니다. 다른 거래 또는 확정 참조 오류로 단정하지 않습니다."
-              : status === "conflict"
-                ? "명시적 식별자 또는 당사자가 충돌합니다. 같은 선적으로 확정하지 않습니다."
-                : status === "evidence_confirmed"
-                  ? "같은 의미의 검증된 HBL/신고/선적 참조로 연결했습니다. 수량 비교의 선적 범위는 별도로 확인합니다."
-                  : containers
-                    ? "컨테이너는 같지만 강한 선적 식별 근거가 부족합니다."
-                    : "문서 선택은 비교 의도이며 같은 선적의 입증은 아닙니다. 연결 근거를 확인해 주세요.",
+            : ambiguousParties.length
+              ? "당사자명/주소의 구분 또는 주소 차이가 미확인입니다. 원문 회사명과 연결 범위를 확인해 주세요."
+              : declarationMappingMissing
+                ? "같은 HBL이지만 해당 신고번호가 상대 문서 참조 목록에서 확인되지 않았습니다. 복수 신고/부분 범위를 확인합니다. 다른 거래 또는 확정 참조 오류로 단정하지 않습니다."
+                : status === "conflict"
+                  ? "명시적 식별자 또는 당사자가 충돌합니다. 같은 선적으로 확정하지 않습니다."
+                  : status === "evidence_confirmed"
+                    ? "같은 의미의 검증된 HBL/신고/선적 참조로 연결했습니다. 수량 비교의 선적 범위는 별도로 확인합니다."
+                    : containers
+                      ? "컨테이너는 같지만 강한 선적 식별 근거가 부족합니다."
+                      : "문서 선택은 비교 의도이며 같은 선적의 입증은 아닙니다. 연결 근거를 확인해 주세요.",
       });
     }
   return out;
