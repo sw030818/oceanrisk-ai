@@ -1,5 +1,5 @@
 {
-  "mode": "phase32-implementation-free-validation-snapshot",
+  "mode": "phase32-final-source-validation-evidence",
   "baseSha": "c40eeeb87199c245908a1a20361510c9da6b7349",
   "dateKst": "2026-10-13",
   "provider": "openai",
@@ -13,7 +13,9 @@
     "lint": true,
     "npmCi": true,
     "productionBuild": true,
-    "pdfWorker": true
+    "pdfWorker": true,
+    "passed": true,
+    "installedPackages": 419
   },
   "freeObserved": {
     "unitTests": 373,
@@ -34,7 +36,7 @@
     "returnedCandidates": 89,
     "estimatedCostUsd": 0.00286867
   },
-  "phase32NewLiveStatus": "PENDING_SAME_SHA_DEPLOYMENT",
+  "phase32NewLiveStatus": "THREE_INTEGRATED_CASES_PASSED_SAME_PRODUCTION_SHA",
   "approvedBudget": {
     "maxDocuments": 12,
     "maxCostUsd": 0.5,
@@ -77,5 +79,70 @@
     "Unstated allocation/scope stays provisional",
     "No OCR/EDI/CSV/legal fine prediction",
     "Different language/port representations require confirmation"
-  ]
+  ],
+  "testedProductionSha": "928bcc729682cbc6444483c38fbbdce230e9af59",
+  "actualLiveAggregate": {
+    "paidDocuments": 9,
+    "providerRequests": 9,
+    "automaticRetries": 0,
+    "inputTokens": 70896,
+    "outputTokens": 16674,
+    "cachedInputTokens": 38506,
+    "cacheWriteTokens": 32363,
+    "estimatedCostUsd": 0.012770134999999998,
+    "knownUsageForAllRequests": true,
+    "newSourceDocumentSuccesses": 7,
+    "newSourceClassificationCorrect": 7,
+    "newSourceExpectedFields": 329,
+    "newSourceCorrectFields": 329,
+    "newSourceGroundedCorrectFields": 329,
+    "newSourceReturnedCandidates": 344,
+    "newSourceReturnedGrounded": 343,
+    "newSourceFullSuccessDocuments": 5,
+    "newSourcePartialDocuments": 2,
+    "relationshipConfirmedCorrect": 4,
+    "relationshipFalsePositives": 0,
+    "expectedWarningPatterns": 3,
+    "detectedWarningPatterns": 3,
+    "falseConfirmedWarningPatterns": 0,
+    "liveCaseSuccesses": 3,
+    "liveCases": 3,
+    "additionalUiPaidCalls": 0
+  },
+  "productionFreeUi": {
+    "mode": "phase31-actual-production-free-pdf-not-ai",
+    "sourceSha": "928bcc729682cbc6444483c38fbbdce230e9af59",
+    "passed": true,
+    "deployment": {
+      "sha": "928bcc729682cbc6444483c38fbbdce230e9af59",
+      "keyConfigured": true,
+      "deploymentId": "dpl_gjLtXTdWBzhCXUC4UGnbuhceLV97"
+    },
+    "batchRequests": 1,
+    "preparedDocuments": 3,
+    "aiCalled": false,
+    "paidProviderCalls": 0,
+    "shippingAnalysisInvalidPdfError": true,
+    "automaticRetries": 0,
+    "desktopThreeColumns": true,
+    "mobileWidth": 390,
+    "mobileOverflow": false,
+    "userCorrectionDistinct": true,
+    "literalPdfBlocksVisible": true,
+    "comparisonStatus": "not_performed"
+  },
+  "productionFreeUiModeNote": "Inherited output label says phase31; checker explicitly requires phase3.2 and exact SHA before every prepare request",
+  "actions": {
+    "runId": 38373466712,
+    "quality": "success",
+    "production": "success",
+    "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38373466712"
+  },
+  "production": {
+    "sha": "928bcc729682cbc6444483c38fbbdce230e9af59",
+    "id": "dpl_gjLtXTdWBzhCXUC4UGnbuhceLV97",
+    "vercelGitStatus": "success / Deployment has completed",
+    "keyConfigured": true,
+    "managementReadyDirectlyQueried": false
+  }
 }
