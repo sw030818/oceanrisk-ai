@@ -144,3 +144,28 @@ export function unit32(
     ? { unit: u, factor: 1 }
     : null;
 }
+
+// A Manifest cargo row already carries independently grounded container/Seal
+// fields. Use that actual cargo identity when no redundant container array was
+// extracted; never synthesize a new AI row or flatten several cargo records.
+export function containerViews32(doc: ShippingDocument) {
+  const defined = doc.containers.filter((c) => has32(c.containerNumber));
+  if (defined.length)
+    return defined.map((c) => ({ ...c, kind: "container" as const }));
+  return doc.cargoRecords
+    .filter((c) => has32(c.fields.containerNumber))
+    .map((c) => ({
+      id: c.id,
+      kind: "cargo" as const,
+      containerNumber: c.fields.containerNumber,
+      sealNumber: c.fields.sealNumber,
+      sealNumbers: has32(c.fields.sealNumber) ? [c.fields.sealNumber] : [],
+      packageCount: c.fields.packageCount,
+      packageUnit: c.fields.packageUnit,
+      grossWeight: c.fields.grossWeight,
+      weightUnit: c.fields.grossWeightUnit,
+    }));
+}
+export const containerEntry32 = (
+  c: ReturnType<typeof containerViews32>[number],
+) => (c.kind === "cargo" ? { cargoId: c.id } : { containerId: c.id });

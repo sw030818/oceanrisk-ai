@@ -222,7 +222,12 @@ export const shippingDocumentSchema = z
             ...shippingFields.house_manifest,
             "containerNumber",
             "sealNumber",
-          ]),
+          ]).extend({
+            hsCode: semanticField("hsCode").default(legacyCargoField),
+            quantity: semanticField("quantity").default(legacyCargoField),
+            quantityUnit:
+              semanticField("quantityUnit").default(legacyCargoField),
+          }),
         }),
       )
       .max(100)
@@ -383,6 +388,13 @@ export const shippingCaseSchema = z
           });
     }
   });
+function legacyCargoField(): ShippingField {
+  const field = emptyShippingField();
+  field.original.reason =
+    "이전 분석 결과에 이 화물 필드가 포함되어 있지 않습니다.";
+  field.current = structuredClone(field.original);
+  return field;
+}
 export function emptyShippingField(): ShippingField {
   const field = {
     value: null,

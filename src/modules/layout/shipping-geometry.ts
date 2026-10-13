@@ -41,7 +41,12 @@ export function cellHeading(page: PdfPage, cell: PdfCell) {
 export function geometricRole(page: PdfPage, b: PdfBlock): string | null {
   const cell = nativeCell(page, b);
   if (!cell) return null;
-  const heading = cellHeading(page, cell);
+  const semanticHeadings = new Set(
+    body(page, cell)
+      .map((b) => shippingRole(b.text))
+      .filter(Boolean),
+  );
+  const heading = semanticHeadings.size > 2 ? null : cellHeading(page, cell);
   const same = body(page, cell)
     .filter((v) => v.row === b.row && v.x + v.width <= b.x + 0.5)
     .sort((a, b) => b.x - a.x)[0];
@@ -124,6 +129,24 @@ export function nativeTableLink(
     ),
   );
   if (!anchor || bands.length < 2) return null;
+  if (
+    scope === "item" &&
+    !bands.some(
+      (c) =>
+        c !== anchor &&
+        body(page, c).some((b) =>
+          [
+            "quantity",
+            "packageCount",
+            "grossWeight",
+            "netWeight",
+            "hsCode",
+            "containerNumber",
+          ].includes(geometricRole(page, b) ?? ""),
+        ),
+    )
+  )
+    return null;
   if (
     scope === "cargo" &&
     !bands.some((c) =>

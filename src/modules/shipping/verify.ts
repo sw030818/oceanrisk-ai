@@ -13,6 +13,7 @@ import {
   geometricRole,
   nativeCell,
   nativeDocumentField,
+  cellHeading,
 } from "../layout/shipping-geometry";
 import { shippingRole, rootTotalRole, unitParents } from "./roles";
 import { atomRole, countAtoms } from "./count-atoms";
@@ -257,6 +258,11 @@ export function verifyShippingField(
           if (linked?.tableId === owner.tableId && linked.rowId === owner.rowId)
             return true;
           const h = Number(owner.tableId.split(":t")[1]);
+          const cell = nativeCell(page, b),
+            heading = cell && cellHeading(page, cell);
+          const parent =
+            shippingRole(b.text) ??
+            (heading?.blocks.some((v) => v.id === b.id) ? heading.role : null);
           return (
             (b.row === h ||
               (owner.tableId.startsWith(`p${page.page}:box`) &&
@@ -266,8 +272,7 @@ export function verifyShippingField(
                     (v) =>
                       shippingCell(page, [v], scope)?.tableId === owner.tableId,
                   )))) &&
-            (parents.includes(shippingRole(b.text) ?? "") ||
-              shippingRole(b.text) === role)
+            (parents.includes(parent ?? "") || parent === role)
           );
         }));
     if (!allowed || !quotedUnit || !rowOkay)
@@ -448,6 +453,27 @@ function titleCandidates(page: PdfPage) {
     )
       groups.push(peers);
   }
+  for (const b of bs) {
+    const vertical = bs
+      .filter(
+        (p) =>
+          Math.abs(p.x - b.x) <= Math.max(p.height, b.height) * 2 &&
+          p.y >= b.y &&
+          p.y - b.y <= Math.max(p.height, b.height) * 3.5 &&
+          Math.abs(p.height - b.height) < 2,
+      )
+      .sort((a, b) => a.y - b.y);
+    for (let n = 2; n <= Math.min(3, vertical.length); n++) {
+      const g = vertical.slice(0, n);
+      if (
+        g.every(
+          (p, i) =>
+            !i || p.y - g[i - 1].y <= Math.max(p.height, g[i - 1].height) * 2.2,
+        )
+      )
+        groups.push(g);
+    }
+  }
   return groups.filter(
     (g) =>
       (page.blocks ?? []).filter(
@@ -473,6 +499,9 @@ export function verifyClassification(
       text: g.map((b) => b.text).join(" "),
     })),
   );
+  const masterTitle = titles.some((t) =>
+    /^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(t.text.trim()),
+  );
   const known = new Set(titles.map((t) => titleType(t.text)).filter(Boolean));
   const cited = (t: { g: PdfBlock[] }) =>
     t.g.every((b) => blocks?.some((c) => c.id === b.id));
@@ -492,6 +521,26 @@ export function verifyClassification(
     const house = (page?.blocks ?? []).filter((b) =>
       /^house\s*b\/?l\s*\/\s*(?:ocean|sea) freight$/i.test(b.text.trim()),
     );
+    const issuer =
+      house.length === 1
+        ? (page?.blocks ?? []).find((b) => {
+            if (
+              !/^(?:carrier\s*\/\s*forwarder|carrier|freight forwarder|issued by|issuer|발행자|운송주선인)\s*:?$/i.test(
+                b.text.trim(),
+              ) ||
+              b.y >= house[0].y
+            )
+              return false;
+            const cell = nativeCell(page!, house[0]),
+              labelCell = nativeCell(page!, b);
+            if (cell) return cell === labelCell;
+            return (
+              Math.abs(b.x - house[0].x) <=
+                Math.max(b.height, house[0].height) * 2 &&
+              house[0].y - b.y <= Math.max(b.height, house[0].height) * 6
+            );
+          })
+        : undefined;
     const master = titles.some((t) =>
       /^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(t.text.trim()),
     );
@@ -499,14 +548,16 @@ export function verifyClassification(
       valid &&
       !!title &&
       house.length === 1 &&
+      !!issuer &&
       !master &&
       (cited(title) || house.every((h) => blocks!.some((b) => b.id === h.id)));
     if (valid)
-      blocks = [...blocks!, ...title!.g, ...house].filter(
+      blocks = [...title!.g, issuer!, ...house].filter(
         (b, i, bs) => bs.findIndex((x) => x.id === b.id) === i,
       );
   } else valid = valid && !!title;
   if (known.size && !known.has(type as "house_bl")) valid = false;
+  if (type === "house_bl" && masterTitle) valid = false;
   const source = resolved.evidence
     ? {
         fileId: pdf.id,
@@ -533,7 +584,9 @@ export function verifyClassification(
       : (resolved.evidenceIssue ?? "context_unverified"),
     source,
     reason: valid
-      ? "실제 제목·페이지·House 발행 문맥을 독립 확인했습니다."
+      ? type === "house_bl"
+        ? "실제 제목과 House 표시·페이지를 독립 확인했습니다."
+        : "실제 문서 제목·페이지에서 유형을 독립 확인했습니다."
       : type === "unknown"
         ? "AI 문서 유형 후보가 없습니다. 원문 제목을 확인해 주세요."
         : "유형 후보는 있으나 실제 제목/발행 문맥 근거를 확인하지 못했습니다. 선택 영역은 유형 근거가 아닙니다.",

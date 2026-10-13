@@ -1,3 +1,4 @@
+import { countAtoms } from "./count-atoms";
 import { text32, verified32, type FieldRef } from "./review-evidence";
 // UN/LOCODE (UNECE): KR PUS = Busan, US LAX = Los Angeles.
 // https://unece.org/trade/cefact/unlocode-code-list-country-and-territory
@@ -21,7 +22,12 @@ export function goodsCore(v: unknown) {
   // Keep dimensions/numerals and model qualifiers. Non-ASCII translation and
   // alphabetic parenthetical explanations support PARTIAL meaning only.
   return text32(v)
-    .replace(/\([^)]*\)/g, " ")
+    .split(/\s*\/\s*/)
+    .filter((part) => !countAtoms(part).length)
+    .join(" ")
+    .replace(/\(([^)]*)\)/g, (whole, body: string) =>
+      /\d/.test(body) && !/^HS\s+[0-9. -]+$/i.test(body) ? body : " ",
+    )
     .replace(/[^a-z0-9.,+%-]+/g, " ")
     .trim()
     .replace(/\s+/g, " ");

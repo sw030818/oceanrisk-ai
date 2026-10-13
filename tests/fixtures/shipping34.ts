@@ -69,8 +69,10 @@ export async function shipping34Fixture(
       house_manifest: "(HOUSE MANIFEST)",
     }[type];
   text(title, 210, 32, 16);
-  if (type === "house_bl" && change.house !== false)
+  if (type === "house_bl" && change.house !== false) {
+    text("Carrier / Forwarder", 400, 49);
     text("House B/L / Ocean Freight", 400, 65);
+  }
   root(
     "houseBlNumber",
     type === "house_bl" ? "(11) B/L No." : "2. House B/L 번호",

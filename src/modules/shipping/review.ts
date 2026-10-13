@@ -16,6 +16,8 @@ import { relateShipping } from "./relationships";
 import {
   has32,
   identifiers32,
+  containerViews32,
+  containerEntry32,
   key32,
   ref32,
   refKey32,
@@ -332,6 +334,7 @@ export function reviewShipping(
         ...why.filter(
           (w) =>
             !reportedDocumentScope ||
+            !same ||
             w !==
               "전체 선적 범위가 양쪽 원문에서 확인되지 않았거나 부분/동시포장 범위입니다.",
         ),
@@ -579,7 +582,28 @@ export function reviewShipping(
         mappedPort || similarGoods ? true : undefined,
       );
     }
+    const quantityRef = (d: ShippingDocument, name: string) => {
+      const root = root32(d, name);
+      if (root) return root;
+      if (
+        !whole32(d) ||
+        d.items.length !== 1 ||
+        !d.collectionCoverage?.items.complete ||
+        d.collectionCoverage.items.rowCount !== 1
+      )
+        return undefined;
+      const item = d.items[0],
+        f = item.fields[name];
+      if (
+        !f ||
+        f.original.status !== "verified" ||
+        f.original.source?.scopeBasis !== "entity_row"
+      )
+        return undefined;
+      return ref32(d, name, f, { itemId: item.id });
+    };
     for (const [name, unit, category] of [
+      ["quantity", "quantityUnit", "quantity"],
       ["packageCount", "packageUnit", "packaging"],
       ["grossWeight", "grossWeightUnit", "weight"],
       ["netWeight", "netWeightUnit", "weight"],
@@ -588,20 +612,28 @@ export function reviewShipping(
         scope,
         r.id + "/" + name,
         category,
-        [root32(a, name), root32(b, name)],
-        [root32(a, unit), root32(b, unit)],
+        [
+          name === "quantity" ? quantityRef(a, name) : root32(a, name),
+          name === "quantity" ? quantityRef(b, name) : root32(b, name),
+        ],
+        [
+          name === "quantity" ? quantityRef(a, unit) : root32(a, unit),
+          name === "quantity" ? quantityRef(b, unit) : root32(b, unit),
+        ],
         numeric,
         links,
-        "문서 전체 " + label(name),
+        name === "quantity"
+          ? "기재 물품 수량 (합계/단일품목 범위)"
+          : "문서 전체 " + label(name),
       );
-    const ac = [...a.containers].sort((a, b) => a.id.localeCompare(b.id)),
-      bc = [...b.containers].sort((a, b) => a.id.localeCompare(b.id));
+    const ac = containerViews32(a).sort((a, b) => a.id.localeCompare(b.id)),
+      bc = containerViews32(b).sort((a, b) => a.id.localeCompare(b.id));
     const containerSets = [
       ac.map((c) =>
-        ref32(a, "containerNumber", c.containerNumber, { containerId: c.id }),
+        ref32(a, "containerNumber", c.containerNumber, containerEntry32(c)),
       ),
       bc.map((c) =>
-        ref32(b, "containerNumber", c.containerNumber, { containerId: c.id }),
+        ref32(b, "containerNumber", c.containerNumber, containerEntry32(c)),
       ),
     ];
     if (containerSets.every((s) => s.length)) {
@@ -692,10 +724,10 @@ export function reviewShipping(
       (r.entityLinks ??= []).push({
         id: key32(r.id, "container", ca.id + "/" + matches[0].id),
         leftDocumentId: a.id,
-        leftKind: "container",
+        leftKind: ca.kind,
         leftId: ca.id,
         rightDocumentId: b.id,
-        rightKind: "container",
+        rightKind: matches[0].kind,
         rightId: matches[0].id,
         status:
           r.status === "evidence_confirmed" &&
@@ -709,10 +741,11 @@ export function reviewShipping(
       const cb = matches[0],
         prefix =
           r.id + "/container/" + text32(ca.containerNumber.current.value),
-        left = (key: Exclude<keyof typeof ca, "id" | "sealNumbers">) =>
-          ref32(a, key, ca[key], { containerId: ca.id }),
-        right = (key: Exclude<keyof typeof cb, "id" | "sealNumbers">) =>
-          ref32(b, key, cb[key], { containerId: cb.id });
+        left = (key: Exclude<keyof typeof ca, "id" | "sealNumbers" | "kind">) =>
+          ref32(a, key, ca[key], containerEntry32(ca)),
+        right = (
+          key: Exclude<keyof typeof cb, "id" | "sealNumbers" | "kind">,
+        ) => ref32(b, key, cb[key], containerEntry32(cb));
       const anchorGuard = [
         ...numeric,
         ...(![left("containerNumber"), right("containerNumber")].every(
@@ -749,7 +782,12 @@ export function reviewShipping(
         "container",
         [left("sealNumber"), right("sealNumber")],
         [
-          ...anchorGuard,
+          ...base,
+          ...(![left("containerNumber"), right("containerNumber")].every(
+            verified32,
+          )
+            ? ["컨테이너 식별자의 근거를 확인해야 합니다."]
+            : []),
           ...(multiple
             ? ["복수 Seal의 전체 집합과 순서를 확인해야 합니다."]
             : []),
@@ -845,7 +883,8 @@ export function reviewShipping(
           descB &&
           verified32(description) &&
           verified32(descB) &&
-          !hsConflict
+          !hsConflict &&
+          !partialName
             ? "evidence_confirmed"
             : "proposed",
         reason:

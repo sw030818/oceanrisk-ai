@@ -10,10 +10,11 @@ import { shippingLabels, shippingTypes } from "@/modules/shipping/catalog";
 import {
   assessmentRank,
   comparisonGroups,
+  comparisonDisplayFields,
   shipmentOptions,
   type ComparisonGroup,
 } from "@/modules/shipping/presentation";
-import { portCode } from "@/modules/shipping/equivalence";
+import { portCode, contextualCarton } from "@/modules/shipping/equivalence";
 import { unit32 } from "@/modules/shipping/review-evidence";
 import { ShippingFields } from "./shipping-fields";
 import type { GroundedField } from "@/modules/documents/schema";
@@ -126,18 +127,20 @@ export function ShippingReviewPanel({
         {displayed ?? String(f.field.current.value ?? "정보 없음")}
       </span>
       <span
-        className={`ml-1 text-[10px] ${f.field.current.status === "verified" ? "text-emerald-700" : "text-orange-700"}`}
+        className={`ml-1 text-[10px] ${f.field.current.status === "verified" ? "text-emerald-700" : f.field.current.status === "missing" ? "text-slate-400" : "text-orange-700"}`}
       >
         {f.field.current.status === "verified"
           ? "원문 확인"
           : f.field.current.status === "user_edited"
             ? "사용자 수정"
-            : "근거 미확인"}
+            : f.field.current.status === "missing"
+              ? "정보 없음"
+              : "근거 미확인"}
       </span>
     </button>
   );
   const tableFields = (g: ComparisonGroup, type: string) => {
-    const fs = g.fields.filter(
+    const fs = comparisonDisplayFields(g).filter(
       (f) =>
         documents.find((d) => d.id === f.documentId)?.detectedType === type,
     );
@@ -244,6 +247,10 @@ export function ShippingReviewPanel({
           </button>
         </div>
       </div>
+      <p className="px-4 pb-2 text-[11px] text-slate-500 md:hidden">
+        비교표를 좌우로 밀어 다른 서류와 판정을 확인하세요. 항목을 누르면 상세가
+        열립니다.
+      </p>
       <div
         className="max-w-full overflow-x-auto"
         role="region"
@@ -272,7 +279,7 @@ export function ShippingReviewPanel({
                 data-testid="comparison-row"
                 className="border-b border-slate-100 align-top hover:bg-slate-50/70"
               >
-                <th className="break-words p-3 font-semibold">
+                <th className="sticky left-0 z-[1] break-words bg-white p-3 font-semibold">
                   <button
                     onClick={() => setSelected(g.id)}
                     className="text-left hover:text-blue-700"
@@ -329,6 +336,24 @@ export function ShippingReviewPanel({
                   >
                     상세 보기 →
                   </button>
+                  {new Set(g.checks.map((c) => c.assessment)).size > 1 && (
+                    <p className="mt-2 text-[10px] text-slate-500">
+                      일치{" "}
+                      {
+                        g.checks.filter(
+                          (c) => c.assessment === "confirmed_match",
+                        ).length
+                      }{" "}
+                      · 미확정{" "}
+                      {
+                        g.checks.filter(
+                          (c) =>
+                            c.assessment !== "confirmed_match" &&
+                            c.assessment !== "confirmed_mismatch",
+                        ).length
+                      }
+                    </p>
+                  )}
                   {g.checks.map((c) => (
                     <span
                       key={c.id}
@@ -477,6 +502,7 @@ export function ShippingReviewPanel({
                   <p className="mt-1 text-xs text-slate-600">
                     정규화:{" "}
                     {portCode(f.field.current.value) ??
+                      (contextualCarton(f) ? "CTNS" : null) ??
                       (f.fieldName.endsWith("Unit")
                         ? unit32(
                             f.field.current.value,

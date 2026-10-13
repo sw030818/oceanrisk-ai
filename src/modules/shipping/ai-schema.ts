@@ -53,6 +53,9 @@ export const cargoFieldKeys = [
   ...shippingFields.house_manifest,
   "containerNumber",
   "sealNumber",
+  "hsCode",
+  "quantity",
+  "quantityUnit",
 ] as const;
 export const shippingWireSchema = z.strictObject({
   type: z.enum([...shippingTypes, "unknown"]),
@@ -73,7 +76,15 @@ export const shippingWireSchema = z.strictObject({
     )
     .max(100),
   cargoRecords: z
-    .array(z.strictObject({ fields: fields(cargoFieldKeys) }))
+    .array(
+      z.strictObject({
+        fields: fields(cargoFieldKeys).extend({
+          hsCode: str.default(() => ({ value: null, evidence: null })),
+          quantity: num.default(() => ({ value: null, evidence: null })),
+          quantityUnit: str.default(() => ({ value: null, evidence: null })),
+        }),
+      }),
+    )
     .max(100),
   references: z
     .array(
@@ -96,5 +107,18 @@ export type Candidate = {
   evidence: { page: number; blockIds: string[] } | null;
 };
 export function shippingResponseSchema() {
-  return z.toJSONSchema(shippingWireSchema, { target: "draft-7" });
+  const schema = z.toJSONSchema(shippingWireSchema, { target: "draft-7" });
+  // Parser defaults preserve old snapshots; the Responses contract still makes
+  // every new scalar object required, with its VALUE nullable. No schema default
+  // keyword is sent to the provider.
+  const strict = (node: unknown): void => {
+    if (!node || typeof node !== "object") return;
+    const obj = node as Record<string, unknown>;
+    delete obj.default;
+    if (obj.properties && typeof obj.properties === "object")
+      obj.required = Object.keys(obj.properties);
+    Object.values(obj).forEach(strict);
+  };
+  strict(schema);
+  return schema;
 }

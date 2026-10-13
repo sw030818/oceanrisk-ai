@@ -75,6 +75,9 @@ export function ShippingWorkspace() {
   const [results, setResults] = useState<ShippingResult[]>([]),
     [selection, setSelection] = useState<Selection | null>(null);
   const [tab, setTab] = useState<"upload" | "results">("upload");
+  useEffect(() => {
+    if (tab === "results") window.scrollTo({ top: 0, behavior: "instant" });
+  }, [tab]);
   const abort = useRef<AbortController | null>(null),
     run = useRef(0);
   useEffect(

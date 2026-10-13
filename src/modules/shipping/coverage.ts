@@ -44,7 +44,17 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
     ),
     containers: rows(
       "container",
-      doc.containers.map((c) => c.containerNumber),
+      doc.containers.some((c) => c.containerNumber.original.value !== null)
+        ? doc.containers
+            .filter((c) => c.containerNumber.original.value !== null)
+            .map((c) => c.containerNumber)
+        : doc.cargoRecords
+            .filter(
+              (c) =>
+                c.fields.containerNumber &&
+                c.fields.containerNumber.original.value !== null,
+            )
+            .map((c) => c.fields.containerNumber),
     ),
     cargoRecords: rows(
       "cargo",

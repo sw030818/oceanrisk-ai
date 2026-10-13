@@ -1,6 +1,6 @@
 import type { PdfPage, PdfBlock } from "../documents/schema";
 import { columnContains, type TableLink } from "./relations";
-import { nativeTableLink } from "./shipping-geometry";
+import { nativeTableLink, nativeCell } from "./shipping-geometry";
 import { shippingRole } from "../shipping/roles";
 export type EntityScope = "document" | "item" | "container" | "cargo";
 const tableAnchor: Record<Exclude<EntityScope, "document">, string[]> = {
@@ -23,7 +23,15 @@ export function shippingCell(
   scope: EntityScope,
 ): TableLink | null {
   if (scope === "document" || !selected.length) return null;
-  if (page.cells?.length) return nativeTableLink(page, selected, scope);
+  if (page.cells?.length) {
+    const native = nativeTableLink(page, selected, scope);
+    if (native) return native;
+    const cell = nativeCell(page, selected[0]);
+    // A lone decorative frame or a table outside the closed-cell area keeps the
+    // existing positioned-text engine. A real multi-column native band is not
+    // bypassed after its row/column validation failed.
+    if (cell && page.cells.length > 1) return null;
+  }
   const blocks = page.blocks ?? [],
     first = [...selected].sort((a, b) => a.y - b.y || a.x - b.x)[0];
   if (totalRow(page, first.row)) return null;
@@ -42,6 +50,12 @@ export function shippingCell(
     const headers = blocks
       .filter((b) => b.row === headerRow && shippingRole(b.text))
       .sort((a, b) => a.x - b.x);
+    if (
+      page.cells?.length &&
+      page.cells.length > 1 &&
+      headers.some((h) => nativeCell(page, h))
+    )
+      continue;
     if (
       headers.some((h) => shippingRole(h.text) === "houseBlNumber") &&
       scope !== "cargo"

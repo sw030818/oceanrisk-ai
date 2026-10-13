@@ -248,7 +248,7 @@ describe("PHASE 3.1 real synthetic PDF + MOCKED AI, independent evidence", () =>
     expect(JSON.stringify(body)).not.toContain(f.pdf.fileName);
     expect(body.input[0].content).toContain("UNTRUSTED DATA");
     expect(shippingOpenAIRequest(f.pdf, "gpt-6-luna").text.format.name).toBe(
-      "shipping_document_v31",
+      "shipping_document_v34",
     );
   });
   it.each([401, 429, 500])(

@@ -2,7 +2,10 @@
 import type { ShippingResult } from "@/modules/shipping/prepare";
 import type { ShippingReview } from "@/modules/shipping/review-model";
 import { shippingLabels, shippingTypes } from "@/modules/shipping/catalog";
-import { comparisonGroups } from "@/modules/shipping/presentation";
+import {
+  comparisonGroups,
+  comparisonDisplayFields,
+} from "@/modules/shipping/presentation";
 import { assessmentLabels } from "@/modules/rules/model";
 export function ShippingReport({
   results,
@@ -87,7 +90,7 @@ export function ShippingReport({
                 <th className="align-top">{g.title}</th>
                 {shippingTypes.map((t) => (
                   <td key={t} className="align-top">
-                    {g.fields
+                    {comparisonDisplayFields(g)
                       .filter(
                         (f) =>
                           docs.find((d) => d.id === f.documentId)

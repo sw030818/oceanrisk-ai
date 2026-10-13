@@ -101,3 +101,24 @@ export function shipmentOptions(documents: ShippingDocument[]) {
     documentIds: [...ids],
   }));
 }
+
+// Guard identifiers and source-unit evidence stay in the detail panel. The
+// compact value columns show the semantic subject of this comparison only.
+export function comparisonDisplayFields(group: ComparisonGroup) {
+  const category = group.checks[0]?.category;
+  return group.fields.filter((f) => {
+    if (category === "weight")
+      return /Weight(?:Unit)?$|^weightUnit$/.test(f.fieldName);
+    if (category === "packaging")
+      return ["packageCount", "packageUnit"].includes(f.fieldName);
+    if (category === "quantity")
+      return ["quantity", "quantityUnit"].includes(f.fieldName);
+    if (category === "port")
+      return ["portOfLoading", "portOfDischarge"].includes(f.fieldName);
+    if (category === "container")
+      return /seal/i.test(group.title)
+        ? f.fieldName === "sealNumber"
+        : f.fieldName === "containerNumber";
+    return true;
+  });
+}

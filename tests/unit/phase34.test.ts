@@ -5,8 +5,15 @@ import { shipping34Fixture } from "../fixtures/shipping34";
 import { shippingTypes } from "../../src/modules/shipping/catalog";
 import { groundShipping } from "../../src/modules/shipping/ground";
 import { reviewShipping } from "../../src/modules/shipping/review";
-import { verifyShippingField } from "../../src/modules/shipping/verify";
-import { portCode, hsSix } from "../../src/modules/shipping/equivalence";
+import {
+  verifyShippingField,
+  verifyClassification,
+} from "../../src/modules/shipping/verify";
+import {
+  portCode,
+  hsSix,
+  goodsEquivalent,
+} from "../../src/modules/shipping/equivalence";
 import { unit32 } from "../../src/modules/shipping/review-evidence";
 import { editShippingField } from "../../src/modules/shipping/edit";
 import { comparisonGroups } from "../../src/modules/shipping/presentation";
@@ -334,6 +341,199 @@ describe("PHASE 3.4 independent native PDF cells and negative controls", () => {
     expect(
       verifyShippingField({ value: "CTN", evidence }, pdf, "quantityUnit")
         .original.status,
+    ).toBe("unverified");
+  });
+  it("split native package header is a real same-table unit citation", async () => {
+    const f = await shipping34Fixture("house_bl"),
+      w = structuredClone(f.wire);
+    const ids = ["(14) No. / Kind", "of Packages", "60", "CARTONS"].map(
+      (t) => f.pdf.pages[0].blocks!.find((b) => b.text === t)!.id,
+    );
+    w.items[0].fields.packageUnit.evidence = { page: 1, blockIds: ids };
+    w.containers[0].packageUnit = {
+      value: "CARTONS",
+      evidence: { page: 1, blockIds: ids },
+    };
+    const d = groundShipping(w, f.pdf, "house_bl");
+    expect(d.items[0].fields.packageUnit.original.status).toBe("verified");
+    expect(d.containers[0].packageUnit.original.status).toBe("verified");
+  });
+  it("Manifest cargo container evidence preserves actual cargo IDs without a duplicate AI array", async () => {
+    const a = await shipping34Fixture("house_bl"),
+      b = await shipping34Fixture("house_manifest");
+    b.wire.containers = [];
+    b.document = groundShipping(b.wire, b.pdf, "house_manifest");
+    expect(b.document.containers).toHaveLength(0);
+    expect(b.document.collectionCoverage?.containers.complete).toBe(true);
+    const r = reviewShipping([a.document, b.document]);
+    expect(
+      r.checks.some(
+        (c) =>
+          c.title?.endsWith("Seal") &&
+          c.assessment === "confirmed_match" &&
+          c.fields.some((f) => f.cargoId === b.document.cargoRecords[0].id),
+      ),
+    ).toBe(true);
+    expect(
+      r.relationships
+        ?.flatMap((r) => r.entityLinks ?? [])
+        .some((l) => l.rightKind === "cargo" || l.leftKind === "cargo"),
+    ).toBe(true);
+  });
+  it("decorative frame keeps positioned-text table verification", async () => {
+    const bytes = unicodePdf(
+      [
+        [
+          { text: "Description", x: 40, y: 110 },
+          { text: "QTY", x: 230, y: 110 },
+          { text: "Unit", x: 330, y: 110 },
+          { text: "Synthetic A", x: 40, y: 150 },
+          { text: "500", x: 230, y: 150 },
+          { text: "PCS", x: 330, y: 150 },
+        ],
+      ],
+      { borders: [[{ x: 30, y: 90, width: 400, height: 100 }]] },
+    );
+    const pdf = {
+      id: "decorative-native",
+      fileName: "independent-frame.pdf",
+      pages: await extractPdfText(bytes, undefined, false, true),
+    };
+    const evidence = (text: string) => ({
+      page: 1,
+      blockIds: [pdf.pages[0].blocks!.find((b) => b.text === text)!.id],
+    });
+    const owner = verifyShippingField(
+      { value: "Synthetic A", evidence: evidence("Synthetic A") },
+      pdf,
+      "goodsDescription",
+      "item",
+    ).original.source?.layout;
+    expect(owner).toBeDefined();
+    expect(
+      verifyShippingField(
+        { value: 500, evidence: evidence("500") },
+        pdf,
+        "quantity",
+        "item",
+        owner,
+      ).original.status,
+    ).toBe("verified");
+  });
+  it("goods core excludes printed counts but preserves dimension differences", () => {
+    expect(goodsEquivalent("GLASS JARS / 720 PCS / 60 CTN", "GLASS JARS")).toBe(
+      "partial",
+    );
+    expect(goodsEquivalent("GLASS JARS (500 ML)", "GLASS JARS (750 ML)")).toBe(
+      "different",
+    );
+  });
+  it("single native item quantity remains an item source in provisional total comparison", async () => {
+    const fs = await Promise.all(
+      shippingTypes.map((t) => shipping34Fixture(t)),
+    );
+    fs[0].wire.fields.quantity = { value: null, evidence: null };
+    fs[0].wire.fields.quantityUnit = { value: null, evidence: null };
+    for (const f of fs) {
+      f.wire.fields.shipmentScope = { value: null, evidence: null };
+      f.document = groundShipping(f.wire, f.pdf, f.wire.type as "house_bl");
+    }
+    const r = reviewShipping(fs.map((f) => f.document));
+    const checks = r.checks.filter(
+      (c) => c.title === "기재 물품 수량 (합계/단일품목 범위)",
+    );
+    expect(
+      checks.some(
+        (c) =>
+          c.assessment === "provisional_match" &&
+          c.fields.some(
+            (f) =>
+              f.documentId === fs[0].document.id &&
+              f.itemId === fs[0].document.items[0].id,
+          ),
+      ),
+    ).toBe(true);
+    expect(
+      checks
+        .filter((c) => c.fields.some((f) => f.documentId === fs[0].document.id))
+        .every((c) => c.assessment !== "confirmed_match"),
+    ).toBe(true);
+  });
+  it("vertical title fragments are exact multi-block classification evidence", async () => {
+    const bytes = unicodePdf([
+      [
+        { text: "HOUSE", x: 160, y: 30, size: 16 },
+        { text: "BILL OF LADING", x: 160, y: 53, size: 16 },
+      ],
+    ]);
+    const pdf = {
+      id: "vertical-title",
+      fileName: "independent-title.pdf",
+      pages: await extractPdfText(bytes),
+    };
+    expect(
+      verifyClassification(
+        "house_bl",
+        { page: 1, blockIds: pdf.pages[0].blocks!.map((b) => b.id) },
+        pdf,
+      ).original.status,
+    ).toBe("verified");
+  });
+  it("cargo parser accepts old snapshots but strict provider schema requires new null-capable fields", async () => {
+    const { shippingWireSchema, shippingResponseSchema } = await import(
+      "../../src/modules/shipping/ai-schema"
+    );
+    const f = await shipping34Fixture("house_manifest");
+    const raw = JSON.parse(JSON.stringify(f.wire));
+    for (const k of ["hsCode", "quantity", "quantityUnit"])
+      delete raw.cargoRecords[0].fields[k];
+    const parsed = shippingWireSchema.parse(raw);
+    expect(parsed.cargoRecords[0].fields.hsCode.value).toBeNull();
+    const schema = shippingResponseSchema();
+    const walk = (n: unknown) => {
+      if (!n || typeof n !== "object") return;
+      const o = n as Record<string, unknown>;
+      expect(o).not.toHaveProperty("default");
+      if (o.properties)
+        expect(o.required).toEqual(Object.keys(o.properties as object));
+      Object.values(o).forEach(walk);
+    };
+    walk(schema);
+  });
+  it("different native document totals without proven full scope stay provisional", async () => {
+    const a = await shipping34Fixture("house_bl"),
+      b = await shipping34Fixture("house_manifest", { packages: 54 });
+    for (const f of [a, b]) {
+      f.wire.fields.shipmentScope = { value: null, evidence: null };
+      f.document = groundShipping(f.wire, f.pdf, f.wire.type as "house_bl");
+    }
+    const r = reviewShipping([a.document, b.document]);
+    expect(
+      r.checks.find((c) => c.title === "문서 전체 포장 개수")?.assessment,
+    ).toBe("provisional_mismatch");
+  });
+  it("a bare House service mention is not issuer evidence for generic Bill of Lading", async () => {
+    const bytes = unicodePdf([
+      [
+        { text: "Bill of Lading", x: 180, y: 30, size: 16 },
+        { text: "Related documents", x: 40, y: 80 },
+        { text: "House B/L / Ocean Freight", x: 40, y: 100 },
+      ],
+    ]);
+    const pdf = {
+      id: "unbound-house",
+      fileName: "independent-unbound.pdf",
+      pages: await extractPdfText(bytes),
+    };
+    expect(
+      verifyClassification(
+        "house_bl",
+        {
+          page: 1,
+          blockIds: [pdf.pages[0].blocks![0].id, pdf.pages[0].blocks![2].id],
+        },
+        pdf,
+      ).original.status,
     ).toBe("unverified");
   });
 });

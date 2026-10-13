@@ -48,21 +48,33 @@ if (stage === "original") {
     fixtures.push({ id: pdf.id, pdf, bytes, wire: emptyShippingWire(type) });
   }
 } else {
-  fixtures.push(await shipping34Fixture("house_bl"));
+  fixtures.push(
+    await shipping34Fixture("house_bl", { packages: 200, weight: 1920 }),
+  );
   fixtures.push(
     await shipping34Fixture(
       "house_manifest",
       stage === "negative"
-        ? { packages: 54, weight: 610, seal: "OTHER-SEAL" }
-        : { hbl: "OTHER-HBL", packages: 54 },
+        ? { packages: 180, weight: 1820, seal: "OTHER-SEAL" }
+        : { hbl: "OTHER-HBL", packages: 180, weight: 1920 },
     ),
   );
 }
 const result = await paid34(sha, stage, fixtures);
 const outputBase = `${stage}-${sha.slice(0, 7)}-d${result.budget.documents}`;
-await writeFile(join(dir, outputBase + ".json"), JSON.stringify({...result,results:result.results.map(r=>({...r,pdf:{...r.pdf,pages:[]}}))}), {
-  mode: 0o600,
-});
+await writeFile(
+  join(dir, outputBase + ".json"),
+  JSON.stringify({
+    ...result,
+    results: result.results.map((r) => ({
+      ...r,
+      pdf: { ...r.pdf, pages: [] },
+    })),
+  }),
+  {
+    mode: 0o600,
+  },
+);
 const docs = result.results.flatMap((r) => (r.document ? [r.document] : [])),
   review = reviewShipping(docs);
 const metrics = {
