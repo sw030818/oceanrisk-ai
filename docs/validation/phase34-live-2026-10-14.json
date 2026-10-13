@@ -1810,6 +1810,7 @@
     "71 final checks versus 50 baseline checks; absolute information-missing counts are not comparable accuracy measures.",
     "Production UI uses official deployed assets and captured actual Responses results without additional paid requests.",
     "Vercel public SHA and successful GitHub deployment status confirmed; control-plane Ready API not queried.",
-    "One baseline provider timeout has unknown usage; its upper reservation remains spent."
+    "One baseline provider timeout has unknown usage; its upper reservation remains spent.",
+    "Triangle was executed with three checks: common HBL reference is confirmed; package/gross totals remain insufficient because HBL numeric sources are item-level, not a printed document total. No item number was promoted to document total."
   ]
 }
