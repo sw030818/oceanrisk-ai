@@ -3,10 +3,10 @@
   "date": "2026-10-14",
   "kind": "baseline-and-first-deployment-observations-final-verification-pending",
   "budget": {
-    "documents": 12,
-    "requests": 12,
-    "measuredCostUsd": 0.015916305,
-    "unresolvedCostUpperUsd": 0.011764225000000007,
+    "documents": 19,
+    "requests": 19,
+    "measuredCostUsd": 0.021282959999999997,
+    "unresolvedCostUpperUsd": 0.011764225,
     "maxDocuments": 30,
     "maxRequests": 40,
     "maxCostUsd": 0.15
@@ -32,7 +32,400 @@
     },
     "triangle": "not_comparable"
   },
-  "after": null,
+  "after": {
+    "stage": "original",
+    "sourceSha": "e4e2745b0fb599c7cf43ea71b38296b08c0e8358",
+    "inputHashes": [
+      "d1559910f371e1c10b8613a198085c1006b2c1949621dfc9cff3384f22c301d5",
+      "9f15bc729a940d23a61a488262d32b72fda464cec2d431802646f0dc9361d6a0",
+      "04998575325ee7cd3e013fa146f130d65449b14071476b23217195284e389326"
+    ],
+    "budget": {
+      "documents": 15,
+      "requests": 15,
+      "measuredCostUsd": 0.018419915,
+      "unresolvedCostUpperUsd": 0.01176422500000001,
+      "maxDocuments": 30,
+      "maxRequests": 40,
+      "maxCostUsd": 0.15
+    },
+    "classification": 3,
+    "documents": 3,
+    "verified": 82,
+    "candidates": 93,
+    "verificationCodes": [
+      {
+        "verified": 22,
+        "value_mismatch": 1,
+        "role_mismatch": 3,
+        "row_mismatch": 2
+      },
+      {
+        "verified": 27,
+        "role_mismatch": 1
+      },
+      {
+        "verified": 33,
+        "role_mismatch": 4
+      }
+    ],
+    "review": {
+      "matches": 24,
+      "confirmedMismatches": 0,
+      "provisional": 9,
+      "needsReview": 0,
+      "insufficient": 38,
+      "notComparable": 0,
+      "confirmedRelationships": 3,
+      "userConfirmedRelationships": 0,
+      "proposedRelationships": 0,
+      "conflictingRelationships": 0,
+      "pairChecks": 68,
+      "triangleChecks": 3
+    },
+    "triangle": "performed",
+    "checks": [
+      {
+        "category": "party",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "quantity",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "quantity",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      }
+    ],
+    "batchRequests": 2,
+    "batchDurationsMs": [
+      20295,
+      10283
+    ],
+    "usage": [
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 10257,
+        "inputTokens": 13932,
+        "outputTokens": 1448,
+        "cachedInputTokens": 13929,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00086359,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 7881,
+        "inputTokens": 11968,
+        "outputTokens": 1239,
+        "cachedInputTokens": 11965,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00073945,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 9702,
+        "inputTokens": 11130,
+        "outputTokens": 1578,
+        "cachedInputTokens": 11127,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00090057,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      }
+    ],
+    "errors": [
+      null,
+      null,
+      null
+    ],
+    "automaticRetries": 0
+  },
   "privacy": "No uploaded PDFs, full text, raw provider response, business identifiers or secrets archived. Native PDFs remain private immutable attachments.",
   "actualOpenAI": {
     "structuredDocuments": 3,
@@ -909,5 +1302,514 @@
       null
     ],
     "automaticRetries": 0
-  }
+  },
+  "negative": {
+    "stage": "negative",
+    "sourceSha": "e4e2745b0fb599c7cf43ea71b38296b08c0e8358",
+    "inputHashes": [
+      "ac42157ee11b1af25731404e867a491a61c504032e30a542e3d7a2df9718f68a",
+      "b1afd4cd41158531e8a6b2f7584cebaa4a122d3868ddcd128ae77e1085acfd09"
+    ],
+    "budget": {
+      "documents": 17,
+      "requests": 17,
+      "measuredCostUsd": 0.019726234999999998,
+      "unresolvedCostUpperUsd": 0.011764225000000007,
+      "maxDocuments": 30,
+      "maxRequests": 40,
+      "maxCostUsd": 0.15
+    },
+    "classification": 2,
+    "documents": 2,
+    "verified": 54,
+    "candidates": 54,
+    "verificationCodes": [
+      {
+        "verified": 25
+      },
+      {
+        "verified": 29
+      }
+    ],
+    "review": {
+      "matches": 9,
+      "confirmedMismatches": 7,
+      "provisional": 0,
+      "needsReview": 0,
+      "insufficient": 8,
+      "notComparable": 0,
+      "confirmedRelationships": 1,
+      "userConfirmedRelationships": 0,
+      "proposedRelationships": 0,
+      "conflictingRelationships": 0,
+      "pairChecks": 24,
+      "triangleChecks": 0
+    },
+    "triangle": "insufficient_documents",
+    "checks": [
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "party",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "weight",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "container",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "goods",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "goods",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "quantity",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "reference",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "confirmed_mismatch"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "port",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "confirmed_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "confirmed_match"
+      }
+    ],
+    "batchRequests": 1,
+    "batchDurationsMs": [
+      17090
+    ],
+    "usage": [
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 6990,
+        "inputTokens": 7167,
+        "outputTokens": 1091,
+        "cachedInputTokens": 7164,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00061744,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 8080,
+        "inputTokens": 7461,
+        "outputTokens": 1228,
+        "cachedInputTokens": 7458,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00068888,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      }
+    ],
+    "errors": [
+      null,
+      null
+    ],
+    "automaticRetries": 0
+  },
+  "negativeHbl": {
+    "stage": "negative-hbl",
+    "sourceSha": "e4e2745b0fb599c7cf43ea71b38296b08c0e8358",
+    "inputHashes": [
+      "ac42157ee11b1af25731404e867a491a61c504032e30a542e3d7a2df9718f68a",
+      "75c768ce6876c885a6a1a74105c2f0656a4bfe3c211506c9c7dbf48460d27bb7"
+    ],
+    "budget": {
+      "documents": 19,
+      "requests": 19,
+      "measuredCostUsd": 0.021282959999999997,
+      "unresolvedCostUpperUsd": 0.011764225,
+      "maxDocuments": 30,
+      "maxRequests": 40,
+      "maxCostUsd": 0.15
+    },
+    "classification": 2,
+    "documents": 2,
+    "verified": 51,
+    "candidates": 54,
+    "verificationCodes": [
+      {
+        "verified": 21
+      },
+      {
+        "verified": 30,
+        "row_mismatch": 3
+      }
+    ],
+    "review": {
+      "matches": 0,
+      "confirmedMismatches": 0,
+      "provisional": 9,
+      "needsReview": 1,
+      "insufficient": 7,
+      "notComparable": 0,
+      "confirmedRelationships": 0,
+      "userConfirmedRelationships": 0,
+      "proposedRelationships": 0,
+      "conflictingRelationships": 1,
+      "pairChecks": 17,
+      "triangleChecks": 0
+    },
+    "triangle": "insufficient_documents",
+    "checks": [
+      {
+        "category": "party",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "packaging",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "container",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "goods",
+        "assessment": "needs_review"
+      },
+      {
+        "category": "goods",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "reference",
+        "assessment": "provisional_mismatch"
+      },
+      {
+        "category": "weight",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "packaging",
+        "assessment": "provisional_mismatch"
+      },
+      {
+        "category": "port",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "port",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "quantity",
+        "assessment": "provisional_match"
+      },
+      {
+        "category": "reference",
+        "assessment": "insufficient_information"
+      },
+      {
+        "category": "party",
+        "assessment": "provisional_match"
+      }
+    ],
+    "batchRequests": 1,
+    "batchDurationsMs": [
+      16155
+    ],
+    "usage": [
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 6480,
+        "inputTokens": 7167,
+        "outputTokens": 1046,
+        "cachedInputTokens": 7164,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0005949400000000001,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 7992,
+        "inputTokens": 7451,
+        "outputTokens": 1340,
+        "cachedInputTokens": 5561,
+        "cacheWriteTokens": 1887,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0009617849999999999,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      }
+    ],
+    "errors": [
+      null,
+      null
+    ],
+    "automaticRetries": 0
+  },
+  "coreObserved": [
+    {
+      "document": 0,
+      "classification": "classified",
+      "extraction": "partial",
+      "fields": {
+        "houseBlNumber": true,
+        "containerNumber": true,
+        "sealNumber": true,
+        "packageCount": true,
+        "grossWeight": true,
+        "quantity": true
+      },
+      "unverified": [
+        {
+          "field": "notifyParty",
+          "code": "value_mismatch"
+        },
+        {
+          "field": "tradeDescription",
+          "code": "role_mismatch"
+        },
+        {
+          "field": "sealNumber",
+          "code": "row_mismatch"
+        },
+        {
+          "field": "hsCode",
+          "code": "row_mismatch"
+        },
+        {
+          "field": "tradeDescription",
+          "code": "role_mismatch"
+        },
+        {
+          "field": "other",
+          "code": "role_mismatch"
+        }
+      ]
+    },
+    {
+      "document": 1,
+      "classification": "classified",
+      "extraction": "partial",
+      "fields": {
+        "houseBlNumber": true,
+        "declarationNumber": true,
+        "containerNumber": true,
+        "sealNumber": true,
+        "packageCount": true,
+        "grossWeight": true,
+        "quantity": true
+      },
+      "unverified": [
+        {
+          "field": "other",
+          "code": "role_mismatch"
+        }
+      ]
+    },
+    {
+      "document": 2,
+      "classification": "classified",
+      "extraction": "partial",
+      "fields": {
+        "houseBlNumber": true,
+        "declarationNumber": true,
+        "containerNumber": true,
+        "sealNumber": true,
+        "packageCount": true,
+        "grossWeight": true,
+        "quantity": true
+      },
+      "unverified": [
+        {
+          "field": "declarationDate",
+          "code": "role_mismatch"
+        },
+        {
+          "field": "tradeDescription",
+          "code": "role_mismatch"
+        },
+        {
+          "field": "tradeDescription",
+          "code": "role_mismatch"
+        },
+        {
+          "field": "shipment",
+          "code": "role_mismatch"
+        }
+      ]
+    }
+  ],
+  "usageTotal": {
+    "knownUsageRecords": 18,
+    "unknownUsageRecords": 1,
+    "inputTokens": 186105,
+    "outputTokens": 25754,
+    "cachedInputTokens": 129181,
+    "cacheWriteTokens": 56870,
+    "estimatedCostUsd": 0.02128296
+  },
+  "productionUi": {
+    "sourceSha": "e4e2745b0fb599c7cf43ea71b38296b08c0e8358",
+    "kind": "official Production assets + prior actual OpenAI response replay; no additional provider calls",
+    "observations": [
+      {
+        "width": 1440,
+        "verifiedRows": 14,
+        "overflow": false,
+        "evidenceAndDrawer": true,
+        "editRestore": true,
+        "print": true,
+        "additionalPaidRequests": 0
+      },
+      {
+        "width": 390,
+        "verifiedRows": 14,
+        "overflow": false,
+        "evidenceAndDrawer": true,
+        "editRestore": true,
+        "print": true,
+        "additionalPaidRequests": 0
+      }
+    ]
+  },
+  "actions": {
+    "id": 38462258031,
+    "sourceSha": "e4e2745b0fb599c7cf43ea71b38296b08c0e8358",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38462258031",
+    "jobs": [
+      {
+        "name": "quality",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "production",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "deployment": {
+    "expectedSha": "e4e2745b0fb599c7cf43ea71b38296b08c0e8358",
+    "verified": true,
+    "deploymentId": "dpl_4EHqk3K8SKVFpqAwxL3Cni7MbH5r",
+    "reason": "Production HTTP response serves the expected SHA and has the OpenAI key configured. This is not key validity, a real AI accuracy test or Vercel control-plane Ready confirmation.",
+    "attempts": 1
+  },
+  "gates": {
+    "npmCi": true,
+    "typecheck": true,
+    "lint": true,
+    "unitPassed": 440,
+    "unitFailed": 0,
+    "browserPassed": 50,
+    "browserFailed": 0,
+    "productionBuild": true,
+    "pdfWorker": true,
+    "existingUnitBaseline": 407,
+    "existingBrowserBaseline": 41
+  },
+  "limits": [
+    "Three structured originals succeeded but remain partial: 11/93 extracted candidates unverified.",
+    "Core observed field booleans locate a verified native source in its actual document/item/cargo scope; do not assert that item values are printed document totals.",
+    "Original HBL package/gross values were extracted on a single item row; absent document-total fields are not invented.",
+    "71 final checks versus 50 baseline checks; absolute information-missing counts are not comparable accuracy measures.",
+    "Production UI uses official deployed assets and captured actual Responses results without additional paid requests.",
+    "Vercel public SHA and successful GitHub deployment status confirmed; control-plane Ready API not queried.",
+    "One baseline provider timeout has unknown usage; its upper reservation remains spent."
+  ]
 }
