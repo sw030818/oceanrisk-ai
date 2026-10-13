@@ -41,5 +41,38 @@
     "Schemas provide foundation, not proof of semantic PDF grounding",
     "No OCR/EDI/customs submission/Booking/external integration/on-premise deployment"
   ],
-  "releasePolicy": "Only ship all-checks success permits normal main commit/push; exact remote and Production SHA and GitHub Actions checked separately."
+  "releasePolicy": "Only ship all-checks success permits normal main commit/push; exact remote and Production SHA and GitHub Actions checked separately.",
+  "productionVerification": {
+    "mode": "actual-production-pdf-preparation-not-ai",
+    "sourceSha": "a7f0e9899e6c6bee072a7864e1b8beb0d6db71c0",
+    "passed": true,
+    "deployment": {
+      "sha": "a7f0e9899e6c6bee072a7864e1b8beb0d6db71c0",
+      "keyConfigured": true,
+      "deploymentId": "dpl_3HPxwsvZanaGjzYY1vJFrzc2AV35"
+    },
+    "batchRequests": 1,
+    "preparedDocuments": 3,
+    "aiCalled": false,
+    "paidProviderCalls": 0,
+    "automaticRetries": 0,
+    "desktopThreeColumns": true,
+    "mobileWidth": 390,
+    "mobileOverflow": false,
+    "userCorrectionDistinct": true,
+    "literalPdfBlocksVisible": true,
+    "comparisonStatus": "not_performed"
+  },
+  "githubActions": {
+    "run": 38349262468,
+    "headSha": "a7f0e9899e6c6bee072a7864e1b8beb0d6db71c0",
+    "quality": "success",
+    "production": "success"
+  },
+  "vercelGitStatus": {
+    "state": "success",
+    "description": "Deployment has completed",
+    "deploymentId": "dpl_3HPxwsvZanaGjzYY1vJFrzc2AV35"
+  },
+  "verificationScope": "All implementation and real Production PDF preparation were verified at a7f0e9899e6c6bee072a7864e1b8beb0d6db71c0. Subsequent commit only preserves this safe report and PROGRESS; no application code or paid test changed."
 }

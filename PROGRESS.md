@@ -418,3 +418,10 @@
 - 저장/배포: 작업 파일만 Stage한 뒤 AGENTS의 ship 전체 통과를 조건으로 main 일반 Commit/Push, 원격 SHA 대조, Actions quality/production, 기존 Vercel Git 자동 배포/동일 SHA 및 공식 새 UI를 확인한다. 최종 SHA와 실제 완료 여부는 작업 완료 보고에 기록한다.
 - **남은 PHASE 3.1**: 새 3종 strict Responses 스키마/분류·필드/품목/컨테이너/복수 참조 추출, 실제 블록 인용 복원, 역할/행/열/숫자/단위 독립 검증, 판독 유형 불일치 경고와 수정 재검토 UI. 유료 검증은 새 예상 호출 수/상한의 별도 승인 필요.
 - **PHASE 3.2 이후**: TS 다대다 대응/양자 3조합/삼각대조, 복수 신고·분할선적·동시포장·컨테이너·다른 단위·원문 부족·잘못된 연결의 확정/잠정 판정. 관세청/EDI 제출·실시간 연동·Booking·OCR·온프레미스는 미구현이며 제공 중으로 표시하지 않는다.
+
+
+### PHASE 3.0 실제 GitHub·Production 완료 결과
+- 구현 커밋 main **a7f0e9899e6c6bee072a7864e1b8beb0d6db71c0** 일반 Push/원격 SHA 일치. ship 설치/type/lint/**291개 단위/15개 브라우저**/Production build/PDF worker 모두 통과, 작업 트리 깨끗함.
+- GitHub Actions **38349262468**의 quality·production 모두 success. Vercel Git 상태 **success / Deployment has completed**, 공식 Production의 SHA 일치 및 ID **dpl_3HPxwsvZanaGjzYY1vJFrzc2AV35** 확인. OpenAI 키 설정은 유지됐지만 추출 capability는 false이다. 관리 API Ready 직접 조회를 주장하지 않는다.
+- `check:phase30:ui --sha=a7f0e9899e6c6bee072a7864e1b8beb0d6db71c0` 실제 실행 성공. 공식 HTML/assets·실제 무료 PDF 준비 API에 합성3문서/배치1회를 제출해 원문 준비3개·블록/위치·사용자 수정 구분·1440px 3열·390px 넘침 없음 확인. AI/삼각대조 미실시, **유료 공급자 호출0·재시도0**. 이 검사는 모의 API 재생이 아니라 실제 Production PDF 준비이며, 실제 OpenAI 분석 성공을 뜻하지 않는다.
+- 안전 메타데이터는 `docs/validation/phase30-2026-10-13.json`에 보존한다. 이 결과 보존의 마지막 변경은 PROGRESS/검증 JSON만으로 실행 코드가 같으며, 문서 저장도 동일 ship 검사를 거쳐 Push/자동 배포 후 최종 SHA를 완료 보고한다. 다음 개발은 PHASE 3.1의 새 서류 전용 추출·근거 검증부터 시작하며 이번 단계에서 수행하지 않는다.
