@@ -249,8 +249,8 @@ describe("PHASE 3.0 shipping foundation, no AI or comparison claims", () => {
         3,
       ),
     ).toHaveLength(3);
-    expect(() => parseShippingSlots('["house_bl","house_bl"]', 2)).toThrow();
-    expect(() => parseShippingSlots('["house_bl"]', 1)).toThrow();
+    expect(parseShippingSlots('["house_bl","house_bl"]', 2)).toHaveLength(2);
+    expect(parseShippingSlots('["house_bl"]', 1)).toHaveLength(1);
   });
   it.each([null, "invalid", "[]", '["house_bl","other"]'])(
     "rejects absent or malformed slots %s",
@@ -342,9 +342,9 @@ describe("PHASE 3.0 shipping foundation, no AI or comparison claims", () => {
     expect(r.status).toBe(403);
     expect((await r.json()).error.code).toBe("CROSS_ORIGIN_DENIED");
   });
-  it("requires two different types even for directly submitted multipart requests", async () => {
-    expect((await send(await form(["house_bl"]))).status).toBe(400);
-    expect((await send(await form(["house_bl", "house_bl"]))).status).toBe(400);
+  it("PHASE3.3 accepts same-type and single-file batches without claiming comparison", async () => {
+    expect((await send(await form(["house_bl"]))).status).toBe(200);
+    expect((await send(await form(["house_bl", "house_bl"]))).status).toBe(200);
   });
   it("preserves count and filename/type safety", async () => {
     expect(

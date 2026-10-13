@@ -3,9 +3,11 @@ export const dynamic = "force-dynamic";
 export function GET() {
   return NextResponse.json(
     {
-      phase: "3.2",
+      phase: "3.3",
       capabilities: {
         pdfPreparation: true,
+        multiFileBatches: true,
+        selectiveOCR: true,
         documentClassification: true,
         aiExtraction: true,
         pairComparison: true,

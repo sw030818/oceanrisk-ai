@@ -7,17 +7,20 @@ export function summarizeShipping(
   const ready = results.filter((r) => r.document && !r.error);
   const types = new Set(
     ready
-      .filter(
-        (r) =>
-          r.document?.classificationStatus !== "needs_review" &&
-          r.typeMismatch !== true,
-      )
-      .map((r) => r.uploadSlot),
+      .filter((r) => r.document?.classificationStatus !== "needs_review")
+      .map((r) => r.detectedType ?? r.uploadSlot),
   );
   const analyzed = ready.filter(
     (r) => r.document?.extractionStatus !== "not_performed",
   );
   return {
+    uploadedDocuments: results.length,
+    uploadedTypes: new Set(results.map((r) => r.uploadSlot)).size,
+    classifiedTypes: new Set(
+      analyzed
+        .filter((r) => r.document?.classificationStatus === "classified")
+        .map((r) => r.detectedType),
+    ).size,
     successfulDocuments: ready.length,
     analyzedDocuments: analyzed.length,
     partialDocuments: analyzed.filter(

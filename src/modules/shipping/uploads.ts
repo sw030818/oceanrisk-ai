@@ -16,15 +16,36 @@ export function parseShippingSlots(
     if (typeof raw !== "string" || raw.length > 256) throw new Error();
     const slots = z
       .array(shippingTypeSchema)
-      .min(2)
+      .min(1)
       .max(4)
       .parse(JSON.parse(raw));
-    if (slots.length !== count || new Set(slots).size < 2) throw new Error();
+    if (slots.length !== count) throw new Error();
     return slots;
   } catch {
     throw new AnalysisError(
       "INVALID_UPLOAD_SLOTS",
-      "서로 다른 종류의 선적서류를 최소 2개 선택해 주세요. 업로드 영역 정보는 파일 개수와 일치해야 합니다.",
+      "각 PDF의 업로드 영역 정보가 필요하며 파일 개수와 일치해야 합니다.",
+      400,
+    );
+  }
+}
+export function parseShippingIds(
+  raw: FormDataEntryValue | null,
+  count: number,
+): string[] | undefined {
+  if (raw === null) return undefined;
+  try {
+    if (typeof raw !== "string" || raw.length > 512) throw new Error();
+    const ids = z
+      .array(z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/))
+      .length(count)
+      .parse(JSON.parse(raw));
+    if (new Set(ids).size !== ids.length) throw new Error();
+    return ids;
+  } catch {
+    throw new AnalysisError(
+      "INVALID_DOCUMENT_IDS",
+      "파일 식별자 정보가 올바르지 않습니다.",
       400,
     );
   }

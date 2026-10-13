@@ -19,6 +19,7 @@ export interface StructuredExtraction<T> {
   schema: () => object;
   resolve: (raw: unknown, pdf: PdfDocument) => T;
   maxOutputTokens?: number;
+  inputContent?: (pdf: PdfDocument) => object[];
 }
 export function structuredOpenAIRequest<T>(
   pdf: PdfDocument,
@@ -35,7 +36,9 @@ export function structuredOpenAIRequest<T>(
       { role: "developer", content: format.instructions },
       {
         role: "user",
-        content: JSON.stringify({ untrustedDocument: { pages: pdf.pages } }),
+        content:
+          format.inputContent?.(pdf) ??
+          JSON.stringify({ untrustedDocument: { pages: pdf.pages } }),
       },
     ],
     text: {

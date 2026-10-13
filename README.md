@@ -2,7 +2,7 @@
 
 **중소 포워더를 위한 적하목록 신고 전 선적서류 검토 도구**
 
-현재 PHASE 3.2는 **House B/L·수출신고필증·House Manifest의 AI 분류·정보 추출·PDF 원문 근거 확인**을 제공합니다. 같은 의미의 검증된 참조로 관계를 연결하고, 비교 가능한 범위의 양자·삼각대조와 정합성 확인 사항을 제공합니다. 세관 신고를 직접 수행하거나 과태료 예방을 보장하지 않습니다.
+현재 PHASE 3.3는 **House B/L·수출신고필증·House Manifest의 AI 분류·정보 추출·PDF 원문 근거 확인**을 제공합니다. 같은 의미의 검증된 참조로 관계를 연결하고, 비교 가능한 범위의 양자·삼각대조와 정합성 확인 사항을 제공합니다. 세관 신고를 직접 수행하거나 과태료 예방을 보장하지 않습니다.
 
 ## 사용 흐름
 
@@ -53,7 +53,7 @@ OPENAI_API_KEY= GEMINI_API_KEY= PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium
 
 ## API 계약과 제한
 
-- `GET /api/status`: PHASE 3.2, provider/model, 키 설정 여부, capability, 배포 SHA/ID/environment. 키 값·유효성은 반환하지 않습니다.
+- `GET /api/status`: PHASE 3.3, provider/model, 키 설정 여부, capability, 배포 SHA/ID/environment. 키 값·유효성은 반환하지 않습니다.
 - `POST /api/analyze`: multipart `files` + JSON `slots` (`house_bl`, `export_declaration`, `house_manifest`) + `operation`.
 - `operation:analyze`: `mode:shipping-analysis`, 개별 문서 분류/필드/근거/usage 또는 안전한 오류. `operation:prepare`(생략 시 하위 호환 기본값): `mode:pdf-preparation`, AI 호출 0회. 지원하지 않는 operation은 거부합니다.
 - prepare는 대조 미실시입니다. analyze는 관계·양자/삼각 상태·검사·요약을 반환하며 3종이 있어도 공통 연결 근거가 없으면 삼각대조를 보류합니다. capability와 실제 수행 결과는 별개입니다.
@@ -71,7 +71,7 @@ NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run ch
 
 무료 Production 검사는 정확한 SHA를 먼저 확인하고 **prepare만** 실제 전송합니다. 잘못된 PDF의 분석 오류 경로도 PDF 추출 단계에서 차단되는지 검사하며 공급자 호출은 0회입니다.
 
-보존된 PHASE 3.1 전용 `test:phase31:production`은 당시 **새 승인 후에만** 실행하는 별도 도구입니다. 현재 PHASE 3.2 승인·도구·예산은 아래 절차를 사용합니다. 사전 비용 확인 `--dry-run`은 호출 0회입니다. 합성 3문서/배치 1회/최대 $0.05/자동 재시도 0의 별도 ledger를 호출 전에 예약하며 usage가 불명확하면 예약을 유지합니다. 기존 PHASE 2.2의 31개/PHASE 2.3의 2개 소진 예산과 공유하지 않습니다. 재실행/예산 초기화는 금지합니다. 실행 결과는 안전한 상태·개수·토큰/비용 메타데이터만 보존합니다.
+보존된 PHASE 3.1 전용 `test:phase31:production`은 당시 **새 승인 후에만** 실행하는 별도 도구입니다. 현재 PHASE 3.3 승인·도구·예산은 아래 절차를 사용합니다. 사전 비용 확인 `--dry-run`은 호출 0회입니다. 합성 3문서/배치 1회/최대 $0.05/자동 재시도 0의 별도 ledger를 호출 전에 예약하며 usage가 불명확하면 예약을 유지합니다. 기존 PHASE 2.2의 31개/PHASE 2.3의 2개 소진 예산과 공유하지 않습니다. 재실행/예산 초기화는 금지합니다. 실행 결과는 안전한 상태·개수·토큰/비용 메타데이터만 보존합니다.
 
 ## 남은 범위
 
@@ -94,3 +94,14 @@ NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run te
 stage baseline은 기존3.1 추출2건, normal은3종, mismatch/uncertain은각2종입니다. 실패 후 무조건반복하지 않고 필요한 경우에만 남은예산에서 repair를 사용합니다. 실제응답을 메모리에서만 재사용해 공식ProductionHTML/assets의 데스크톱/모바일·원문·수정 UI를 확인하며 추가유료호출0입니다. API 전문/문서 전문/키를 기록하지 않습니다.
 
 실제 live 결과·토큰·예산은 [validation/phase32-evidence 기록](https://github.com/sw030818/oceanrisk-ai/tree/validation/phase32-evidence/docs/validation)에 정상Push하여 보존합니다. 보고서만의 커밋으로 테스트된 Production main SHA를 바꾸지 않습니다. 그 원격 예산도 확인해 새 작업환경에서 소모 예산을 초기화하지 않습니다. 해당 기록이 아직 없으면 live 완료를 의미하지 않습니다. PHASE3.1 당시 승인대기와새3.2승인을 구분합니다.
+
+### PHASE 3.3 사용 흐름
+House B/L·수출신고필증·House 적하목록 각 영역에 여러 PDF를 추가합니다. 기존 파일은 유지되고 개별 삭제/교체가 가능합니다. 검토 공간은24개/64 MB, 파일당4 MB/30페이지이며 서버 요청은4 MB 이내로 자동 분할합니다. 같은 이름도 고유ID로 구분합니다. 한 종류는 개별 분석만 제공하고 검증된 다른 유형과 연결될 때 대조합니다.
+
+주 버튼 **AI 서류 분석 시작**은 외부 OpenAI 분류·추출·근거 후보 및 결정적 대조를 실행합니다. 보조 **PDF 원문만 보기**는 무료 파싱만 실행합니다. 배치 실패는 다른 성공 결과를 지우지 않으며 추가파일 분석은 기존 성공/수정 결과를 재사용합니다. 시간부족으로 아직AI를호출하지않은 문서는 단일파일배치로 연기합니다.
+
+검색 가능한 페이지는 기존PDF.js 원문을 유지합니다. 텍스트 부족 페이지는 동의된 auto OCR에서만 최대3페이지를 외부 OpenAI에 PDFsubset으로 보내 인식합니다. OCR 인식값/페이지는 후보이며 독립적으로 확인된 원문 좌표가 아닙니다. 숫자/단위는 원본PDF에서 직접 확인해야 하며 확정 오류 근거로 승격하지 않습니다. 원본은 브라우저파일 링크로 확인하고 서버에 영구저장하지 않습니다.
+
+복수신고는 명시된 전체신고목록·원문 전체품목·서로다른품명/HS·동일수량단위·전체범위가 모두 확인된 경우에만 물품수량을집계합니다. 중복품목/공동포장/미명시배분은 보류합니다. 검토 보고서는 브라우저 인쇄/PDF저장으로 출력하며 PDF전문을 포함하지 않습니다.
+
+실제 검증: `NODE_USE_ENV_PROXY=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run test:phase33:production -- --sha=<ProductionSHA> --stage=normal --approved-documents=24 --approved-requests=30 --approved-max-cost-usd=0.10`. 신규 예산$0.10/24문서/30공급자요청을 전체 단계가 공유합니다. 명령플래그는 새로운 승인을 대신하지 않고 소모예산을 복원하지 않습니다. baseline/normal/mismatch/complex/uncertain/ocr/holdout은 각각 결과를 보존하며 OCR합성회전스캔 생성은 개발환경의pdftoppm을사용하고ProductionOCR은별도native실행파일을요구하지않습니다.

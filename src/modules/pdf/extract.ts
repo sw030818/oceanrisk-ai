@@ -11,6 +11,7 @@ import type { PdfPage, PdfBlock } from "../documents/schema";
 export async function extractPdfText(
   bytes: Uint8Array,
   signal?: AbortSignal,
+  allowSparsePages = false,
 ): Promise<PdfPage[]> {
   if (signal?.aborted)
     throw new AnalysisError(
@@ -107,15 +108,22 @@ export async function extractPdfText(
         width: viewport.width,
         height: viewport.height,
         blocks,
+        ...(allowSparsePages &&
+        (text.replace(/\s/g, "").length < 40 || text.includes("�"))
+          ? { ocrStatus: "candidate" as const }
+          : {}),
       });
       page.cleanup();
     }
-    if (!pages.some((page) => page.text.replace(/\s/g, "").length >= 8))
+    if (
+      !allowSparsePages &&
+      !pages.some((page) => page.text.replace(/\s/g, "").length >= 8)
+    )
       throw new AnalysisError(
         "NO_READABLE_TEXT",
         "읽을 수 있는 텍스트가 없습니다. 스캔·이미지 PDF는 지원하지 않으며 텍스트 PDF가 필요합니다.",
       );
-    if (pages.some((page) => page.text.includes("�")))
+    if (!allowSparsePages && pages.some((page) => page.text.includes("�")))
       throw new AnalysisError(
         "UNREADABLE_ENCODING",
         "PDF 글자 인코딩을 판독하지 못했습니다. 텍스트가 정상 표시되는 PDF로 다시 저장해 주세요.",

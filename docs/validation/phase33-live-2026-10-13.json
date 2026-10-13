@@ -1,0 +1,16 @@
+{
+  "mode": "phase33-live-budget-not-yet-run",
+  "budget": {
+    "documents": 0,
+    "requests": 0,
+    "measuredCostUsd": 0,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 24,
+    "maxRequests": 30,
+    "maxCostUsd": 0.1
+  },
+  "automaticRetries": 0,
+  "priorBudgetsReused": false,
+  "stages": [],
+  "rawResponsesArchived": false
+}

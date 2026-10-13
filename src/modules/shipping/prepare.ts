@@ -6,6 +6,9 @@ import type { ShippingType } from "./catalog";
 export interface ShippingResult {
   aiUsage?: AIUsage;
   aiModel?: string;
+  ocrUsage?: AIUsage;
+  ocrPages?: number[];
+  ocrError?: ReturnType<typeof safeError>;
   pdf: PdfDocument;
   uploadSlot: ShippingType;
   originalUploadSlot?: ShippingType;
@@ -18,9 +21,10 @@ export async function prepareShippingFile(
   file: File,
   slot: ShippingType,
   signal?: AbortSignal,
+  documentId?: string,
 ): Promise<ShippingResult> {
   const pdf: PdfDocument = {
-    id: crypto.randomUUID(),
+    id: documentId ?? crypto.randomUUID(),
     fileName: file.name,
     pages: [],
   };
@@ -28,6 +32,7 @@ export async function prepareShippingFile(
     pdf.pages = await extractPdfText(
       new Uint8Array(await file.arrayBuffer()),
       signal,
+      true,
     );
     return {
       pdf,

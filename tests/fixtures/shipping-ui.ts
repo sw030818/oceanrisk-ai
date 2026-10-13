@@ -1,7 +1,7 @@
 import { expect, type Page } from "@playwright/test";
 import { makePdf } from "./synthetic";
 import { prepareShippingFile } from "../../src/modules/shipping/prepare";
-import { summarizeShipping } from "../../src/modules/shipping/summary";
+import { routeShipping } from "./shipping-route";
 import {
   shippingTypes,
   shippingLabels,
@@ -28,7 +28,6 @@ export async function choose(
   page: Page,
   types: ShippingType[] = ["house_bl", "house_manifest"],
 ) {
-  await page.getByRole("radio", { name: "PDF 원문만 확인" }).check();
   const bytes = await shippingPdf();
   for (const [i, type] of types.entries())
     await page
@@ -42,7 +41,7 @@ export async function choose(
 export async function start(page: Page) {
   await page.getByRole("checkbox").check();
   await page
-    .getByRole("button", { name: "비교 자료 준비", exact: true })
+    .getByRole("button", { name: "PDF 원문만 보기", exact: true })
     .click();
 }
 export async function mockPreparation(
@@ -69,18 +68,7 @@ export async function mockPreparation(
       ),
     ),
   );
-  await page.route("**/api/analyze", (route) =>
-    route.fulfill({
-      json: {
-        mode: "pdf-preparation",
-        phase: "3.0",
-        results,
-        summary: summarizeShipping(results),
-        aiCalled: false,
-        capabilities: { aiExtraction: false, triangularComparison: false },
-      },
-    }),
-  );
+  await routeShipping(page, results, "3.0", false);
   await page.goto("/");
   await choose(page, types);
   await start(page);

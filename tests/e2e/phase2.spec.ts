@@ -54,20 +54,22 @@ test("three independent red-PDF slots support replace, remove, drag-drop and des
     ),
   ).toBe(true);
 });
-test("one file cannot start comparison preparation, even after consent", async ({
+test("single file can prepare native PDF but cannot claim a comparison", async ({
   page,
 }) => {
   await page.goto("/");
+  test.setTimeout(60000);
   await choose(page, ["house_bl"]);
   await page.getByRole("checkbox").check();
   await expect(
-    page.getByRole("button", { name: "비교 자료 준비", exact: true }),
-  ).toBeDisabled();
-  await expect(
-    page.getByText("1종 선택 · 비교 자료 준비에 최소 2종이 필요합니다."),
-  ).toBeVisible();
+    page.getByRole("button", { name: "PDF 원문만 보기", exact: true }),
+  ).toBeEnabled();
+  await start(page);
+  await expect(page.getByText("대상 서류 부족", { exact: true })).toBeVisible({
+    timeout: 45000,
+  });
 });
-test("three documents form one multipart request and preserve selected types without claiming AI classification", async ({
+test("three documents form safe multipart batches and preserve selected types without claiming AI classification", async ({
   page,
 }) => {
   let requests = 0;
@@ -75,7 +77,9 @@ test("three documents form one multipart request and preserve selected types wit
     requests++;
     const body = route.request().postDataBuffer()!.toString();
     expect(body).toContain(
-      '["house_bl","export_declaration","house_manifest"]',
+      requests === 1
+        ? '["house_bl","export_declaration"]'
+        : '["house_manifest"]',
     );
     await route.continue();
   });
@@ -89,5 +93,5 @@ test("three documents form one multipart request and preserve selected types wit
     page.getByText("3종 삼각대조 자료 준비", { exact: true }),
   ).toBeVisible();
   await expect(page.getByText(/실제 분류 미실시/)).toHaveCount(3);
-  expect(requests).toBe(1);
+  expect(requests).toBe(2);
 });

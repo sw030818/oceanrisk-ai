@@ -15,7 +15,7 @@ OceanRisk AI는 중소 포워더의 **House B/L·수출신고필증·House 적�
 
 3종 전용 strict 추출·실제 제목 분류·블록 복원·독립 의미/행/열/단위 검증과 다중 결과·수정/복원·불일치 UI를 구현했다. 기존 공통 OpenAI transport/최종 JSON 파서·PDF/보안·원문 UI·과거 회귀는 유지한다. 무료 회귀/Production build/worker·main ship·Actions/동일 Production SHA를 확인해 결과를 PROGRESS에 기록한다. 유료 호출은 새 승인 전 미실행이다. 사전예약 예산은 합성3문서/한 배치/최대$0.05/자동재시도0이며 이전 예산과 분리한다.
 
-실행 확인: main 구현 3a4605f79e0764d0a1404b96d5572dd38873355b, ship 332단위/21브라우저 및 설치·타입·린트·빌드·worker 통과. Actions quality/production·Vercel Git 완료·Production 같은SHA와 무료 실제 PDF/모바일 검증 통과. 실제 유료 검증은 새 승인 질문 제출 후 대기이며 호출0이다. 결과 보존·마지막 문구 수정도 ship 검사를 거쳐 저장한다.
+실행 확인: main 구현 3a4605f79e0764d0a1406b96d5572dd38873355b, ship 332단위/21브라우저 및 설치·타입·린트·빌드·worker 통과. Actions quality/production·Vercel Git 완료·Production 같은SHA와 무료 실제 PDF/모바일 검증 통과. 실제 유료 검증은 새 승인 질문 제출 후 대기이며 호출0이다. 결과 보존·마지막 문구 수정도 ship 검사를 거쳐 저장한다.
 
 ## PHASE 3.1 상세 작업
 
@@ -95,3 +95,11 @@ PHASE 2.2 실행 결과: OpenAI Responses 기본 전환, phase별 최종 JSON �
 3. 기존 회귀와 새 정상/오류/불확실/다대다/표근거/수정/모바일 테스트 후 ship으로 main 정상 저장·자동배포/Actions/정확SHA 확인.
 4. 같은 Production SHA에서 정상3종·불일치2종·정보부족2종 실제 추출→관계→비교 통합 검사. 실패 원인 분리 후 필요하면 남은3문서까지 최소 재검증. 최대12/$0.50 초과 금지. 현재 baseline2건 외 추가호출 전.
 5. 실제 결과/예산은 별도 validation/phase32-evidence 브랜치에 보존해 main Production 테스트SHA를 유지한다. 실제 테스트하지 않은 범위, OCR/복잡표/미명시 다대다 배분·법적 위험/자동세관신고는 완료로 주장하지 않는다.
+
+## PHASE 3.3 — 다중 자료·실무 평가
+1. 최신 main928bcc7/원격/기존377단위·30브라우저·원문/AI/관계 계약 조사 완료.
+2. 세 유형 File[]·안정ID·추가/삭제/교체·단일유형입력·안전한 순차배치·성공/수정결과유지·AI기본/무료원문보조 구현.
+3. 반복 헤더/줄바꿈/합계 경계·OCR출처/표누락 보호·명시적 복수신고의 서로다른품목 집계·인쇄보고서 구현.
+4. 독립 PDF 정답(tuning/holdout)·406단위·41브라우저 목표 및 전체 ship/Actions/Production 동일SHA 검사.
+5. 새$0.10/24문서/30요청 예산에서 기존3종 기준선·신규3종·불일치2·복잡6·불확실2·회전스캔1·Holdout3을 최소 실제 검사한다. 기존성과/예산과 섞지 않고 필요충족시 중단한다.
+6. 실제 증거는 validation/phase33-evidence 별도브랜치. 진짜업무문서 일반정확도·저화질/OCR독립좌표확정·미명시 배분·EDI/법률판정은 지원완료로 주장하지 않는다.

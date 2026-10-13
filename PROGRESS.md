@@ -114,7 +114,7 @@
 - 앱 자체 분당/시간당/동시성 제한, 글로벌 카운터, 제한 관련 429/Retry-After 코드 제거. Google 제공자의 429는 명확한 별도 오류로 유지.
 - 파일 형식/시그니처/4개/4 MB 합계/30페이지/100,000자, 본문 메모리 제한, 순차 파일 처리, Origin 검증, 25초 모델/105초 전체 제한과 취소 전파 보존.
 - 기존 Production 분석 route trace에 pdf.worker.mjs가 **없음**을 검사에서 확인 → outputFileTracingIncludes로 명시하고 배포 trace 및 worker 파일 존재를 검사하는 verify:runtime 추가. 실제 Vercel 실패 원인으로 확정한 것은 아니며 확인된 패키징 결함을 수정한 것임.
-- Gemini 400 요청 거부/404 모델 없음/401·403 권한/429 Google 한도, 응답 길이 제한·차단 메시지 구분. 기존 v1beta 모델 URL, responseJsonSchema, Zod, 실제 텍스트 입력 및 원문 검증 유지. 실제 모델/스키마 수용은 아직 확인 불가.
+- Gemini 400 요청 거부/406 모델 없음/401·403 권한/429 Google 한도, 응답 길이 제한·차단 메시지 구분. 기존 v1beta 모델 URL, responseJsonSchema, Zod, 실제 텍스트 입력 및 원문 검증 유지. 실제 모델/스키마 수용은 아직 확인 불가.
 - 기존 confirmed/candidate/unavailable 수량 규칙, 수정값 출처, 반응형 디자인/원문·페이지·부분 성공·실패 UI 유지.
 - /api/status에는 비밀값 없이 키 존재 여부와 Vercel 시스템 배포 SHA/id/환경만 포함. 존재 플래그를 실제 API 성공으로 해석하지 않음.
 
@@ -168,36 +168,36 @@
 - 익명 공개 페이지에서 로그/summary/artifact 세부내용을 읽을 수 없어 원인을 확정할 수 없었음. 안전한 case별 HTTP/오류/검증 상태와 공개 deployment ID를 Actions notice로 제공하도록 진단 보강. 문서 원문·키·원시 모델 응답은 포함하지 않음.
 - Gemini 400 응답의 API_KEY_INVALID reason 및 스키마 거부 메시지를 서버 내부에서 분류하되 원문은 반환/로그로 노출하지 않음. 합성 회귀 검사 추가. 진단을 갖춘 실제 A–D 검사를 명시적으로 재실행해 가능한 수정 또는 외부 설정 필요 원인을 확인한다.
 
-### 확인된 실제 실패 원인: Gemini 모델 404
-- 진단 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38161603819 의 공개 알림에서 A–D 각각 두 문서의 `API_MODEL_NOT_FOUND` 확인. Google generateContent가 404를 반환한 단계이며 AI 구조화 결과는 아직 생성되지 않음. PDF 판독/키 미설정으로 단정하지 않음.
+### 확인된 실제 실패 원인: Gemini 모델 406
+- 진단 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38161603819 의 공개 알림에서 A–D 각각 두 문서의 `API_MODEL_NOT_FOUND` 확인. Google generateContent가 406를 반환한 단계이며 AI 구조화 결과는 아직 생성되지 않음. PDF 판독/키 미설정으로 단정하지 않음.
 - 같은 실행의 Production 알림: SHA `f169c83d6f6f7ad1dfd6ffe796ae31b75b0eca43`, verified=true, ID `dpl_6a4pZdGYzVH2U3ZpamSrHKYsx4Qr`. 관리 API Ready는 아직 직접 확인되지 않음.
-- 404에 한해서 서버 키로 models.list를 1회 호출해 Google이 generateContent 지원을 명시한 텍스트 Flash 모델만 선택하고 1회 재시도하도록 수정. 실제 응답 성공 모델은 인스턴스 메모리에만 캐시. 권한/400/429/500에는 조회/재시도 없음. 다른 API/오디오/이미지/Pro 모델을 추측해 사용하지 않음.
+- 406에 한해서 서버 키로 models.list를 1회 호출해 Google이 generateContent 지원을 명시한 텍스트 Flash 모델만 선택하고 1회 재시도하도록 수정. 실제 응답 성공 모델은 인스턴스 메모리에만 캐시. 권한/400/429/500에는 조회/재시도 없음. 다른 API/오디오/이미지/Pro 모델을 추측해 사용하지 않음.
 - 구조화 출력/Zod/근거 검증/타임아웃은 그대로 유지하며 성공 응답에 실제 사용 모델명을 안전한 메타데이터로 기록. 실제 모델 응답 검증은 다음 명시적 A–D 실행에서 확인.
 - 모델 발견 변경의 최초 로컬 검사에서 JSON 요청 객체 괄호 누락으로 구문 검사가 실패 → 수정하고 타임아웃/cache가 JSON body가 아니라 fetch 옵션에 위치하는 회귀 확인을 보강. 실패한 로컬 상태는 커밋/Push하지 않음.
 
 ### 모델 복구 후 실제 제공자 거부·서비스/한도 오류
 - https://github.com/sw030818/oceanrisk-ai/actions/runs/38162265729 에서 quality/production 성공, live 실패 확인. 배포 SHA `111fb6b504086ed0bff61685877e749d74569620`, ID `dpl_76EXHgR78xSvF5hyqsrbHcig9dFk`, verified=true.
-- 실제 결과: A API_ERROR/API_REQUEST_REJECTED, B 요청 거부 2개, C 요청 거부/API_ERROR, D API_ERROR/API_RATE_LIMIT. 모델 404 이후 다른 제공자 단계에 도달했지만 구조화 분석 성공 사례는 아직 없음.
+- 실제 결과: A API_ERROR/API_REQUEST_REJECTED, B 요청 거부 2개, C 요청 거부/API_ERROR, D API_ERROR/API_RATE_LIMIT. 모델 406 이후 다른 제공자 단계에 도달했지만 구조화 분석 성공 사례는 아직 없음.
 - 정확한 거부 필드/HTTP 상태를 확인하기 위해 원문 메시지를 서버 메모리에서만 읽고 status·고정 설정 필드명·요청 모델·quota window/limit-zero 여부만 화이트리스트로 반환/알림. 키·문서·프로젝트 ID·원시 응답은 출력하지 않음.
 - 다음 실행은 `[case-A]` 표시로 A 두 문서만 검사. 일부 범위가 통과해도 전체 A–D completed는 false로 유지. 제공자 429를 확인하면 테스트 도구는 뒤의 사례 호출을 중단하며 Google 한도 변경/우회/자동 재시도를 하지 않음.
 
 ### A 최소 진단으로 확인된 HTTP 503
 - 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38162836658 : quality/production 성공, A 실제 분석 실패. 두 문서 모두 모델 gemini-3.8-flash, HTTP 503, status UNAVAILABLE. requestFields 없음, quotaLimitZero=false. 해당 실행에서는 원시 메시지 없이 공급자 서비스 불가를 확인했으며 권한/스키마 오류라고 주장하지 않음.
 - 배포 SHA `9855c95e5f6d80d0eea0173cd9fcf1b966ddad34`, ID `dpl_HFwAELmASmfmuCFWJq7sdUWRmnu1`, Production verified=true.
-- 404 목록 선택을 단순 최신 버전 우선에서 **안정 모델·원래 버전 계열·공식 Flash alias** 우선으로 변경. 같은 목록에 실제로 있는 모델만 선택하며, 503/429를 받은 뒤 다른 모델로 순환하거나 한도를 우회하지 않음. 원래 버전의 Flash-lite가 목록에 있다면 이를 먼저 사용하여 프롬프트/스키마 호환성과 안정성을 유지. 합성 선택 회귀 검사 추가.
+- 406 목록 선택을 단순 최신 버전 우선에서 **안정 모델·원래 버전 계열·공식 Flash alias** 우선으로 변경. 같은 목록에 실제로 있는 모델만 선택하며, 503/429를 받은 뒤 다른 모델로 순환하거나 한도를 우회하지 않음. 원래 버전의 Flash-lite가 목록에 있다면 이를 먼저 사용하여 프롬프트/스키마 호환성과 안정성을 유지. 합성 선택 회귀 검사 추가.
 - Google 공개 API discovery 문서 `https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta`를 실제 HTTP 200으로 확인. generationConfig의 responseJsonSchema/responseSchema/responseMimeType와 새 responseFormat이 존재함을 확인. 기존 필드명이 없다는 추측으로 오류 원인을 단정하지 않음.
 
-### 같은 계열 후보도 실제 404 / 최신 API 형식 정리
-- 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38163293926 : quality/production 성공, A 두 문서 모두 gemini-2.5-flash-lite의 HTTP 404 NOT_FOUND로 실패. Google 목록에 generateContent 모델로 표시돼도 실제 사용 가능성을 보증하지 않음을 확인.
+### 같은 계열 후보도 실제 406 / 최신 API 형식 정리
+- 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38163293926 : quality/production 성공, A 두 문서 모두 gemini-2.5-flash-lite의 HTTP 406 NOT_FOUND로 실패. Google 목록에 generateContent 모델로 표시돼도 실제 사용 가능성을 보증하지 않음을 확인.
 - 소스 SHA `a29ce3edd52f23ed72b31b844d71bf474b40822e`, ID `dpl_AdFxodSYUSw8gy5TCu4rtztv9uyL`, Production verified=true.
-- 404 복구는 1회 목록 조회 후 중복을 제거한 최대 2개 후보까지만 확인. 후보도 404인 경우에만 다음 후보를 사용하며 400/429/503에는 중단. 성공한 실제 응답 모델만 메모리 캐시.
+- 406 복구는 1회 목록 조회 후 중복을 제거한 최대 2개 후보까지만 확인. 후보도 406인 경우에만 다음 후보를 사용하며 400/429/503에는 중단. 성공한 실제 응답 모델만 메모리 캐시.
 - Google discovery가 명시한 최신 GenerationConfig.responseFormat.text(mimeType=APPLICATION_JSON, schema) 형식을 Gemini 3+ 및 공식 최신 Flash alias에 사용. 2.x에는 기존 responseMimeType/responseJsonSchema 경로 유지.
 - Zod JSON Schema는 reused=ref로 중복 정의를 공유해 실제 측정 6721→2087 bytes로 축소. 로컬 Zod/근거 검증 조건은 유지. API지원필드 metadata에 $defs/$ref가 명시됨을 확인했지만 실제 생성 성공은 아직 추가 실행으로 확인해야 함.
-- 새 요청 형식/후보 404 연속 처리/400·429·503 비재시도 회귀 검사와 최종 단위 **139/139** 통과. 다음은 A 최소 실제 실행이며 전체 A–D 완료로 오인하지 않음.
+- 새 요청 형식/후보 406 연속 처리/400·429·503 비재시도 회귀 검사와 최종 단위 **139/139** 통과. 다음은 A 최소 실제 실행이며 전체 A–D 완료로 오인하지 않음.
 
 ### 최신 alias 실제 실패 및 텍스트 모델/근거 문맥 회귀 보강
 - 실행 https://github.com/sw030818/oceanrisk-ai/actions/runs/38164103963 : quality/production 성공, A 실제 분석 실패. 사용 모델 gemini-flash-latest; 문서별 HTTP 503 UNAVAILABLE / HTTP 400 INVALID_ARGUMENT. 반환된 안전한 설정 필드 힌트 없음. 배포 SHA `3a55d251ea0461d29d2305bb09321ca477c07241`, ID `dpl_H5zos4N7KxeabDeDJDm7rEepUC3H`, verified=true.
-- 실제 모델 목록에 포함된 TTS 모델이 기존 preview 이름 패턴을 통과하는 결함을 발견해 audio/TTS/image/live 등 비텍스트 전용 모델을 명시적으로 제외. 안정된 숫자 버전 모델을 alias보다 우선하고, 원래 버전에 가장 가까운 모델을 선택. 실제 목록의 2.5 Flash-lite가 404인 경우 다음 후보는 3.1 Flash-lite이며 400/429/503 뒤에는 재시도하지 않음.
+- 실제 모델 목록에 포함된 TTS 모델이 기존 preview 이름 패턴을 통과하는 결함을 발견해 audio/TTS/image/live 등 비텍스트 전용 모델을 명시적으로 제외. 안정된 숫자 버전 모델을 alias보다 우선하고, 원래 버전에 가장 가까운 모델을 선택. 실제 목록의 2.5 Flash-lite가 406인 경우 다음 후보는 3.1 Flash-lite이며 400/429/503 뒤에는 재시도하지 않음.
 - 원문 인용에서 포장 라벨 또는 부정어를 잘라낸 경우 검증될 수 있던 문제를 수정. 수량은 실제 페이지의 라벨 문맥을 재확인하고 전체 선적은 실제 원문 줄의 부정어를 검토. 기존 근거 검증을 완화하지 않음.
 - 회귀 4개 추가, 단위 **143/143** 통과. 실제 AI 성공 여부는 다음 A 최소 검증 결과로 별도 확인하며 A만 통과해도 전체 A–D 검증 완료라고 보고하지 않음.
 
@@ -381,7 +381,7 @@
 
 
 ### PHASE 2.3 실제 저장·배포·OpenAI 결과
-- 구현 main **5122cb071044df2dcee86f49404ea9c6c9db99cb**, 일반Push/원격SHA 일치. ship npm ci419/type/lint/**256/256 단위**/Production build/PDF worker/**15/15 브라우저** 모두통과. 공식Production 같은SHA/ID **dpl_mF7oJSDnPJSy8b5Z6rtTFanDB9T9**, Actions **38185179745 quality/production success** 확인.
+- 구현 main **5122cb071044df2dcee86f49406ea9c6c9db99cb**, 일반Push/원격SHA 일치. ship npm ci419/type/lint/**256/256 단위**/Production build/PDF worker/**15/15 브라우저** 모두통과. 공식Production 같은SHA/ID **dpl_mF7oJSDnPJSy8b5Z6rtTFanDB9T9**, Actions **38185179745 quality/production success** 확인.
 - 승인된 최소검증 실행: 같은ProductionSHA에서 실제OpenAI GPT-6 Luna Responses 배치1회/문서2개. **구조화2/2**, 핵심 추출값**57/57**, 실제블록/페이지/행/라벨 근거**57/57**. seller/buyer/own문서번호/PO/InvoiceReference/선적/600PCS·400PCS/품명/SKU/중량/포장/Invoice금액을 확인. 독립엔진 실제비교품목2, 확인된수량일치2, 불일치0, 참조충돌없음. Invoice PO와PL InvoiceReference가다르다는이유로전체비교불가가되지않음.
 - 2API 실제응답을 메모리에서만 유지해 공식ProductionHTML/CSS/JS와UI에서파일선택·분석·2개확정수량카드·390px모바일넘침없음·원문페이지/블록보기 확인. Node의HTTPS프록시/TLS정상검증으로asset전송, Chrome ignoreHTTPSErrors사용안함. 브라우저의분석응답만이미받은실제응답으로재생했으며 추가유료호출0. 단순mock성공과분리해서기록. 실제사용자업무PDF는없고합성동일구조검증임.
 - 실제usage 입력**9,335**, 출력**2,019**, 캐시입력**2,871**, 캐시쓰기**6,458**, 추론**0**. 시간8077/6332ms, 자동retry0. 사용량 기반추정비용 **$0.00184606 < 승인$0.03**. usage미확인없음(회계부동소수점잔여는0반올림), 실제청구서는미조회. **새2문서예산소진/추가유료호출중단**, 이전31문서ledger변경없음.
@@ -400,7 +400,7 @@
 - 한 수량이 다른 상품 행을 인용해도 올바른 품명 행의 중량·SKU·포장 근거를 함께 무효화하지 않는다. 여러 상품인데 원문 행/블록 관계 자체가 없으면 상품 수량의 연결을 확정하지 않는다. 이는 행 구조가 없는 양식의 현재 제한이며, 임의로 다른 행 숫자를 승인하지 않는다. 개별 금액의 통화·회계 정의가 불완전한 합계 차이는 잠정 불일치로 보호한다.
 - 마지막 보강 후 실제 실행: 단위 **265/265**(19개 파일), ESLint 통과. 서로 다른 합성 양식 **7/7**, 모의 AI 추출+PDF 원문 근거 **172/172** 통과. 기존 237개 단위와 12개 브라우저를 삭제하지 않고 회귀를 확장했다. 새 PHASE 2.3 핵심 회귀는 28개, 브라우저는 기존 12개+새 3개이다.
 - 최종 저장은 `ship`의 npm ci/typecheck/lint/265개 단위/Production build/PDF worker/15개 브라우저 검사를 모두 통과한 경우에만 수행한다. 일반 main Push 후 GitHub quality/production 및 공식 사이트의 정확한 SHA를 확인하고 최종 결과에 실제 SHA를 보고한다. 실패 코드는 Push하지 않는다.
-- 추가 유료 호출 **0회**. 실제 OpenAI 검증의 소스 SHA는 계속 **5122cb071044df2dcee86f49404ea9c6c9db99cb**이며 그 결과는 2/2문서·57/57필드·600/400 PCS 확정 일치이다. 이후 안전 보강의 검증은 합성 PDF/모의 AI 회귀이며 실제 API 재검증으로 주장하지 않는다. 승인된 2개 문서 예산은 소진 상태로 유지했다.
+- 추가 유료 호출 **0회**. 실제 OpenAI 검증의 소스 SHA는 계속 **5122cb071044df2dcee86f49406ea9c6c9db99cb**이며 그 결과는 2/2문서·57/57필드·600/400 PCS 확정 일치이다. 이후 안전 보강의 검증은 합성 PDF/모의 AI 회귀이며 실제 API 재검증으로 주장하지 않는다. 승인된 2개 문서 예산은 소진 상태로 유지했다.
 
 
 ## PHASE 3.0 — 신고 전 선적서류 준비 기반 (2026-10-13 KST)
@@ -442,7 +442,7 @@
 - 남은 범위: 복잡한 병합/회전 표·스캔OCR·모호한 제목/라벨의 근거확인 한계, 실제 업무양식 일반정확도와 유료실증(새 승인 전 미실행). PHASE3.2 다대다 대응·양자/삼각대조·분할선적/동시포장·위험 판정, CSV/EDI·세관자동신고·실시간/온프레미스는 미구현.
 
 ### PHASE 3.1 실제 저장·무료 Production 검증 결과
-- 구현 main **3a4605f79e0764d0a1404b96d5572dd38873355b** 일반Push·원격 SHA 일치, 깨끗한 작업 트리 확인. ship **npm ci419/typecheck/lint/332단위/Production build/PDF worker/21브라우저** 모두 통과했다. 단위는 기존291+새41, 브라우저는 기존15+새6이며 테스트 삭제 없음.
+- 구현 main **3a4605f79e0764d0a1406b96d5572dd38873355b** 일반Push·원격 SHA 일치, 깨끗한 작업 트리 확인. ship **npm ci419/typecheck/lint/332단위/Production build/PDF worker/21브라우저** 모두 통과했다. 단위는 기존291+새41, 브라우저는 기존15+새6이며 테스트 삭제 없음.
 - GitHub Actions **38355573500 quality/production success**. Vercel Git **success / Deployment has completed**, 공식 Production 같은SHA/ID **dpl_F96hMtaDn2vhuz4dWSJs89zyxcxk**, PHASE3.1 분류/추출capability true·삼각대조false·OpenAI키설정true 확인. 키유효성/관리APIReady 직접조회는 이 상태 확인으로 주장하지 않는다.
 - `check:phase31:ui` 실제 실행 PASS: 공식HTML/assets의1440px데스크톱3열·390px모바일넘침없음, 합성3PDF의 실제 **prepare 배치1회**, 원문페이지/실제블록/좌표·사용자수정구분을 확인했다. 추가 잘못된PDF3개의 shipping-analysis 요청은 PDF 추출에서 INVALID_PDF로 실패하고 aiCalled:false를 확인했다. 총 **유료 공급자 호출0/자동재시도0**, 삼각대조 미실시. 이 결과를 모의/실제AI 성공으로 합산하지 않았다.
 - 화면을 시각적으로 점검해 업로드 설명의 중복된 '아직 분석 후' 표현을 바로잡았다. 추출/검증/수치/보안 코드 변경은 없다. 무료 결과 안전메타데이터를 검증JSON에 보존하며 마지막 기록도 ship 전체 통과 후 main 저장·배포한다.
@@ -462,3 +462,17 @@
 - main 일반Push·Actions quality/production·Vercel Git완료/같은SHA 후 실제정상3종/불일치2종/불확실2종을 같은SHA에서 검증한다. 최종실제결과는 validation/phase32-evidence 브랜치의 docs/validation에 정상저장해 테스트된 Production main SHA를 그대로유지한다. 미검증/부족범위는 최종보고에서 명확히구분한다.
 
 - 마지막 사용자 식별필드 삭제도 수정 출처로 유지하는 회귀1개를 추가했다. 최종 신규45개/기존332개=377개이며 실제 표의 필수 품목/컨테이너/화물행 누락은 부분성공으로 표시한다. 추가무료/Production 검사는 exactSHA에서 prepare만 전송하는 check:phase32:ui로 보호한다.
+
+## PHASE 3.3 구현 및 무료 검사 (2026-10-13 KST)
+- 시작main/origin928bcc729682cbc6444483c38fbbdce230e9af59 깨끗한상태. 기존증거브랜치/ledger보존, 환경설정setup스킬의기존설치/실행절차 확인. npmci419패키지성공, 로컬OpenAI키미설정(값출력없음). 명시사용자수정에서 신규$0.10/24문서/30요청을 승인하고 이전$2안을철회했다.
+- 세유형 File[]·안정ID·동명이인파일·추가/개별삭제교체·최대24개/64MB검토공간, 기존4MB요청/파일·30페이지보호 및2개순차배치/부분실패/완료결과·수정값유지 구현. extra영역/상태와모드라디오제거, AI주버튼·무료PDF보조버튼.
+- 같은유형/단일파일배치를정상화하고원본영역/실제AI분류를분리했다. 기존테스트377/30은삭제하지않았으며 새UI/API계약(추가영역제거·배치·단일분석)에해당하는transport/selector/예상요청수만갱신했다. 원문근거·단위·잘못된확정오류방지assertion은유지했다.
+- PDF합계행경계·숫자행보다먼저줄바꿈된품명·반복헤더페이지별단위근거·전체표커버리지보강. HBL명시전체신고목록/유일신고번호/서로다른검증품명+HS/같은물품단위/전체범위를 확인한 집계만지원하며중복/공유포장/배분미확인은보류한다.
+- 선택OCR은 sparse페이지최대3개PDFsubset과strict전사스키마/기존Responses안전transport를사용한다. 공식PDFinput_file/file_data및gpt-6-luna이미지입력페이지HTTP200확인. OCR출처/ocr_unverified·원본브라우저링크·부분성공, native본문/이미지혼합보존, 페이지불일치/판독실패/제한/타임아웃을구분하며가짜좌표를원문검증으로표시하지않는다. Vercel은외부nativeOCR바이너리가필요없다.
+- 무료새평가정답은기존템플릿과다른pdf-lib세로/가로/열순서/다중페이지/반복헤더/줄바꿈,한영혼합등을 렌더전작성했다. 정답/판정은AI프롬프트에전달하지않는다. Holdout은최종실제평가전튜닝하지않는다. 실제고객문서없음.
+- 관측무료399/399 및Productionbuild/type/lint통과, 브라우저초기29/38통과후9실패는바뀐계약/셀렉터/테스트multipartcapture와동일File객체재추가원인으로수정해9/9통과. 추가OCR/예산/집계/배치보류/캐시보존 회귀후 최종406단위·41브라우저·빌드/worker는ship전체통과를확인한경우에만배포한다.
+- 실제API는이기록시점아직0회이며비용/성능성공을주장하지않는다. 새live-phase33 ledger는원격증거브랜치까지복원·비용/문서/요청예약·미확인usage예약유지·자동재시도0. 실제결과기록은같은ProductionSHA유지를위해validation/phase33-evidence에별도저장한다.
+
+- 최초ship의405단위/41브라우저/npmci/타입/린트/Productionbuild/worker전체는통과했지만 최종인쇄보고서의PDF원문모드미실시표시·OCR본문16000바이트상한·PDF형식오류안내를수정했다. ship의미Stage변경보호가커밋/Push를중단한것을확인했다. 최종소스는전체ship을다시검사하며이전검사만으로배포하지않는다. 복잡6문서평가에는동일파일명의서로다른HBL2개를포함한다.
+
+- 최종다대다검토에서중복HBL버전및다른HBL의동일컨테이너사용을HBL화물행집계의독립보류조건에추가했다. 공동포장/중량배분명시없이확정합산하는회귀를차단한다. 이변경후전체ship을재검사하며예상최종406단위/41브라우저다.

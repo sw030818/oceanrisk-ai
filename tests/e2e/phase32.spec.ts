@@ -5,8 +5,7 @@ import {
   shippingLabels,
   type ShippingType,
 } from "../../src/modules/shipping/catalog";
-import { reviewShipping } from "../../src/modules/shipping/review";
-import { summarizeShipping } from "../../src/modules/shipping/summary";
+import { routeShipping } from "../fixtures/shipping-route";
 import type { ShippingResult } from "../../src/modules/shipping/prepare";
 async function mock32(
   page: Page,
@@ -50,55 +49,25 @@ async function mock32(
       message: "합성 API 인증 오류; 원문은 보존했습니다.",
     };
   }
-  let calls = 0;
-  await page.route("**/api/analyze", (route) => {
-    calls++;
-    if (options.extra)
-      expect(route.request().postDataBuffer()!.toString()).toContain(
-        '["house_bl","export_declaration","house_manifest","export_declaration"]',
-      );
-    const review = reviewShipping(
-      results.flatMap((r) => (r.document ? [r.document] : [])),
-    );
-    return route.fulfill({
-      json: {
-        mode: "shipping-analysis",
-        phase: "3.2",
-        results,
-        summary: summarizeShipping(results, review),
-        review,
-        capabilities: { pairComparison: true, triangularComparison: true },
-      },
-    });
-  });
+  const transport = await routeShipping(page, results);
   await page.goto("/");
   for (const [i, f] of fixtures.entries()) {
-    if (i === 3) {
-      await page
-        .getByRole("button", { name: "복수 신고·분할 자료 PDF 추가" })
-        .click();
-      await page.getByLabel("추가 수출신고필증 PDF 파일 선택").setInputFiles({
+    await page
+      .getByLabel(shippingLabels[slots[i]].title + " PDF 파일 선택", {
+        exact: true,
+      })
+      .setInputFiles({
         name: f.pdf.fileName,
         mimeType: "application/pdf",
         buffer: Buffer.from(f.bytes),
       });
-    } else
-      await page
-        .getByLabel(shippingLabels[slots[i]].title + " PDF 파일 선택", {
-          exact: true,
-        })
-        .setInputFiles({
-          name: f.pdf.fileName,
-          mimeType: "application/pdf",
-          buffer: Buffer.from(f.bytes),
-        });
   }
   await page.getByRole("checkbox").check();
   await page
-    .getByRole("button", { name: "서류 분석 시작", exact: true })
+    .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
     .click();
   await expect(page.getByTestId("shipping-review")).toBeVisible();
-  return { calls: () => calls, results };
+  return { calls: transport.calls, results };
 }
 test("MOCK AI + real PDF: two types run pair comparison and explicitly lack triangle targets", async ({
   page,
@@ -181,7 +150,7 @@ test("MOCK AI + real PDF: mobile edit/restore recalculates provisional result wi
       '[data-testid="shipping-check"][data-assessment="provisional_mismatch"]',
     ),
   ).toHaveCount(0);
-  expect(calls()).toBe(1);
+  expect(calls()).toBe(2);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -265,5 +234,5 @@ test("MOCK AI + real PDF: explicit user relationship confirmation remains provis
       '[data-testid="shipping-check"][data-assessment="confirmed_mismatch"]',
     ),
   ).toHaveCount(0);
-  expect(calls()).toBe(1);
+  expect(calls()).toBe(2);
 });

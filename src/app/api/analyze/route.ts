@@ -7,7 +7,10 @@ import { boundedFormData } from "@/modules/upload/request";
 import { validateUploads } from "@/modules/upload/validate";
 import { AnalysisError, safeError } from "@/modules/documents/errors";
 import { summarizeShipping } from "@/modules/shipping/summary";
-import { parseShippingSlots } from "@/modules/shipping/uploads";
+import {
+  parseShippingSlots,
+  parseShippingIds,
+} from "@/modules/shipping/uploads";
 import {
   prepareShippingFile,
   type ShippingResult,
@@ -36,6 +39,7 @@ export async function POST(request: Request) {
     const files = entries as File[];
     validateUploads(files);
     const slots = parseShippingSlots(form.get("slots"), files.length);
+    const ids = parseShippingIds(form.get("documentIds"), files.length);
     const operation = form.get("operation") ?? "prepare";
     if (!["prepare", "analyze"].includes(String(operation)))
       throw new AnalysisError(
@@ -44,12 +48,43 @@ export async function POST(request: Request) {
         400,
       );
     const analyze = operation === "analyze";
+    const started = performance.now();
     const results: ShippingResult[] = [];
     let stopAI = false;
     for (const [i, file] of files.entries()) {
-      const result = await (analyze
-        ? analyzeShippingFile(file, slots[i], { signal, skipAI: stopAI })
-        : prepareShippingFile(file, slots[i], signal));
+      const prepared = await prepareShippingFile(
+        file,
+        slots[i],
+        signal,
+        ids?.[i],
+      );
+      const allowOCR = form.get("ocr") === "auto";
+      const needsOCR =
+        allowOCR && prepared.pdf.pages.some((p) => p.ocrStatus === "candidate");
+      const defer =
+        analyze &&
+        !stopAI &&
+        !prepared.error &&
+        i > 0 &&
+        100000 - (performance.now() - started) < (needsOCR ? 90000 : 45000);
+      const result = defer
+        ? {
+            ...prepared,
+            error: {
+              code: "BATCH_DEFERRED",
+              message:
+                "현재 요청의 안전한 처리 시간을 확보하기 위해 아직 AI를 호출하지 않았습니다. 다음 단일 파일 배치에서 분석합니다.",
+            },
+          }
+        : analyze
+          ? await analyzeShippingFile(file, slots[i], {
+              signal,
+              skipAI: stopAI,
+              documentId: ids?.[i],
+              allowOCR,
+              prepared,
+            })
+          : prepared;
       results.push(result);
       if (
         result.error &&
@@ -68,9 +103,9 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         mode: analyze ? "shipping-analysis" : "pdf-preparation",
-        phase: "3.2",
+        phase: "3.3",
         results,
-        summary: summarizeShipping(results,review),
+        summary: summarizeShipping(results, review),
         review,
         capabilities: {
           pdfPreparation: true,

@@ -26,7 +26,7 @@ export function validateUploads(files: UploadFile[]): void {
     )
       throw new AnalysisError(
         "INVALID_FORMAT",
-        "텍스트 기반 PDF 파일만 업로드할 수 있습니다.",
+        "PDF 파일만 업로드할 수 있습니다.",
         400,
       );
     if (!file.size)

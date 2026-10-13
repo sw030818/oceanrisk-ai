@@ -66,3 +66,12 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 이번 요청에서 **신규 $0.50/유료 문서 최대12/자동재시도0**가 명시 승인됐다. 기존31개/2개 및 PHASE3.1 승인대기 예산과 분리한 live-phase32 ledger를 사용한다. 추가 승인 질문 없이 정해진 범위에서 필요한 최소 호출만 수행한다. 비용/문서 상한 증액·초기화·사용량미확인 비용 복원 금지.
 - `test:phase32:production -- --sha=<exactSHA> --stage=normal|mismatch|uncertain|repair --approved-documents=12 --approved-max-cost-usd=0.50`은 가격/bytes/8192출력 상한 예약·공유ledger·안전 메타데이터·SourceSHA 전후 확인을 적용한다. 처음 baseline은3.1에서 추출만 검사했으며 최신3.2 통합 검증으로 주장하지 않는다. 일반ship/CI는 키를 비워무료검사만 한다.
 - main/ship/Actions/Production 동일SHA 절차를 유지한다. 실제 live 완료 후 보고서만으로 main을 바꿔 검증SHA를 무효화하지 않는다. 결과·토큰·예산은 `validation/phase32-evidence` 별도 브랜치의 docs/validation/PROGRESS에 정상 Commit/Push해 보존한다. Production main SHA와 보고서 브랜치 SHA를 최종 보고에서 구분한다. live 도구는 그 원격예산도 확인하며 소모 예산을 새 환경에서 복원하지 않는다. 강제Push/기록삭제 금지.
+
+## PHASE 3.3 — 현재 지침
+- 세 유형별 File[] 슬롯을 유지하며 추가 영역은 제거한다. 파일명 대신 개별 안정 ID와 원본 영역/실제 분류를 사용한다. 같은 유형·단일 파일 API 입력은 정상이며 비교 가능성과 분리한다.
+- 검토 공간 24개/64 MB, 파일4 MB/30페이지, 요청4 MB(+제한된 multipart 여유)/최대4개는 서로 다른 제한이다. 클라이언트는2개/4 MB 배치를 순차 처리·ID로 통합한다. 요청시간이 부족하면 공급자 호출 전 BATCH_DEFERRED를 단일파일 배치로 넘기며 자동 유료 재시도가 아니다. 기존 성공/수정 결과는 새파일 추가·개별 교체 후 유지한다.
+- 스캔은 명시된 auto OCR에서만 최대3페이지 subset PDF를 OpenAI Responses input_file/file_data로 전송한다. 기본 prepare는 항상0AI. OCR의 페이지·문자·좌표는 독립 native 근거가 아니므로 provenance:ocr/ocr_unverified로 보호하고 완전한 표 커버리지로 승격하지 않는다. 원본PDF는 브라우저에서만 열며 영구저장하지 않는다.
+- 복수 신고 집계는 HBL의 명시된 전체 신고 목록/유일 신고번호/전체 원문 행 포함/서로 다른 품명+HS/같은 물품단위/전체범위가 모두 확인된 경우만 한다. 공유 포장·중복 품목·미명시 배분은 합산하지 않는다.
+- PHASE3.3 새 승인은 **총$0.10 / 유료 분석문서 최대24 / 공급자 요청 최대30**이다. 기존$2.00/60문서/80요청안은 철회됐다. 과거ledger와 완전히 분리한 live-phase33 및 validation/phase33-evidence를 복원해 사용하며 초기화/상한증액 금지. 사용량미확인은 예약비용을 유지한다.
+- test:phase33:production은 exactSHA·단계·approved-documents=24·approved-requests=30·approved-max-cost-usd=0.10을 요구한다. 자동재시도는 없고 원인을 확인한 수동 재검증만 남은 예산으로 가능하다. baseline/tuning/holdout/OCR을 분리하며 Holdout으로 프롬프트/규칙을 조정하지 않는다. 일반ship/CI는 키를 비워무료검사만 한다.
+- 실제 결과 기록은 검증한Production SHA를 유지하기 위해 validation/phase33-evidence에 정상Commit/Push한다. 코드SHA와 기록SHA를 구분하고 raw 응답·실제 업무PDF·키는 남기지 않는다. ship/main/Actions/동일SHA 절차는 유지한다.

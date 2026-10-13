@@ -44,16 +44,17 @@ test("loading, no bearer header, server error and retry stay clear", async ({
   await choose(page);
   await start(page);
   await expect(
-    page.getByRole("button", { name: "PDF 원문을 확인하는 중" }),
+    page.getByRole("button", { name: "문서 처리 중" }),
   ).toBeVisible();
   release();
   await expect(
     page
       .getByRole("alert")
-      .filter({ hasText: /현재 단계와|합성 서버 오류|텍스트 기반 PDF/ }),
+      .filter({ hasText: /분석 응답 형식|합성 서버 오류|PDF 파일만/ })
+      .first(),
   ).toContainText("합성 서버 오류");
   await expect(
-    page.getByRole("button", { name: "비교 자료 준비", exact: true }),
+    page.getByRole("button", { name: "새 서류 검토", exact: true }),
   ).toBeEnabled();
 });
 test("all unreadable PDFs produce failure, never an AI success", async ({

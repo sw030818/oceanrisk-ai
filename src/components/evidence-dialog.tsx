@@ -86,7 +86,8 @@ export function EvidenceDialog({
             <blockquote className="mt-2 break-words rounded-lg border-l-2 border-blue-500 bg-blue-50 p-3 text-sm leading-6">
               {selection.field.source.quote}
             </blockquote>
-            {selection.field.source.blocks?.length ? (
+            {selection.field.source.provenance === "ocr" && <p className="mt-4 rounded-lg bg-amber-50 p-3 text-xs text-amber-900">OCR 인식 근거입니다. 위치 좌표와 문자를 PDF 원문에서 독립 검증한 근거가 아닙니다.</p>}
+            {selection.field.source.provenance !== "ocr" && selection.field.source.blocks?.length ? (
               <div className="mt-4 rounded-lg border border-slate-200 p-3">
                 <p className="text-xs font-semibold">실제 PDF 블록 위치</p>
                 {selection.field.source.blocks.map((block) => (
@@ -113,7 +114,7 @@ export function EvidenceDialog({
                 )}
               </div>
             ) : null}
-            {page?.blocks && page.width && page.height ? (
+            {page?.textSource !== "ocr" && page?.blocks && page.width && page.height ? (
               <div className="mt-4">
                 <p className="mb-2 text-xs font-semibold">원문 위치 미리보기</p>
                 <svg
@@ -157,7 +158,7 @@ export function EvidenceDialog({
               </div>
             ) : null}
             <p className="mt-5 text-xs font-bold">
-              해당 페이지의 실제 추출 원문
+              {page?.textSource === "ocr" ? "해당 페이지의 OCR 인식 텍스트 (원본 확인 필요)" : "해당 페이지의 실제 추출 원문"}
             </p>
             <pre className="mt-3 whitespace-pre-wrap break-words rounded-lg bg-slate-50 p-4 font-mono text-xs leading-6">
               {pageText ?? "해당 페이지를 찾을 수 없습니다."}

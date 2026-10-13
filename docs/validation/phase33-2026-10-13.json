@@ -1,0 +1,46 @@
+{
+  "mode": "phase33-source-validation-plan",
+  "baseSha": "928bcc729682cbc6444483c38fbbdce230e9af59",
+  "dateKst": "2026-10-13",
+  "expectedReleaseGate": {
+    "unitTests": 406,
+    "browserTests": 41,
+    "priorUnitTests": 377,
+    "priorBrowserTests": 30
+  },
+  "observed": {
+    "unitTests": 406,
+    "browserTests": 40,
+    "typecheck": true,
+    "lint": true,
+    "productionBuild": true
+  },
+  "liveStatus": "NOT_YET_RUN_ON_PHASE33",
+  "budget": {
+    "maxCostUsd": 0.1,
+    "maxDocuments": 24,
+    "maxRequests": 30,
+    "pastBudgetsReused": false
+  },
+  "newLayouts": [
+    "portrait",
+    "landscape",
+    "reordered_columns",
+    "multipage_repeated_headers",
+    "wrapped_description",
+    "bilingual",
+    "holdout_separate_labels"
+  ],
+  "sourceTrust": [
+    "native_positioned_pdf_blocks",
+    "ocr_candidate_not_native_evidence",
+    "user_edits_not_native_confirmation"
+  ],
+  "ocrOfficialContracts": [
+    "https://developers.openai.com/api/docs/guides/pdf-files",
+    "https://developers.openai.com/api/docs/models/gpt-6-luna"
+  ],
+  "liveEvidenceBranch": "validation/phase33-evidence",
+  "rawResponsesArchived": false,
+  "realBusinessDocumentsUsed": false
+}

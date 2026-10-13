@@ -14,9 +14,19 @@ import {
   Info,
   ScanText,
 } from "lucide-react";
-import { UploadSlotCard } from "./upload-slot";
+import {
+  ShippingUploadCard,
+  type UploadProgress,
+} from "./shipping-upload-card";
+import {
+  shippingBatches,
+  mergeShippingResults,
+  failedShippingUpload,
+  type ShippingUpload,
+} from "@/modules/shipping/batches";
 import { reviewShipping } from "@/modules/shipping/review";
 import { ShippingReviewPanel } from "./shipping-review";
+import { ShippingReport } from "./shipping-report";
 import { ShippingFields } from "./shipping-fields";
 import { EvidenceDialog } from "./evidence-dialog";
 import {
@@ -24,18 +34,17 @@ import {
   shippingLabels,
   type ShippingType,
 } from "@/modules/shipping/catalog";
-import { validateUploads } from "@/modules/upload/validate";
+
 import { safeError } from "@/modules/documents/errors";
 import { summarizeShipping } from "@/modules/shipping/summary";
 import type { ShippingResult } from "@/modules/shipping/prepare";
 import { shippingDocumentSchema } from "@/modules/shipping/schema";
 import type { GroundedField, PdfPage } from "@/modules/documents/schema";
-const emptySlots = () =>
-  ({
-    house_bl: null,
-    export_declaration: null,
-    house_manifest: null,
-  }) as Record<ShippingType, File | null>;
+const emptySlots = (): Record<ShippingType, File[]> => ({
+  house_bl: [],
+  export_declaration: [],
+  house_manifest: [],
+});
 type Selection = {
   field: GroundedField<string | number>;
   label: string;
@@ -44,12 +53,17 @@ type Selection = {
 };
 export function ShippingWorkspace() {
   const [slots, setSlots] = useState(emptySlots);
-  const [extra, setExtra] = useState<{
-    slot: ShippingType;
-    file: File | null;
-  } | null>(null);
-  const extraDocId = useRef<string | null>(null);
-  const [analysisMode, setAnalysisMode] = useState(true);
+  const [identities, setIdentities] = useState(
+    new Map<File, { id: string; url: string }>(),
+  );
+  const urls = useRef(new Set<string>());
+  function idFor(file: File) {
+    return identities.get(file)?.id ?? "";
+  }
+  const urlById = new Map([...identities.values()].map((m) => [m.id, m.url]));
+  const [progress, setProgress] = useState<Record<string, UploadProgress>>({});
+  const [reusedDocuments, setReusedDocuments] = useState(0);
+  const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
   const [resultAnalysis, setResultAnalysis] = useState(false);
   const [comparisonEnabled, setComparisonEnabled] = useState(false);
   const [confirmedRelationships, setConfirmedRelationships] = useState<
@@ -63,14 +77,17 @@ export function ShippingWorkspace() {
   const [tab, setTab] = useState<"upload" | "results">("upload");
   const abort = useRef<AbortController | null>(null),
     run = useRef(0);
-  useEffect(() => () => abort.current?.abort(), []);
-  const mainActive = shippingTypes.filter((t) => slots[t]),
-    active = [...mainActive, ...(extra?.file ? [extra.slot] : [])],
-    files = [
-      ...mainActive.map((t) => slots[t]!),
-      ...(extra?.file ? [extra.file] : []),
-    ],
-    selectedTypes = new Set(active).size;
+  useEffect(
+    () => () => {
+      abort.current?.abort();
+      urls.current.forEach((url) => URL.revokeObjectURL(url));
+    },
+    [],
+  );
+  const entries: ShippingUpload[] = shippingTypes.flatMap((slot) =>
+    slots[slot].map((file) => ({ id: idFor(file), file, slot })),
+  );
+  const selectedTypes = new Set(entries.map((e) => e.slot)).size;
   const summary = summarizeShipping(results);
   const review = useMemo(
     () =>
@@ -82,54 +99,123 @@ export function ShippingWorkspace() {
         : { status: "not_performed" as const, checks: [] },
     [results, comparisonEnabled, confirmedRelationships],
   );
-  const canPrepare = selectedTypes >= 2 && consent && !busy;
-  function invalidate() {
-    setResults([]);
-    setComparisonEnabled(false);
+  const canPrepare = entries.length > 0 && consent && !busy;
+  function invalidate(retained?: Set<string>) {
+    setResults((current) =>
+      retained ? current.filter((r) => retained.has(r.pdf.id)) : [],
+    );
+    if (!retained) setComparisonEnabled(false);
     setConfirmedRelationships([]);
-    extraDocId.current = null;
     setSelection(null);
     setError(null);
+    setProgress((p) =>
+      retained
+        ? Object.fromEntries(
+            Object.entries(p).filter(([id]) => retained.has(id)),
+          )
+        : {},
+    );
+  }
+  function commitSlots(next: Record<ShippingType, File[]>) {
+    const all = shippingTypes.flatMap((slot) =>
+      next[slot].map((file) => ({
+        file,
+        slot,
+        id: identities.get(file)?.id ?? crypto.randomUUID(),
+      })),
+    );
+    shippingBatches(all);
+    const meta = new Map<File, { id: string; url: string }>();
+    for (const e of all) {
+      const prior = identities.get(e.file);
+      const url = prior?.url ?? URL.createObjectURL(e.file);
+      urls.current.add(url);
+      meta.set(e.file, { id: e.id, url });
+    }
+    for (const [file, m] of identities)
+      if (!meta.has(file)) {
+        URL.revokeObjectURL(m.url);
+        urls.current.delete(m.url);
+      }
+    setIdentities(meta);
+    setSlots(next);
+    invalidate(new Set(all.map((e) => e.id)));
   }
   function select(slot: ShippingType, incoming: File[]) {
     if (busy || !incoming.length) return;
-    if (incoming.length !== 1) {
-      setError("각 업로드 영역에는 PDF 1개만 넣어 주세요.");
-      return;
-    }
-    const next = { ...slots, [slot]: incoming[0] };
+    const added = incoming.map(
+      (f) =>
+        new File([f], f.name, { type: f.type, lastModified: f.lastModified }),
+    );
     try {
-      validateUploads([
-        ...Object.values(next).filter((f): f is File => f !== null),
-        ...(extra?.file ? [extra.file] : []),
-      ]);
+      commitSlots({ ...slots, [slot]: [...slots[slot], ...added] });
+    } catch (e) {
+      setError(safeError(e).message);
+    }
+  }
+  function remove(slot: ShippingType, id: string) {
+    const next = {
+      ...slots,
+      [slot]: slots[slot].filter((f) => idFor(f) !== id),
+    };
+    if (Object.values(next).every((fs) => !fs.length)) {
+      urls.current.forEach((u) => URL.revokeObjectURL(u));
+      urls.current.clear();
+      setIdentities(new Map());
       setSlots(next);
       invalidate();
+      return;
+    }
+    commitSlots(next);
+  }
+  function replace(slot: ShippingType, id: string, file: File) {
+    try {
+      commitSlots({
+        ...slots,
+        [slot]: slots[slot].map((f) => (idFor(f) === id ? file : f)),
+      });
     } catch (e) {
       setError(safeError(e).message);
     }
   }
   function reset() {
+    urls.current.forEach((url) => URL.revokeObjectURL(url));
+    urls.current.clear();
     run.current++;
     abort.current?.abort();
     setBusy(false);
     setSlots(emptySlots());
-    setExtra(null);
+    setIdentities(new Map());
     invalidate();
     setConsent(false);
     setTab("upload");
   }
-  async function prepare() {
-    if (selectedTypes < 2) {
-      setError("서로 다른 종류의 서류를 최소 2개 선택해 주세요.");
-      return;
-    }
+  async function prepare(analyze = true) {
     if (!consent) {
       setError("자료 처리 및 외부 전송 권한 안내를 확인해 주세요.");
       return;
     }
+    const cached = analyze
+      ? results.filter(
+          (r) =>
+            entries.some((e) => e.id === r.pdf.id) &&
+            !r.error &&
+            r.document &&
+            r.document.extractionStatus !== "not_performed",
+        )
+      : [];
+    const pendingEntries = entries.filter(
+      (e) => !cached.some((r) => r.pdf.id === e.id),
+    );
+    setReusedDocuments(cached.length);
+    if (!pendingEntries.length) {
+      setResultAnalysis(analyze);
+      setTab("results");
+      return;
+    }
+    let batches: ShippingUpload[][];
     try {
-      validateUploads(files);
+      batches = shippingBatches(pendingEntries);
     } catch (e) {
       setError(safeError(e).message);
       return;
@@ -137,57 +223,134 @@ export function ShippingWorkspace() {
     const token = ++run.current,
       controller = new AbortController();
     abort.current = controller;
-    setBusy(true);
     invalidate();
+    setBusy(true);
+    setResultAnalysis(analyze);
+    setBatchProgress({ current: 0, total: batches.length });
+    let merged: ShippingResult[] = cached;
+    setResults(cached);
+    let stopAI = false;
     try {
-      const form = new FormData();
-      files.forEach((f) => form.append("files", f));
-      form.append("slots", JSON.stringify(active));
-      form.append("operation", analysisMode ? "analyze" : "prepare");
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        body: form,
-        signal: controller.signal,
-      });
-      const data = await response.json();
-      if (!response.ok)
-        throw new Error(
-          data.error?.message ?? "자료 준비 요청을 처리하지 못했습니다.",
-        );
-      if (
-        !["pdf-preparation", "shipping-analysis"].includes(data.mode) ||
-        !Array.isArray(data.results) ||
-        data.results.length !== files.length
-      )
-        throw new Error(
-          "현재 단계와 맞지 않는 분석 응답입니다. 새 선적서류 검증 결과로 사용하지 않았습니다.",
-        );
-      for (const result of data.results) {
-        if (
-          !shippingTypes.includes(result.uploadSlot) ||
-          !result.pdf ||
-          !Array.isArray(result.pdf.pages)
-        )
-          throw new Error("서버의 문서 응답 형식이 올바르지 않습니다.");
-        if (result.document) shippingDocumentSchema.parse(result.document);
+      for (const [index, batch] of batches.entries()) {
+        if (token !== run.current || controller.signal.aborted) break;
+        setBatchProgress({ current: index + 1, total: batches.length });
+        setProgress((p) => ({
+          ...p,
+          ...Object.fromEntries(
+            batch.map((e) => [e.id, { state: "processing" }]),
+          ),
+        }));
+        let incoming: ShippingResult[];
+        if (stopAI)
+          incoming = batch.map((e) =>
+            failedShippingUpload(
+              e,
+              "BATCH_STOPPED",
+              "앞선 API 이용 한도 또는 인증 오류로 추가 AI 호출을 중단했습니다. PDF 원문만 보기를 사용할 수 있습니다.",
+            ),
+          );
+        else
+          try {
+            const form = new FormData();
+            batch.forEach((e) => form.append("files", e.file));
+            form.append("slots", JSON.stringify(batch.map((e) => e.slot)));
+            form.append("documentIds", JSON.stringify(batch.map((e) => e.id)));
+            form.append("operation", analyze ? "analyze" : "prepare");
+            form.append("ocr", analyze ? "auto" : "off");
+            const response = await fetch("/api/analyze", {
+              method: "POST",
+              body: form,
+              signal: controller.signal,
+            });
+            const data = await response.json();
+            if (!response.ok)
+              throw new Error(
+                data.error?.message ?? "이번 배치를 처리하지 못했습니다.",
+              );
+            if (
+              !["pdf-preparation", "shipping-analysis"].includes(data.mode) ||
+              !Array.isArray(data.results) ||
+              data.results.length !== batch.length
+            )
+              throw new Error("분석 응답 형식이 올바르지 않습니다.");
+            incoming = data.results.map((r: ShippingResult, i: number) => {
+              if (
+                !shippingTypes.includes(r.uploadSlot) ||
+                !r.pdf ||
+                !Array.isArray(r.pdf.pages)
+              )
+                throw new Error("문서 응답 형식이 올바르지 않습니다.");
+              // Older mocked contracts have server-generated IDs; retain their source
+              // identity. PHASE3.3 responses must echo each stable upload ID.
+              if (data.phase === "3.3" && r.pdf.id !== batch[i].id)
+                throw new Error("문서 식별자가 요청과 다릅니다.");
+              if (r.document) shippingDocumentSchema.parse(r.document);
+              return r;
+            });
+            if (analyze)
+              setComparisonEnabled(
+                data.capabilities?.pairComparison === true &&
+                  ["3.2", "3.3"].includes(data.phase),
+              );
+            stopAI =
+              data.phase === "3.3" &&
+              incoming.some(
+                (r) =>
+                  r.error &&
+                  [
+                    "API_AUTH_OR_CONFIG",
+                    "API_RATE_LIMIT",
+                    "INVALID_MODEL",
+                    "API_NOT_CONFIGURED",
+                    "BATCH_STOPPED",
+                  ].includes(r.error.code),
+              );
+          } catch (e) {
+            if (controller.signal.aborted) break;
+            incoming = batch.map((entry) =>
+              failedShippingUpload(
+                entry,
+                "BATCH_REQUEST_FAILED",
+                e instanceof Error ? e.message : "배치 연결에 실패했습니다.",
+              ),
+            );
+          }
+        if (token !== run.current) return;
+        incoming.forEach((r, i) => {
+          if (r.error?.code === "BATCH_DEFERRED") batches.push([batch[i]]);
+        });
+        merged = mergeShippingResults(merged, incoming);
+        setResults(merged);
+        setProgress((p) => ({
+          ...p,
+          ...Object.fromEntries(
+            batch.map((e, i) => [
+              e.id,
+              {
+                state:
+                  incoming[i].error?.code === "BATCH_DEFERRED"
+                    ? "waiting"
+                    : incoming[i].error
+                      ? "failed"
+                      : incoming[i].document?.extractionStatus === "partial"
+                        ? "partial"
+                        : "complete",
+                error:
+                  incoming[i].error?.code === "BATCH_DEFERRED"
+                    ? undefined
+                    : incoming[i].error?.message,
+              },
+            ]),
+          ),
+        }));
       }
-      if (token !== run.current) return;
-      setResults(data.results);
-      setResultAnalysis(data.mode === "shipping-analysis");
-      extraDocId.current = extra?.file
-        ? data.results[data.results.length - 1].pdf.id
-        : null;
-      setComparisonEnabled(
-        data.phase === "3.2" &&
-          data.capabilities?.pairComparison === true &&
-          data.mode === "shipping-analysis",
-      );
-      setTab("results");
-    } catch (e) {
-      if (token === run.current)
-        setError(
-          e instanceof Error ? e.message : "서버에 연결하지 못했습니다.",
-        );
+      if (token === run.current) {
+        setTab("results");
+        if (controller.signal.aborted)
+          setError(
+            "분석을 중단했습니다. 완료된 다른 문서 결과는 보존했습니다.",
+          );
+      }
     } finally {
       if (token === run.current) setBusy(false);
     }
@@ -195,50 +358,27 @@ export function ShippingWorkspace() {
   function fixSlot(id: string, target: ShippingType) {
     const old = results.find((r) => r.pdf.id === id)?.uploadSlot;
     if (!old || old === target) return;
-    if (id === extraDocId.current) {
-      setExtra((current) => (current ? { ...current, slot: target } : current));
-      setResults((current) =>
-        current.map((r) =>
-          r.pdf.id === id
-            ? {
-                ...r,
-                originalUploadSlot: r.originalUploadSlot ?? r.uploadSlot,
-                uploadSlot: target,
-                document: r.document
-                  ? { ...r.document, uploadType: target }
-                  : null,
-                typeMismatch: false,
-              }
-            : r,
-        ),
-      );
-      return;
-    }
-
-    setSlots((current) => ({
-      ...current,
-      [old]: current[target],
-      [target]: current[old],
-    }));
+    const file = slots[old].find((f) => idFor(f) === id);
+    if (file)
+      setSlots((current) => ({
+        ...current,
+        [old]: current[old].filter((f) => idFor(f) !== id),
+        [target]: [...current[target], file],
+      }));
     setResults((current) =>
-      current.map((r) => {
-        const slot =
-          r.pdf.id === id
-            ? target
-            : r.uploadSlot === target && r.pdf.id !== extraDocId.current
-              ? old
-              : r.uploadSlot;
-        return {
-          ...r,
-          originalUploadSlot: r.originalUploadSlot ?? r.uploadSlot,
-          uploadSlot: slot,
-          document: r.document ? { ...r.document, uploadType: slot } : null,
-          typeMismatch:
-            r.document?.classificationStatus === "classified"
-              ? r.detectedType !== slot
-              : null,
-        };
-      }),
+      current.map((r) =>
+        r.pdf.id === id
+          ? {
+              ...r,
+              originalUploadSlot: r.originalUploadSlot ?? r.uploadSlot,
+              uploadSlot: target,
+              document: r.document
+                ? { ...r.document, uploadType: target }
+                : null,
+              typeMismatch: false,
+            }
+          : r,
+      ),
     );
   }
   const pending = (
@@ -373,9 +513,8 @@ export function ShippingWorkspace() {
                     </h2>
                     <p className="mt-3 max-w-xl text-xs leading-6 text-blue-100/75">
                       House B/L · 수출신고필증 · House 적하목록
-                      <br />
-                      최소 2종의 PDF로 시작하고, 3종을 함께 올려 삼각대조 자료를
-                      준비하세요.
+                      <br />각 유형에 여러 PDF를 추가하고, 연결된 2종·3종을 함께
+                      검토하세요.
                     </p>
                   </div>
                   <div className="self-center">
@@ -402,134 +541,31 @@ export function ShippingWorkspace() {
                   className="grid gap-4 xl:grid-cols-3"
                 >
                   {shippingTypes.map((slot) => (
-                    <UploadSlotCard
+                    <ShippingUploadCard
                       key={slot}
                       slot={slot}
-                      file={slots[slot]}
+                      files={slots[slot]}
+                      idFor={idFor}
+                      progress={progress}
                       disabled={busy}
                       onSelect={(f) => select(slot, f)}
-                      onRemove={() => {
-                        setSlots((current) => ({ ...current, [slot]: null }));
-                        invalidate();
-                      }}
+                      onRemove={(id) => remove(slot, id)}
+                      onReplace={(id, file) => replace(slot, id, file)}
                     />
                   ))}
                 </div>
-                <div className="mt-4">
-                  {!extra ? (
-                    <button
-                      disabled={busy}
-                      onClick={() => {
-                        setExtra({ slot: "export_declaration", file: null });
-                        invalidate();
-                      }}
-                      className="rounded-lg border border-slate-200 px-3 py-2 text-xs"
-                    >
-                      복수 신고·분할 자료 PDF 추가
-                    </button>
-                  ) : (
-                    <div className="rounded-xl border border-slate-200 p-4">
-                      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                        <label className="text-xs">
-                          추가 서류 유형{" "}
-                          <select
-                            aria-label="추가 서류 유형"
-                            disabled={busy}
-                            value={extra.slot}
-                            onChange={(e) => {
-                              setExtra({
-                                slot: e.target.value as ShippingType,
-                                file: null,
-                              });
-                              invalidate();
-                            }}
-                            className="ml-2 rounded border border-slate-200 p-2"
-                          >
-                            {shippingTypes.map((t) => (
-                              <option key={t} value={t}>
-                                {shippingLabels[t].title}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                        <button
-                          disabled={busy}
-                          className="text-xs text-slate-500 underline"
-                          onClick={() => {
-                            setExtra(null);
-                            invalidate();
-                          }}
-                        >
-                          추가 영역 제거
-                        </button>
-                      </div>
-                      <UploadSlotCard
-                        slot={extra.slot}
-                        titlePrefix="추가 "
-                        file={extra.file}
-                        disabled={busy}
-                        onRemove={() => {
-                          setExtra({ ...extra, file: null });
-                          invalidate();
-                        }}
-                        onSelect={(incoming) => {
-                          if (incoming.length !== 1) {
-                            setError("추가 영역에는 PDF 1개만 선택해 주세요.");
-                            return;
-                          }
-                          try {
-                            validateUploads([
-                              ...mainActive.map((t) => slots[t]!),
-                              incoming[0],
-                            ]);
-                            setExtra({ ...extra, file: incoming[0] });
-                            invalidate();
-                          } catch (e) {
-                            setError(safeError(e).message);
-                          }
-                        }}
-                      />
-                      <p className="mt-3 text-[11px] leading-6 text-slate-500">
-                        추가 자료도 실제 분류와 원문을 확인합니다. 복수
-                        신고·부분선적의 범위를 확인하지 않고 전체 수량을
-                        합산하지 않습니다.
-                      </p>
-                    </div>
-                  )}
-                </div>
                 <p className="mt-4 text-[11px] leading-6 text-slate-500">
-                  최소 2종 · 기본 3개 + 추가 PDF 1개 · 파일당 4 MB / 30페이지 ·
-                  모든 파일 합계 4 MB 이내
+                  {entries.length}개 문서 · {selectedTypes}종 · 최대 24개 / 64
+                  MB · 요청당 4 MB 이내 자동 배치
+                  <br />한 종류도 개별 분석할 수 있습니다. 서로 다른 유형과
+                  검증된 연결이 있어야 서류 대조를 실행합니다.
                 </p>
-                <fieldset className="mt-5 flex flex-wrap gap-4 text-xs">
-                  <legend className="mb-3 font-semibold">처리 방식</legend>
-                  <label>
-                    <input
-                      type="radio"
-                      name="processing"
-                      checked={analysisMode}
-                      disabled={busy}
-                      onChange={() => setAnalysisMode(true)}
-                    />{" "}
-                    AI 문서 분석
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="processing"
-                      checked={!analysisMode}
-                      disabled={busy}
-                      onChange={() => setAnalysisMode(false)}
-                    />{" "}
-                    PDF 원문만 확인
-                  </label>
-                </fieldset>
                 <div className="mt-5 rounded-xl bg-slate-50 p-4 text-xs leading-6 text-slate-600">
                   <p>
-                    기업 내부 자료의 사용·처리 및 외부 전송 권한을 확인해
-                    주세요. AI 분석에서는 추출 텍스트·위치 정보가 외부 OpenAI
-                    API로 전송됩니다. PDF 원문만 확인을 선택하면 OpenAI로
-                    전송하지 않습니다.
+                    자료 사용·처리 권한을 확인해 주세요. AI 분석은 추출
+                    텍스트·위치 정보를 OpenAI에 전송합니다. 스캔 페이지는 선택적
+                    OCR을 위해 해당 PDF 페이지 이미지를 전송할 수 있습니다. PDF
+                    원문만 보기는 OpenAI를 호출하지 않습니다.
                   </p>
                   <label className="mt-3 flex items-start gap-2">
                     <input
@@ -543,40 +579,50 @@ export function ShippingWorkspace() {
                   </label>
                 </div>
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-xs text-slate-500" aria-live="polite">
-                    {selectedTypes}종 선택 ·{" "}
-                    {selectedTypes < 2
-                      ? "비교 자료 준비에 최소 2종이 필요합니다."
-                      : active.length === 3
-                        ? "삼각대조 자료 준비 가능"
-                        : "두 문서 대조 자료 준비 가능"}
-                  </p>
+                  <div>
+                    <p className="text-xs text-slate-500">
+                      AI 분류 → 원문 근거 확인 → 연결된 서류 대조
+                    </p>
+                    <button
+                      onClick={() => prepare(false)}
+                      disabled={!canPrepare}
+                      className="mt-2 text-xs text-blue-700 underline disabled:opacity-40"
+                    >
+                      PDF 원문만 보기
+                    </button>
+                  </div>
                   <button
-                    onClick={prepare}
+                    onClick={() => prepare(true)}
                     disabled={!canPrepare}
                     className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white disabled:opacity-40"
                   >
                     {busy ? (
                       <>
                         <LoaderCircle className="animate-spin" size={16} />
-                        {analysisMode
-                          ? "PDF 원문·AI 응답을 확인하는 중"
-                          : "PDF 원문을 확인하는 중"}
+                        문서 처리 중
                       </>
                     ) : (
                       <>
-                        {analysisMode ? "서류 분석 시작" : "비교 자료 준비"}
+                        AI 서류 분석 시작
                         <ArrowRight size={16} />
                       </>
                     )}
                   </button>
                 </div>
                 {busy && (
-                  <p role="status" className="mt-4 text-xs text-blue-700">
-                    PDF를 읽고 있습니다. AI 분석 선택 시 GPT-6 Luna 응답을
-                    기다린 뒤 원문 근거를 대조합니다. 서류 간 삼각대조는
-                    실행하지 않습니다.
-                  </p>
+                  <div
+                    role="status"
+                    className="mt-4 text-xs leading-6 text-blue-700"
+                  >
+                    {batchProgress.current}/{batchProgress.total} 배치 · PDF
+                    원문과 AI 응답을 확인하고 완료된 결과를 통합합니다.
+                    <button
+                      onClick={() => abort.current?.abort()}
+                      className="ml-3 underline"
+                    >
+                      분석 중단
+                    </button>
+                  </div>
                 )}
               </section>
               <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -623,6 +669,15 @@ export function ShippingWorkspace() {
                   새 서류 검토
                 </button>
               </div>
+              {!!reusedDocuments && (
+                <p className="mb-3 text-xs text-blue-700">
+                  기존 성공 결과 {reusedDocuments}개를 유지했습니다. 해당 문서는
+                  AI를 다시 호출하지 않았습니다.
+                </p>
+              )}
+              <div className="mb-5">
+                <ShippingReport results={results} review={review} />
+              </div>
               <div className="mb-5 grid gap-3 sm:grid-cols-3">
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
                   <p className="text-xs text-slate-500">
@@ -633,7 +688,9 @@ export function ShippingWorkspace() {
                     {results.filter((r) => r.pdf.pages.length > 0).length}
                   </p>
                   <p className="mt-2 text-xs text-slate-500">
-                    AI 분석 {summary.analyzedDocuments} · 부분{" "}
+                    선택 {summary.uploadedTypes}종 · 실제 분류{" "}
+                    {summary.classifiedTypes}종 · AI 분석{" "}
+                    {summary.analyzedDocuments} · 부분{" "}
                     {summary.partialDocuments} · 실패 {summary.failedDocuments}
                   </p>
                 </div>
@@ -729,6 +786,27 @@ export function ShippingWorkspace() {
                                 : "문서 분석·원문 근거 검증 완료"}
                       </span>
                     </div>
+                    {urlById.get(result.pdf.id) && (
+                      <a
+                        href={urlById.get(result.pdf.id)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-3 inline-block text-xs text-blue-700 underline"
+                      >
+                        원본 PDF 열기 (브라우저 내 파일)
+                      </a>
+                    )}
+                    {result.ocrPages?.length && (
+                      <p className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-amber-900">
+                        OCR 페이지: {result.ocrPages.join(", ")} · 인식값은 원본
+                        이미지에서 직접 확인해 주세요.
+                      </p>
+                    )}
+                    {result.ocrError && (
+                      <p role="alert" className="mt-3 text-xs text-amber-900">
+                        OCR 처리: {result.ocrError.message}
+                      </p>
+                    )}
                     {result.error && (
                       <div
                         role="alert"
@@ -752,7 +830,7 @@ export function ShippingWorkspace() {
                             fixSlot(result.pdf.id, result.detectedType!)
                           }
                         >
-                          분류된 유형으로 영역 변경 (기존 파일과 교환)
+                          분류된 유형으로 영역 변경 (다른 파일 유지)
                         </button>
                       </div>
                     )}
@@ -798,64 +876,74 @@ export function ShippingWorkspace() {
                         {result.pdf.pages.map((page) => (
                           <div key={page.page} className="mt-5">
                             <p className="text-[10px] font-bold text-blue-700">
-                              PAGE {page.page}
+                              PAGE {page.page}{" "}
+                              {page.textSource === "ocr"
+                                ? "· OCR 인식 (독립 원문 검증 아님)"
+                                : page.ocrStatus === "candidate"
+                                  ? "· 텍스트 부족 / OCR 후보"
+                                  : ""}
                             </p>
                             <pre className="mt-3 whitespace-pre-wrap break-words rounded-lg bg-slate-50 p-4 font-mono text-xs leading-6">
                               {page.text}
                             </pre>
-                            <details className="mt-3">
-                              <summary className="cursor-pointer text-[11px] text-slate-500">
-                                실제 텍스트 블록·위치 보기
-                              </summary>
-                              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                                {page.blocks?.slice(0, 100).map((block) => (
-                                  <button
-                                    key={block.id}
-                                    onClick={() =>
-                                      setSelection({
-                                        raw: true,
-                                        page,
-                                        label: "PDF 원문 블록",
-                                        field: {
-                                          value: block.text.slice(0, 300),
-                                          status: "unverified",
-                                          reason:
-                                            "실제 PDF에서 추출한 블록입니다. 필드 역할·문서 대응·수량 검증은 아직 실행하지 않았습니다.",
-                                          source: {
-                                            fileId: result.pdf.id,
-                                            fileName: result.pdf.fileName,
-                                            page: page.page,
-                                            quote: block.text.slice(0, 800),
-                                            blocks: [block],
-                                            segments: [
-                                              {
-                                                blockId: block.id,
-                                                quote: block.text.slice(0, 800),
-                                              },
-                                            ],
+                            {page.textSource !== "ocr" && (
+                              <details className="mt-3">
+                                <summary className="cursor-pointer text-[11px] text-slate-500">
+                                  실제 텍스트 블록·위치 보기
+                                </summary>
+                                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                                  {page.blocks?.slice(0, 100).map((block) => (
+                                    <button
+                                      key={block.id}
+                                      onClick={() =>
+                                        setSelection({
+                                          raw: true,
+                                          page,
+                                          label: "PDF 원문 블록",
+                                          field: {
+                                            value: block.text.slice(0, 300),
+                                            status: "unverified",
+                                            reason:
+                                              "실제 PDF에서 추출한 블록입니다. 필드 역할·문서 대응·수량 검증은 아직 실행하지 않았습니다.",
+                                            source: {
+                                              fileId: result.pdf.id,
+                                              fileName: result.pdf.fileName,
+                                              page: page.page,
+                                              quote: block.text.slice(0, 800),
+                                              blocks: [block],
+                                              segments: [
+                                                {
+                                                  blockId: block.id,
+                                                  quote: block.text.slice(
+                                                    0,
+                                                    800,
+                                                  ),
+                                                },
+                                              ],
+                                            },
                                           },
-                                        },
-                                      })
-                                    }
-                                    className="flex min-w-0 items-start gap-2 rounded-lg border border-slate-200 p-2 text-left text-[11px]"
-                                  >
-                                    <ScanText
-                                      size={12}
-                                      className="mt-1 shrink-0 text-blue-600"
-                                    />
-                                    <span className="break-all">
-                                      {block.text}
-                                    </span>
-                                  </button>
-                                ))}
-                              </div>
-                              {(page.blocks?.length ?? 0) > 100 && (
-                                <p className="mt-3 text-[10px] text-slate-500">
-                                  블록 버튼은 처음 100개입니다. 위의 페이지
-                                  원문에는 전체 추출 텍스트를 표시합니다.
-                                </p>
-                              )}
-                            </details>
+                                        })
+                                      }
+                                      className="flex min-w-0 items-start gap-2 rounded-lg border border-slate-200 p-2 text-left text-[11px]"
+                                    >
+                                      <ScanText
+                                        size={12}
+                                        className="mt-1 shrink-0 text-blue-600"
+                                      />
+                                      <span className="break-all">
+                                        {block.text}
+                                      </span>
+                                    </button>
+                                  ))}
+                                </div>
+                                {(page.blocks?.length ?? 0) > 100 && (
+                                  <p className="mt-3 text-[10px] text-slate-500">
+                                    블록 버튼은 처음 100개입니다. 위의 페이지
+                                    원문에는 전체 추출 텍스트를 표시합니다.
+                                  </p>
+                                )}
+                              </details>
+                            )}
                           </div>
                         ))}
                       </details>

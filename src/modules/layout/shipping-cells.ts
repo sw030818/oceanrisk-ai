@@ -7,6 +7,15 @@ const tableAnchor: Record<Exclude<EntityScope, "document">, string[]> = {
   container: ["containerNumber"],
   cargo: ["houseBlNumber"],
 };
+function totalRow(page: PdfPage, row: number) {
+  return (page.blocks ?? []).some(
+    (b) =>
+      b.row === row &&
+      /^(?:total|subtotal|grand total|合計|합계|소계|총계)(?:\s+(?:quantity|qty|packages|ctns|gross weight|net weight))?\s*:?$/i.test(
+        b.text.trim(),
+      ),
+  );
+}
 export function shippingCell(
   page: PdfPage,
   selected: PdfBlock[],
@@ -15,6 +24,7 @@ export function shippingCell(
   if (scope === "document" || !selected.length) return null;
   const blocks = page.blocks ?? [],
     first = [...selected].sort((a, b) => a.y - b.y || a.x - b.x)[0];
+  if (totalRow(page, first.row)) return null;
   const rows = [
     ...new Set(
       blocks
@@ -54,7 +64,8 @@ export function shippingCell(
         (b) =>
           b.row > headerRow &&
           b.row <= first.row &&
-          /^total|^합계|^총계/i.test(shippingRole(b.text.split(":")[0]) ?? ""),
+          (totalRow(page, b.row) ||
+            /^total/i.test(shippingRole(b.text.split(":")[0]) ?? "")),
       )
     )
       continue;
@@ -109,6 +120,17 @@ export function shippingCell(
     );
     let row = first.row;
     if (!anchors.some((a) => a.row === row)) {
+      const forward =
+        scope === "item" &&
+        ["goodsDescription", "tradeDescription"].includes(role)
+          ? anchors
+              .filter(
+                (a) =>
+                  a.row > row &&
+                  a.y - first.y <= Math.max(a.height, first.height) * 2,
+              )
+              .sort((a, b) => a.y - b.y)[0]
+          : undefined;
       const prior = anchors
         .filter(
           (a) =>
@@ -116,8 +138,8 @@ export function shippingCell(
             first.y - a.y <= Math.max(a.height, first.height) * 2,
         )
         .sort((a, b) => b.y - a.y)[0];
-      if (!prior) return null;
-      row = prior.row;
+      if (!prior && !forward) return null;
+      row = forward?.row ?? prior!.row;
     }
     const wrap = ["goodsDescription", "tradeDescription"].includes(role);
     if (!wrap && selected.some((b) => b.row !== row)) return null;
@@ -126,9 +148,9 @@ export function shippingCell(
       selected.some((b) =>
         anchors.some(
           (a) =>
-            a.row > row &&
-            a.row <= b.row &&
-            a.y - first.y > Math.max(a.height, first.height) * 2,
+            a.row !== row &&
+            a.row >= Math.min(first.row, row) &&
+            a.row <= b.row,
         ),
       )
     )

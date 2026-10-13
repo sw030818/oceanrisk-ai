@@ -38,7 +38,9 @@ export function ShippingReviewPanel({
   onConfirmRelationship?: (id: string) => void;
   onEvidence: (field: GroundedField<string | number>, label: string) => void;
 }) {
-  const [filter, setFilter] = useState<"attention" | "all">("attention"),
+  const [filter, setFilter] = useState<
+      "attention" | "all" | "mismatch" | "review" | "match"
+    >("attention"),
     s = review.summary;
   if (!s || review.status === "not_performed")
     return (
@@ -55,12 +57,22 @@ export function ShippingReviewPanel({
     .filter(
       (c) =>
         filter === "all" ||
-        [
-          "confirmed_mismatch",
-          "provisional_mismatch",
-          "needs_review",
-          "not_comparable",
-        ].includes(c.assessment),
+        (filter === "mismatch" && c.assessment.endsWith("mismatch")) ||
+        (filter === "match" && c.assessment === "confirmed_match") ||
+        (filter === "review" &&
+          [
+            "needs_review",
+            "insufficient_information",
+            "not_comparable",
+            "provisional_match",
+          ].includes(c.assessment)) ||
+        (filter === "attention" &&
+          [
+            "confirmed_mismatch",
+            "provisional_mismatch",
+            "needs_review",
+            "not_comparable",
+          ].includes(c.assessment)),
     )
     .sort((a, b) => rank(a) - rank(b) || a.id.localeCompare(b.id));
   return (
@@ -149,6 +161,18 @@ export function ShippingReviewPanel({
         <p className="text-xs font-semibold">
           {filter === "attention" ? "우선 확인할 항목" : "모든 비교 항목"}
         </p>
+        <select
+          aria-label="검토 결과 필터"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value as typeof filter)}
+          className="rounded-lg border border-slate-200 bg-white p-2 text-xs"
+        >
+          <option value="attention">우선 확인</option>
+          <option value="all">전체</option>
+          <option value="mismatch">불일치</option>
+          <option value="review">확인 필요 · 정보 부족</option>
+          <option value="match">확인된 일치</option>
+        </select>
         <button
           onClick={() =>
             setFilter(filter === "attention" ? "all" : "attention")

@@ -90,6 +90,8 @@ export type ExtractedDocument = z.infer<typeof extractedDocumentSchema>;
 export type DocumentType = z.infer<typeof documentTypeSchema>;
 export type Evidence = z.infer<typeof evidenceSchema>;
 export interface PdfPage {
+  textSource?: "pdf_text" | "ocr";
+  ocrStatus?: "candidate" | "recognized" | "failed";
   page: number;
   text: string;
   width?: number;
@@ -131,6 +133,7 @@ export interface GroundedField<T> {
     | "row_mismatch"
     | "context_unverified"
     | "user_edited"
+    | "ocr_unverified"
     | EvidenceIssue;
   source: {
     fileId: string;
@@ -146,6 +149,7 @@ export interface GroundedField<T> {
       unit: string | null;
     };
     semanticRole?: string;
+    provenance?: "pdf_text" | "ocr";
   } | null;
 }
 export interface GroundedItem {

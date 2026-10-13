@@ -28,6 +28,7 @@ const sourceSchema = evidenceSchema.extend({
     .max(12)
     .optional(),
   semanticRole: z.string().optional(),
+  provenance: z.enum(["pdf_text", "ocr"]).optional(),
   layout: z
     .object({
       tableId: z.string(),
@@ -60,6 +61,7 @@ const groundedSchema = z.object({
       "row_mismatch",
       "context_unverified",
       "user_edited",
+      "ocr_unverified",
       "page_missing",
       "block_missing",
       "duplicate_block",
@@ -93,6 +95,12 @@ export const shippingFieldSchema = z
         code: "custom",
         message: "A changed value must preserve user correction provenance",
       });
+    for (const part of [field.original, field.current])
+      if (part.status === "verified" && part.source?.provenance === "ocr")
+        ctx.addIssue({
+          code: "custom",
+          message: "OCR is not independently verified native PDF text",
+        });
     for (const part of [field.original, field.current])
       if (part.status === "verified" && (!part.source || part.value === null))
         ctx.addIssue({

@@ -6,7 +6,7 @@ import {
   type ShippingType,
 } from "../../src/modules/shipping/catalog";
 import { groundShipping } from "../../src/modules/shipping/ground";
-import { summarizeShipping } from "../../src/modules/shipping/summary";
+import { routeShipping } from "../fixtures/shipping-route";
 import type { ShippingResult } from "../../src/modules/shipping/prepare";
 async function mockedAnalysis(
   page: Page,
@@ -45,21 +45,7 @@ async function mockedAnalysis(
     };
     results[0].document = null;
   }
-  let requests = 0;
-  await page.route("**/api/analyze", async (route) => {
-    requests++;
-    expect(route.request().postDataBuffer()!.toString()).toContain("analyze");
-    await route.fulfill({
-      json: {
-        mode: "shipping-analysis",
-        phase: "3.1",
-        results,
-        summary: summarizeShipping(results),
-        review: { status: "not_performed", checks: [] },
-        capabilities: { aiExtraction: true, triangularComparison: false },
-      },
-    });
-  });
+  const transport = await routeShipping(page, results, "3.1");
   await page.goto("/");
   for (const [i, f] of fixtures.entries())
     await page
@@ -71,12 +57,12 @@ async function mockedAnalysis(
       });
   await page.getByRole("checkbox").check();
   await page
-    .getByRole("button", { name: "서류 분석 시작", exact: true })
+    .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: /문서별 분석 완료|문서 분석 일부 성공/ }),
   ).toBeVisible();
-  return { fixtures, results, requests: () => requests };
+  return { fixtures, results, requests: transport.calls };
 }
 test("MOCKED AI: three actual synthetic PDF types expose multiple items, containers, cargo and declarations", async ({
   page,
@@ -182,15 +168,21 @@ test("MOCKED AI: mismatched actual type displays actual fields, slot swap preser
   ).toHaveValue("Notify Logistics Ltd.");
   await page
     .getByRole("button", {
-      name: "분류된 유형으로 영역 변경 (기존 파일과 교환)",
+      name: "분류된 유형으로 영역 변경 (다른 파일 유지)",
     })
     .first()
     .click();
   await expect(
     page.getByRole("alert").filter({ hasText: "문서 유형 불일치" }),
+  ).toHaveCount(1);
+  await page
+    .getByRole("button", { name: "분류된 유형으로 영역 변경 (다른 파일 유지)" })
+    .click();
+  await expect(
+    page.getByRole("alert").filter({ hasText: "문서 유형 불일치" }),
   ).toHaveCount(0);
   await expect(page.getByText(/최초 선택: House 적하목록/)).toBeVisible();
-  expect(requests()).toBe(1);
+  expect(requests()).toBe(2);
 });
 test("MOCKED AI: wrong container row remains unverified, partial result does not hide independent fields", async ({
   page,
@@ -252,7 +244,7 @@ test("ACTUAL LOCAL server without key: no provider request, readable PDF retaine
       });
   await page.getByRole("checkbox").check();
   await page
-    .getByRole("button", { name: "서류 분석 시작", exact: true })
+    .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "문서 분석 실패", exact: true }),

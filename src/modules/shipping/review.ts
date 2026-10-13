@@ -5,6 +5,7 @@ import type {
   ShippingAssessment,
   ShippingRelationship,
 } from "./review-model";
+import { declarationGroupChecks } from "./declaration-groups";
 import { relateShipping } from "./relationships";
 import {
   has32,
@@ -884,6 +885,34 @@ export function reviewShipping(
             ...(!whole32(bl)
               ? ["HBL 문서 자체의 참조 범위를 확인해야 합니다."]
               : []),
+            ...(documents.some(
+              (d) =>
+                d.id !== bl.id &&
+                d.detectedType === "house_bl" &&
+                identifiers32(d, "houseBlNumber").some(
+                  (f) =>
+                    blid &&
+                    text32(f.field.current.value) ===
+                      text32(blid.field.current.value),
+                ),
+            )
+              ? [
+                  "같은 HBL의 복수 원본/버전이 있어 해당 합계의 전체 범위를 확인해야 합니다.",
+                ]
+              : []),
+            ...(manifest.cargoRecords.some(
+              (row) =>
+                !cargo.some((c) => c.id === row.id) &&
+                containers.some(
+                  (c) =>
+                    text32(c.field.current.value) ===
+                    text32(row.fields.containerNumber.current.value),
+                ),
+            )
+              ? [
+                  "다른 HBL이 같은 컨테이너를 사용합니다. 공동 포장/중량 배분이 명시되지 않아 합계를 확정하지 않습니다.",
+                ]
+              : []),
             ...(!manifest.collectionCoverage?.cargoRecords.complete
               ? ["Manifest 화물표 전체 행의 포함 여부가 미확인입니다."]
               : []),
@@ -1075,6 +1104,7 @@ export function reviewShipping(
       }
   for (const r of relationships)
     r.entityLinks?.sort((a, b) => a.id.localeCompare(b.id));
+  checks.push(...declarationGroupChecks(documents, relationships));
   checks.sort((a, b) => a.id.localeCompare(b.id));
   const summary = {
     matches: checks.filter((c) => c.assessment === "confirmed_match").length,

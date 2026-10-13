@@ -243,6 +243,15 @@ export function groundShipping(
       ? "complete"
       : "partial";
   doc.collectionCoverage = collectionCoverage32(doc, pdf);
+  if (
+    pdf.pages.some(
+      (p) =>
+        p.textSource === "ocr" ||
+        p.ocrStatus === "candidate" ||
+        p.ocrStatus === "failed",
+    )
+  )
+    for (const c of Object.values(doc.collectionCoverage)) c.complete = false;
   const requiredCollections =
     type === "house_manifest"
       ? (["cargoRecords", "containers"] as const)

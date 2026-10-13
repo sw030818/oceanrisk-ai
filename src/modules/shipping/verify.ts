@@ -65,8 +65,21 @@ export function verifyShippingField(
   const resolved = resolveCitation(candidate, pdf);
   let g = verifyField(resolved, pdf);
   const finish = () => ({ original: g, current: structuredClone(g) });
-  if (g.status !== "verified") return finish();
-  const page = pdf.pages.find((p) => p.page === g.source?.page)!;
+  const page = pdf.pages.find((p) => p.page === g.source?.page);
+  if (page?.textSource === "ocr") {
+    if (g.source) {
+      g.source.provenance = "ocr";
+      delete g.source.blocks;
+      delete g.source.layout;
+    }
+    g = fail(
+      g,
+      "ocr_unverified",
+      "OCR 인식 문자열과 대조했지만 PDF 이미지에서 독립 확인한 원문은 아닙니다. 숫자·단위·페이지를 원본에서 직접 확인해 주세요.",
+    );
+    return finish();
+  }
+  if (g.status !== "verified" || !page) return finish();
   const blocks = g.source && evidenceBlocks(g.source, page);
   if (!blocks?.length) {
     g = fail(
@@ -361,6 +374,7 @@ export function verifyClassification(
     pdf.pages.flatMap((p) => genuineTitles(p).map((b) => titleType(b.text))),
   );
   const valid =
+    page?.textSource !== "ocr" &&
     !!blocks?.length &&
     blocks.some(
       (b) =>
@@ -376,6 +390,9 @@ export function verifyClassification(
         ...resolved.evidence,
         blocks: blocks ?? undefined,
         semanticRole: "documentType",
+        ...(page?.textSource === "ocr"
+          ? { provenance: "ocr" as const, blocks: undefined }
+          : {}),
       }
     : null;
   const field: GroundedField<string> = {
