@@ -328,8 +328,8 @@ export function ShippingWorkspace() {
                 <div className="mb-6">
                   <h2 className="text-sm font-bold">검토할 선적서류 업로드</h2>
                   <p className="mt-2 text-xs leading-6 text-slate-500">
-                    서류 종류는 사용자가 선택한 영역입니다. AI 판독 유형은 아직
-                    분석 후 원문 제목과 독립적으로 확인합니다.
+                    서류 종류는 사용자가 선택한 영역입니다. 실제 유형은 분석 후
+                    원문 제목과 대조해 확인합니다.
                   </p>
                 </div>
                 <div

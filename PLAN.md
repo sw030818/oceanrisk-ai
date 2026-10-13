@@ -15,6 +15,8 @@ OceanRisk AI는 중소 포워더의 **House B/L·수출신고필증·House 적�
 
 3종 전용 strict 추출·실제 제목 분류·블록 복원·독립 의미/행/열/단위 검증과 다중 결과·수정/복원·불일치 UI를 구현했다. 기존 공통 OpenAI transport/최종 JSON 파서·PDF/보안·원문 UI·과거 회귀는 유지한다. 무료 회귀/Production build/worker·main ship·Actions/동일 Production SHA를 확인해 결과를 PROGRESS에 기록한다. 유료 호출은 새 승인 전 미실행이다. 사전예약 예산은 합성3문서/한 배치/최대$0.05/자동재시도0이며 이전 예산과 분리한다.
 
+실행 확인: main 구현 3a4605f79e0764d0a1404b96d5572dd38873355b, ship 332단위/21브라우저 및 설치·타입·린트·빌드·worker 통과. Actions quality/production·Vercel Git 완료·Production 같은SHA와 무료 실제 PDF/모바일 검증 통과. 실제 유료 검증은 새 승인 질문 제출 후 대기이며 호출0이다. 결과 보존·마지막 문구 수정도 ship 검사를 거쳐 저장한다.
+
 ## PHASE 3.1 상세 작업
 
 1. 3종 전용 strict Responses 응답 스키마, 문서 분류와 요청 영역 분리, 다중 신고/컨테이너/품목/참조의 구조화 추출.

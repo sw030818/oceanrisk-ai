@@ -440,3 +440,10 @@
 - 무료 Production 도구 `check:phase31:ui`는 exactSHA+3.1 capability 뒤 공식HTML/assets에서 prepare만 실제 전송하도록 방어한다. 모바일/데스크톱·원문 블록·사용자수정, 잘못된PDF analyze의 공급자 호출 전 실패를 확인하며 유료호출0이어야 통과한다. 문서/APIraw응답/키를 보고서에 저장하지 않는다.
 - 기록: README/PLAN/AGENTS 및 `docs/validation/phase31-2026-10-13.json`. 기존 유료 archives/실행 기록은 보존했다. main 일반Push·GitHub quality/production·Vercel Git 완료·같은ProductionSHA를 확인하고 추가 관측을 기록한다. 미실행 실제유료·관리APIReady 직접조회·실무전체정확도는 완료로 표시하지 않는다.
 - 남은 범위: 복잡한 병합/회전 표·스캔OCR·모호한 제목/라벨의 근거확인 한계, 실제 업무양식 일반정확도와 유료실증(새 승인 전 미실행). PHASE3.2 다대다 대응·양자/삼각대조·분할선적/동시포장·위험 판정, CSV/EDI·세관자동신고·실시간/온프레미스는 미구현.
+
+### PHASE 3.1 실제 저장·무료 Production 검증 결과
+- 구현 main **3a4605f79e0764d0a1404b96d5572dd38873355b** 일반Push·원격 SHA 일치, 깨끗한 작업 트리 확인. ship **npm ci419/typecheck/lint/332단위/Production build/PDF worker/21브라우저** 모두 통과했다. 단위는 기존291+새41, 브라우저는 기존15+새6이며 테스트 삭제 없음.
+- GitHub Actions **38355573500 quality/production success**. Vercel Git **success / Deployment has completed**, 공식 Production 같은SHA/ID **dpl_F96hMtaDn2vhuz4dWSJs89zyxcxk**, PHASE3.1 분류/추출capability true·삼각대조false·OpenAI키설정true 확인. 키유효성/관리APIReady 직접조회는 이 상태 확인으로 주장하지 않는다.
+- `check:phase31:ui` 실제 실행 PASS: 공식HTML/assets의1440px데스크톱3열·390px모바일넘침없음, 합성3PDF의 실제 **prepare 배치1회**, 원문페이지/실제블록/좌표·사용자수정구분을 확인했다. 추가 잘못된PDF3개의 shipping-analysis 요청은 PDF 추출에서 INVALID_PDF로 실패하고 aiCalled:false를 확인했다. 총 **유료 공급자 호출0/자동재시도0**, 삼각대조 미실시. 이 결과를 모의/실제AI 성공으로 합산하지 않았다.
+- 화면을 시각적으로 점검해 업로드 설명의 중복된 '아직 분석 후' 표현을 바로잡았다. 추출/검증/수치/보안 코드 변경은 없다. 무료 결과 안전메타데이터를 검증JSON에 보존하며 마지막 기록도 ship 전체 통과 후 main 저장·배포한다.
+- 사용자의 요청9절에 따른 새 유료 승인 질문을 제출했다: 합성3문서(유형별분류·다중품목/컨테이너·물품/포장/중량·HS·참조)/최대$0.05/배치1회/재시도0. **기록 시점 승인대기·실제OpenAI 호출0**이다. 이전31개/2개 예산은 여전히 재사용하지 않았다. 승인 전에는 실제 정확도·토큰·유료 비용 통과를 보고하지 않는다.

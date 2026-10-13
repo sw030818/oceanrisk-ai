@@ -8,13 +8,97 @@
   "actualPaidApiCalls": 0,
   "paidValidationStatus": "NOT_EXECUTED_NEW_APPROVAL_REQUIRED",
   "pastPaidBudgetsReused": false,
-  "expectedReleaseGate": {"unitTests": 332, "browserTests": 21, "npmCi": true, "typecheck": true, "lint": true, "productionBuild": true, "pdfWorker": true},
-  "freeObservedBeforeShip": {"unitTests": 327, "additionalShippingTests": 39, "browserTests": 21, "typecheck": true, "lint": true, "productionBuild": true, "pdfWorker": true},
-  "syntheticFixtures": {"types": ["house_bl", "export_declaration", "house_manifest"], "pagesPerDocument": 2, "languages": ["Korean", "English"], "items": 2, "containers": 2, "cargoRecords": 2, "references": 2, "separateSealVariant": true, "missingInformationVariants": true},
-  "mockedAiTests": ["classification and actual field type", "selected/actual type mismatch", "PCS/CTNS and net/gross separation", "wrong container/item row", "wrapped descriptions", "split quantities/units", "leading-zero HS Code", "fake/missing/duplicate page or block", "multiple seals and declarations", "original/current edit restore", "final_answer only", "401/429/500 timeout incomplete JSON"],
+  "freeObservedBeforeShip": {
+    "unitTests": 327,
+    "additionalShippingTests": 39,
+    "browserTests": 21,
+    "typecheck": true,
+    "lint": true,
+    "productionBuild": true,
+    "pdfWorker": true
+  },
+  "syntheticFixtures": {
+    "types": [
+      "house_bl",
+      "export_declaration",
+      "house_manifest"
+    ],
+    "pagesPerDocument": 2,
+    "languages": [
+      "Korean",
+      "English"
+    ],
+    "items": 2,
+    "containers": 2,
+    "cargoRecords": 2,
+    "references": 2,
+    "separateSealVariant": true,
+    "missingInformationVariants": true
+  },
+  "mockedAiTests": [
+    "classification and actual field type",
+    "selected/actual type mismatch",
+    "PCS/CTNS and net/gross separation",
+    "wrong container/item row",
+    "wrapped descriptions",
+    "split quantities/units",
+    "leading-zero HS Code",
+    "fake/missing/duplicate page or block",
+    "multiple seals and declarations",
+    "original/current edit restore",
+    "final_answer only",
+    "401/429/500 timeout incomplete JSON"
+  ],
   "triangularComparison": "not_performed",
   "automaticRetries": 0,
   "sourceDocumentsOrRawResponsesArchived": false,
-  "deploymentStatus": "PENDING_SHIP_AND_INDEPENDENT_PRODUCTION_CHECK",
-  "limitations": ["Paid GPT-6 Luna accuracy not tested before new approval", "Searchable synthetic PDF only; not a genuine customs certificate", "No OCR, complex merged/rotated-table guarantee or EDI/CSV", "No inter-document/triangle algorithm in PHASE 3.1"]
+  "deploymentStatus": "PRODUCTION_SAME_SHA_AND_VERCEL_GIT_COMPLETED",
+  "limitations": [
+    "Paid GPT-6 Luna accuracy not tested before new approval",
+    "Searchable synthetic PDF only; not a genuine customs certificate",
+    "No OCR, complex merged/rotated-table guarantee or EDI/CSV",
+    "No inter-document/triangle algorithm in PHASE 3.1"
+  ],
+  "sourceSha": "3a4605f79e0764d0a1404b96d5572dd38873355b",
+  "releaseGate": {
+    "unitTests": 332,
+    "browserTests": 21,
+    "npmCi": true,
+    "typecheck": true,
+    "lint": true,
+    "productionBuild": true,
+    "pdfWorker": true,
+    "passed": true,
+    "installedPackages": 419
+  },
+  "productionFreeUi": {
+    "mode": "phase31-actual-production-free-pdf-not-ai",
+    "sourceSha": "3a4605f79e0764d0a1404b96d5572dd38873355b",
+    "passed": true,
+    "deployment": {
+      "sha": "3a4605f79e0764d0a1404b96d5572dd38873355b",
+      "keyConfigured": true,
+      "deploymentId": "dpl_F96hMtaDn2vhuz4dWSJs89zyxcxk"
+    },
+    "batchRequests": 1,
+    "preparedDocuments": 3,
+    "aiCalled": false,
+    "paidProviderCalls": 0,
+    "shippingAnalysisInvalidPdfError": true,
+    "automaticRetries": 0,
+    "desktopThreeColumns": true,
+    "mobileWidth": 390,
+    "mobileOverflow": false,
+    "userCorrectionDistinct": true,
+    "literalPdfBlocksVisible": true,
+    "comparisonStatus": "not_performed"
+  },
+  "actions": {
+    "runId": 38355573500,
+    "quality": "success",
+    "production": "success",
+    "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38355573500"
+  },
+  "vercelManagementReadyDirectlyQueried": false,
+  "paidApprovalStatus": "requested_pending"
 }
