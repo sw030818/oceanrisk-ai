@@ -3,13 +3,13 @@
   "baseSha": "928bcc729682cbc6444483c38fbbdce230e9af59",
   "dateKst": "2026-10-13",
   "expectedReleaseGate": {
-    "unitTests": 406,
+    "unitTests": 407,
     "browserTests": 41,
     "priorUnitTests": 377,
     "priorBrowserTests": 30
   },
   "observed": {
-    "unitTests": 406,
+    "unitTests": 407,
     "browserTests": 40,
     "typecheck": true,
     "lint": true,

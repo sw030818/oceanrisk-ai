@@ -395,4 +395,10 @@ describe("PHASE3.3 batched workspace and independent grounding", () => {
       true,
     );
   });
+  it("complex normal ground truth has no accidental cross-shipment total defaults", async () => {
+    const fs = await Promise.all(evaluation33("complex").map(fixture33)),
+      r = reviewShipping(fs.map((f) => f.document));
+    expect(r.summary?.confirmedMismatches).toBe(0);
+    expect(r.summary?.confirmedRelationships).toBe(8);
+  });
 });

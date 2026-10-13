@@ -494,6 +494,12 @@ export function evaluation33(stage: string): Truth33[] {
       t.items = [item];
       t.roots.quantity = item.quantity;
       t.containers = i === 2 ? b.containers : a.containers;
+      if (i === 2)
+        Object.assign(t.roots, {
+          packageCount: b.roots.packageCount,
+          grossWeight: b.roots.grossWeight,
+          netWeight: 45,
+        });
       return t;
     });
     const mf = truth33("house_manifest", "complex-manifest", "landscape");
