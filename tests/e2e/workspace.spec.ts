@@ -1,143 +1,96 @@
 import { test, expect } from "@playwright/test";
-import { makePdf, syntheticDocument } from "../fixtures/synthetic";
-test("upload workspace, validation and responsive layout", async ({ page }) => {
+import {
+  blLabel,
+  choose,
+  start,
+  mockPreparation,
+} from "../fixtures/shipping-ui";
+test("shipping workspace validates formats, has three slots and fits mobile", async ({
+  page,
+}) => {
   await page.goto("/");
   await expect(
-    page.getByLabel("Commercial Invoice PDF 파일 선택"),
-  ).toBeEnabled();
-  await expect(
-    page.getByRole("heading", { name: "서류 검토, 더 명확하게." }),
+    page.getByRole("heading", { name: "적하목록 신고 전, 원문부터 정확하게." }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "서류 분석 시작" }),
+    page.getByRole("button", { name: "비교 자료 준비", exact: true }),
   ).toBeDisabled();
-  await page.getByLabel("Commercial Invoice PDF 파일 선택").setInputFiles({
+  await expect(page.getByRole("region", { name: /업로드 영역/ })).toHaveCount(
+    3,
+  );
+  await page.getByLabel(blLabel).setInputFiles({
     name: "invalid.png",
     mimeType: "image/png",
     buffer: Buffer.from("bad"),
   });
   await expect(
-    page.getByRole("alert").filter({ hasText: "텍스트 기반 PDF" }),
-  ).toBeVisible();
+    page
+      .getByRole("alert")
+      .filter({ hasText: /현재 단계와|합성 서버 오류|텍스트 기반 PDF/ }),
+  ).toContainText("텍스트 기반 PDF");
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(
-    page.getByRole("button", { name: "파일 선택", exact: true }).first(),
-  ).toBeVisible();
   expect(
     await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
+      () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
 });
-test("actual server PDF extraction with missing OpenAI key", async ({
-  page,
-  request,
-}) => {
-  const status = await (await request.get("/api/status")).json();
-  test.skip(
-    status.aiConfigured,
-    "Missing-key test only applies when key is absent",
-  );
-  await page.goto("/");
-  await expect(
-    page.getByLabel("Commercial Invoice PDF 파일 선택"),
-  ).toBeEnabled();
-  const pdf = await makePdf([
-    ["COMMERCIAL INVOICE", "Quantity: 100 PCS"],
-    ["Second page evidence"],
-  ]);
-  await page.getByLabel("Commercial Invoice PDF 파일 선택").setInputFiles({
-    name: "real-generated-synthetic.pdf",
-    mimeType: "application/pdf",
-    buffer: Buffer.from(pdf),
-  });
-  await page.getByRole("checkbox").check();
-  await page.getByRole("button", { name: "서류 분석 시작" }).click();
-  await expect(page.getByText("오류 코드: API_NOT_CONFIGURED")).toBeVisible({
-    timeout: 45000,
-  });
-  await page.getByText("페이지별 PDF 원문 보기").click();
-  await expect(
-    page.getByText("Quantity: 100 PCS", { exact: false }),
-  ).toBeVisible();
-  await expect(page.getByText("PAGE 2", { exact: true })).toBeVisible();
-  await expect(
-    page.getByText("정보 부족", { exact: false }).first(),
-  ).toBeVisible();
-});
-test("synthetic mocked analysis: mismatch evidence, edits and revalidation", async ({
+test("actual server PDF preparation reads pages and blocks without OpenAI, independently of key presence", async ({
   page,
 }) => {
-  // Explicit test-only mock. This is not a real OpenAI success.
-  const pair = [
-    syntheticDocument("invoice", 100),
-    syntheticDocument("packing_list", 90),
-  ];
-  await page.route("**/api/analyze", (route) =>
-    route.fulfill({
-      json: {
-        results: pair.map((fixture) => ({
-          pdf: fixture.pdf,
-          document: fixture.document,
-          error: null,
-        })),
-        mode: "live",
-        aiConfigured: true,
-      },
-    }),
-  );
   await page.goto("/");
+  await choose(page);
+  await start(page);
   await expect(
-    page.getByLabel("Commercial Invoice PDF 파일 선택"),
-  ).toBeEnabled();
-  for (const [index, fixture] of pair.entries())
-    await page
-      .getByLabel(
-        index
-          ? "Packing List PDF 파일 선택"
-          : "Commercial Invoice PDF 파일 선택",
-      )
-      .setInputFiles({
-        name: fixture.pdf.fileName,
-        mimeType: "application/pdf",
-        buffer: Buffer.from("%PDF-synthetic-ui-test"),
-      });
-  await page.getByRole("checkbox").check();
-  await page.getByRole("button", { name: "서류 분석 시작" }).click();
-  await expect(
-    page.getByText("Steel Bolts · 동일 품목의 수량 차이를 확인했습니다"),
-  ).toBeVisible();
+    page.getByRole("heading", { name: "PDF 자료 준비 완료", exact: true }),
+  ).toBeVisible({ timeout: 45000 });
+  await expect(page.getByText("분석 미실시", { exact: true })).toBeVisible();
   await page
-    .getByLabel("상품 수량 · 품목 1", { exact: true })
+    .getByText("페이지별 PDF 원문 보기", { exact: true })
     .first()
-    .fill("95");
-  await expect(page.getByTestId("check-quantity-0")).toHaveAttribute(
-    "data-assessment",
-    "provisional_mismatch",
+    .click();
+  await expect(page.getByText("PAGE 2", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText(/Packages: 20 CTNS/).first()).toBeVisible();
+  await page
+    .getByText("실제 텍스트 블록·위치 보기", { exact: true })
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Packages: 20 CTNS" }).click();
+  await expect(page.getByRole("dialog")).toContainText("필드 의미 검증 미실시");
+  await expect(page.getByRole("dialog")).toContainText("실제 PDF 블록 위치");
+  await page.keyboard.press("Escape");
+});
+test("user input retains separate unverified provenance, restore and reset", async ({
+  page,
+}) => {
+  await mockPreparation(page);
+  await page
+    .getByText("문서별 필드 확인·사용자 입력 (AI 추출 미실시)", { exact: true })
+    .first()
+    .click();
+  await page.getByLabel("House B/L · 포장 개수", { exact: true }).fill("20");
+  await page
+    .getByRole("button", { name: "사용자 수정", exact: false })
+    .first()
+    .click();
+  await expect(page.getByRole("dialog")).toContainText("사용자가 수정한 값");
+  await expect(page.getByRole("dialog")).toContainText(
+    "원문 근거 후보가 없습니다",
   );
-  await expect(
-    page.getByRole("button", { name: "사용자 수정" }).first(),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "사용자 수정" }).first().click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  await expect(page.getByRole("dialog")).toContainText("원문 근거");
   await page.keyboard.press("Tab");
   expect(
-    await page.evaluate(() =>
-      Boolean(document.activeElement?.closest("dialog")),
-    ),
+    await page.evaluate(() => !!document.activeElement?.closest("dialog")),
   ).toBe(true);
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog")).not.toBeVisible();
-  await page.getByRole("button", { name: "AI 추출값 복원" }).first().click();
+  await page
+    .getByRole("button", { name: "사용자 입력 초기화" })
+    .first()
+    .click();
   await expect(
-    page.getByText("Steel Bolts · 동일 품목의 수량 차이를 확인했습니다"),
-  ).toBeVisible();
+    page.getByLabel("House B/L · 포장 개수", { exact: true }),
+  ).toHaveValue("");
   await page.getByRole("button", { name: "새 서류 검토" }).click();
   await expect(
-    page.getByRole("heading", { name: "서류 검토, 더 명확하게." }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "서류 분석 시작" }),
+    page.getByRole("button", { name: "비교 자료 준비", exact: true }),
   ).toBeDisabled();
 });

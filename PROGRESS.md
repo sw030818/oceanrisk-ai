@@ -401,3 +401,20 @@
 - 마지막 보강 후 실제 실행: 단위 **265/265**(19개 파일), ESLint 통과. 서로 다른 합성 양식 **7/7**, 모의 AI 추출+PDF 원문 근거 **172/172** 통과. 기존 237개 단위와 12개 브라우저를 삭제하지 않고 회귀를 확장했다. 새 PHASE 2.3 핵심 회귀는 28개, 브라우저는 기존 12개+새 3개이다.
 - 최종 저장은 `ship`의 npm ci/typecheck/lint/265개 단위/Production build/PDF worker/15개 브라우저 검사를 모두 통과한 경우에만 수행한다. 일반 main Push 후 GitHub quality/production 및 공식 사이트의 정확한 SHA를 확인하고 최종 결과에 실제 SHA를 보고한다. 실패 코드는 Push하지 않는다.
 - 추가 유료 호출 **0회**. 실제 OpenAI 검증의 소스 SHA는 계속 **5122cb071044df2dcee86f49404ea9c6c9db99cb**이며 그 결과는 2/2문서·57/57필드·600/400 PCS 확정 일치이다. 이후 안전 보강의 검증은 합성 PDF/모의 AI 회귀이며 실제 API 재검증으로 주장하지 않는다. 승인된 2개 문서 예산은 소진 상태로 유지했다.
+
+
+## PHASE 3.0 — 신고 전 선적서류 준비 기반 (2026-10-13 KST)
+
+- 기준 저장소 `sw030818/oceanrisk-ai`, main/원격 HEAD **979737e84c759831afb45dd9747318671c90749a**, 시작 시 변경 없음. AGENTS/PLAN/PROGRESS/README 및 PDF/OpenAI/근거/규칙/UI/검사 구조를 조사했다. 기존 저장소·Vercel·키·기록 초기화 없음.
+- 현재 제품을 중소 포워더의 House B/L·수출신고필증·House Manifest 신고 전 자료 준비로 전환했다. 새 `ShippingWorkspace`는 기존 네이비·화이트 화면 구조와 UploadSlotCard/EditableField/EvidenceDialog를 재사용한다. 3종 카드, 빨간 PDF 표시, 드롭·교체·삭제, 최소 2종 준비, 3종 삼각대조 자료 준비, 원문 페이지/블록/위치, 실패/부분 성공, 사용자 입력/복원을 구현했다.
+- 별도 `shipping` Zod 모델은 사용자 영역과 실제 분류를 분리한다. 원본/현재값·근거 상태·파일/페이지/블록/좌표, 서로 다른 문서 필드와 additionalFields 확장, 물품/포장/중량 단위, 복수 품목/컨테이너/Seal/신고 참조와 다대다 관계를 보존할 구조다. 관계 그룹 밖 항목·잘못된 숫자/문자 유형·수정값의 가짜 검증 상태를 거부한다. 기존 6개 판정 상태는 후속 검증 계약에서 재사용한다.
+- 공개 `/api/analyze`는 boundedFormData/Origin/업로드 제한/105초 취소/실제 PDF.js 추출을 재사용하고 **PDF 준비만** 실행한다. 분류 null·typeMismatch null·추출/정합성 검증 not_performed·checks 빈 목록·aiCalled false를 반환한다. 키가 있어도 OpenAI/Gemini/Invoice 규칙에 연결되지 않는다. 기존 Invoice/PL 공개 요청은 409로 거부하고 새 화면으로 새로고침하도록 안내한다.
+- GPT-6 Luna Responses/strict 스키마/토큰/타임아웃/phase 파서/근거/수량 규칙·옛 Workspace를 보존했다. 이전 API 처리기는 외부 route가 없는 `analysis/legacy-route.ts`로 보존하고 기존 HTTP 계약 회귀를 그 내부 코드에 연결했다. 기존 단위 265개를 삭제하거나 기준을 완화하지 않았다. 새 공개 API/문서 모델/무료 PDF 준비 회귀 26개를 추가했다.
+- UI 계약 변경으로 기존 15개 Playwright 시나리오를 새 3종 업로드·최소 2종·미실시 상태·원문·수정·보안 안내에 맞게 갱신했다. 이전 Invoice 수량 판정은 보존된 핵심 단위 회귀에서 검사한다. 새 서류의 수량 오류를 이전 규칙으로 생성하지 않는다.
+- 실제 실행: npm ci **419개 패키지**, typecheck, ESLint, **291/291 단위(20개 파일)**, Production build, **PDF worker trace PASS**, **15/15 Playwright** 통과. 개발 서버 실행과 1440px 데스크톱/390px 모바일 실제 화면 확인 및 가로 넘침 없음. 서버 PDF 준비 2/3종·페이지/블록·원문 위치와 사용자 수정/복원을 실제 합성 PDF로 검증했다.
+- 수정한 초기 실패: Zod discriminated tuple/nullable 필드의 타입·const 코드, Next Link lint, 새 UI의 숨겨진 Next route announcer/반복 페이지를 함께 잡는 4개 브라우저 selector, Production 확인 도구의 BodyInit 바이트 타입. 마지막 전체 검사의 브라우저 시작은 시각 확인용 개발 서버 자식의 3000 포트 점유로 중단되었고, 이 작업의 해당 프로세스만 종료 후 15개 전체 브라우저를 재실행해 통과했다. 미해결 테스트 실패를 성공으로 덮지 않았다. 최종 ship은 전체 검사를 다시 실행한다.
+- README/PLAN/AGENTS를 현 단계로 갱신하고 이전 README를 `docs/legacy-phase23-readme.md`에 보존했다. 실제 OpenAI 유료 호출 **0회**, 기존 31개/2개 예산/ledger 변경 없음. 문서 DB/실제 업무 PDF/키/원문/API raw 응답을 Git·로그에 추가하지 않았다.
+- `check:phase30:ui`는 정확한 Production SHA와 AI 비활성 상태를 확인한 뒤 한 배치의 합성 PDF 3개를 실제 무료 준비 API로 보낸다. 공식 HTML/assets를 TLS 검증된 Node 프록시 전송으로 Chromium에 연결하고 데스크톱 3열/모바일·사용자 수정/실제 블록 보기·분석 미실시를 검사한다. 실제 AI 검증으로 보고하지 않고 재시도하지 않는다.
+- 저장/배포: 작업 파일만 Stage한 뒤 AGENTS의 ship 전체 통과를 조건으로 main 일반 Commit/Push, 원격 SHA 대조, Actions quality/production, 기존 Vercel Git 자동 배포/동일 SHA 및 공식 새 UI를 확인한다. 최종 SHA와 실제 완료 여부는 작업 완료 보고에 기록한다.
+- **남은 PHASE 3.1**: 새 3종 strict Responses 스키마/분류·필드/품목/컨테이너/복수 참조 추출, 실제 블록 인용 복원, 역할/행/열/숫자/단위 독립 검증, 판독 유형 불일치 경고와 수정 재검토 UI. 유료 검증은 새 예상 호출 수/상한의 별도 승인 필요.
+- **PHASE 3.2 이후**: TS 다대다 대응/양자 3조합/삼각대조, 복수 신고·분할선적·동시포장·컨테이너·다른 단위·원문 부족·잘못된 연결의 확정/잠정 판정. 관세청/EDI 제출·실시간 연동·Booking·OCR·온프레미스는 미구현이며 제공 중으로 표시하지 않는다.

@@ -1,91 +1,20 @@
-import { parseUploadSlots } from "@/modules/upload/slots";
-import { requireSameOrigin } from "@/modules/security/origin";
+import type { ShippingReview } from "@/modules/shipping/review-model";
 import { NextResponse } from "next/server";
+import { requireSameOrigin } from "@/modules/security/origin";
+import { boundedFormData } from "@/modules/upload/request";
 import { validateUploads } from "@/modules/upload/validate";
-import { MAX_TOTAL_BYTES } from "@/modules/upload/limits";
 import { AnalysisError, safeError } from "@/modules/documents/errors";
-import { analyzeFile } from "@/modules/analysis/pipeline";
-import type { AnalysisResult } from "@/modules/documents/schema";
-import { reviewDocuments } from "@/modules/rules/review";
+import { summarizeShipping } from "@/modules/shipping/summary";
+import { parseShippingSlots } from "@/modules/shipping/uploads";
+import {
+  prepareShippingFile,
+  type ShippingResult,
+} from "@/modules/shipping/prepare";
 export const runtime = "nodejs";
 export const maxDuration = 120;
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "no-store, private" };
-const MAX_REQUEST_BYTES = MAX_TOTAL_BYTES + 128 * 1024;
-async function boundedFormData(
-  request: Request,
-  signal: AbortSignal,
-): Promise<FormData> {
-  if (!request.headers.get("content-type")?.startsWith("multipart/form-data"))
-    throw new AnalysisError(
-      "INVALID_REQUEST",
-      "PDF 파일 업로드 요청 형식이 올바르지 않습니다.",
-      400,
-    );
-  if (Number(request.headers.get("content-length")) > MAX_REQUEST_BYTES)
-    throw new AnalysisError(
-      "TOTAL_TOO_LARGE",
-      "전체 업로드 요청 크기가 너무 큽니다.",
-      413,
-    );
-  if (!request.body)
-    throw new AnalysisError("NO_FILES", "PDF 파일을 선택해 주세요.", 400);
-  const reader = request.body.getReader();
-  const cancel = () => {
-    void reader.cancel().catch(() => {});
-  };
-  signal.addEventListener("abort", cancel, { once: true });
-  const chunks: Uint8Array[] = [];
-  let size = 0;
-  try {
-    while (true) {
-      if (signal.aborted)
-        throw new AnalysisError(
-          "REQUEST_CANCELLED",
-          "업로드가 취소되었거나 처리 시간이 초과되었습니다.",
-          408,
-        );
-      const { done, value } = await reader.read();
-      if (done) break;
-      size += value.byteLength;
-      if (size > MAX_REQUEST_BYTES) {
-        await reader.cancel();
-        throw new AnalysisError(
-          "TOTAL_TOO_LARGE",
-          "전체 업로드 요청 크기가 너무 큽니다.",
-          413,
-        );
-      }
-      chunks.push(value);
-    }
-  } finally {
-    signal.removeEventListener("abort", cancel);
-    reader.releaseLock();
-  }
-  if (signal.aborted)
-    throw new AnalysisError(
-      "REQUEST_CANCELLED",
-      "업로드가 취소되었거나 처리 시간이 초과되었습니다.",
-      408,
-    );
-  const body = new Uint8Array(size);
-  let offset = 0;
-  for (const chunk of chunks) {
-    body.set(chunk, offset);
-    offset += chunk.length;
-  }
-  try {
-    return await new Response(body, {
-      headers: { "Content-Type": request.headers.get("content-type")! },
-    }).formData();
-  } catch {
-    throw new AnalysisError(
-      "INVALID_REQUEST",
-      "업로드 요청을 읽지 못했습니다.",
-      400,
-    );
-  }
-}
+// PHASE 3.0 intentionally imports NO AI extractor or Invoice/PL rule engine.
 export async function POST(request: Request) {
   try {
     requireSameOrigin(request);
@@ -93,9 +22,9 @@ export async function POST(request: Request) {
       request.signal,
       AbortSignal.timeout(105000),
     ]);
-    const data = await boundedFormData(request, signal);
-    const entries = data.getAll("files");
-    if (entries.some((entry) => !(entry instanceof File)))
+    const form = await boundedFormData(request, signal);
+    const entries = form.getAll("files");
+    if (entries.some((e) => !(e instanceof File)))
       throw new AnalysisError(
         "INVALID_REQUEST",
         "PDF 파일 업로드 요청이 올바르지 않습니다.",
@@ -103,66 +32,25 @@ export async function POST(request: Request) {
       );
     const files = entries as File[];
     validateUploads(files);
-    const slots = parseUploadSlots(data.get("slots"), files.length);
-    const results: AnalysisResult[] = [];
-    // Sequential processing bounds memory and provider requests.
-    for (const [index, file] of files.entries()) {
-      const result = await analyzeFile(file, { signal });
-      const uploadSlot = slots?.[index];
-      results.push(
-        uploadSlot
-          ? {
-              ...result,
-              uploadSlot,
-              typeMismatch:
-                !!result.document && result.document.type !== uploadSlot,
-            }
-          : result,
-      );
-    }
-    const selectedInvoice = results.filter(
-      (r) => r.uploadSlot === "invoice" && r.document,
-    );
-    const selectedPacking = results.filter(
-      (r) => r.uploadSlot === "packing_list" && r.document,
-    );
-    const review = reviewDocuments(
-      results.flatMap((r) => (r.document ? [r.document] : [])),
-      selectedInvoice.length === 1 && selectedPacking.length === 1
-        ? {
-            invoiceId: selectedInvoice[0].pdf.id,
-            packingId: selectedPacking[0].pdf.id,
-          }
-        : undefined,
-    );
+    const slots = parseShippingSlots(form.get("slots"), files.length);
+    const results: ShippingResult[] = [];
+    for (const [i, file] of files.entries())
+      results.push(await prepareShippingFile(file, slots[i], signal));
+    const review: ShippingReview = { status: "not_performed", checks: [] };
     return NextResponse.json(
       {
+        mode: "pdf-preparation",
+        phase: "3.0",
         results,
-        // Literal evidence is already returned in results. Keep the independent
-        // rule response compact instead of duplicating quotes/blocks per check.
-        review: {
-          status: review.status,
-          selection: review.selection,
-          summary: review.summary,
-          checks: review.checks.map(({ fields, sources, ...verdict }) => ({
-            ...verdict,
-            evidenceRefs: sources
-              .filter(Boolean)
-              .map((source) => ({
-                fileId: source!.fileId,
-                page: source!.page,
-                tableId: source!.layout?.tableId,
-                rowId: source!.layout?.rowId,
-              })),
-            fieldStates: fields.map(({ label, field }) => ({
-              label,
-              status: field.status,
-              verificationCode: field.verificationCode,
-            })),
-          })),
+        summary: summarizeShipping(results),
+        review,
+        capabilities: {
+          pdfPreparation: true,
+          documentClassification: false,
+          aiExtraction: false,
+          triangularComparison: false,
         },
-        mode: "live",
-        aiConfigured: Boolean(process.env.OPENAI_API_KEY),
+        aiCalled: false,
       },
       { headers },
     );

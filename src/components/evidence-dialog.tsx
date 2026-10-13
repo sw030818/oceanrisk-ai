@@ -8,11 +8,13 @@ export function EvidenceDialog({
   pageText,
   page,
   onClose,
+  candidateLabel = "AI가 제시한 근거 후보 (수정값의 새 근거가 아닙니다)",
 }: {
   selection: { field: GroundedField<string | number>; label: string };
   pageText?: string;
   page?: PdfPage;
   onClose: () => void;
+  candidateLabel?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -79,7 +81,7 @@ export function EvidenceDialog({
               페이지
             </p>
             <p className="mt-2 text-[10px] text-slate-400">
-              AI가 제시한 근거 후보 (수정값의 새 근거가 아닙니다)
+              {candidateLabel}
             </p>
             <blockquote className="mt-2 break-words rounded-lg border-l-2 border-blue-500 bg-blue-50 p-3 text-sm leading-6">
               {selection.field.source.quote}

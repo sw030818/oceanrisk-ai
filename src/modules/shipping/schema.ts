@@ -1,0 +1,291 @@
+import { z } from "zod";
+import { evidenceSchema } from "../documents/schema";
+import {
+  shippingTypes,
+  shippingFields,
+  numericShippingFields,
+  type ShippingFieldKey,
+  type ShippingType,
+} from "./catalog";
+import type { PdfDocument } from "../documents/schema";
+export const shippingTypeSchema = z.enum(shippingTypes);
+const sourceSchema = evidenceSchema.extend({
+  fileId: z.string().min(1),
+  fileName: z.string().min(1),
+  blocks: z
+    .array(
+      z.object({
+        id: z.string(),
+        text: z.string(),
+        x: z.number().finite(),
+        y: z.number().finite(),
+        width: z.number().nonnegative(),
+        height: z.number().nonnegative(),
+        row: z.number().int().nonnegative(),
+      }),
+    )
+    .max(12)
+    .optional(),
+  semanticRole: z.string().optional(),
+  layout: z
+    .object({
+      tableId: z.string(),
+      rowId: z.string(),
+      role: z.string(),
+      unit: z.string().nullable(),
+    })
+    .optional(),
+});
+const valueSchema = z
+  .union([
+    z.string().max(300),
+    z.number().finite().nonnegative().max(Number.MAX_SAFE_INTEGER),
+  ])
+  .nullable();
+const groundedSchema = z.object({
+  value: valueSchema,
+  status: z.enum(["verified", "unverified", "missing", "user_edited"]),
+  reason: z.string(),
+  source: sourceSchema.nullable(),
+  verificationCode: z
+    .enum([
+      "verified",
+      "missing_value",
+      "missing_evidence",
+      "quote_mismatch",
+      "value_mismatch",
+      "role_mismatch",
+      "ambiguous_cell",
+      "row_mismatch",
+      "context_unverified",
+      "user_edited",
+      "page_missing",
+      "block_missing",
+      "duplicate_block",
+      "citation_too_long",
+    ])
+    .optional(),
+});
+// Original extraction and editable current state remain separate. A correction
+// can never masquerade as a verified AI extraction.
+export const shippingFieldSchema = z
+  .object({ original: groundedSchema, current: groundedSchema })
+  .superRefine((field, ctx) => {
+    if (field.original.status === "user_edited")
+      ctx.addIssue({
+        code: "custom",
+        message: "Original extraction cannot be a user correction",
+      });
+    if (
+      field.current.status === "verified" &&
+      JSON.stringify(field.current) !== JSON.stringify(field.original)
+    )
+      ctx.addIssue({
+        code: "custom",
+        message: "A modified field cannot acquire verified provenance",
+      });
+    if (
+      field.current.value !== field.original.value &&
+      field.current.status !== "user_edited"
+    )
+      ctx.addIssue({
+        code: "custom",
+        message: "A changed value must preserve user correction provenance",
+      });
+    for (const part of [field.original, field.current])
+      if (part.status === "verified" && (!part.source || part.value === null))
+        ctx.addIssue({
+          code: "custom",
+          message: "Verified fields require a value and literal evidence",
+        });
+  });
+export type ShippingField = z.infer<typeof shippingFieldSchema>;
+const semanticField = (key: string) =>
+  shippingFieldSchema.superRefine((field, ctx) => {
+    const numeric = numericShippingFields.has(key as ShippingFieldKey);
+    for (const part of [field.original, field.current])
+      if (
+        part.value !== null &&
+        typeof part.value !== (numeric ? "number" : "string")
+      )
+        ctx.addIssue({
+          code: "custom",
+          message: "Field value type does not match its semantic role",
+        });
+  });
+const textFields = (keys: readonly string[]) =>
+  z
+    .object(Object.fromEntries(keys.map((key) => [key, semanticField(key)])))
+    .strict();
+export const shipmentItemSchema = z.object({
+  id: z.string().min(1),
+  fields: textFields([
+    "goodsDescription",
+    "hsCode",
+    "quantity",
+    "quantityUnit",
+    "packageCount",
+    "packageUnit",
+    "grossWeight",
+    "grossWeightUnit",
+    "declaredWeight",
+    "declaredWeightUnit",
+  ]),
+});
+export const containerSchema = z.object({
+  id: z.string().min(1),
+  containerNumber: semanticField("containerNumber"),
+  sealNumber: semanticField("sealNumber"),
+  packageCount: semanticField("packageCount"),
+  packageUnit: semanticField("packageUnit"),
+  grossWeight: semanticField("grossWeight"),
+  weightUnit: semanticField("weightUnit"),
+});
+export const shipmentReferenceSchema = z.object({
+  id: z.string().min(1),
+  kind: z.enum([
+    "house_bl",
+    "export_declaration",
+    "booking",
+    "shipment",
+    "other",
+  ]),
+  number: semanticField("referenceNumber"),
+});
+const common = {
+  id: z.string().min(1),
+  fileName: z.string().min(1),
+  detectedType: shippingTypeSchema.nullable(),
+  classificationStatus: z.enum(["not_performed", "classified", "needs_review"]),
+  fields: z.record(z.string(), shippingFieldSchema),
+  additionalFields: z
+    .array(
+      z
+        .object({
+          id: z.string().min(1),
+          label: z.string().min(1).max(100),
+          meaning: z.string().min(1).max(100),
+          field: shippingFieldSchema,
+        })
+        .strict(),
+    )
+    .max(100)
+    .default([]),
+  items: z.array(shipmentItemSchema).max(100),
+  containers: z.array(containerSchema).max(100),
+  references: z.array(shipmentReferenceSchema).max(100),
+  extractionStatus: z.enum(["not_performed", "partial", "complete"]),
+};
+export const shippingDocumentSchema = z.discriminatedUnion("uploadType", [
+  z
+    .object({
+      ...common,
+      uploadType: z.literal("house_bl"),
+      fields: textFields(shippingFields.house_bl),
+    })
+    .strict(),
+  z
+    .object({
+      ...common,
+      uploadType: z.literal("export_declaration"),
+      fields: textFields(shippingFields.export_declaration),
+    })
+    .strict(),
+  z
+    .object({
+      ...common,
+      uploadType: z.literal("house_manifest"),
+      fields: textFields(shippingFields.house_manifest),
+    })
+    .strict(),
+]);
+export type ShippingDocument = z.infer<typeof shippingDocumentSchema>;
+// Many-to-many, explicit scope links; never assume a BL/declaration is 1:1.
+export const shipmentRelationshipSchema = z.object({
+  id: z.string().min(1),
+  documentIds: z.array(z.string().min(1)).min(2).max(100),
+  itemIds: z.array(z.string()).max(100),
+  containerIds: z.array(z.string()).max(100),
+  referenceIds: z.array(z.string()).max(100),
+  status: z.enum([
+    "proposed",
+    "user_confirmed",
+    "evidence_confirmed",
+    "conflict",
+  ]),
+  scope: z.enum(["unknown", "full", "partial", "combined_packages"]),
+  reason: z.string(),
+});
+export const shippingCaseSchema = z
+  .object({
+    documents: z.array(shippingDocumentSchema).max(100),
+    relationships: z.array(shipmentRelationshipSchema).max(100),
+  })
+  .superRefine((c, ctx) => {
+    const ids = new Set(c.documents.map((d) => d.id));
+    if (ids.size !== c.documents.length)
+      ctx.addIssue({ code: "custom", message: "Duplicate document IDs" });
+    for (const link of c.relationships) {
+      if (
+        new Set(link.documentIds).size !== link.documentIds.length ||
+        link.documentIds.some((id) => !ids.has(id))
+      )
+        ctx.addIssue({
+          code: "custom",
+          message: "Relationship contains invalid document IDs",
+        });
+      const linkedDocuments = c.documents.filter((d) =>
+        link.documentIds.includes(d.id),
+      );
+      const entryIds = {
+        itemIds: new Set(
+          linkedDocuments.flatMap((d) => d.items.map((i) => i.id)),
+        ),
+        containerIds: new Set(
+          linkedDocuments.flatMap((d) => d.containers.map((i) => i.id)),
+        ),
+        referenceIds: new Set(
+          linkedDocuments.flatMap((d) => d.references.map((i) => i.id)),
+        ),
+      };
+      for (const key of ["itemIds", "containerIds", "referenceIds"] as const)
+        if (
+          new Set(link[key]).size !== link[key].length ||
+          link[key].some((id) => !entryIds[key].has(id))
+        )
+          ctx.addIssue({
+            code: "custom",
+            message: "Relationship refers to absent entries",
+          });
+    }
+  });
+export function emptyShippingField(): ShippingField {
+  const field = {
+    value: null,
+    status: "missing" as const,
+    reason:
+      "AI 필드 추출은 아직 제공하지 않습니다. PDF 원문 확인 또는 사용자 입력이 필요합니다.",
+    verificationCode: "missing_value" as const,
+    source: null,
+  };
+  return { original: { ...field }, current: { ...field } };
+}
+export function createShippingDocument(
+  pdf: PdfDocument,
+  uploadType: ShippingType,
+): ShippingDocument {
+  return shippingDocumentSchema.parse({
+    id: pdf.id,
+    fileName: pdf.fileName,
+    uploadType,
+    detectedType: null,
+    classificationStatus: "not_performed",
+    extractionStatus: "not_performed",
+    fields: Object.fromEntries(
+      shippingFields[uploadType].map((key) => [key, emptyShippingField()]),
+    ),
+    items: [],
+    containers: [],
+    references: [],
+  });
+}

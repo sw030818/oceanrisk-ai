@@ -8,12 +8,14 @@ export function EditableField({
   numeric = false,
   onChange,
   onEvidence,
+  missingLabel,
 }: {
   label: string;
   field: GroundedField<string | number>;
   numeric?: boolean;
   onChange: (value: string | number | null) => void;
   onEvidence: () => void;
+  missingLabel?: string;
 }) {
   return (
     <div className="min-w-0">
@@ -45,7 +47,9 @@ export function EditableField({
         title="근거 후보와 PDF 원문 보기"
       >
         {field.status === "verified" ? <Check size={11} /> : <Info size={11} />}
-        {statusLabels[field.status]}
+        {field.status === "missing" && missingLabel
+          ? missingLabel
+          : statusLabels[field.status]}
         <ChevronRight size={11} />
       </button>
     </div>

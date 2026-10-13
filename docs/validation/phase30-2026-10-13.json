@@ -1,0 +1,45 @@
+{
+  "phase": "3.0",
+  "baseSha": "979737e84c759831afb45dd9747318671c90749a",
+  "mode": "synthetic-pdf-local-and-mocked-ui-foundation",
+  "actualOpenAIAnalysisPerformed": false,
+  "paidProviderCalls": 0,
+  "legacyBudgetsReused": false,
+  "validation": {
+    "npmCi": "passed, 419 packages",
+    "typecheck": "passed",
+    "lint": "passed",
+    "unitTestsPassed": 291,
+    "legacyUnitTestsRetained": 265,
+    "newUnitTests": 26,
+    "unitTestFiles": 20,
+    "playwrightTestsPassed": 15,
+    "productionBuild": "passed",
+    "pdfWorkerTrace": "passed",
+    "developmentServer": "started and stopped",
+    "desktopViewport": 1440,
+    "mobileViewport": 390,
+    "mobileOverflow": false
+  },
+  "expectedCapabilities": {
+    "pdfPreparation": true,
+    "documentClassification": false,
+    "aiExtraction": false,
+    "triangularComparison": false
+  },
+  "publicApiContractChange": "Shipping slots required, at least two distinct types; legacy Invoice/PL request disabled. Historical API checks retained internally.",
+  "browserContractChange": "15 scenarios updated to shipping PDF preparation; legacy numerical verdicts remain covered by unchanged core unit tests.",
+  "initialFailuresResolved": [
+    "Zod/field TypeScript typing",
+    "Next Link lint",
+    "Next hidden route announcer and duplicate page selectors",
+    "BodyInit byte typing",
+    "Own development server child occupied browser test port; process stopped and all browser tests rerun"
+  ],
+  "limitations": [
+    "AI extraction/classification and any comparison not implemented",
+    "Schemas provide foundation, not proof of semantic PDF grounding",
+    "No OCR/EDI/customs submission/Booking/external integration/on-premise deployment"
+  ],
+  "releasePolicy": "Only ship all-checks success permits normal main commit/push; exact remote and Production SHA and GitHub Actions checked separately."
+}

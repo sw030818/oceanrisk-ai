@@ -1,66 +1,36 @@
 import { test, expect } from "@playwright/test";
-test("OpenAI disclosure and missing-key state preserve PDF-only analysis and mobile layout", async ({
+import { choose, start } from "../fixtures/shipping-ui";
+test("external OpenAI disclosure and current no-transmission state are explicit, without an access code", async ({
   page,
 }) => {
   await page.goto("/");
   await expect(
-    page.getByText(/추출 텍스트가 OpenAI로 전송됩니다/),
-  ).toBeVisible();
-  await expect(
-    page
-      .getByRole("status")
-      .filter({ hasText: "OpenAI API 키가 설정되지 않았습니다" }),
-  ).toBeVisible();
-  await expect(page.getByText(/Google Gemini로 전송/)).toHaveCount(0);
-  await page.setViewportSize({ width: 390, height: 844 });
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
+    page.getByText(
+      /후속 AI 분석에서는 추출 텍스트·위치 정보가 외부 OpenAI API로 전송/,
     ),
-  ).toBe(true);
+  ).toBeVisible();
+  await expect(page.getByRole("status")).toContainText(
+    "아직 실행하지 않습니다",
+  );
+  await expect(
+    page.getByText(/현재 PDF 준비 단계에서는 OpenAI로 전송하지 않습니다/),
+  ).toBeVisible();
+  await expect(page.getByLabel(/접근 코드/)).toHaveCount(0);
+  await expect(page.getByText(/Google Gemini로 전송/)).toHaveCount(0);
 });
-test("OpenAI provider 429 preserves readable PDF and shows quota message without a false match", async ({
+test("an old live AI response is rejected rather than shown as shipping verification", async ({
   page,
 }) => {
   await page.route("**/api/analyze", (route) =>
-    route.fulfill({
-      json: {
-        aiConfigured: true,
-        results: [
-          {
-            pdf: {
-              id: "synthetic",
-              fileName: "synthetic.pdf",
-              pages: [{ page: 1, text: "Commercial Invoice" }],
-            },
-            document: null,
-            error: {
-              code: "API_RATE_LIMIT",
-              message:
-                "OpenAI API의 이용 한도 또는 결제 잔액이 부족합니다. 프로젝트 예산과 결제 설정을 확인해 주세요.",
-            },
-          },
-        ],
-      },
-    }),
+    route.fulfill({ json: { mode: "live", aiConfigured: true, results: [] } }),
   );
   await page.goto("/");
-  await page
-    .getByLabel("Commercial Invoice PDF 파일 선택")
-    .setInputFiles({
-      name: "synthetic.pdf",
-      mimeType: "application/pdf",
-      buffer: Buffer.from("%PDF-synthetic-ui"),
-    });
-  await page.getByRole("checkbox").check();
-  await page.getByRole("button", { name: "서류 분석 시작" }).click();
+  await choose(page);
+  await start(page);
   await expect(
-    page.getByRole("heading", { name: "부분 처리 완료" }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(/OpenAI API의 이용 한도 또는 결제 잔액이 부족/),
-  ).toBeVisible();
-  await expect(page.getByText("오류 코드: API_RATE_LIMIT")).toBeVisible();
+    page
+      .getByRole("alert")
+      .filter({ hasText: /현재 단계와|합성 서버 오류|텍스트 기반 PDF/ }),
+  ).toContainText("현재 단계와 맞지 않는 분석 응답");
   await expect(page.getByText("확인된 일치", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("수량 차이", { exact: true })).toHaveCount(0);
 });

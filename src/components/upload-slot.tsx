@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { FileText, UploadCloud, X } from "lucide-react";
+import { shippingLabels, type ShippingType } from "@/modules/shipping/catalog";
 import type { UploadSlot } from "@/modules/documents/schema";
 export function UploadSlotCard({
   slot,
@@ -9,7 +10,7 @@ export function UploadSlotCard({
   onSelect,
   onRemove,
 }: {
-  slot: UploadSlot;
+  slot: UploadSlot | ShippingType;
   file: File | null;
   disabled: boolean;
   onSelect: (files: File[]) => void;
@@ -17,7 +18,8 @@ export function UploadSlotCard({
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
-  const title = slot === "invoice" ? "Commercial Invoice" : "Packing List";
+  const labels = slot === "invoice" ? {title:"Commercial Invoice", subtitle:"상업송장"} : slot === "packing_list" ? {title:"Packing List", subtitle:"포장명세서"} : shippingLabels[slot];
+  const title = labels.title;
   return (
     <section
       aria-label={`${title} 업로드 영역`}
@@ -44,7 +46,7 @@ export function UploadSlotCard({
         <div>
           <h3 className="text-sm font-bold text-slate-800">{title}</h3>
           <p className="mt-1 text-xs text-slate-500">
-            {slot === "invoice" ? "상업송장" : "포장명세서"}
+            {labels.subtitle}
           </p>
         </div>
       </div>

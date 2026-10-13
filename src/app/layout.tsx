@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
-  title: "OceanRisk AI | 무역 서류 리스크 검토",
+  title: "OceanRisk AI | 적하목록 신고 전 정합성 검토",
   description:
-    "Commercial Invoice와 Packing List를 원문 근거와 함께 검토하는 해상운송 서류 분석 서비스",
+    "중소 포워더를 위한 House B/L·수출신고필증·House 적하목록 신고 전 정합성 사전검증 시스템. 현재 PDF 자료 준비 단계입니다.",
 };
 export default function RootLayout({
   children,

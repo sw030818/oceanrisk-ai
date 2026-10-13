@@ -1,108 +1,59 @@
-import { test, expect, type Page } from "@playwright/test";
-import { phase23Fixture } from "../fixtures/phase23";
-async function analyzeMockPair(
-  page: Page,
-  options: Parameters<typeof phase23Fixture>[1] = {},
-) {
-  const fixtures = [
-    await phase23Fixture("invoice"),
-    await phase23Fixture("packing_list", options),
-  ];
-  await page.route("**/api/analyze", (route) =>
-    route.fulfill({
-      json: {
-        mode: "test-synthetic-mock-ai",
-        aiConfigured: true,
-        results: fixtures.map((f, i) => ({
-          pdf: f.pdf,
-          document: f.document,
-          error: null,
-          uploadSlot: i ? "packing_list" : "invoice",
-          typeMismatch: false,
-        })),
-      },
-    }),
-  );
-  await page.goto("/");
-  for (const [index, f] of fixtures.entries())
-    await page
-      .getByLabel(
-        index
-          ? "Packing List PDF 파일 선택"
-          : "Commercial Invoice PDF 파일 선택",
-      )
-      .setInputFiles({
-        name: f.pdf.fileName,
-        mimeType: "application/pdf",
-        buffer: Buffer.from(f.bytes),
-      });
-  await page.getByRole("checkbox").check();
-  await page.getByRole("button", { name: "서류 분석 시작" }).click();
-  await expect(page.getByTestId("review-panel")).toBeVisible();
-}
-test("MOCKED AI: reported 600/400 table and semantic Invoice/PO mapping show verified quantities and accessible evidence", async ({
+// UI contract intentionally changed: previous quantitative conclusions remain
+// covered by all legacy unit regressions; PHASE 3.0 must not expose them here.
+import { test, expect } from "@playwright/test";
+import { mockPreparation } from "../fixtures/shipping-ui";
+test("shipping field names distinguish declared goods quantity from package count", async ({
   page,
 }) => {
-  await analyzeMockPair(page, { reorder: true });
-  await expect(page.getByTestId("check-quantity-0")).toHaveAttribute(
-    "data-assessment",
-    "confirmed_match",
-  );
-  await expect(page.getByTestId("check-quantity-1")).toHaveAttribute(
-    "data-assessment",
-    "confirmed_match",
-  );
+  await mockPreparation(page, { three: true });
+  await page
+    .getByText("문서별 필드 확인·사용자 입력 (AI 추출 미실시)", { exact: true })
+    .nth(1)
+    .click();
   await expect(
-    page.getByText("실제 비교된 품목", { exact: true }),
+    page.getByLabel("수출신고필증 · 물품 수량", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByLabel("수출신고필증 · 포장 개수", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByLabel("수출신고필증 · 신고 중량", { exact: true }),
   ).toBeVisible();
   await page
-    .getByText("당사자·참조·품목·단위·중량·포장 교차검증", { exact: true })
-    .click();
-  await expect(
-    page.getByTestId("check-reference-invoiceReference"),
-  ).toHaveAttribute("data-assessment", "confirmed_match");
-  await expect(
-    page.getByTestId("check-reference-purchaseOrder"),
-  ).toHaveAttribute("data-assessment", "confirmed_match");
-  await page
-    .getByTestId("check-quantity-0")
-    .getByRole("button", { name: /Invoice 수량/ })
-    .click();
-  await expect(page.getByRole("dialog")).toContainText("실제 PDF 블록 위치");
-  await expect(page.getByRole("dialog")).toContainText("600");
-  await page.keyboard.press("Escape");
+    .getByLabel("수출신고필증 · 물품 수량", { exact: true })
+    .fill("500");
+  await page.getByLabel("수출신고필증 · 포장 개수", { exact: true }).fill("20");
+  await expect(page.getByText("분석 미실시", { exact: true })).toBeVisible();
+  await expect(page.getByText("확인된 불일치", { exact: true })).toHaveCount(0);
 });
-test("MOCKED AI: missing references preserve provisional quantities, mobile evidence and user-edit recalculation", async ({
+test("misleading filenames do not become an AI document-type verdict", async ({
+  page,
+}) => {
+  await mockPreparation(page);
+  await expect(
+    page.getByText(/선택 영역: House B\/L · 실제 분류 미실시/),
+  ).toBeVisible();
+  await expect(
+    page.getByText("서류 종류 확인 필요", { exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByText("Commercial Invoice", { exact: true }),
+  ).toHaveCount(0);
+  await expect(page.getByText("Packing List", { exact: true })).toHaveCount(0);
+});
+test("original PDF evidence and manual corrections remain inspectable on mobile with no quantitative claim", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await analyzeMockPair(page, { missingReference: true });
-  await expect(page.getByTestId("check-quantity-0")).toHaveAttribute(
-    "data-assessment",
-    "provisional_match",
-  );
-  await expect(
-    page.getByRole("heading", {
-      name: "교차검증 완료 · 일부 항목 확인 필요",
-      exact: true,
-    }),
-  ).toBeVisible();
+  await mockPreparation(page);
   await page
-    .getByLabel("상품 수량 · 품목 1", { exact: true })
+    .getByText("문서별 필드 확인·사용자 입력 (AI 추출 미실시)", { exact: true })
     .first()
-    .fill("599");
-  await expect(page.getByTestId("check-quantity-0")).toHaveAttribute(
-    "data-assessment",
-    "provisional_mismatch",
-  );
-  await expect(
-    page
-      .getByTestId("check-quantity-0")
-      .getByRole("button", { name: /사용자 수정/ }),
-  ).toBeVisible();
+    .click();
+  await page.getByLabel("House B/L · 총중량", { exact: true }).fill("320");
   await page
-    .getByTestId("check-quantity-0")
-    .getByRole("button", { name: /사용자 수정/ })
+    .getByRole("button", { name: "사용자 수정", exact: false })
+    .first()
     .click();
   await expect(page.getByRole("dialog")).toContainText("사용자가 수정한 값");
   await page.keyboard.press("Escape");
@@ -111,21 +62,5 @@ test("MOCKED AI: missing references preserve provisional quantities, mobile evid
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-});
-test("MOCKED AI: conflicting PO remains a separate warning with visible provisional differences", async ({
-  page,
-}) => {
-  await analyzeMockPair(page, { conflictingPO: true, mismatch: true });
-  await expect(
-    page.getByRole("alert").filter({ hasText: "거래 참조 충돌 경고" }),
-  ).toBeVisible();
-  await expect(page.getByTestId("check-quantity-0")).toHaveAttribute(
-    "data-assessment",
-    "provisional_mismatch",
-  );
-  await expect(page.getByTestId("check-quantity-0")).toContainText("600");
-  await expect(page.getByTestId("check-quantity-0")).toContainText("580");
-  await expect(
-    page.getByText("확인된 수량 불일치 0건", { exact: false }),
-  ).toBeVisible();
+  await expect(page.getByText("분석 미실시", { exact: true })).toBeVisible();
 });

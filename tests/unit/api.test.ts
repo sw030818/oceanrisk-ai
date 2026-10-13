@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { POST } from "@/app/api/analyze/route";
+// Historical API contract, retained as an internal regression only.
+import { legacyPOST as POST } from "@/modules/analysis/legacy-route";
 import { MAX_TOTAL_BYTES } from "@/modules/upload/limits";
 describe("server upload boundary", () => {
   it("rejects wrong content type", async () => {

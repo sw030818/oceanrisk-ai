@@ -1,0 +1,89 @@
+export const shippingTypes = [
+  "house_bl",
+  "export_declaration",
+  "house_manifest",
+] as const;
+export type ShippingType = (typeof shippingTypes)[number];
+export const shippingLabels = {
+  house_bl: { title: "House B/L", subtitle: "선하증권 초안" },
+  export_declaration: {
+    title: "수출신고필증",
+    subtitle: "별도 출처의 신고자료",
+  },
+  house_manifest: {
+    title: "House 적하목록",
+    subtitle: "신고 예정자료 · House Manifest",
+  },
+} satisfies Record<ShippingType, { title: string; subtitle: string }>;
+export const shippingFieldLabels = {
+  houseBlNumber: "House B/L 번호",
+  shipper: "Shipper / 송하인",
+  consignee: "Consignee / 수하인",
+  notifyParty: "Notify Party / 통지처",
+  exporter: "수출자",
+  exporterIdentifier: "수출자 식별정보",
+  declarationNumber: "수출신고번호",
+  goodsDescription: "품명 / Goods Description",
+  hsCode: "HS Code",
+  quantity: "물품 수량",
+  quantityUnit: "물품 수량 단위",
+  packageCount: "포장 개수",
+  packageUnit: "포장 단위",
+  grossWeight: "총중량",
+  grossWeightUnit: "총중량 단위",
+  declaredWeight: "신고 중량",
+  declaredWeightUnit: "신고 중량 단위",
+  portOfLoading: "선적항 / POL",
+  portOfDischarge: "양하항 / POD",
+  shipmentScope: "선적 범위",
+};
+export type ShippingFieldKey = keyof typeof shippingFieldLabels;
+export const shippingFields = {
+  house_bl: [
+    "houseBlNumber",
+    "shipper",
+    "consignee",
+    "notifyParty",
+    "goodsDescription",
+    "packageCount",
+    "packageUnit",
+    "grossWeight",
+    "grossWeightUnit",
+    "portOfLoading",
+    "portOfDischarge",
+    "shipmentScope",
+  ],
+  export_declaration: [
+    "declarationNumber",
+    "exporter",
+    "exporterIdentifier",
+    "goodsDescription",
+    "hsCode",
+    "quantity",
+    "quantityUnit",
+    "declaredWeight",
+    "declaredWeightUnit",
+    "packageCount",
+    "packageUnit",
+    "shipmentScope",
+  ],
+  house_manifest: [
+    "houseBlNumber",
+    "shipper",
+    "consignee",
+    "goodsDescription",
+    "packageCount",
+    "packageUnit",
+    "grossWeight",
+    "grossWeightUnit",
+    "portOfLoading",
+    "portOfDischarge",
+    "shipmentScope",
+  ],
+} as const satisfies Record<ShippingType, readonly ShippingFieldKey[]>;
+export const numericShippingFields = new Set<ShippingFieldKey>([
+  "quantity",
+  "packageCount",
+  "grossWeight",
+  "declaredWeight",
+]);

@@ -1,7 +1,8 @@
 import { describe, expect, it, vi, afterEach, beforeEach } from "vitest";
 import { syntheticDocument } from "../fixtures/synthetic";
 import { requireSameOrigin } from "@/modules/security/origin";
-import { POST } from "@/app/api/analyze/route";
+// Historical API contract, retained as an internal regression only.
+import { legacyPOST as POST } from "@/modules/analysis/legacy-route";
 import { GET } from "@/app/api/status/route";
 const { analyze } = vi.hoisted(() => ({ analyze: vi.fn() }));
 vi.mock("@/modules/analysis/pipeline", () => ({ analyzeFile: analyze }));
@@ -163,6 +164,8 @@ describe("public analysis retains request safety without local auth or quotas", 
     const response = GET();
     const body = await response.json();
     expect(body).toEqual({
+      phase: "3.0",
+      capabilities: {pdfPreparation:true, documentClassification:false, aiExtraction:false, triangularComparison:false},
       provider: "openai",
       model: "gpt-6-luna",
       aiConfigured: true,
