@@ -1,46 +1,103 @@
 {
-  "mode": "phase33-source-validation-plan",
+  "mode": "phase33-final-source-validation-with-partial-ocr-support",
   "baseSha": "928bcc729682cbc6444483c38fbbdce230e9af59",
-  "dateKst": "2026-10-13",
-  "expectedReleaseGate": {
-    "unitTests": 407,
-    "browserTests": 41,
-    "priorUnitTests": 377,
-    "priorBrowserTests": 30
-  },
-  "observed": {
-    "unitTests": 407,
-    "browserTests": 40,
+  "testedProductionSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+  "releaseGate": {
+    "npmCi": true,
+    "packages": 419,
     "typecheck": true,
     "lint": true,
-    "productionBuild": true
+    "unitTests": 407,
+    "browserTests": 41,
+    "productionBuild": true,
+    "pdfWorkerTrace": true,
+    "passed": true
   },
-  "liveStatus": "NOT_YET_RUN_ON_PHASE33",
+  "priorTests": {
+    "unit": 377,
+    "browser": 30,
+    "preserved": true,
+    "transportAndSelectorsUpdatedForExplicitNewContract": true
+  },
+  "actions": {
+    "runId": 38410328161,
+    "quality": "success",
+    "production": "success",
+    "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38410328161"
+  },
+  "production": {
+    "sha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+    "id": "dpl_BEUjWzUtLWGbotyB3kB7rmKXchyk",
+    "vercelGitStatus": "Deployment has completed",
+    "officialHttpShaMatched": true,
+    "openaiKeyConfigured": true,
+    "managementReadyDirectlyQueried": false
+  },
+  "aggregate": {
+    "latestNativeDocuments": 16,
+    "latestNativeStructured": 16,
+    "latestNativeClassificationConfirmed": 16,
+    "latestNativeExpectedFields": 480,
+    "latestNativeCorrectFields": 480,
+    "latestNativeGroundedCorrectFields": 480,
+    "latestNativeReturnedCandidates": 518,
+    "latestNativeReturnedGrounded": 508,
+    "latestNativeComplete": 11,
+    "latestNativePartial": 5,
+    "relationTP": 15,
+    "relationFP": 0,
+    "relationFN": 0,
+    "mismatchTP": 3,
+    "mismatchFP": 0,
+    "mismatchFN": 0,
+    "inputTokens": 181915,
+    "outputTokens": 36834,
+    "cachedInputTokens": 125196,
+    "cacheWriteTokens": 56641,
+    "actualSupplierRequests": 26,
+    "paidDocumentAttempts": 24,
+    "estimatedCostUsd": 0.026756885,
+    "knownUsageAll": true,
+    "automaticRetries": 0,
+    "manualOcrOrientationControlDocuments": 1,
+    "additionalUiPaidCalls": 0,
+    "historicalDocumentsExcludedFromLatestMetrics": 6,
+    "latestOcrDocuments": 2,
+    "ocrRotatedCorrect": 13,
+    "ocrUprightCorrect": 26,
+    "nativeObservedRows": 52,
+    "nativeCompleteTables": 37,
+    "nativeObservedTables": 37,
+    "latestNativeSupplierMeanMs": 12476,
+    "latestNativeSupplierMaxMs": 19077,
+    "latestProviderErrors": 0
+  },
   "budget": {
-    "maxCostUsd": 0.1,
+    "documents": 24,
+    "requests": 26,
+    "measuredCostUsd": 0.026756885,
+    "unresolvedCostUpperUsd": 0,
     "maxDocuments": 24,
     "maxRequests": 30,
-    "pastBudgetsReused": false
+    "maxCostUsd": 0.1
   },
-  "newLayouts": [
-    "portrait",
-    "landscape",
-    "reordered_columns",
-    "multipage_repeated_headers",
-    "wrapped_description",
-    "bilingual",
-    "holdout_separate_labels"
-  ],
-  "sourceTrust": [
-    "native_positioned_pdf_blocks",
-    "ocr_candidate_not_native_evidence",
-    "user_edits_not_native_confirmation"
-  ],
-  "ocrOfficialContracts": [
-    "https://developers.openai.com/api/docs/guides/pdf-files",
-    "https://developers.openai.com/api/docs/models/gpt-6-luna"
-  ],
-  "liveEvidenceBranch": "validation/phase33-evidence",
-  "rawResponsesArchived": false,
-  "realBusinessDocumentsUsed": false
+  "ocrStatus": "upright-synthetic-case-passed-rotated-case-failed",
+  "productionFreeUi": {
+    "mode": "phase33-actual-production-free-pdf-ui",
+    "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+    "sourceShaStable": true,
+    "passed": true,
+    "prepareRequests": 3,
+    "documents": 6,
+    "uniqueDocumentIds": 6,
+    "duplicateNames": true,
+    "desktopWidth": 1440,
+    "mobileWidth": 390,
+    "mobileOverflow": false,
+    "pdfEvidence": true,
+    "printNotPerformed": true,
+    "invalidPdfStopsBeforeAI": true,
+    "paidProviderCalls": 0
+  },
+  "rawResponsesArchived": false
 }

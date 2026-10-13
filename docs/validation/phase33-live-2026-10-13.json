@@ -1,14 +1,53 @@
 {
-  "mode": "phase33-actual-live-validation-evidence",
+  "mode": "phase33-final-live-evidence-with-ocr-limitations",
   "testedProductionSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
   "budget": {
-    "documents": 17,
-    "requests": 17,
-    "measuredCostUsd": 0.018340255,
-    "unresolvedCostUpperUsd": 1.734723475976807e-18,
+    "documents": 24,
+    "requests": 26,
+    "measuredCostUsd": 0.026756885,
+    "unresolvedCostUpperUsd": 0,
     "maxDocuments": 24,
     "maxRequests": 30,
     "maxCostUsd": 0.1
+  },
+  "aggregate": {
+    "latestNativeDocuments": 16,
+    "latestNativeStructured": 16,
+    "latestNativeClassificationConfirmed": 16,
+    "latestNativeExpectedFields": 480,
+    "latestNativeCorrectFields": 480,
+    "latestNativeGroundedCorrectFields": 480,
+    "latestNativeReturnedCandidates": 518,
+    "latestNativeReturnedGrounded": 508,
+    "latestNativeComplete": 11,
+    "latestNativePartial": 5,
+    "relationTP": 15,
+    "relationFP": 0,
+    "relationFN": 0,
+    "mismatchTP": 3,
+    "mismatchFP": 0,
+    "mismatchFN": 0,
+    "inputTokens": 181915,
+    "outputTokens": 36834,
+    "cachedInputTokens": 125196,
+    "cacheWriteTokens": 56641,
+    "actualSupplierRequests": 26,
+    "paidDocumentAttempts": 24,
+    "estimatedCostUsd": 0.026756885,
+    "knownUsageAll": true,
+    "automaticRetries": 0,
+    "manualOcrOrientationControlDocuments": 1,
+    "additionalUiPaidCalls": 0,
+    "historicalDocumentsExcludedFromLatestMetrics": 6,
+    "latestOcrDocuments": 2,
+    "ocrRotatedCorrect": 13,
+    "ocrUprightCorrect": 26,
+    "nativeObservedRows": 52,
+    "nativeCompleteTables": 37,
+    "nativeObservedTables": 37,
+    "latestNativeSupplierMeanMs": 12476,
+    "latestNativeSupplierMaxMs": 19077,
+    "latestProviderErrors": 0
   },
   "stages": [
     {
@@ -623,6 +662,235 @@
             "cargoRecords": {
               "complete": true,
               "rowCount": 2
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        }
+      ],
+      "rawResponsesArchived": false,
+      "realBusinessDocumentsUsed": false,
+      "passed": true
+    },
+    {
+      "browser": {
+        "passed": true,
+        "desktopWidth": 1440,
+        "mobileWidth": 390,
+        "pdfEvidence": true,
+        "editRestore": true,
+        "additionalPaidCalls": 0,
+        "responseReplay": true,
+        "reason": null
+      },
+      "mode": "phase33-actual-production-openai",
+      "stage": "holdout",
+      "partition": "holdout",
+      "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+      "sourceShaStable": true,
+      "recordedAtUtc": "2026-10-13T14:54:37.006Z",
+      "budget": {
+        "documents": 24,
+        "requests": 26,
+        "measuredCostUsd": 0.026756885,
+        "unresolvedCostUpperUsd": 0,
+        "maxDocuments": 24,
+        "maxRequests": 30,
+        "maxCostUsd": 0.1
+      },
+      "batchRequests": 2,
+      "batchDurationsMs": [
+        29817,
+        12902
+      ],
+      "automaticRetries": 0,
+      "measurements": [
+        {
+          "type": "house_bl",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 26,
+          "correct": 26,
+          "groundedCorrect": 26,
+          "returned": 28,
+          "returnedGrounded": 28,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        },
+        {
+          "type": "export_declaration",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 32,
+          "correct": 32,
+          "groundedCorrect": 32,
+          "returned": 34,
+          "returnedGrounded": 34,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        },
+        {
+          "type": "house_manifest",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 33,
+          "correct": 33,
+          "groundedCorrect": 33,
+          "returned": 36,
+          "returnedGrounded": 36,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "complete"
+        }
+      ],
+      "usage": [
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 10124,
+            "inputTokens": 7019,
+            "outputTokens": 1304,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 1867,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.000937165,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 19077,
+            "inputTokens": 7509,
+            "outputTokens": 2863,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 2357,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.001777915,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 12620,
+            "inputTokens": 7449,
+            "outputTokens": 1602,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 2297,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.001139915,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        }
+      ],
+      "classificationCandidatesCorrect": 3,
+      "relation": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "expected": 3,
+        "predicted": 3,
+        "precision": 1,
+        "recall": 1
+      },
+      "mismatch": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "expected": 0,
+        "predicted": 0,
+        "precision": null,
+        "recall": null
+      },
+      "comparison": {
+        "matches": 50,
+        "confirmedMismatches": 0,
+        "provisional": 0,
+        "needsReview": 4,
+        "insufficient": 12,
+        "notComparable": 0,
+        "confirmedRelationships": 3,
+        "userConfirmedRelationships": 0,
+        "proposedRelationships": 0,
+        "conflictingRelationships": 0,
+        "pairChecks": 63,
+        "triangleChecks": 3
+      },
+      "triangleStatus": "performed",
+      "coverage": [
+        {
+          "id": "holdout-0",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "holdout-1",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "holdout-2",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": true,
+              "rowCount": 1
             }
           },
           "ocrPages": [],
@@ -1273,11 +1541,844 @@
       "rawResponsesArchived": false,
       "realBusinessDocumentsUsed": false,
       "passed": true
+    },
+    {
+      "browser": {
+        "passed": false,
+        "reason": "PRODUCTION_UI_TRANSPORT_OR_ASSERTION_FAILED",
+        "additionalPaidCalls": 0,
+        "responseReplay": true
+      },
+      "mode": "phase33-actual-production-openai",
+      "stage": "ocr",
+      "partition": "tuning",
+      "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+      "sourceShaStable": true,
+      "recordedAtUtc": "2026-10-13T14:44:35.006Z",
+      "budget": {
+        "documents": 20,
+        "requests": 21,
+        "measuredCostUsd": 0.021448675,
+        "unresolvedCostUpperUsd": 0,
+        "maxDocuments": 24,
+        "maxRequests": 30,
+        "maxCostUsd": 0.1
+      },
+      "batchRequests": 1,
+      "batchDurationsMs": [
+        14154
+      ],
+      "automaticRetries": 0,
+      "measurements": [
+        {
+          "type": "house_bl",
+          "structured": true,
+          "classificationCorrect": false,
+          "expected": 26,
+          "correct": 13,
+          "groundedCorrect": 0,
+          "returned": 21,
+          "returnedGrounded": 0,
+          "issues": [
+            {
+              "path": "houseBlNumber",
+              "correct": false,
+              "status": "missing",
+              "code": "missing_value"
+            },
+            {
+              "path": "shipper",
+              "correct": false,
+              "status": "missing",
+              "code": "missing_value"
+            },
+            {
+              "path": "consignee",
+              "correct": false,
+              "status": "missing",
+              "code": "missing_value"
+            },
+            {
+              "path": "goodsDescription",
+              "correct": false,
+              "status": "missing",
+              "code": "missing_value"
+            },
+            {
+              "path": "packageCount",
+              "correct": false,
+              "status": "missing",
+              "code": "missing_value"
+            },
+            {
+              "path": "packageUnit",
+              "correct": false,
+              "status": "missing",
+              "code": "missing_value"
+            },
+            {
+              "path": "grossWeight",
+              "correct": false,
+              "status": "missing",
+              "code": "missing_value"
+            },
+            {
+              "path": "grossWeightUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "portOfLoading",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "portOfDischarge",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "shipmentScope",
+              "correct": false,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item0.goodsDescription",
+              "correct": false,
+              "status": null,
+              "code": null
+            },
+            {
+              "path": "item0.hsCode",
+              "correct": false,
+              "status": null,
+              "code": null
+            },
+            {
+              "path": "item0.quantity",
+              "correct": false,
+              "status": null,
+              "code": null
+            },
+            {
+              "path": "item0.quantityUnit",
+              "correct": false,
+              "status": null,
+              "code": null
+            },
+            {
+              "path": "item1.goodsDescription",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item1.hsCode",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item1.quantity",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item1.quantityUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.containerNumber",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.sealNumber",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.packageCount",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.packageUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.grossWeight",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.weightUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "reference0",
+              "correct": false,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            }
+          ],
+          "unverifiedPaths": [
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified"
+          ],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "partial"
+        }
+      ],
+      "usage": [
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 10269,
+            "inputTokens": 6236,
+            "outputTokens": 1186,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 1084,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.00078029,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 3449,
+            "inputTokens": 2317,
+            "outputTokens": 139,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 2314,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.00035905,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          }
+        }
+      ],
+      "classificationCandidatesCorrect": 0,
+      "relation": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "expected": 0,
+        "predicted": 0,
+        "precision": null,
+        "recall": null
+      },
+      "mismatch": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "expected": 0,
+        "predicted": 0,
+        "precision": null,
+        "recall": null
+      },
+      "comparison": {
+        "matches": 0,
+        "confirmedMismatches": 0,
+        "provisional": 0,
+        "needsReview": 0,
+        "insufficient": 0,
+        "notComparable": 0,
+        "confirmedRelationships": 0,
+        "userConfirmedRelationships": 0,
+        "proposedRelationships": 0,
+        "conflictingRelationships": 0,
+        "pairChecks": 0,
+        "triangleChecks": 0
+      },
+      "triangleStatus": "insufficient_documents",
+      "coverage": [
+        {
+          "id": "ocr-rotated-bl",
+          "coverage": {
+            "items": {
+              "complete": false,
+              "rowCount": 0
+            },
+            "containers": {
+              "complete": false,
+              "rowCount": 0
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [
+            1
+          ],
+          "ocrError": null
+        }
+      ],
+      "rawResponsesArchived": false,
+      "realBusinessDocumentsUsed": false,
+      "passed": false
+    },
+    {
+      "mode": "phase33-actual-upright-ocr-control",
+      "stage": "ocr-upright",
+      "partition": "tuning-control",
+      "retryReason": "ROTATED_SCAN_PARTIAL_TRANSCRIPTION",
+      "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+      "sourceShaStable": true,
+      "budget": {
+        "documents": 21,
+        "requests": 23,
+        "measuredCostUsd": 0.02290189,
+        "unresolvedCostUpperUsd": 0,
+        "maxDocuments": 24,
+        "maxRequests": 30,
+        "maxCostUsd": 0.1
+      },
+      "batchRequests": 1,
+      "batchDurationsMs": [
+        16699
+      ],
+      "automaticRetries": 0,
+      "measurements": [
+        {
+          "type": "house_bl",
+          "structured": true,
+          "classificationCorrect": false,
+          "expected": 26,
+          "correct": 26,
+          "groundedCorrect": 0,
+          "returned": 29,
+          "returnedGrounded": 0,
+          "issues": [
+            {
+              "path": "houseBlNumber",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "shipper",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "consignee",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "goodsDescription",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "packageCount",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "packageUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "grossWeight",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "grossWeightUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "portOfLoading",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "portOfDischarge",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "shipmentScope",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item0.goodsDescription",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item0.hsCode",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item0.quantity",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item0.quantityUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item1.goodsDescription",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item1.hsCode",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item1.quantity",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "item1.quantityUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.containerNumber",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.sealNumber",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.packageCount",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.packageUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.grossWeight",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "container0.weightUnit",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            },
+            {
+              "path": "reference0",
+              "correct": true,
+              "status": "unverified",
+              "code": "ocr_unverified"
+            }
+          ],
+          "unverifiedPaths": [
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified",
+            "ocr_unverified"
+          ],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "partial"
+        }
+      ],
+      "classificationCandidatesCorrect": 1,
+      "usage": [
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 10401,
+            "inputTokens": 6866,
+            "outputTokens": 1367,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 1714,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.0009495399999999999,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 4783,
+            "inputTokens": 3174,
+            "outputTokens": 214,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 3171,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.000503675,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          }
+        }
+      ],
+      "comparison": {
+        "matches": 0,
+        "confirmedMismatches": 0,
+        "provisional": 0,
+        "needsReview": 0,
+        "insufficient": 0,
+        "notComparable": 0,
+        "confirmedRelationships": 0,
+        "userConfirmedRelationships": 0,
+        "proposedRelationships": 0,
+        "conflictingRelationships": 0,
+        "pairChecks": 0,
+        "triangleChecks": 0
+      },
+      "coverage": [
+        {
+          "id": "ocr-upright-bl",
+          "coverage": {
+            "items": {
+              "complete": false,
+              "rowCount": 0
+            },
+            "containers": {
+              "complete": false,
+              "rowCount": 0
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [
+            1
+          ],
+          "ocrError": null
+        }
+      ],
+      "browser": {
+        "passed": true,
+        "desktopWidth": 1440,
+        "mobileWidth": 390,
+        "pdfEvidence": true,
+        "editRestore": true,
+        "additionalPaidCalls": 0,
+        "responseReplay": true,
+        "reason": null
+      },
+      "rawResponsesArchived": false,
+      "realBusinessDocumentsUsed": false,
+      "passed": true
+    },
+    {
+      "browser": {
+        "passed": true,
+        "desktopWidth": 1440,
+        "mobileWidth": 390,
+        "pdfEvidence": true,
+        "editRestore": true,
+        "additionalPaidCalls": 0,
+        "responseReplay": true,
+        "reason": null
+      },
+      "mode": "phase33-actual-production-openai",
+      "stage": "uncertain",
+      "partition": "tuning",
+      "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+      "sourceShaStable": true,
+      "recordedAtUtc": "2026-10-13T14:40:01.132Z",
+      "budget": {
+        "documents": 19,
+        "requests": 19,
+        "measuredCostUsd": 0.020309335,
+        "unresolvedCostUpperUsd": 0,
+        "maxDocuments": 24,
+        "maxRequests": 30,
+        "maxCostUsd": 0.1
+      },
+      "batchRequests": 1,
+      "batchDurationsMs": [
+        25012
+      ],
+      "automaticRetries": 0,
+      "measurements": [
+        {
+          "type": "house_bl",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 24,
+          "correct": 24,
+          "groundedCorrect": 24,
+          "returned": 25,
+          "returnedGrounded": 25,
+          "issues": [],
+          "unverifiedPaths": [],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "partial"
+        },
+        {
+          "type": "house_manifest",
+          "structured": true,
+          "classificationCorrect": true,
+          "expected": 31,
+          "correct": 31,
+          "groundedCorrect": 31,
+          "returned": 36,
+          "returnedGrounded": 32,
+          "issues": [],
+          "unverifiedPaths": [
+            "row_mismatch",
+            "row_mismatch",
+            "row_mismatch",
+            "row_mismatch"
+          ],
+          "errorCode": null,
+          "diagnostics": null,
+          "extractionStatus": "partial"
+        }
+      ],
+      "usage": [
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 10793,
+            "inputTokens": 6836,
+            "outputTokens": 1218,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 1684,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.0008712899999999999,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        },
+        {
+          "extraction": {
+            "provider": "openai",
+            "model": "gpt-6-luna",
+            "requestCount": 1,
+            "retryCount": 0,
+            "durationMs": 12391,
+            "inputTokens": 7260,
+            "outputTokens": 1565,
+            "cachedInputTokens": 5149,
+            "cacheWriteTokens": 2108,
+            "reasoningTokens": 0,
+            "estimatedCostUsd": 0.00109779,
+            "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+          },
+          "ocr": null
+        }
+      ],
+      "classificationCandidatesCorrect": 2,
+      "relation": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "expected": 0,
+        "predicted": 0,
+        "precision": null,
+        "recall": null
+      },
+      "mismatch": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "expected": 0,
+        "predicted": 0,
+        "precision": null,
+        "recall": null
+      },
+      "comparison": {
+        "matches": 0,
+        "confirmedMismatches": 0,
+        "provisional": 11,
+        "needsReview": 2,
+        "insufficient": 4,
+        "notComparable": 0,
+        "confirmedRelationships": 0,
+        "userConfirmedRelationships": 0,
+        "proposedRelationships": 1,
+        "conflictingRelationships": 0,
+        "pairChecks": 17,
+        "triangleChecks": 0
+      },
+      "triangleStatus": "insufficient_documents",
+      "coverage": [
+        {
+          "id": "new-uncertain-0",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": false,
+              "rowCount": 0
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        },
+        {
+          "id": "new-uncertain-1",
+          "coverage": {
+            "items": {
+              "complete": true,
+              "rowCount": 2
+            },
+            "containers": {
+              "complete": true,
+              "rowCount": 1
+            },
+            "cargoRecords": {
+              "complete": true,
+              "rowCount": 1
+            }
+          },
+          "ocrPages": [],
+          "ocrError": null
+        }
+      ],
+      "rawResponsesArchived": false,
+      "realBusinessDocumentsUsed": false,
+      "passed": true
     }
   ],
-  "automaticRetries": 0,
-  "priorBudgetsReused": false,
   "rawResponsesArchived": false,
   "realBusinessDocumentsUsed": false,
-  "note": "First six documents on bb2b994 are historical observations; metrics for the final SHA are separate. Unreadable OCR, low-quality OCR and real business forms are not claimed verified."
+  "automaticRetries": 0,
+  "pastBudgetsReused": false,
+  "limitations": [
+    "Only synthetic searchable PDF and one synthetic scan in two orientations; no real customer documents",
+    "Rotated OCR recognition13/26 and unknown type; unsupported as reliable analysis",
+    "Upright OCR26/26 candidate values; no independently verified image coordinates or characters",
+    "Holdout three documents were evaluated after source freeze and not used to tune rules or prompt",
+    "First six paid documents on bb2b994 are separate from final-SHA metrics",
+    "Two width842/height842 variants are wide square pages, not true landscape pages",
+    "Unstated multi-declaration or co-pack allocation remains provisional",
+    "Cost is usage-based estimate, not billing invoice"
+  ],
+  "productionFreeUi": {
+    "mode": "phase33-actual-production-free-pdf-ui",
+    "sourceSha": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+    "sourceShaStable": true,
+    "passed": true,
+    "prepareRequests": 3,
+    "documents": 6,
+    "uniqueDocumentIds": 6,
+    "duplicateNames": true,
+    "desktopWidth": 1440,
+    "mobileWidth": 390,
+    "mobileOverflow": false,
+    "pdfEvidence": true,
+    "printNotPerformed": true,
+    "invalidPdfStopsBeforeAI": true,
+    "paidProviderCalls": 0
+  }
 }

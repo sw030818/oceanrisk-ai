@@ -1,0 +1,25 @@
+{
+  "mode": "independent-synthetic-ground-truth-specification",
+  "generatorCommit": "e5f8d7cceaca03b019a62353ac896f99ff86f29b",
+  "generatorFile": "tests/fixtures/shipping33.ts",
+  "stages": {
+    "normal": 3,
+    "mismatch": 2,
+    "complex": 6,
+    "uncertain": 2,
+    "holdout": 3,
+    "ocr": 1,
+    "ocr-upright-control": 1
+  },
+  "holdoutTunedAfterEvaluation": false,
+  "answersPassedToProvider": false,
+  "complexTruthCorrectionBeforePaidEvaluation": {
+    "declarationId": "complex-declaration-2",
+    "packageCount": 5,
+    "grossWeight": 50,
+    "netWeight": 45
+  },
+  "geometryNote": "landscape/reordered enum labels currently generate width842 height842 wide square pages; no true-landscape validation claim",
+  "ocrControlNote": "same rendered native page embedded as image-only PDF, with Rotate90 and without rotation; orientation control does not establish general OCR accuracy",
+  "businessDocumentsUsed": false
+}
