@@ -181,6 +181,22 @@ const common = {
   references: z.array(shipmentReferenceSchema).max(100),
   informationWarnings: z.array(z.string().max(200)).max(100).default([]),
   extractionStatus: z.enum(["not_performed", "partial", "complete"]),
+  collectionCoverage: z
+    .object({
+      items: z.object({
+        complete: z.boolean(),
+        rowCount: z.number().int().nonnegative(),
+      }),
+      containers: z.object({
+        complete: z.boolean(),
+        rowCount: z.number().int().nonnegative(),
+      }),
+      cargoRecords: z.object({
+        complete: z.boolean(),
+        rowCount: z.number().int().nonnegative(),
+      }),
+    })
+    .optional(),
 };
 export const shippingDocumentSchema = z
   .object({
@@ -231,7 +247,52 @@ export const shipmentRelationshipSchema = z.object({
   ]),
   scope: z.enum(["unknown", "full", "partial", "combined_packages"]),
   reason: z.string(),
+  entityLinks: z
+    .array(
+      z.object({
+        id: z.string(),
+        leftDocumentId: z.string(),
+        leftKind: z.enum(["document", "item", "container", "cargo"]),
+        leftId: z.string(),
+        rightDocumentId: z.string(),
+        rightKind: z.enum(["document", "item", "container", "cargo"]),
+        rightId: z.string(),
+        status: z.enum(["proposed", "evidence_confirmed"]),
+        reason: z.string(),
+      }),
+    )
+    .max(500)
+    .optional(),
+  entityRefs: z
+    .array(
+      z.object({
+        documentId: z.string(),
+        kind: z.enum(["document", "item", "container", "cargo", "reference"]),
+        entityId: z.string(),
+      }),
+    )
+    .max(1000)
+    .optional(),
 });
+function entryIdentities(
+  docs: ShippingDocument[],
+  kind: "item" | "container" | "reference",
+) {
+  const entries = docs.flatMap((d) =>
+    (kind === "item"
+      ? d.items
+      : kind === "container"
+        ? d.containers
+        : d.references
+    ).map((r) => ({ doc: d.id, id: r.id })),
+  );
+  return new Set(
+    entries.flatMap((e) => [
+      [e.doc, kind, e.id].map(encodeURIComponent).join("/"),
+      ...(entries.filter((r) => r.id === e.id).length === 1 ? [e.id] : []),
+    ]),
+  );
+}
 export const shippingCaseSchema = z
   .object({
     documents: z.array(shippingDocumentSchema).max(100),
@@ -254,16 +315,53 @@ export const shippingCaseSchema = z
         link.documentIds.includes(d.id),
       );
       const entryIds = {
-        itemIds: new Set(
-          linkedDocuments.flatMap((d) => d.items.map((i) => i.id)),
-        ),
-        containerIds: new Set(
-          linkedDocuments.flatMap((d) => d.containers.map((i) => i.id)),
-        ),
-        referenceIds: new Set(
-          linkedDocuments.flatMap((d) => d.references.map((i) => i.id)),
-        ),
+        itemIds: entryIdentities(linkedDocuments, "item"),
+        containerIds: entryIdentities(linkedDocuments, "container"),
+        referenceIds: entryIdentities(linkedDocuments, "reference"),
       };
+      for (const ref of link.entityRefs ?? []) {
+        const d = linkedDocuments.find((d) => d.id === ref.documentId),
+          rows = d
+            ? ref.kind === "item"
+              ? d.items
+              : ref.kind === "container"
+                ? d.containers
+                : ref.kind === "cargo"
+                  ? d.cargoRecords
+                  : ref.kind === "reference"
+                    ? d.references
+                    : [{ id: d.id }]
+            : [];
+        if (rows.filter((r) => r.id === ref.entityId).length !== 1)
+          ctx.addIssue({
+            code: "custom",
+            message: "Invalid qualified entity relationship",
+          });
+      }
+      for (const binding of link.entityLinks ?? [])
+        for (const side of ["left", "right"] as const) {
+          const docId =
+              side === "left"
+                ? binding.leftDocumentId
+                : binding.rightDocumentId,
+            kind = side === "left" ? binding.leftKind : binding.rightKind,
+            id = side === "left" ? binding.leftId : binding.rightId;
+          const d = linkedDocuments.find((d) => d.id === docId),
+            rows = d
+              ? kind === "document"
+                ? [{ id: d.id }]
+                : kind === "item"
+                  ? d.items
+                  : kind === "container"
+                    ? d.containers
+                    : d.cargoRecords
+              : [];
+          if (rows.filter((r) => r.id === id).length !== 1)
+            ctx.addIssue({
+              code: "custom",
+              message: "Invalid qualified row correspondence",
+            });
+        }
       for (const key of ["itemIds", "containerIds", "referenceIds"] as const)
         if (
           new Set(link[key]).size !== link[key].length ||

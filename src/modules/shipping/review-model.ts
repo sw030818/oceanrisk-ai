@@ -1,7 +1,27 @@
-// PHASE 3.1–3.2 contract only; PHASE 3.0 produces no checks or verdicts.
+// Deterministic shipping comparison contract; extraction is separate.
 import type { Assessment } from "../rules/model";
+import type { z } from "zod";
+import type { shipmentRelationshipSchema } from "./schema";
 import type { ShippingField } from "./schema";
+export type ShippingAssessment = Assessment | "not_comparable";
+export type ShippingRelationship = z.infer<
+  typeof shipmentRelationshipSchema
+> & {
+  sharedRoles: string[];
+  conflictRoles: string[];
+  evidence: ShippingCheck["fields"];
+};
 export interface ShippingCheck {
+  title?: string;
+  importance?: "info" | "attention" | "high";
+  uncertainties?: string[];
+  computedValues?: {
+    documentId: string;
+    value: number;
+    unit: string;
+    formula: "sum";
+    componentKeys: string[];
+  }[];
   id: string;
   scope:
     | "house_bl_manifest"
@@ -19,12 +39,14 @@ export interface ShippingCheck {
     | "container"
     | "party"
     | "port";
-  assessment: Assessment;
+  assessment: ShippingAssessment;
   relationshipIds: string[];
   fields: {
     documentId: string;
     itemId?: string;
     containerId?: string;
+    cargoId?: string;
+    referenceId?: string;
     fieldName: string;
     field: ShippingField;
   }[];
@@ -34,4 +56,22 @@ export interface ShippingCheck {
 export interface ShippingReview {
   status: "not_performed" | "complete" | "needs_review";
   checks: ShippingCheck[];
+  relationships?: ShippingRelationship[];
+  pairStatus?: "performed" | "not_performed";
+  triangleStatus?: "performed" | "not_comparable" | "insufficient_documents";
+  reason?: string;
+  summary?: {
+    matches: number;
+    confirmedMismatches: number;
+    provisional: number;
+    needsReview: number;
+    insufficient: number;
+    notComparable: number;
+    confirmedRelationships: number;
+    proposedRelationships: number;
+    userConfirmedRelationships: number;
+    conflictingRelationships: number;
+    pairChecks: number;
+    triangleChecks: number;
+  };
 }

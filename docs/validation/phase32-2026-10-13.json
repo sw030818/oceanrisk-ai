@@ -1,0 +1,81 @@
+{
+  "mode": "phase32-implementation-free-validation-snapshot",
+  "baseSha": "c40eeeb87199c245908a1a20361510c9da6b7349",
+  "dateKst": "2026-10-13",
+  "provider": "openai",
+  "model": "gpt-6-luna",
+  "prior332UnitTestsPreserved": true,
+  "prior21BrowserTestsPreserved": true,
+  "releaseGateExpected": {
+    "unitTests": 377,
+    "browserTests": 30,
+    "typecheck": true,
+    "lint": true,
+    "npmCi": true,
+    "productionBuild": true,
+    "pdfWorker": true
+  },
+  "freeObserved": {
+    "unitTests": 373,
+    "newCoreRegressionTests": 45,
+    "browserTests": 30,
+    "typecheck": true,
+    "lint": true,
+    "productionBuild": true
+  },
+  "actualBaseline": {
+    "sourceSha": "c40eeeb87199c245908a1a20361510c9da6b7349",
+    "documents": 2,
+    "classificationCorrect": 2,
+    "structured": 2,
+    "initialStrictCoreCorrectAndGrounded": 84,
+    "initialExpectedWithRedundantOwnReference": 85,
+    "returnedCandidateGrounded": 89,
+    "returnedCandidates": 89,
+    "estimatedCostUsd": 0.00286867
+  },
+  "phase32NewLiveStatus": "PENDING_SAME_SHA_DEPLOYMENT",
+  "approvedBudget": {
+    "maxDocuments": 12,
+    "maxCostUsd": 0.5,
+    "automaticRetries": 0,
+    "priorBudgetsReused": false
+  },
+  "plannedLiveDocuments": {
+    "baseline": 2,
+    "normal": 3,
+    "mismatch": 2,
+    "uncertain": 2,
+    "reserveForNecessaryRepair": 3
+  },
+  "relationships": [
+    "verified semantic HBL/declaration/shipment references",
+    "document-qualified item/container/cargo/reference IDs",
+    "many-to-many document and row links",
+    "conflict/candidate/user confirmation protected",
+    "no container-only or HS-only identity proof"
+  ],
+  "comparison": [
+    "three pair types",
+    "verified HBL three-way clique only",
+    "same semantic fields/units/scope",
+    "native PDF full-row coverage before aggregation",
+    "no duplicate container/shared-package or overlapping declaration sums",
+    "edit/restore without paid calls",
+    "separate certainty and importance"
+  ],
+  "security": {
+    "keysServerOnly": true,
+    "uploadAndOriginLimitsPreserved": true,
+    "rawResponsesArchived": false,
+    "businessPdfsUsed": false,
+    "automaticCustomsSubmission": false
+  },
+  "liveEvidenceBranch": "validation/phase32-evidence",
+  "limits": [
+    "Synthetic searchable PDF only; no real customs certificate",
+    "Unstated allocation/scope stays provisional",
+    "No OCR/EDI/CSV/legal fine prediction",
+    "Different language/port representations require confirmation"
+  ]
+}

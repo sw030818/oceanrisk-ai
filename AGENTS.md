@@ -57,3 +57,12 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 승인 시 PHASE 3.1 전용 `test:phase31:production -- --sha=<SHA> --approved-documents=3 --approved-max-cost-usd=0.05`만 사용한다. 이 명령 플래그 자체는 승인을 대신하지 않는다. 별도live-phase31 ledger·committed archive에서 문서3개/비용$0.05 예약, 미확인 usage 예약 유지, 예산 재설정/자동 추가 승인 금지.
 - 무료 `check:phase31:ui`는 정확한SHA/상태 확인·실제 prepare 요청·잘못된 PDF의 공급자 호출 전 실패만 검사한다. 유료 성공으로 보고하지 않는다. 일반ship/CI는 키를 비워 모든 모의·PDF·UI 회귀를 검사한다.
 - main Push/Actions quality·production/기존 Vercel Git 자동 배포/정확SHA 확인 절차는 유지한다. 검증 보고서에는 모의·실제·미실행을 구분하며 문서 전문·raw 응답·실제 업무 PDF·키를 저장하지 않는다.
+
+## PHASE 3.2 (현재 사용자 요청이 이전 단계보다 우선)
+- 새 문서 분석에 순수 TS 관계/양자/삼각대조를 연결한다. 준비 operation은 계속 무료/미실시이며 capability와 실제 pair/triangle 상태를 분리한다.
+- 검증된 같은 의미의 HBL/신고/선적 참조를 우선한다. 컨테이너/품명만으로 선적 확정 금지. 같은 HBL의 복수 신고 목록 차이는 단일 번호 오류와 구분한다. 출처 문서+종류+로컬ID로 항목을 식별한다.
+- 같은 의미/단위/선적 범위·정확한 행과 원문이 있어야 확정 수치 불일치다. PCS/CTNS·순/총/신고 중량 혼용, 중복 품명 임의매칭, 부분/동시포장/복수 신고 무조건 합산 금지. 화물행 합산은 실제 PDF 표의 전체 포함과 서로 다른 컨테이너·동일 HBL을 확인한다.
+- 사용자 수정·사용자 관계 확인은 원문 근거 입증이 아니다. 관련 비교를 즉시 재계산하되 잠정으로 보호하고 AI 재호출하지 않는다. 위험 중요도와 확실성, 판독 실패/부분 성공/정보 부족/비교 불가를 구분한다.
+- 이번 요청에서 **신규 $0.50/유료 문서 최대12/자동재시도0**가 명시 승인됐다. 기존31개/2개 및 PHASE3.1 승인대기 예산과 분리한 live-phase32 ledger를 사용한다. 추가 승인 질문 없이 정해진 범위에서 필요한 최소 호출만 수행한다. 비용/문서 상한 증액·초기화·사용량미확인 비용 복원 금지.
+- `test:phase32:production -- --sha=<exactSHA> --stage=normal|mismatch|uncertain|repair --approved-documents=12 --approved-max-cost-usd=0.50`은 가격/bytes/8192출력 상한 예약·공유ledger·안전 메타데이터·SourceSHA 전후 확인을 적용한다. 처음 baseline은3.1에서 추출만 검사했으며 최신3.2 통합 검증으로 주장하지 않는다. 일반ship/CI는 키를 비워무료검사만 한다.
+- main/ship/Actions/Production 동일SHA 절차를 유지한다. 실제 live 완료 후 보고서만으로 main을 바꿔 검증SHA를 무효화하지 않는다. 결과·토큰·예산은 `validation/phase32-evidence` 별도 브랜치의 docs/validation/PROGRESS에 정상 Commit/Push해 보존한다. Production main SHA와 보고서 브랜치 SHA를 최종 보고에서 구분한다. live 도구는 그 원격예산도 확인하며 소모 예산을 새 환경에서 복원하지 않는다. 강제Push/기록삭제 금지.

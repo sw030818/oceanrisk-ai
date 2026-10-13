@@ -9,17 +9,24 @@ export function UploadSlotCard({
   disabled,
   onSelect,
   onRemove,
+  titlePrefix = "",
 }: {
   slot: UploadSlot | ShippingType;
   file: File | null;
   disabled: boolean;
   onSelect: (files: File[]) => void;
   onRemove: () => void;
+  titlePrefix?: string;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
-  const labels = slot === "invoice" ? {title:"Commercial Invoice", subtitle:"상업송장"} : slot === "packing_list" ? {title:"Packing List", subtitle:"포장명세서"} : shippingLabels[slot];
-  const title = labels.title;
+  const labels =
+    slot === "invoice"
+      ? { title: "Commercial Invoice", subtitle: "상업송장" }
+      : slot === "packing_list"
+        ? { title: "Packing List", subtitle: "포장명세서" }
+        : shippingLabels[slot];
+  const title = titlePrefix + labels.title;
   return (
     <section
       aria-label={`${title} 업로드 영역`}
@@ -45,9 +52,7 @@ export function UploadSlotCard({
         </div>
         <div>
           <h3 className="text-sm font-bold text-slate-800">{title}</h3>
-          <p className="mt-1 text-xs text-slate-500">
-            {labels.subtitle}
-          </p>
+          <p className="mt-1 text-xs text-slate-500">{labels.subtitle}</p>
         </div>
       </div>
       <p className="mt-5 text-xs leading-6 text-slate-500">

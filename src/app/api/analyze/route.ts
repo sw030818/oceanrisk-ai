@@ -1,3 +1,4 @@
+import { reviewShipping } from "@/modules/shipping/review";
 import type { ShippingReview } from "@/modules/shipping/review-model";
 import { analyzeShippingFile } from "@/modules/shipping/analysis";
 import { NextResponse } from "next/server";
@@ -16,7 +17,7 @@ export const maxDuration = 120;
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "no-store, private" };
 // Explicit analysis uses the shipping schema; the preparation operation stays
-// free of provider calls. Neither path invokes inter-document comparison.
+// free of provider calls. Only analysis invokes the deterministic review.
 export async function POST(request: Request) {
   try {
     requireSameOrigin(request);
@@ -61,19 +62,22 @@ export async function POST(request: Request) {
       )
         stopAI = true;
     }
-    const review: ShippingReview = { status: "not_performed", checks: [] };
+    const review: ShippingReview = analyze
+      ? reviewShipping(results.flatMap((r) => (r.document ? [r.document] : [])))
+      : { status: "not_performed", checks: [] };
     return NextResponse.json(
       {
         mode: analyze ? "shipping-analysis" : "pdf-preparation",
-        phase: "3.1",
+        phase: "3.2",
         results,
-        summary: summarizeShipping(results),
+        summary: summarizeShipping(results,review),
         review,
         capabilities: {
           pdfPreparation: true,
           documentClassification: analyze,
           aiExtraction: analyze,
-          triangularComparison: false,
+          pairComparison: analyze,
+          triangularComparison: analyze,
         },
         aiCalled: results.some((r) => !!r.aiModel),
       },

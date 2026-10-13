@@ -76,8 +76,30 @@ export function verifyShippingField(
     );
     return finish();
   }
-  const values = anchors(blocks, g.value!);
   const units = unitParents[role];
+  const values = units
+    ? [
+        ...new Set([
+          ...anchors(blocks, g.value!),
+          ...blocks.filter((b) => {
+            // A literal "500PCS" / "320 KG" cell supplies the printed unit,
+            // but only its independently checked parent column and owner row can
+            // establish the role. No numeric substring or global text search.
+            if (
+              typeof g.value !== "string" ||
+              numericTokens(b.text).length !== 1
+            )
+              return false;
+            const number = b.text.match(/^\s*[-+]?\d+(?:[.,]\d+)*/);
+            return (
+              !!number &&
+              normalizeText(b.text.slice(number[0].length)) ===
+                normalizeText(g.value)
+            );
+          }),
+        ]),
+      ]
+    : anchors(blocks, g.value!);
   const locations = values
     .map((b) => shippingCell(page, [b], scope))
     .filter((l): l is Location => !!l);
@@ -128,10 +150,17 @@ export function verifyShippingField(
       location?.role ??
       values.map((b) => inlineRole(b.text, g.value!)).find(Boolean) ??
       labelForValue(page, values, g.value!, shippingRole);
+    const unitValueRoles = values.map(
+      (b) =>
+        shippingCell(page, [b], scope)?.role ??
+        inlineRole(b.text, g.value!) ??
+        labelForValue(page, [b], g.value!, shippingRole),
+    );
     const allowed =
-      actual === role ||
-      parents.includes(actual ?? "") ||
-      labels.some((r) => r === role || parents.includes(r));
+      unitValueRoles.every((r) => r === role || parents.includes(r ?? "")) &&
+      (actual === role ||
+        parents.includes(actual ?? "") ||
+        labels.some((r) => r === role || parents.includes(r)));
     const unitText = normalizeText(String(g.value));
     const quotedUnit =
       values.length > 0 ||
@@ -156,17 +185,18 @@ export function verifyShippingField(
       });
     const rowOkay =
       !owner ||
-      (!!location &&
-        location.rowId === owner.rowId &&
-        location.tableId === owner.tableId) ||
-      blocks.every((b) => {
-        const h = Number(owner.tableId.split(":t")[1]);
-        return (
-          b.row === h &&
-          (parents.includes(shippingRole(b.text) ?? "") ||
-            shippingRole(b.text) === role)
-        );
-      });
+      (owner.tableId.startsWith(`p${page.page}:t`) &&
+        blocks.every((b) => {
+          const linked = shippingCell(page, [b], scope);
+          if (linked?.tableId === owner.tableId && linked.rowId === owner.rowId)
+            return true;
+          const h = Number(owner.tableId.split(":t")[1]);
+          return (
+            b.row === h &&
+            (parents.includes(shippingRole(b.text) ?? "") ||
+              shippingRole(b.text) === role)
+          );
+        }));
     if (!allowed || !quotedUnit || !rowOkay)
       g = fail(
         g,

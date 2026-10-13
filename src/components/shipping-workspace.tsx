@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { shippingValues } from "@/modules/shipping/fields";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import {
   Anchor,
   ArrowRight,
@@ -15,6 +15,8 @@ import {
   ScanText,
 } from "lucide-react";
 import { UploadSlotCard } from "./upload-slot";
+import { reviewShipping } from "@/modules/shipping/review";
+import { ShippingReviewPanel } from "./shipping-review";
 import { ShippingFields } from "./shipping-fields";
 import { EvidenceDialog } from "./evidence-dialog";
 import {
@@ -42,7 +44,17 @@ type Selection = {
 };
 export function ShippingWorkspace() {
   const [slots, setSlots] = useState(emptySlots);
+  const [extra, setExtra] = useState<{
+    slot: ShippingType;
+    file: File | null;
+  } | null>(null);
+  const extraDocId = useRef<string | null>(null);
   const [analysisMode, setAnalysisMode] = useState(true);
+  const [resultAnalysis, setResultAnalysis] = useState(false);
+  const [comparisonEnabled, setComparisonEnabled] = useState(false);
+  const [confirmedRelationships, setConfirmedRelationships] = useState<
+    string[]
+  >([]);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState<string | null>(null),
     [consent, setConsent] = useState(false);
@@ -52,12 +64,30 @@ export function ShippingWorkspace() {
   const abort = useRef<AbortController | null>(null),
     run = useRef(0);
   useEffect(() => () => abort.current?.abort(), []);
-  const active = shippingTypes.filter((t) => slots[t]),
-    files = active.map((t) => slots[t]!);
+  const mainActive = shippingTypes.filter((t) => slots[t]),
+    active = [...mainActive, ...(extra?.file ? [extra.slot] : [])],
+    files = [
+      ...mainActive.map((t) => slots[t]!),
+      ...(extra?.file ? [extra.file] : []),
+    ],
+    selectedTypes = new Set(active).size;
   const summary = summarizeShipping(results);
-  const canPrepare = active.length >= 2 && consent && !busy;
+  const review = useMemo(
+    () =>
+      comparisonEnabled
+        ? reviewShipping(
+            results.flatMap((r) => (r.document ? [r.document] : [])),
+            { confirmedRelationships },
+          )
+        : { status: "not_performed" as const, checks: [] },
+    [results, comparisonEnabled, confirmedRelationships],
+  );
+  const canPrepare = selectedTypes >= 2 && consent && !busy;
   function invalidate() {
     setResults([]);
+    setComparisonEnabled(false);
+    setConfirmedRelationships([]);
+    extraDocId.current = null;
     setSelection(null);
     setError(null);
   }
@@ -69,7 +99,10 @@ export function ShippingWorkspace() {
     }
     const next = { ...slots, [slot]: incoming[0] };
     try {
-      validateUploads(Object.values(next).filter((f): f is File => f !== null));
+      validateUploads([
+        ...Object.values(next).filter((f): f is File => f !== null),
+        ...(extra?.file ? [extra.file] : []),
+      ]);
       setSlots(next);
       invalidate();
     } catch (e) {
@@ -81,12 +114,13 @@ export function ShippingWorkspace() {
     abort.current?.abort();
     setBusy(false);
     setSlots(emptySlots());
+    setExtra(null);
     invalidate();
     setConsent(false);
     setTab("upload");
   }
   async function prepare() {
-    if (active.length < 2) {
+    if (selectedTypes < 2) {
       setError("서로 다른 종류의 서류를 최소 2개 선택해 주세요.");
       return;
     }
@@ -139,6 +173,15 @@ export function ShippingWorkspace() {
       }
       if (token !== run.current) return;
       setResults(data.results);
+      setResultAnalysis(data.mode === "shipping-analysis");
+      extraDocId.current = extra?.file
+        ? data.results[data.results.length - 1].pdf.id
+        : null;
+      setComparisonEnabled(
+        data.phase === "3.2" &&
+          data.capabilities?.pairComparison === true &&
+          data.mode === "shipping-analysis",
+      );
       setTab("results");
     } catch (e) {
       if (token === run.current)
@@ -152,6 +195,26 @@ export function ShippingWorkspace() {
   function fixSlot(id: string, target: ShippingType) {
     const old = results.find((r) => r.pdf.id === id)?.uploadSlot;
     if (!old || old === target) return;
+    if (id === extraDocId.current) {
+      setExtra((current) => (current ? { ...current, slot: target } : current));
+      setResults((current) =>
+        current.map((r) =>
+          r.pdf.id === id
+            ? {
+                ...r,
+                originalUploadSlot: r.originalUploadSlot ?? r.uploadSlot,
+                uploadSlot: target,
+                document: r.document
+                  ? { ...r.document, uploadType: target }
+                  : null,
+                typeMismatch: false,
+              }
+            : r,
+        ),
+      );
+      return;
+    }
+
     setSlots((current) => ({
       ...current,
       [old]: current[target],
@@ -162,7 +225,7 @@ export function ShippingWorkspace() {
         const slot =
           r.pdf.id === id
             ? target
-            : r.uploadSlot === target
+            : r.uploadSlot === target && r.pdf.id !== extraDocId.current
               ? old
               : r.uploadSlot;
         return {
@@ -188,8 +251,10 @@ export function ShippingWorkspace() {
         <strong>문서 분석과 서류 간 대조는 별도 단계입니다.</strong>
         <br />
         AI는 문서 분류·값·근거 후보를 추출하고, 코드가 실제 원문을 대조합니다.
-        삼각대조는 아직 실행하지 않습니다. 사용자 수정값은 원문 검증 완료로
-        표시하지 않습니다.
+        {comparisonEnabled
+          ? "검증된 같은 선적 범위에서 대조하고, 불확실 항목은 잠정/보류로 표시합니다."
+          : "삼각대조는 아직 실행하지 않습니다. 분석 후 연결 근거에 따라 실행 여부를 안내합니다."}{" "}
+        사용자 수정값은 원문 검증 완료로 표시하지 않습니다.
       </p>
     </div>
   );
@@ -258,7 +323,7 @@ export function ShippingWorkspace() {
               <h1 className="break-keep text-2xl font-bold tracking-tight text-[#142744] md:text-[28px]">
                 {tab === "upload"
                   ? "적하목록 신고 전, 원문부터 정확하게."
-                  : "원문을 확인하고, 대조를 준비하세요."}
+                  : "원문과 서류 대조 결과를 확인하세요."}
               </h1>
               <p className="mt-2.5 text-sm leading-6 text-slate-500">
                 중소 포워더를 위한 서로 다른 출처의 선적·신고 자료 검토
@@ -350,9 +415,91 @@ export function ShippingWorkspace() {
                     />
                   ))}
                 </div>
+                <div className="mt-4">
+                  {!extra ? (
+                    <button
+                      disabled={busy}
+                      onClick={() => {
+                        setExtra({ slot: "export_declaration", file: null });
+                        invalidate();
+                      }}
+                      className="rounded-lg border border-slate-200 px-3 py-2 text-xs"
+                    >
+                      복수 신고·분할 자료 PDF 추가
+                    </button>
+                  ) : (
+                    <div className="rounded-xl border border-slate-200 p-4">
+                      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                        <label className="text-xs">
+                          추가 서류 유형{" "}
+                          <select
+                            aria-label="추가 서류 유형"
+                            disabled={busy}
+                            value={extra.slot}
+                            onChange={(e) => {
+                              setExtra({
+                                slot: e.target.value as ShippingType,
+                                file: null,
+                              });
+                              invalidate();
+                            }}
+                            className="ml-2 rounded border border-slate-200 p-2"
+                          >
+                            {shippingTypes.map((t) => (
+                              <option key={t} value={t}>
+                                {shippingLabels[t].title}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <button
+                          disabled={busy}
+                          className="text-xs text-slate-500 underline"
+                          onClick={() => {
+                            setExtra(null);
+                            invalidate();
+                          }}
+                        >
+                          추가 영역 제거
+                        </button>
+                      </div>
+                      <UploadSlotCard
+                        slot={extra.slot}
+                        titlePrefix="추가 "
+                        file={extra.file}
+                        disabled={busy}
+                        onRemove={() => {
+                          setExtra({ ...extra, file: null });
+                          invalidate();
+                        }}
+                        onSelect={(incoming) => {
+                          if (incoming.length !== 1) {
+                            setError("추가 영역에는 PDF 1개만 선택해 주세요.");
+                            return;
+                          }
+                          try {
+                            validateUploads([
+                              ...mainActive.map((t) => slots[t]!),
+                              incoming[0],
+                            ]);
+                            setExtra({ ...extra, file: incoming[0] });
+                            invalidate();
+                          } catch (e) {
+                            setError(safeError(e).message);
+                          }
+                        }}
+                      />
+                      <p className="mt-3 text-[11px] leading-6 text-slate-500">
+                        추가 자료도 실제 분류와 원문을 확인합니다. 복수
+                        신고·부분선적의 범위를 확인하지 않고 전체 수량을
+                        합산하지 않습니다.
+                      </p>
+                    </div>
+                  )}
+                </div>
                 <p className="mt-4 text-[11px] leading-6 text-slate-500">
-                  최소 2종 · 화면에서 최대 3개 · 파일당 4 MB / 30페이지 · 모든
-                  파일 합계 4 MB 이내
+                  최소 2종 · 기본 3개 + 추가 PDF 1개 · 파일당 4 MB / 30페이지 ·
+                  모든 파일 합계 4 MB 이내
                 </p>
                 <fieldset className="mt-5 flex flex-wrap gap-4 text-xs">
                   <legend className="mb-3 font-semibold">처리 방식</legend>
@@ -397,8 +544,8 @@ export function ShippingWorkspace() {
                 </div>
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
                   <p className="text-xs text-slate-500" aria-live="polite">
-                    {active.length}종 선택 ·{" "}
-                    {active.length < 2
+                    {selectedTypes}종 선택 ·{" "}
+                    {selectedTypes < 2
                       ? "비교 자료 준비에 최소 2종이 필요합니다."
                       : active.length === 3
                         ? "삼각대조 자료 준비 가능"
@@ -436,7 +583,7 @@ export function ShippingWorkspace() {
                 {[
                   "자료 선택",
                   "PDF 원문 확인",
-                  "AI 추출·근거 검증 (삼각대조 미실시)",
+                  "AI 추출·근거 확인 및 선적 대조",
                 ].map((label, i) => (
                   <div
                     key={label}
@@ -455,16 +602,18 @@ export function ShippingWorkspace() {
               <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-lg font-bold">
                   {summary.failedDocuments === results.length
-                    ? analysisMode
+                    ? resultAnalysis
                       ? "문서 분석 실패"
                       : "자료 준비 실패"
                     : summary.failedDocuments ||
-                        (analysisMode && summary.partialDocuments)
-                      ? analysisMode
+                        (resultAnalysis && summary.partialDocuments)
+                      ? resultAnalysis
                         ? "문서 분석 일부 성공 · 확인 필요"
                         : "자료 준비 일부 완료"
-                      : analysisMode
-                        ? "문서별 분석 완료 · 삼각대조 미실시"
+                      : resultAnalysis
+                        ? comparisonEnabled
+                          ? "문서별 분석·서류 대조 완료"
+                          : "문서별 분석 완료 · 삼각대조 미실시"
                         : "PDF 자료 준비 완료"}
                 </h2>
                 <button
@@ -476,8 +625,11 @@ export function ShippingWorkspace() {
               </div>
               <div className="mb-5 grid gap-3 sm:grid-cols-3">
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <p className="text-xs text-slate-500">PDF 원문 준비 문서</p>
+                  <p className="text-xs text-slate-500">
+                    업로드 문서 / PDF 원문 준비
+                  </p>
                   <p className="mt-2 text-2xl font-semibold">
+                    {results.length} /{" "}
                     {results.filter((r) => r.pdf.pages.length > 0).length}
                   </p>
                   <p className="mt-2 text-xs text-slate-500">
@@ -497,10 +649,37 @@ export function ShippingWorkspace() {
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
                   <p className="text-xs text-slate-500">서류 간 삼각대조</p>
-                  <p className="mt-3 text-sm font-semibold">분석 미실시</p>
+                  <p className="mt-3 text-sm font-semibold">
+                    {!comparisonEnabled
+                      ? "분석 미실시"
+                      : review.triangleStatus === "performed"
+                        ? "검증 범위 대조 실행"
+                        : review.triangleStatus === "insufficient_documents"
+                          ? "대상 3종 부족"
+                          : "공통 연결 확인 필요"}
+                  </p>
                 </div>
               </div>
               {pending}
+              {comparisonEnabled && (
+                <ShippingReviewPanel
+                  review={review}
+                  onConfirmRelationship={(id) =>
+                    setConfirmedRelationships((current) => [
+                      ...new Set([...current, id]),
+                    ])
+                  }
+                  onEvidence={(field, label) =>
+                    setSelection({
+                      field,
+                      label,
+                      page: results
+                        .find((r) => r.pdf.id === field.source?.fileId)
+                        ?.pdf.pages.find((p) => p.page === field.source?.page),
+                    })
+                  }
+                />
+              )}
               <div className="mt-6 space-y-5">
                 {results.map((result) => (
                   <section

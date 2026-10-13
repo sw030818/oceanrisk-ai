@@ -1,5 +1,9 @@
+import type { ShippingReview } from "./review-model";
 import type { ShippingResult } from "./prepare";
-export function summarizeShipping(results: ShippingResult[]) {
+export function summarizeShipping(
+  results: ShippingResult[],
+  review?: ShippingReview,
+) {
   const ready = results.filter((r) => r.document && !r.error);
   const types = new Set(
     ready
@@ -26,7 +30,10 @@ export function summarizeShipping(results: ShippingResult[]) {
         : types.size >= 2
           ? "ready_for_pair"
           : "insufficient_documents",
-    comparisonStatus: "not_performed" as const,
+    comparisonStatus:
+      review?.pairStatus === "performed"
+        ? ("performed" as const)
+        : ("not_performed" as const),
     extractionStatus: analyzed.length
       ? ("performed" as const)
       : ("not_performed" as const),

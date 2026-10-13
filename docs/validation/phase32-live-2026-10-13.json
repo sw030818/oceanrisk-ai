@@ -1,0 +1,104 @@
+{
+  "mode": "phase32-live-validation-archive",
+  "budget": {
+    "documents": 2,
+    "measuredCostUsd": 0.00286867,
+    "unresolvedCostUpperUsd": 1.734723475976807e-18,
+    "maxDocuments": 12,
+    "maxCostUsd": 0.5
+  },
+  "baseline": {
+    "stage": "baseline",
+    "sourceSha": "c40eeeb87199c245908a1a20361510c9da6b7349",
+    "postSha": "c40eeeb87199c245908a1a20361510c9da6b7349",
+    "sourceShaStable": true,
+    "recordedAtUtc": "2026-10-13T07:13:24.127Z",
+    "model": "gpt-6-luna",
+    "budget": {
+      "documents": 2,
+      "measuredCostUsd": 0.00286867,
+      "unresolvedCostUpperUsd": 1.734723475976807e-18,
+      "maxDocuments": 12,
+      "maxCostUsd": 0.5
+    },
+    "automaticRetries": 0,
+    "batchRequests": 1,
+    "measurements": [
+      {
+        "type": "house_bl",
+        "structured": true,
+        "classificationCorrect": true,
+        "expected": 42,
+        "correct": 41,
+        "groundedCorrect": 41,
+        "returned": 43,
+        "returnedGrounded": 43,
+        "issues": [
+          {
+            "path": "reference0",
+            "correct": false,
+            "status": null,
+            "code": null
+          }
+        ],
+        "unverifiedPaths": [],
+        "errorCode": null,
+        "diagnostics": null,
+        "extractionStatus": "complete"
+      },
+      {
+        "type": "export_declaration",
+        "structured": true,
+        "classificationCorrect": true,
+        "expected": 43,
+        "correct": 43,
+        "groundedCorrect": 43,
+        "returned": 46,
+        "returnedGrounded": 46,
+        "issues": [],
+        "unverifiedPaths": [],
+        "errorCode": null,
+        "diagnostics": null,
+        "extractionStatus": "complete"
+      }
+    ],
+    "usage": [
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 12212,
+        "inputTokens": 7615,
+        "outputTokens": 1515,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 7612,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0017093,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 15280,
+        "inputTokens": 7655,
+        "outputTokens": 1574,
+        "cachedInputTokens": 5082,
+        "cacheWriteTokens": 2570,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0011593699999999998,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      }
+    ]
+  },
+  "stages": [],
+  "phase31ApprovalStillPendingAndNotReused": true,
+  "latestPhase32LiveSha": null,
+  "limitations": [
+    "Baseline extraction is on PHASE3.1 SHA, not verification of the upcoming PHASE3.2 deployment",
+    "Reference0 baseline metric initially required a duplicate own-HBL list entry; actual own-number field was grounded",
+    "No real business documents, raw responses or keys archived"
+  ]
+}

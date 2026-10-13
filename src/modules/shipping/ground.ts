@@ -1,3 +1,4 @@
+import { collectionCoverage32 } from "./coverage";
 import { shippingValues } from "./fields";
 import {
   shippingWireSchema,
@@ -241,6 +242,26 @@ export function groundShipping(
     )
       ? "complete"
       : "partial";
+  doc.collectionCoverage = collectionCoverage32(doc, pdf);
+  const requiredCollections =
+    type === "house_manifest"
+      ? (["cargoRecords", "containers"] as const)
+      : (["items", "containers"] as const);
+  for (const key of requiredCollections) {
+    const coverage = doc.collectionCoverage[key];
+    if (coverage.rowCount > 0 && !coverage.complete) {
+      doc.informationWarnings.push(
+        "실제 PDF 표의 " +
+          (key === "cargoRecords"
+            ? "화물"
+            : key === "containers"
+              ? "컨테이너"
+              : "품목") +
+          " 행 일부가 누락되거나 행 근거가 미확인입니다. 전체 포함 범위를 확인해 주세요.",
+      );
+      doc.extractionStatus = "partial";
+    }
+  }
   return shippingDocumentSchema.parse(doc);
 }
 export function emptyShippingWire(
