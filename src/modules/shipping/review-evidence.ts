@@ -30,6 +30,7 @@ export const has32 = (f: ShippingField | undefined) =>
 export const verified32 = (r: FieldRef) =>
   r.field.current.status === "verified" &&
   r.field.original.status === "verified" &&
+  r.field.original.source?.provenance !== "ocr" &&
   r.field.current.value !== null &&
   r.field.original.source?.fileId === r.documentId &&
   JSON.stringify(r.field.current) === JSON.stringify(r.field.original);
@@ -77,9 +78,9 @@ export function identifiers32(doc: ShippingDocument, role: string): FieldRef[] {
             ref32(doc, role, r.fields.houseBlNumber, { cargoId: r.id }),
           )
       : [];
-  return [...(root ? [root] : []), ...refs, ...cargos].sort((a, b) =>
-    refKey32(a).localeCompare(refKey32(b)),
-  );
+  return [...(root ? [root] : []), ...refs, ...cargos]
+    .filter((f) => !isPlaceholder32(f.field.current.value))
+    .sort((a, b) => refKey32(a).localeCompare(refKey32(b)));
 }
 export function scope32(doc: ShippingDocument) {
   if (doc.nativeScopeLimitation) return doc.nativeScopeLimitation;
@@ -169,3 +170,9 @@ export function containerViews32(doc: ShippingDocument) {
 export const containerEntry32 = (
   c: ReturnType<typeof containerViews32>[number],
 ) => (c.kind === "cargo" ? { cargoId: c.id } : { containerId: c.id });
+
+export const isPlaceholder32 = (v: unknown) =>
+  typeof v === "string" &&
+  /^(?:n\/?a|n\.a\.|tba|tbd|unknown|none|pending|not available|미정|미확인|없음|0+|[-—–]+)$/i.test(
+    text32(v),
+  );

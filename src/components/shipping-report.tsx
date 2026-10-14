@@ -15,8 +15,12 @@ export function ShippingReport({
   review: ShippingReview;
 }) {
   const docs = results.flatMap((r) => (r.document ? [r.document] : [])),
-    groups = comparisonGroups(review, docs),
-    labels = { ...assessmentLabels, not_comparable: "비교 불가" };
+    groups = comparisonGroups(review, docs, undefined, true),
+    labels = {
+      ...assessmentLabels,
+      not_comparable: "비교 불가",
+      not_applicable: "대조 대상 없음",
+    };
   return (
     <>
       <button
@@ -38,14 +42,31 @@ export function ShippingReport({
           </p>
         ) : (
           <p className="my-3">
-            확정 불일치 {review.summary?.confirmedMismatches ?? 0} · 확인된 일치{" "}
-            {review.summary?.matches ?? 0} · 잠정/확인 필요{" "}
-            {(review.summary?.provisional ?? 0) +
-              (review.summary?.needsReview ?? 0)}{" "}
+            확정 불일치{" "}
+            {review.outcomes?.mismatches ??
+              review.summary?.confirmedMismatches ??
+              0}{" "}
+            · 확인된 일치{" "}
+            {review.outcomes?.matches ?? review.summary?.matches ?? 0} ·
+            잠정/확인 필요{" "}
+            {review.outcomes?.review ??
+              (review.summary?.provisional ?? 0) +
+                (review.summary?.needsReview ?? 0)}{" "}
             · 정보 부족/비교 불가{" "}
-            {(review.summary?.insufficient ?? 0) +
-              (review.summary?.notComparable ?? 0)}{" "}
-            (원본 검사 기준)
+            {review.outcomes
+              ? review.outcomes.requiredMissing + review.outcomes.notComparable
+              : (review.summary?.insufficient ?? 0) +
+                (review.summary?.notComparable ?? 0)}{" "}
+            ({review.outcomes ? "의미·범위별 독립 판정 기준" : "원본 검사 기준"}
+            )
+          </p>
+        )}
+        {review.outcomes && (
+          <p>
+            대조 대상 없음 {review.outcomes.notApplicable} · 원문 검증 실패{" "}
+            {review.outcomes.evidenceFailed} · 원본 검사{" "}
+            {review.outcomes.checksExecuted} / 독립 판정{" "}
+            {review.outcomes.independentChecks}
           </p>
         )}
         <h2 className="mt-4 font-bold">분석 대상</h2>
@@ -130,6 +151,7 @@ export function ShippingReport({
                   "confirmed_match",
                   "insufficient_information",
                   "not_comparable",
+                  "not_applicable",
                 ].includes(g.assessment),
             )
             .map((g) => (

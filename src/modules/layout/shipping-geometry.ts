@@ -21,12 +21,28 @@ const body = (p: PdfPage, c: PdfCell) =>
 export function cellHeading(page: PdfPage, cell: PdfCell) {
   const bs = body(page, cell);
   if (!bs.length) return null;
-  const first = bs[0],
-    head = shippingRole(first.text)
-      ? [first]
-      : bs.filter(
-          (b) => b.y - first.y <= Math.max(first.height, b.height) * 1.7,
-        );
+  const first = bs[0];
+  // Repeated data units such as CTNS may lexically resemble a quantity
+  // heading. A real aligned label above establishes this as a data cell;
+  // it must not restart a table halfway through its actual rows.
+  if (
+    /^(?:CTNS?|CARTONS?|PKGS?)$/i.test(first.text.trim()) &&
+    (page.cells ?? []).some(
+      (c) =>
+        c.y + c.height <= cell.y + 0.4 &&
+        Math.abs(c.x - cell.x) < 0.4 &&
+        Math.abs(c.width - cell.width) < 0.4 &&
+        body(page, c).some(
+          (b) =>
+            shippingRole(b.text) &&
+            !/^(?:CTNS?|CARTONS?|PKGS?)$/i.test(b.text.trim()),
+        ),
+    )
+  )
+    return null;
+  const head = shippingRole(first.text)
+    ? [first]
+    : bs.filter((b) => b.y - first.y <= Math.max(first.height, b.height) * 1.7);
   const whole = head.map((b) => b.text).join(" ");
   // Shared Container/Seal column: container identifier establishes the row;
   // the Seal requires its own literal SEAL label within that same closed cell.

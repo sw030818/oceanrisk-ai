@@ -12,12 +12,14 @@ export const assessmentRank: Record<ShippingAssessment, number> = {
   provisional_match: 3,
   insufficient_information: 4,
   not_comparable: 4,
+  not_applicable: 6,
   confirmed_match: 5,
 };
 export function comparisonGroups(
   review: ShippingReview,
   documents: ShippingDocument[],
   documentIds?: string[],
+  usePrimary = false,
 ) {
   const docs = new Map(documents.map((d) => [d.id, d]));
   const groups = new Map<
@@ -30,7 +32,9 @@ export function comparisonGroups(
       fields: ShippingCheck["fields"];
     }
   >();
-  for (const c of review.checks) {
+  for (const c of usePrimary
+    ? (review.primaryChecks ?? review.checks)
+    : review.checks) {
     if (
       documentIds &&
       c.fields.some((f) => !documentIds.includes(f.documentId))

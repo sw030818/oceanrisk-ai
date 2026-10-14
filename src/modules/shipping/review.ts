@@ -1,3 +1,4 @@
+import { withFactReview } from "./fact-review";
 import { partyMatch32 } from "./parties";
 import type { ShippingDocument } from "./schema";
 import type {
@@ -1305,7 +1306,7 @@ export function reviewShipping(
     pairChecks: checks.filter((c) => c.scope !== "triangle").length,
     triangleChecks: checks.filter((c) => c.scope === "triangle").length,
   };
-  return {
+  return withFactReview({
     status: checks.length
       ? checks.every((c) => c.assessment === "confirmed_match")
         ? "complete"
@@ -1324,5 +1325,5 @@ export function reviewShipping(
           : triangleStatus === "insufficient_documents"
             ? "2종 양자대조를 실행합니다. 삼각대조 대상 3종은 부족합니다."
             : "3종 문서가 있지만 공통 HBL과 모든 양자 연결의 근거를 확정하지 못해 삼각대조를 보류했습니다.",
-  };
+  }, documents);
 }

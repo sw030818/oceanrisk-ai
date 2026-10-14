@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 export function GET() {
   return NextResponse.json(
     {
-      phase: "3.4",
+      phase: "3.5",
       capabilities: {
         pdfPreparation: true,
         multiFileBatches: true,

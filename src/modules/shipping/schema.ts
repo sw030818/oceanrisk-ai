@@ -190,6 +190,27 @@ const common = {
   references: z.array(shipmentReferenceSchema).max(100),
   informationWarnings: z.array(z.string().max(200)).max(100).default([]),
   extractionStatus: z.enum(["not_performed", "partial", "complete"]),
+  factCoverage: z
+    .object({
+      items: z.object({
+        complete: z.boolean(),
+        rows: z.array(z.string()).max(100),
+      }),
+      containers: z.object({
+        complete: z.boolean(),
+        rows: z.array(z.string()).max(100),
+      }),
+      cargoRecords: z.object({
+        complete: z.boolean(),
+        rows: z.array(z.string()).max(100),
+      }),
+      limitations: z
+        .array(
+          z.enum(["partial", "combined_packages", "incomplete_table", "ocr"]),
+        )
+        .max(4),
+    })
+    .optional(),
   collectionCoverage: z
     .object({
       items: z.object({

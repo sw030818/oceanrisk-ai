@@ -62,3 +62,70 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
     ),
   };
 }
+
+export function nativeFactCoverage(doc: ShippingDocument, pdf: PdfDocument) {
+  const build = (
+    kind: "items" | "containers" | "cargoRecords",
+    fields: ShippingField[],
+  ) => {
+    const native = fields.every(
+      (f) =>
+        f.original.status === "verified" &&
+        f.original.source?.provenance !== "ocr" &&
+        !!f.original.source?.layout?.tableId,
+    );
+    const rows = fields
+      .flatMap((f) => {
+        const s = f.original.source;
+        return s?.layout
+          ? [`${s.page}/${s.layout.tableId}/${s.layout.rowId}`]
+          : [];
+      })
+      .sort();
+    return {
+      complete:
+        !!doc.collectionCoverage?.[kind].complete &&
+        native &&
+        new Set(rows).size === rows.length &&
+        rows.length > 0,
+      rows,
+    };
+  };
+  const limitations: (
+    | "partial"
+    | "combined_packages"
+    | "incomplete_table"
+    | "ocr"
+  )[] = [];
+  if (doc.nativeScopeLimitation) limitations.push(doc.nativeScopeLimitation);
+  if (pdf.pages.some((p) => p.textSource === "ocr")) limitations.push("ocr");
+  if (
+    pdf.pages.some((p) =>
+      /일부\s*품목|부분\s*목록|일부\s*화물|일부\s*내역|subset\s+of|selected\s+items/i.test(
+        p.text,
+      ),
+    )
+  )
+    limitations.push("incomplete_table");
+  return {
+    items: build(
+      "items",
+      doc.items.map((i) =>
+        i.fields.goodsDescription.original.value !== null
+          ? i.fields.goodsDescription
+          : i.fields.tradeDescription,
+      ),
+    ),
+    containers: build(
+      "containers",
+      doc.containers
+        .filter((c) => c.containerNumber.original.value !== null)
+        .map((c) => c.containerNumber),
+    ),
+    cargoRecords: build(
+      "cargoRecords",
+      doc.cargoRecords.map((c) => c.fields.houseBlNumber),
+    ),
+    limitations,
+  };
+}

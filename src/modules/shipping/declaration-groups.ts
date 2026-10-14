@@ -92,7 +92,7 @@ export function declarationGroupChecks(
       blockers.push(
         "HBL에 명시된 전체 신고 목록과 현재 신고서가 정확히 대응하지 않습니다.",
       );
-    if ([bl, ...linked].some((d) => scope32(d) !== "full"))
+    if ([bl, ...linked].some((d) => scope32(d) === "partial" || scope32(d) === "combined_packages" || (scope32(d) !== "full" && !d.factCoverage?.items.complete)))
       blockers.push("부분선적 또는 전체 신고 포함 범위가 미확인입니다.");
     if ([bl, ...linked].some((d) => !d.collectionCoverage?.items.complete))
       blockers.push("실제 품목 표의 전체 행 포함을 확인하지 못했습니다.");

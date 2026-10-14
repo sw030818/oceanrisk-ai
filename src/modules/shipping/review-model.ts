@@ -1,9 +1,13 @@
 // Deterministic shipping comparison contract; extraction is separate.
+import type { ShipmentFact, FactReason } from "./facts";
 import type { Assessment } from "../rules/model";
 import type { z } from "zod";
 import type { shipmentRelationshipSchema } from "./schema";
 import type { ShippingField } from "./schema";
-export type ShippingAssessment = Assessment | "not_comparable";
+export type ShippingAssessment =
+  | Assessment
+  | "not_comparable"
+  | "not_applicable";
 export type ShippingRelationship = z.infer<
   typeof shipmentRelationshipSchema
 > & {
@@ -12,6 +16,14 @@ export type ShippingRelationship = z.infer<
   evidence: ShippingCheck["fields"];
 };
 export interface ShippingCheck {
+  comparison?: {
+    meaning: string;
+    hbl: string | null;
+    scope: "hbl_record" | "original_check" | "document_record";
+    reasonCodes: FactReason[];
+    relatedCheckIds: string[];
+    facts: ShipmentFact[];
+  };
   title?: string;
   importance?: "info" | "attention" | "high";
   uncertainties?: string[];
@@ -19,7 +31,7 @@ export interface ShippingCheck {
     documentId: string;
     value: number;
     unit: string;
-    formula: "sum";
+    formula: "sum" | "single_row";
     componentKeys: string[];
   }[];
   id: string;
@@ -54,6 +66,18 @@ export interface ShippingCheck {
   followUp: string;
 }
 export interface ShippingReview {
+  primaryChecks?: ShippingCheck[];
+  outcomes?: {
+    matches: number;
+    mismatches: number;
+    review: number;
+    requiredMissing: number;
+    notApplicable: number;
+    notComparable: number;
+    evidenceFailed: number;
+    checksExecuted: number;
+    independentChecks: number;
+  };
   status: "not_performed" | "complete" | "needs_review";
   checks: ShippingCheck[];
   relationships?: ShippingRelationship[];

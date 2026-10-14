@@ -286,7 +286,7 @@ export function ShippingWorkspace() {
               // Older mocked contracts have server-generated IDs; retain their source
               // identity. PHASE3.3 responses must echo each stable upload ID.
               if (
-                ["3.3", "3.4"].includes(data.phase) &&
+                ["3.3", "3.4", "3.5"].includes(data.phase) &&
                 r.pdf.id !== batch[i].id
               )
                 throw new Error("문서 식별자가 요청과 다릅니다.");
@@ -296,10 +296,10 @@ export function ShippingWorkspace() {
             if (analyze)
               setComparisonEnabled(
                 data.capabilities?.pairComparison === true &&
-                  ["3.2", "3.3", "3.4"].includes(data.phase),
+                  ["3.2", "3.3", "3.4", "3.5"].includes(data.phase),
               );
             stopAI =
-              ["3.3", "3.4"].includes(data.phase) &&
+              ["3.3", "3.4", "3.5"].includes(data.phase) &&
               incoming.some(
                 (r) =>
                   r.error &&
@@ -757,24 +757,30 @@ export function ShippingWorkspace() {
                   {[
                     [
                       "확정 불일치",
-                      review.summary?.confirmedMismatches ?? 0,
+                      review.outcomes?.mismatches ??
+                        review.summary?.confirmedMismatches ??
+                        0,
                       "text-red-700",
                     ],
                     [
                       "잠정·확인 필요",
-                      (review.summary?.provisional ?? 0) +
-                        (review.summary?.needsReview ?? 0),
+                      review.outcomes?.review ??
+                        (review.summary?.provisional ?? 0) +
+                          (review.summary?.needsReview ?? 0),
                       "text-orange-800",
                     ],
                     [
                       "정보 부족·비교 불가",
-                      (review.summary?.insufficient ?? 0) +
-                        (review.summary?.notComparable ?? 0),
+                      review.outcomes
+                        ? review.outcomes.requiredMissing +
+                          review.outcomes.notComparable
+                        : (review.summary?.insufficient ?? 0) +
+                          (review.summary?.notComparable ?? 0),
                       "text-slate-600",
                     ],
                     [
                       "확인된 일치",
-                      review.summary?.matches ?? 0,
+                      review.outcomes?.matches ?? review.summary?.matches ?? 0,
                       "text-emerald-800",
                     ],
                   ].map(([label, n, color]) => (
@@ -787,7 +793,9 @@ export function ShippingWorkspace() {
                         {n}
                       </p>
                       <p className="mt-1 text-[10px] text-slate-400">
-                        원본 검사 기준 · 통합 비교표와 건수 구분
+                        {review.outcomes
+                          ? "의미·범위별 독립 판정 기준"
+                          : "원본 검사 기준 · 통합 비교표와 건수 구분"}
                       </p>
                     </div>
                   ))}

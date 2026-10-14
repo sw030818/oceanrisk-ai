@@ -22,13 +22,18 @@ import type { GroundedField } from "@/modules/documents/schema";
 const labels: Record<ShippingAssessment, string> = {
   ...assessmentLabels,
   not_comparable: "비교 불가",
+  not_applicable: "대조 대상 없음",
 };
 const color = (s: ShippingAssessment) =>
   s === "confirmed_mismatch"
     ? "bg-red-50 text-red-700"
     : s === "confirmed_match"
       ? "bg-emerald-50 text-emerald-800"
-      : ["insufficient_information", "not_comparable"].includes(s)
+      : [
+            "insufficient_information",
+            "not_comparable",
+            "not_applicable",
+          ].includes(s)
         ? "bg-slate-100 text-slate-600"
         : "bg-orange-50 text-orange-800";
 export function ShippingReviewPanel({
@@ -56,6 +61,7 @@ export function ShippingReviewPanel({
     shipment === "all"
       ? undefined
       : options.find((g) => g.id === shipment)?.documentIds,
+    true,
   );
   const active = groups.find((g) => g.id === selected);
   useEffect(() => {
@@ -79,6 +85,7 @@ export function ShippingReviewPanel({
       checks: g.checks.filter(
         (c) =>
           filter === "all" ||
+          (filter === "not_applicable" && c.assessment === "not_applicable") ||
           (filter === "mismatch" && c.assessment.endsWith("mismatch")) ||
           (filter === "match" && c.assessment === "confirmed_match") ||
           (filter === "review" &&
@@ -91,7 +98,8 @@ export function ShippingReviewPanel({
             ].includes(c.assessment)) ||
           (filter === "attention" &&
             c.assessment !== "confirmed_match" &&
-            c.assessment !== "insufficient_information"),
+            c.assessment !== "insufficient_information" &&
+            c.assessment !== "not_applicable"),
       ),
     }))
     .filter((g) => g.checks.length)
@@ -196,7 +204,7 @@ export function ShippingReviewPanel({
           </h2>
           <span className="text-xs text-slate-500">
             검사 {review.checks.length}건 · 비교표 {groups.length}행 · 확정
-            불일치 {s.confirmedMismatches}건
+            불일치 {review.outcomes?.mismatches ?? s.confirmedMismatches}건
           </span>
         </div>
         <p className="mt-2 text-xs text-slate-600">
@@ -205,6 +213,13 @@ export function ShippingReviewPanel({
           {s.conflictingRelationships} / 양자 검사 {s.pairChecks} · 삼각 검사{" "}
           {s.triangleChecks}
         </p>
+        {review.outcomes && (
+          <p className="mt-2 text-xs text-slate-500">
+            독립 판정 {review.outcomes.independentChecks} · 대조 대상 없음{" "}
+            {review.outcomes.notApplicable} · 원문 검증 실패{" "}
+            {review.outcomes.evidenceFailed} (원본 검사 진단은 상세에 보존)
+          </p>
+        )}
         <div className="mt-4 flex flex-wrap gap-2">
           <select
             aria-label="검토 결과 필터"
@@ -217,6 +232,7 @@ export function ShippingReviewPanel({
             <option value="mismatch">불일치</option>
             <option value="review">확인 필요 · 정보 부족</option>
             <option value="match">확인된 일치</option>
+            <option value="not_applicable">대조 대상 없음</option>
           </select>
           {options.length > 1 && (
             <select
@@ -312,6 +328,26 @@ export function ShippingReviewPanel({
                           </p>
                         </div>
                       ))}
+                      {g.checks
+                        .flatMap((c) => c.comparison?.facts ?? [])
+                        .filter(
+                          (f, i, fs) =>
+                            f.documentType === t &&
+                            f.derivation !== "literal" &&
+                            f.value !== null &&
+                            fs.findIndex((v) => v.id === f.id) === i,
+                        )
+                        .map((f) => (
+                          <p key={f.id} className="text-[10px] text-slate-500">
+                            {f.derivation === "single_native_row"
+                              ? "단일 행 연결"
+                              : f.derivation === "user_override"
+                                ? "사용자 수정 후보"
+                                : "구성 행 합계"}
+                            : {f.value} {f.unit} · {f.componentKeys.length}개
+                            근거 (원본 추출과 구분)
+                          </p>
+                        ))}
                       {!g.fields.some(
                         (f) =>
                           documents.find((d) => d.id === f.documentId)
@@ -355,10 +391,52 @@ export function ShippingReviewPanel({
                       }
                     </p>
                   )}
+                  {review.checks
+                    .filter((raw) => {
+                      const eligible =
+                        filter === "all" ||
+                        (filter === "mismatch" &&
+                          raw.assessment.endsWith("mismatch")) ||
+                        (filter === "match" &&
+                          raw.assessment === "confirmed_match") ||
+                        (filter === "review" &&
+                          [
+                            "needs_review",
+                            "insufficient_information",
+                            "not_comparable",
+                            "provisional_match",
+                            "provisional_mismatch",
+                          ].includes(raw.assessment)) ||
+                        (filter === "attention" &&
+                          raw.assessment !== "confirmed_match" &&
+                          raw.assessment !== "insufficient_information");
+                      return (
+                        eligible &&
+                        visible.find((v) =>
+                          v.checks.some(
+                            (c) =>
+                              c.id === raw.id ||
+                              c.comparison?.relatedCheckIds.includes(raw.id),
+                          ),
+                        )?.id === g.id
+                      );
+                    })
+                    .map((raw) => (
+                      <span
+                        key={raw.id}
+                        data-testid="shipping-check"
+                        data-assessment={raw.assessment}
+                        data-category={raw.category}
+                        data-scope={raw.scope}
+                        hidden
+                      >
+                        {raw.title} · {labels[raw.assessment]}
+                      </span>
+                    ))}
                   {g.checks.map((c) => (
                     <span
                       key={c.id}
-                      data-testid="shipping-check"
+                      data-testid="independent-check"
                       data-assessment={c.assessment}
                       data-category={c.category}
                       data-scope={c.scope}
@@ -476,10 +554,43 @@ export function ShippingReviewPanel({
                     </ul>
                   )}
                   <p>다음 확인: {c.followUp}</p>
+                  {c.comparison && (
+                    <>
+                      <p>
+                        판정 코드:{" "}
+                        {c.comparison.reasonCodes.join(", ") || "VERIFIED"}
+                      </p>
+                      {c.comparison.facts.map((f) => (
+                        <p key={f.id}>
+                          범위 {f.scope} · {f.derivation} · 구성 근거{" "}
+                          {f.componentKeys.length}개
+                        </p>
+                      ))}
+                      <details>
+                        <summary>
+                          원본 검사 진단 {c.comparison.relatedCheckIds.length}건
+                        </summary>
+                        {review.checks
+                          .filter((raw) =>
+                            c.comparison!.relatedCheckIds.includes(raw.id),
+                          )
+                          .map((raw) => (
+                            <p key={raw.id}>
+                              {raw.title} · {labels[raw.assessment]} ·{" "}
+                              {raw.explanation}
+                            </p>
+                          ))}
+                      </details>
+                    </>
+                  )}
+
                   {c.computedValues?.map((v) => (
                     <p key={v.documentId}>
-                      검증된 화물행 합산: {v.value} {v.unit} ·{" "}
-                      {v.componentKeys.length}개 행 (AI 원본 합계와 구분)
+                      {v.formula === "single_row"
+                        ? "검증된 단일 행 연결"
+                        : "검증된 화물행 합산"}
+                      : {v.value} {v.unit} · {v.componentKeys.length}개 행 (AI
+                      원본 합계와 구분)
                     </p>
                   ))}
                 </div>

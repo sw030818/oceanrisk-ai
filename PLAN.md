@@ -110,3 +110,11 @@ PHASE 2.2 실행 결과: OpenAI Responses 기본 전환, phase별 최종 JSON �
 3. 기존407단위/41브라우저를 보존하며 독립 합성경계/반례와새대시보드/비교표/상세/인쇄·1440/390px 검증.
 4. ship으로 main 일반Push·Actions quality/production·PDFworker·같은ProductionSHA 확인.
 5. 같은SHA에서 원본3개 및최소오류반례 실제OpenAI 재검증. 실제/모의/응답무료재생을 구분하고$0.15이하로종료. 별도validation/phase34-evidence 기록.
+
+
+## PHASE 3.5
+1. PHASE3.4 원본/실제응답의 추출·근거·범위·판정4단계 진단.
+2. Native coverage와 HBL Fact scope/provenance/derivation, 적용가능성 및 원인코드, 중복 없는 primary outcomes 구현.
+3. 단일/복수행·컨테이너·신고·부분/공동포장·정확한근거·수정/결정성 회귀; 기존440/50 유지.
+4. 전체ship/main/Production 동일SHA, 새$0.50/60문서/75요청내 원본3회반복·오류·복잡사례 실API검증.
+5. PHASE35 증거브랜치에성과/FP/FN/보류/원문실패/한계/비용보존. UI/OCR/서류종류확대하지않음.

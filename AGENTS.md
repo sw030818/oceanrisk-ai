@@ -86,3 +86,10 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - **새 PHASE3.4 유료 상한은 $0.15**이며 기존 예산/ledger를 재사용하지 않는다. live-phase34·validation/phase34-evidence에서 예약/usage/미확인 비용을 복원한다. 도구의 내부 30문서/40요청 보호는 추가 자동 승인이나 비용 상한 증액이 아니다. 자동 재시도0, 원인 확인한 최소 수동 검증만 허용한다.
 - `test:phase34:production -- --sha=<exactSHA> --stage=original --input-dir=<private-fixtures> --approved-max-cost-usd=0.15`로 원본3개를 검사한다. negative/negative-hbl은 별도 독립 합성2문서씩이다. 명령 플래그 자체는 승인을 대신하지 않는다. 일반 CI/ship은 계속 키를 비워 유료0회다.
 - 정상 ship/main/Actions/Production 동일SHA 절차를 유지한다. 실제 분석 기록은 validation/phase34-evidence에 정상 Commit/Push하여 유료 검증한 코드SHA를 유지한다. 미검증/실패를 완료로 보고하지 않는다.
+
+
+## PHASE 3.5 — 의미·범위 기반 정합성 엔진
+- 현재 사용자 요청은 새 $0.50 / 최대60문서시도 / 최대75공급자요청을 승인했다. live-phase35·validation/phase35-evidence로 이전예산과분리한다. 미확인usage예약유지·상한증액/초기화/자동재시도 금지. 실제 반복·오류·복잡 사례를같은최종Production SHA에서검사한다.
+- 원본/사용자수정/derived Fact를분리한다. 전체 native행커버리지·검증HBL·유일한독립행/단위/중복·부분/공동포장보호가있을때만HBL기재화물범위를연결/집계한다. 전량무역계약이행과기재화물정합성은다르다. AI배열길이만으로전체화물이라고추정하지않는다.
+- 원본checks/근거진단은보존하고 primaryChecks·원인코드·독립outcomes로중복판정과적용불가를분리한다. 미확인인용/OCR/수정값은verified로승격하지않는다. UI는기존B+A유지하며판정데이터/문구만연결한다.
+- test:phase35:production은새상한을명시하고원본3세트반복·독립오류/범위/복잡사례를검사한다. 무료실제응답재생과새유료성공을구분한다. 정상ship/Actions/Production 동일SHA와별도증거브랜치기록을유지한다.

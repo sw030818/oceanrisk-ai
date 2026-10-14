@@ -1,4 +1,4 @@
-import { collectionCoverage32 } from "./coverage";
+import { collectionCoverage32, nativeFactCoverage } from "./coverage";
 import { shippingValues } from "./fields";
 import {
   shippingWireSchema,
@@ -262,6 +262,7 @@ export function groundShipping(
       ? "complete"
       : "partial";
   doc.collectionCoverage = collectionCoverage32(doc, pdf);
+  doc.factCoverage = nativeFactCoverage(doc, pdf);
   if (
     pdf.pages.some(
       (p) =>

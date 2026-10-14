@@ -1,0 +1,40 @@
+{
+  "phase": "3.5",
+  "date": "2026-10-14",
+  "kind": "separate authorized validation; no actual PHASE35 call yet",
+  "budget": {
+    "documents": 0,
+    "requests": 0,
+    "measuredCostUsd": 0,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 60,
+    "maxRequests": 75,
+    "maxCostUsd": 0.5
+  },
+  "baseline": {
+    "sourceSha": "e4e2745b0fb599c7cf43ea71b38296b08c0e8358",
+    "diagnostics": {
+      "verified": 82,
+      "candidates": 93,
+      "classification": 3,
+      "review": {
+        "matches": 24,
+        "confirmedMismatches": 0,
+        "provisional": 9,
+        "needsReview": 0,
+        "insufficient": 38,
+        "notComparable": 0,
+        "confirmedRelationships": 3,
+        "userConfirmedRelationships": 0,
+        "proposedRelationships": 0,
+        "conflictingRelationships": 0,
+        "pairChecks": 68,
+        "triangleChecks": 3
+      },
+      "triangle": "performed"
+    },
+    "kind": "captured actual PHASE34 original response; prior budget unchanged"
+  },
+  "after": null,
+  "privacy": "No uploaded PDFs, document values, complete text, raw provider bodies or secrets in this archive."
+}
