@@ -1,12 +1,12 @@
 {
   "phase": "3.5",
   "date": "2026-10-14",
-  "kind": "separate authorized validation; no actual PHASE35 call yet",
+  "kind": "PHASE35 checkpoint; two provider timeouts reserved; prior budgets unchanged",
   "budget": {
-    "documents": 0,
-    "requests": 0,
-    "measuredCostUsd": 0,
-    "unresolvedCostUpperUsd": 0,
+    "documents": 6,
+    "requests": 6,
+    "measuredCostUsd": 0.00453277,
+    "unresolvedCostUpperUsd": 0.026969800000000002,
     "maxDocuments": 60,
     "maxRequests": 75,
     "maxCostUsd": 0.5
@@ -35,6 +35,14 @@
     },
     "kind": "captured actual PHASE34 original response; prior budget unchanged"
   },
-  "after": null,
+  "after": {
+    "sourceSha": "9b0a1dc89e507b8822a70338881678692fc4de89",
+    "kind": "one successful original set assembled after a manual timeout recheck; not final repeated validation",
+    "classifiedDocuments": 3,
+    "verifiedCoreMeanings": 9,
+    "requiredCoreMeanings": 9,
+    "timeouts": 2,
+    "automaticRetries": 0
+  },
   "privacy": "No uploaded PDFs, document values, complete text, raw provider bodies or secrets in this archive."
 }

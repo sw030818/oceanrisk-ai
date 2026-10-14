@@ -105,7 +105,7 @@ export async function paidTrial(
           "fetch",
           "--no-tags",
           "origin",
-          ref + ":refs/remotes/origin/validation/phase34-evidence",
+          ref + ":refs/remotes/origin/" + ref.slice("refs/heads/".length),
         ],
         { encoding: "utf8" },
       );

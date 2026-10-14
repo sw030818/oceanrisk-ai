@@ -23,6 +23,27 @@ const format: StructuredExtraction<ShippingWire> = {
   schema: shippingResponseSchema,
   resolve: (raw) => shippingWireSchema.parse(raw),
   maxOutputTokens: SHIPPING_MAX_OUTPUT_TOKENS,
+  inputContent: (pdf) => [
+    {
+      type: "input_text",
+      text: JSON.stringify({
+        untrustedDocument: {
+          pages: pdf.pages.map((page) => {
+            // Native page text repeats the positioned blocks. Keep every block/cell;
+            // retain text when it carries anything not present in those blocks (OCR
+            // and older plain-text inputs included). Grounding still uses the full PDF.
+            const { text, ...layout } = page;
+            const compact = (s: string) => s.replace(/\s/g, "");
+            const represented =
+              page.blocks?.length &&
+              compact(text) ===
+                compact(page.blocks.map((b) => b.text).join(""));
+            return represented ? layout : page;
+          }),
+        },
+      }),
+    },
+  ],
 };
 export function shippingOpenAIRequest(pdf: PdfDocument, model: string) {
   return structuredOpenAIRequest(pdf, model, format);
