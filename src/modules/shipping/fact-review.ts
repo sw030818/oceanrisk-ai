@@ -274,6 +274,18 @@ export function withFactReview(
             .map((r) => ds.filter((d) => r.documentIds.includes(d.id)));
     for (const group of groups) {
       if (group.length < 2) continue;
+      const declarationSubset =
+        group.some((d) => d.detectedType === "export_declaration") &&
+        (ds.filter((d) => d.detectedType === "export_declaration").length > 1 ||
+          group.some(
+            (d) =>
+              d.detectedType !== "export_declaration" &&
+              new Set(
+                identifiers32(d, "declarationNumber")
+                  .filter(verified32)
+                  .map((f) => text32(f.field.current.value)),
+              ).size > 1,
+          ));
       const linked = clique(group),
         base: FactReason[] = linked ? [] : ["RELATIONSHIP_UNVERIFIED"];
       for (const meaning of Object.keys(numericMeaning) as NumericMeaning[]) {
@@ -379,6 +391,15 @@ export function withFactReview(
                   ? "goods"
                   : "container";
         const refs = available.flatMap((s) => s.refs);
+        if (
+          role === "declarationNumber" &&
+          group.every((d) => d.detectedType === "export_declaration")
+        ) {
+          add(group, hbl, role, category, refs, "not_applicable", [
+            "FIELD_NOT_APPLICABLE",
+          ]);
+          continue;
+        }
         if (available.length < 2) {
           add(
             group,
@@ -497,6 +518,31 @@ export function withFactReview(
             .join("|"),
         );
         let same = ns.every((n) => n === ns[0]);
+        let membership = false;
+        if (role === "declarationNumber" && declarationSubset) {
+          const expected = new Set(
+            valid
+              .filter((s) => s.doc.detectedType !== "export_declaration")
+              .flatMap((s) =>
+                s.verified.map((f) => text32(f.field.current.value)),
+              ),
+          );
+          const actual = valid
+            .filter((s) => s.doc.detectedType === "export_declaration")
+            .flatMap((s) =>
+              s.verified.map((f) => text32(f.field.current.value)),
+            );
+          membership =
+            expected.size > 1 &&
+            actual.length > 0 &&
+            actual.every((n) => expected.has(n));
+          same = membership;
+        }
+        if (
+          declarationSubset &&
+          (role === "goodsDescription" || role === "hsCode")
+        )
+          reasons.push("DECLARATION_SCOPE_UNRESOLVED");
         if (role === "shipper" || role === "consignee") {
           const matches = valid
             .slice(1)
@@ -531,6 +577,11 @@ export function withFactReview(
               : "confirmed_mismatch",
           reasons,
         );
+        if (membership) {
+          primary.at(-1)!.title = "명시된 신고 목록 포함 여부";
+          primary.at(-1)!.explanation =
+            "HBL의 검증된 전체 신고 목록에 해당 신고번호가 포함됩니다. 개별 신고서를 전체 HBL 품목 집합과 같다고 간주하지 않으며, 합산은 별도의 전체 포함·독립 품목 검사를 따릅니다.";
+        }
       }
     }
   }

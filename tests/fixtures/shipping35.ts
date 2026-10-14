@@ -262,7 +262,7 @@ export async function fixture35(
   if (options.notice) put(options.notice, 30, 810);
   const bytes = unicodePdf([cells], {
       borders: [borders],
-      sizes: [[842, 842]],
+      sizes: [[Math.max(842, ...borders.map((b) => b.x + b.width + 20)), 842]],
     }),
     pdf = {
       id,

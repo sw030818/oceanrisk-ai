@@ -518,3 +518,75 @@ describe("literal non-Latin goods cannot become an empty canonical product", () 
     );
   });
 });
+
+describe("multiple declarations are subsets of the explicitly listed HBL", () => {
+  it("does not report listed declaration numbers or subset goods/HS as definitive errors", async () => {
+    const rows = [
+      { name: "SYNTHETIC BOTTLE A", hs: "7323.93-0000", qty: 260 },
+      { name: "SYNTHETIC BOTTLE B", hs: "7323.94-0000", qty: 460 },
+    ];
+    const a = await fixture35("house_bl", {
+        rows,
+        declarationRefs: ["DECL-SYN-35-A", "DECL-SYN-35-B"],
+      }),
+      b = await fixture35("export_declaration", {
+        id: "decl-a",
+        declaration: "DECL-SYN-35-A",
+        rows: [rows[0]],
+      }),
+      c = await fixture35("export_declaration", {
+        id: "decl-b",
+        declaration: "DECL-SYN-35-B",
+        rows: [rows[1]],
+      });
+    const r = reviewShipping([a.document, b.document, c.document]);
+    expect(
+      r.primaryChecks?.filter((c) => c.assessment === "confirmed_mismatch"),
+    ).toEqual([]);
+    const membership = r.primaryChecks?.filter(
+      (c) => c.title === "명시된 신고 목록 포함 여부",
+    );
+    expect(membership?.length).toBe(2);
+    expect(membership?.every((c) => c.assessment === "confirmed_match")).toBe(
+      true,
+    );
+    expect(
+      r.checks.find((c) => c.title === "복수 신고 물품 수량 합계")?.assessment,
+    ).toBe("confirmed_match");
+    expect(r.checks.length).toBeGreaterThan(0);
+  });
+  it("an unlisted declaration remains a real conflict", async () => {
+    const a = await fixture35("house_bl", {
+        declarationRefs: ["DECL-SYN-35-A", "DECL-SYN-35-B"],
+      }),
+      b = await fixture35("export_declaration", {
+        declaration: "DECL-SYN-35-OTHER",
+      });
+    const r = reviewShipping([a.document, b.document]);
+    expect(core(r, "declarationNumber")?.assessment).not.toBe(
+      "confirmed_match",
+    );
+  });
+  it("a wide cargo table retains quantity and unit inside the actual page", async () => {
+    const f = await fixture35("house_manifest", {
+      rows: [],
+      containers: [],
+      cargos: [
+        {
+          name: "SYNTHETIC GOODS",
+          hbl: "HB-SYN-35-A",
+          cn: "SYN-CN",
+          seal: "SYN-SEAL",
+          packages: 80,
+          gross: 820,
+          qty: 720,
+        },
+      ],
+    });
+    expect(f.pdf.pages[0].width).toBeGreaterThan(842);
+    expect(f.document.cargoRecords[0].fields.quantity.original.value).toBe(720);
+    expect(f.document.cargoRecords[0].fields.quantityUnit.original.status).toBe(
+      "verified",
+    );
+  });
+});

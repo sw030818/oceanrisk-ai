@@ -3,10 +3,10 @@
   "date": "2026-10-14",
   "kind": "PHASE35 checkpoint; two provider timeouts reserved; prior budgets unchanged",
   "budget": {
-    "documents": 24,
-    "requests": 24,
-    "measuredCostUsd": 0.02781078999999999,
-    "unresolvedCostUpperUsd": 0.026969800000000002,
+    "documents": 48,
+    "requests": 48,
+    "measuredCostUsd": 0.05049755999999999,
+    "unresolvedCostUpperUsd": 0.02696980000000001,
     "maxDocuments": 60,
     "maxRequests": 75,
     "maxCostUsd": 0.5
@@ -36,19 +36,20 @@
     "kind": "captured actual PHASE34 original response; prior budget unchanged"
   },
   "after": {
-    "sourceSha": "fdd6ad176dfef6d20af192955506a9f8f908c8b7",
-    "kind": "three complete actual sets; core 9/9 stable; one set had two secondary false positives; free deterministic fix gives zero",
+    "sourceSha": "6de65c85d5cbf499422ebe8a92f845da75eebb45",
+    "kind": "actual normal 3 sets: 9/7/9 core confirmed, false positives 0; independent mismatch 5/5; multi-declaration false positives 6 discovered and fixed with free replay; not final live completion",
     "normalSets": 3,
     "coreConfirmedPerSet": [
       9,
-      9,
+      7,
       9
     ],
-    "secondaryFalsePositivesPerSet": [
-      2,
-      0,
-      0
-    ],
+    "independentMismatch": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0
+    },
+    "multiDeclarationFalsePositives": 6,
     "automaticRetries": 0
   },
   "privacy": "No uploaded PDFs, document values, complete text, raw provider bodies or secrets in this archive."
