@@ -85,6 +85,16 @@ export function recoveryTargets(doc: ShippingDocument): RecoveryTarget[] {
   add(doc.fields, "document", doc.id);
   for (const extra of doc.additionalFields)
     add({ [extra.meaning]: extra.field }, "document", doc.id + "#" + extra.id);
+  for (const ref of doc.references)
+    if (ref.kind === "house_bl" || ref.kind === "export_declaration")
+      add(
+        {
+          [ref.kind === "house_bl" ? "houseBlNumber" : "declarationNumber"]:
+            ref.number,
+        },
+        "document",
+        doc.id + "#" + ref.id,
+      );
   for (const i of doc.items)
     add(
       i.fields,
@@ -333,7 +343,12 @@ export function recoverNative(
   // A printed document-level goods count/unit may not be a native wire field
   // for a transport form. Preserve it as an explicitly native additional field,
   // never invent an initial AI value or borrow a product quantity from elsewhere.
-  for (const role of ["quantity", "quantityUnit"])
+  for (const role of [
+    "quantity",
+    "quantityUnit",
+    "houseBlNumber",
+    "declarationNumber",
+  ])
     if (
       !doc.fields[role] &&
       !doc.additionalFields.some((f) => f.meaning === role)

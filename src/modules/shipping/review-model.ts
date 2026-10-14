@@ -16,6 +16,7 @@ export type ShippingRelationship = z.infer<
   evidence: ShippingCheck["fields"];
 };
 export interface ShippingCheck {
+  documentIds?: string[];
   comparison?: {
     meaning: string;
     hbl: string | null;
@@ -66,6 +67,7 @@ export interface ShippingCheck {
   followUp: string;
 }
 export interface ShippingReview {
+  issues?: import("./issues").ReviewIssue[];
   primaryChecks?: ShippingCheck[];
   outcomes?: {
     matches: number;

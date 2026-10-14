@@ -27,7 +27,7 @@ export async function routeShipping(
       );
       if (!r) throw new Error("Missing batch regression fixture");
       used.add(r.pdf.id);
-      if (["3.3", "3.4", "3.5", "3.6"].includes(phase)) {
+      if (["3.3", "3.4", "3.5", "3.6", "3.7"].includes(phase)) {
         const clone = structuredClone(r),
           old = clone.pdf.id,
           id = requestIds[index];

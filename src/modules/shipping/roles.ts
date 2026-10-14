@@ -61,6 +61,23 @@ export function shippingRole(text: string): string | null {
     .replace(/\s*[:=#-]\s*$/, "")
     .replace(/\s*\((?:[A-Za-z.]+|개|톤)\)\s*$/, "")
     .replace(/\s+/g, " ");
+  const direct = Object.entries(labels).find(([, pattern]) =>
+    pattern.test(label),
+  )?.[0];
+  if (direct) return direct;
+  // Every bilingual fragment must identify the same role; QTY / Packages is ambiguous.
+  const parts = label.split(/\s+\/\s+/);
+  if (parts.length > 1) {
+    const roles = parts.map(
+      (part) =>
+        Object.entries(labels).find(([, pattern]) => pattern.test(part))?.[0],
+    );
+    if (roles.every(Boolean)) {
+      if (new Set(roles).size === 1) return roles[0]!;
+      const totals = roles.map((r) => rootTotalRole[r!] ?? r);
+      if (new Set(totals).size === 1) return totals[0]!;
+    }
+  }
   return (
     Object.entries(labels).find(([, pattern]) => pattern.test(label))?.[0] ??
     null

@@ -1,41 +1,29 @@
+import { goodsMeaning, compareGoods } from "./goods-semantics";
 import { countAtoms } from "./count-atoms";
 import { text32, verified32, type FieldRef } from "./review-evidence";
-// UN/LOCODE (UNECE): KR PUS = Busan, US LAX = Los Angeles.
-// https://unece.org/trade/cefact/unlocode-code-list-country-and-territory
-// This deliberately small exact alias table rejects unsupported codes/countries.
-const ports: Record<string, string> = {
-  busan: "KRPUS",
-  "busan, korea": "KRPUS",
-  "busan korea": "KRPUS",
-  krpus: "KRPUS",
-  "kr pus": "KRPUS",
-  "kr pus / busan": "KRPUS",
-  "busan (krpus)": "KRPUS",
-  "los angeles": "USLAX",
-  "los angeles, usa": "USLAX",
-  uslax: "USLAX",
-  "us lax": "USLAX",
-  "us lax / los angeles": "USLAX",
-  "los angeles (uslax)": "USLAX",
-};
-export const portCode = (v: unknown) => ports[text32(v)] ?? null;
+import { portMeaning } from "./ports";
+export const portCode = (v: unknown) => portMeaning(v)?.code ?? null;
 export function goodsCore(v: unknown) {
   if (typeof v !== "string") return "";
-  // Keep dimensions/numerals and model qualifiers. Non-ASCII translation and
-  // alphabetic parenthetical explanations support PARTIAL meaning only.
-  return text32(v)
+  // Preserve Unicode and all product qualifiers; only count annotations and
+  // explicit HS annotations are separated from the product meaning.
+  const cleaned = text32(v)
     .split(/\s*\/\s*/)
     .filter((part) => !countAtoms(part).length)
     .join(" ")
     .replace(/\(([^)]*)\)/g, (whole, body: string) =>
-      /\d/.test(body) && !/^HS\s+[0-9. -]+$/i.test(body) ? body : " ",
+      !/^HS\s+[0-9. -]+$/i.test(body) ? body : " ",
     )
-    .replace(/[^a-z0-9.,+%-]+/g, " ")
+    .replace(/[^\p{L}\p{N}.,+%-]+/gu, " ")
     .trim()
     .replace(/\s+/g, " ");
+  return goodsMeaning(cleaned).key;
 }
 export function goodsEquivalent(a: unknown, b: unknown) {
   if (text32(a) === text32(b)) return "exact" as const;
+  const meaning = compareGoods(a, b).status;
+  if (meaning === "semantic") return "semantic" as const;
+  if (meaning === "different") return "different" as const;
   const left = goodsCore(a),
     right = goodsCore(b);
   return left && left === right ? ("partial" as const) : ("different" as const);

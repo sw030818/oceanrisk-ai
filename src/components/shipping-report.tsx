@@ -69,6 +69,24 @@ export function ShippingReport({
             {review.outcomes.independentChecks}
           </p>
         )}
+        <h2 className="mt-4 font-bold">업무상 우선 확인</h2>
+        <ul>
+          {review.issues?.map((issue) => (
+            <li key={issue.id} className="mb-2">
+              <strong>
+                {issue.title} · {labels[issue.assessment]}
+              </strong>
+              <p>{issue.explanation}</p>
+              <p>{issue.followUp}</p>
+              <p>
+                {issue.documentIds
+                  .map((id) => docs.find((d) => d.id === id)?.fileName ?? id)
+                  .join(" · ")}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <p>모든 검사와 근거는 아래 비교표에 보존됩니다.</p>
         <h2 className="mt-4 font-bold">분석 대상</h2>
         <ul>
           {results.map((r) => (

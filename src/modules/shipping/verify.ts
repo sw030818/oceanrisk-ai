@@ -468,7 +468,7 @@ function titleType(text: string) {
     .replace(/^\((.*)\)$/, "$1");
   const korean = t.replace(/(?<=[가-힣])\s+(?=[가-힣])/g, "");
   if (
-    /^(?:house\s+b\/?l|house bill of lading|h\.?b\.?l\.?)\s*(?:draft|초안)?$/.test(
+    /^(?:house\s+b\/?l|house bill of lading|house\s*선하증권|하우스\s*선하증권|h\.?b\.?l\.?)\s*(?:draft|초안)?$/.test(
       t,
     )
   )

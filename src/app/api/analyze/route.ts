@@ -106,7 +106,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         mode: analyze ? "shipping-analysis" : "pdf-preparation",
-        phase: "3.6",
+        phase: "3.7",
         results,
         summary: summarizeShipping(results, review),
         review,

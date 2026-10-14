@@ -30,6 +30,8 @@
     "test:phase33:production": "tsx scripts/live-phase33.ts",
     "test:phase34:production": "tsx scripts/live-phase34.ts",
     "test:phase35:production": "tsx scripts/live-phase35.ts",
+    "test:phase37:production": "tsx scripts/live-phase37.ts",
+    "test:phase37": "tsx scripts/evaluate-phase37.ts",
     "test:phase36:production": "tsx scripts/live-phase36.ts"
   },
   "dependencies": {

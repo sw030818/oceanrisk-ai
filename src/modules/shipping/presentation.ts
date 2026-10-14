@@ -54,9 +54,18 @@ export function comparisonGroups(
       .sort()
       .join("/");
     const key =
-      c.scope === "document"
+      c.scope === "document" || c.comparison?.scope === "hbl_record"
         ? c.id
         : [
+            c.comparison?.hbl ??
+              [...new Set(c.fields.map((f) => f.documentId))].sort().join("+"),
+            c.fields
+              .filter((f) => f.itemId || f.cargoId || f.containerId)
+              .map((f) =>
+                [f.documentId, f.itemId, f.cargoId, f.containerId].join(":"),
+              )
+              .sort()
+              .join(";"),
             c.category,
             roles || title,
             owner,

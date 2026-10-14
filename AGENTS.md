@@ -102,3 +102,11 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - test:phase36:production -- --sha=<exactSHA> --stage=normal|recovery|mismatch|complex|holdout --approved-documents=60 --approved-requests=75 --approved-max-cost-usd=0.50. normal은 비공개 원본과 별도 정답 경로, repeat=5; complex는 case로 사례를 지정한다. 무료 개발·전체 ship·Production SHA 확인 후에만 실행한다.
 - 최초AI/Native/선택AI A/B/C를 구분한다. 실제 정상 원본5회·독립오류/복잡선적/독립양식을 기록하고 미검증/보류를 숨기지 않는다. 선택적 AI 실효성이 불확실하면 자동 활성화하지 않는다.
 - 실제 검증 기록은 validation/phase36-evidence에 별도 정상 Commit/Push하고 코드SHA를 유지한다. 실제 문서/원문/원본응답/키는 공개 Git에 저장하지 않는다.
+
+## PHASE 3.7 — 범용성 독립 평가 (현재 지침)
+- 처음 보는 한국어·영어·혼용 양식의 독립 합성 사례를 Development/Blind Holdout으로 구분한다. 고정 정답은 평가 전용이며 OpenAI 프롬프트에 넣지 않는다. Holdout을 조정에 사용하면 Development로 전환하고 새 Holdout을 확보한다. 실제 고객 PDF를 공개 Git에 넣거나 합성 성과를 실제 문서 일반화 성과로 주장하지 않는다.
+- 한글 품명과 모델/재질/규격을 보존한다. 제한된 한영 의미 사전의 미지원 설명·부분 속성은 잠정이며 HS만으로 상품 동일성을 확정하지 않는다. 항구 데이터의 출처/버전/라이선스와 지원 범위를 유지한다. 원문·정규화·계산값·복구·수정을 구분한다.
+- 검증된 동일 의미 참조와 전체 포함·유일 품목·실제 행 근거가 있을 때 복수 신고를 집계한다. 중복/미명시 배분/부분/공동 포장은 보호한다. 업무 문제는 동일 원인·선적·개체의 검사만 통합하고 전체 검사와 근거를 보존한다. 기본 화면은 우선 확인이며 필수정보 부족을 숨기지 않는다.
+- 새 사용자 승인은 총 USD $0.50 / 유료 문서 시도120 / 공급자 요청150 / 자동 재시도0이다. `live-phase37`·`validation/phase37-evidence` 전용 ledger를 사용한다. 요청 전 보수적 최대 비용 예약·미확인 비용 유지·SHA 변경 시 사용량 초기화 금지. 이전 예산 재사용 금지. 개발 평가에는 최종 SHA 평가 예비비 $0.10을 남긴다.
+- `test:phase37:production -- --sha=<exactSHA> --cases=<comma-separated IDs> --partition=development|holdout --approved-documents=120 --approved-requests=150 --approved-max-cost-usd=0.50`만 승인 범위에서 실행한다. 한 번의 실패 후 원인을 먼저 확인하며 자동 유료 재시도/폴백을 추가하지 않는다. 일반 CI/ship은 계속 키를 비운다.
+- 검증된 main ship/Actions/Production 동일 SHA를 확인한다. 실제 분석 결과는 소스 SHA를 바꾸지 않는 evidence 브랜치에 정상 커밋·Push하고 성공/실패/미검증을 분리 보고한다.

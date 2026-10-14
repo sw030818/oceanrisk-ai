@@ -1,3 +1,4 @@
+import { goodsCore } from "./equivalence";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck, ShippingRelationship } from "./review-model";
 import {
@@ -22,7 +23,9 @@ export function declarationGroupChecks(
         relations.some(
           (r) =>
             r.status === "evidence_confirmed" &&
-            r.sharedRoles.includes("houseBlNumber") &&
+            (r.sharedRoles.includes("houseBlNumber") ||
+              r.sharedRoles.includes("declarationNumber")) &&
+            !r.conflictRoles.includes("houseBlNumber") &&
             r.documentIds.includes(bl.id) &&
             r.documentIds.includes(d.id),
         ),
@@ -92,7 +95,14 @@ export function declarationGroupChecks(
       blockers.push(
         "HBL에 명시된 전체 신고 목록과 현재 신고서가 정확히 대응하지 않습니다.",
       );
-    if ([bl, ...linked].some((d) => scope32(d) === "partial" || scope32(d) === "combined_packages" || (scope32(d) !== "full" && !d.factCoverage?.items.complete)))
+    if (
+      [bl, ...linked].some(
+        (d) =>
+          scope32(d) === "partial" ||
+          scope32(d) === "combined_packages" ||
+          (scope32(d) !== "full" && !d.factCoverage?.items.complete),
+      )
+    )
       blockers.push("부분선적 또는 전체 신고 포함 범위가 미확인입니다.");
     if ([bl, ...linked].some((d) => !d.collectionCoverage?.items.complete))
       blockers.push("실제 품목 표의 전체 행 포함을 확인하지 못했습니다.");
@@ -105,7 +115,7 @@ export function declarationGroupChecks(
     )
       blockers.push("품명·HS·수량·단위 중 일부 근거가 미확인입니다.");
     const identity = (r: (typeof refs)[number]) =>
-      text32(r.description.field.current.value) +
+      goodsCore(r.description.field.current.value) +
       "/" +
       text32(r.hs.field.current.value);
     const keys = refs.map(identity),

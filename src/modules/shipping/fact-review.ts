@@ -22,6 +22,8 @@ import {
   verified32,
   type FieldRef,
 } from "./review-evidence";
+import { withReviewIssues } from "./issues";
+import { compareGoods } from "./goods-semantics";
 import { portCode, hsSix, goodsCore } from "./equivalence";
 import { shippingValues } from "./fields";
 import { partyMatch32 } from "./parties";
@@ -193,6 +195,7 @@ export function withFactReview(
               )?.scope ?? "document")
             : "document",
       category,
+      documentIds: ds.map((d) => d.id).sort(),
       title:
         meaning in numericMeaning
           ? numericMeaning[meaning as NumericMeaning].title
@@ -427,6 +430,28 @@ export function withFactReview(
           reasons.push("FIELD_NOT_EXTRACTED");
         const bound = (f: FieldRef) => {
           const d = documents.find((d) => d.id === f.documentId)!;
+          if (role === "hsCode") {
+            const goods = group.flatMap((d) =>
+              roots(d, "goodsDescription", hbl).filter(verified32),
+            );
+            if (
+              goods.some((f, i) =>
+                goods
+                  .slice(i + 1)
+                  .some(
+                    (g) =>
+                      f.documentId !== g.documentId &&
+                      ["partial", "insufficient"].includes(
+                        compareGoods(
+                          f.field.current.value,
+                          g.field.current.value,
+                        ).status,
+                      ),
+                  ),
+              )
+            )
+              reasons.push("SCOPE_UNRESOLVED");
+          }
           if (role === "sealNumber") {
             const c = f.containerId
                 ? d.containers.find((c) => c.id === f.containerId)
@@ -543,6 +568,69 @@ export function withFactReview(
           (role === "goodsDescription" || role === "hsCode")
         )
           reasons.push("DECLARATION_SCOPE_UNRESOLVED");
+        if (role === "hsCode") {
+          const owners = group.map((d) =>
+            roots(d, "goodsDescription", hbl).filter(verified32),
+          );
+          // HS sets can only be compared on aligned product owners. A different
+          // product with the same HS must not create a spurious HS-number error.
+          if (
+            owners.some((left, i) =>
+              owners.some(
+                (right, j) =>
+                  i !== j &&
+                  left.some(
+                    (f) =>
+                      !right.some(
+                        (g) =>
+                          goodsCore(f.field.current.value) ===
+                            goodsCore(g.field.current.value) ||
+                          compareGoods(
+                            f.field.current.value,
+                            g.field.current.value,
+                          ).status === "semantic",
+                      ),
+                  ),
+              ),
+            )
+          )
+            reasons.push("SCOPE_UNRESOLVED");
+        }
+        if (role === "sealNumber") {
+          const containers = group.map((d) =>
+            [
+              ...new Set(
+                roots(d, "containerNumber", hbl)
+                  .filter(verified32)
+                  .map((f) => text32(f.field.current.value)),
+              ),
+            ]
+              .sort()
+              .join("|"),
+          );
+          if (!containers[0] || containers.some((ids) => ids !== containers[0]))
+            reasons.push("SCOPE_UNRESOLVED");
+        }
+        if (role === "goodsDescription" && !same) {
+          // Unknown translation or partial descriptions cannot establish a
+          // confirmed product conflict merely because canonical strings differ.
+          const candidates = valid.flatMap((s) =>
+            s.verified.length ? s.verified : s.refs,
+          );
+          if (
+            candidates.some((f, i) =>
+              candidates
+                .slice(i + 1)
+                .some((g) =>
+                  ["partial", "insufficient"].includes(
+                    compareGoods(f.field.current.value, g.field.current.value)
+                      .status,
+                  ),
+                ),
+            )
+          )
+            reasons.push("SCOPE_UNRESOLVED");
+        }
         if (role === "shipper" || role === "consignee") {
           const matches = valid
             .slice(1)
@@ -794,5 +882,5 @@ export function withFactReview(
     checksExecuted: review.checks.length,
     independentChecks: primary.length,
   };
-  return { ...review, primaryChecks: primary, outcomes };
+  return withReviewIssues({ ...review, primaryChecks: primary, outcomes });
 }

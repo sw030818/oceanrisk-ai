@@ -1,0 +1,112 @@
+import { test, expect } from "@playwright/test";
+import { scenario37 } from "../fixtures/phase37/cases";
+import { development37 } from "../fixtures/phase37/development";
+import { recoverNative } from "../../src/modules/shipping/recovery";
+import { routeShipping } from "../fixtures/shipping-route";
+import {
+  shippingTypes,
+  shippingLabels,
+} from "../../src/modules/shipping/catalog";
+for (const width of [1440, 390])
+  test(`PHASE37 attention-first preserves all checks, evidence and issue detail ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 950 });
+    const { fixtures } = await scenario37(development37[10]);
+    const results = fixtures.map((f) => ({
+      pdf: f.pdf,
+      document: recoverNative(f.document, f.pdf),
+      uploadSlot: f.wire.type as "house_bl",
+      detectedType: f.document.detectedType,
+      typeMismatch: false,
+      error: null,
+    }));
+    const count = await routeShipping(page, results, "3.7");
+    await page.goto("/");
+    for (const [i, t] of shippingTypes.entries())
+      await page
+        .getByLabel(shippingLabels[t].title + " PDF 파일 선택", { exact: true })
+        .setInputFiles({
+          name: fixtures[i].pdf.fileName,
+          mimeType: "application/pdf",
+          buffer: Buffer.from(fixtures[i].bytes),
+        });
+    await page.getByRole("checkbox").check();
+    await page
+      .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
+      .click();
+    const review = page.getByTestId("shipping-review");
+    await expect(review).toBeVisible();
+    await expect(page.getByLabel("검토 결과 필터")).toHaveValue("attention");
+    await expect(page.getByTestId("review-issue").first()).toBeVisible();
+    await expect(review).toContainText("확인된 불일치");
+    const before = await page.getByTestId("comparison-row").count();
+    await page
+      .getByTestId("review-issue")
+      .first()
+      .getByRole("button", { name: "판정·원문 근거 확인" })
+      .click();
+    await expect(
+      page.getByRole("dialog", { name: "상세 분석 패널" }),
+    ).toBeVisible();
+    await page.keyboard.press("Escape");
+    await page.getByLabel("검토 결과 필터").selectOption("all");
+    expect(await page.getByTestId("comparison-row").count()).toBeGreaterThan(
+      before,
+    );
+    await expect(review).toContainText("확인된 일치");
+    expect(count.calls()).toBe(2);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  });
+for (const missing of [false, true])
+  test(`PHASE37 ${missing ? "mandatory missing field stays visible with document identity" : "normal verified summary is distinct from optional inapplicability"}`, async ({
+    page,
+  }) => {
+    const { fixtures } = await scenario37(development37[0]);
+    const results = fixtures.map((f) => ({
+      pdf: f.pdf,
+      document: recoverNative(f.document, f.pdf),
+      uploadSlot: f.wire.type as "house_bl",
+      detectedType: f.document.detectedType,
+      typeMismatch: false,
+      error: null,
+    }));
+    if (missing) {
+      const { emptyShippingField } = await import(
+        "../../src/modules/shipping/schema"
+      );
+      results[1].document.fields.exporter = emptyShippingField();
+    }
+    await routeShipping(page, results, "3.7");
+    await page.goto("/");
+    for (const [i, t] of shippingTypes.entries())
+      await page
+        .getByLabel(shippingLabels[t].title + " PDF 파일 선택", { exact: true })
+        .setInputFiles({
+          name: fixtures[i].pdf.fileName,
+          mimeType: "application/pdf",
+          buffer: Buffer.from(fixtures[i].bytes),
+        });
+    await page.getByRole("checkbox").check();
+    await page
+      .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
+      .click();
+    if (missing) {
+      await expect(page.getByTestId("review-issue").first()).toContainText(
+        "문서 필수정보",
+      );
+      await expect(page.getByTestId("review-issue").first()).toContainText(
+        fixtures[1].pdf.fileName,
+      );
+      await expect(page.getByTestId("normal-review-summary")).toHaveCount(0);
+    } else {
+      await expect(page.getByTestId("normal-review-summary")).toBeVisible();
+      await expect(page.getByTestId("review-issue")).toHaveCount(0);
+      await page.getByLabel("검토 결과 필터").selectOption("all");
+      await expect(page.getByTestId("comparison-row")).not.toHaveCount(0);
+    }
+  });

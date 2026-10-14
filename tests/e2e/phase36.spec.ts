@@ -38,6 +38,7 @@ for (const width of [1440, 390])
       .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
       .click();
     await expect(page.getByTestId("shipping-review")).toBeVisible();
+    await page.getByLabel("검토 결과 필터").selectOption("all");
     await page
       .getByRole("button", { name: "기재 물품 수량 (합계/단일품목 범위) 상세 분석", exact: true })
       .click();

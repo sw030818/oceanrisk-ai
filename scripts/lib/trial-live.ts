@@ -24,6 +24,8 @@ export interface TrialPolicy {
   phases: string[];
   name: string;
   reserveRecovery?: boolean;
+  // Optional evaluation holdback; caps and ledger identity remain unchanged.
+  reservedBalanceUsd?: number;
 }
 export interface TrialBudget extends TestBudget {
   requests: number;
@@ -47,7 +49,7 @@ export function reserveTrial(
     b.measuredCostUsd +
       b.unresolvedCostUpperUsd +
       costs.reduce((a, n) => a + n, 0) >
-      policy.cost
+      policy.cost - (policy.reservedBalanceUsd ?? 0)
   )
     throw Error(policy.name + "_BUDGET_STOP");
   b.documents += costs.length;

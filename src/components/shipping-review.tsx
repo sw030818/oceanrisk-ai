@@ -49,7 +49,7 @@ export function ShippingReviewPanel({
   onConfirmRelationship?: (id: string) => void;
   onEvidence: (f: GroundedField<string | number>, label: string) => void;
 }) {
-  const [filter, setFilter] = useState("all"),
+  const [filter, setFilter] = useState("attention"),
     [shipment, setShipment] = useState("all"),
     [selected, setSelected] = useState<string | null>(null);
   const dialog = useRef<HTMLDialogElement>(null),
@@ -98,7 +98,6 @@ export function ShippingReviewPanel({
             ].includes(c.assessment)) ||
           (filter === "attention" &&
             c.assessment !== "confirmed_match" &&
-            c.assessment !== "insufficient_information" &&
             c.assessment !== "not_applicable"),
       ),
     }))
@@ -259,11 +258,79 @@ export function ShippingReviewPanel({
             className="rounded-lg border border-slate-200 px-3 py-2 text-xs"
           >
             {filter === "attention"
-              ? "일치·정보 부족 포함 전체 보기"
+              ? "일치·대조 대상 없음 포함 전체 보기"
               : "확인할 항목만 보기"}
           </button>
         </div>
       </div>
+      {filter === "attention" && (
+        <section
+          aria-label="업무상 확인할 문제"
+          className="space-y-2 px-4 pb-4"
+        >
+          <p className="text-sm font-semibold text-slate-800">
+            조치가 필요한 문제 {review.issues?.length ?? visible.length}건
+          </p>
+          {(review.issues ?? [])
+            .filter(
+              (issue) =>
+                shipment === "all" ||
+                issue.documentIds.every((id) =>
+                  options
+                    .find((o) => o.id === shipment)
+                    ?.documentIds.includes(id),
+                ),
+            )
+            .map((issue) => (
+              <article
+                key={issue.id}
+                data-testid="review-issue"
+                className={`rounded-lg border p-3 ${issue.severity === "high" ? "border-red-200 bg-red-50/50" : "border-slate-200 bg-slate-50"}`}
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h4 className="text-xs font-semibold">
+                    {issue.title} · {labels[issue.assessment]}
+                  </h4>
+                  <button
+                    className="text-xs font-semibold text-blue-700"
+                    onClick={() => {
+                      const group = groups.find((g) =>
+                        g.checks.some((c) =>
+                          issue.relatedCheckIds.includes(c.id),
+                        ),
+                      );
+                      if (group) setSelected(group.id);
+                    }}
+                  >
+                    판정·원문 근거 확인
+                  </button>
+                </div>
+                <p className="mt-1 break-words text-xs text-slate-600">
+                  {issue.explanation}
+                </p>
+                <p className="mt-1 text-xs text-slate-700">{issue.followUp}</p>
+                <p className="mt-1 break-words text-[10px] text-slate-500">
+                  {issue.documentIds
+                    .map(
+                      (id) =>
+                        documents.find((d) => d.id === id)?.fileName ?? id,
+                    )
+                    .join(" · ")}
+                </p>
+              </article>
+            ))}
+          {!visible.length && (
+            <p
+              data-testid="normal-review-summary"
+              className="rounded-lg bg-emerald-50 p-3 text-xs text-emerald-900"
+            >
+              현재 실행된 검사에서 확인할 문제가 없습니다. 확인된 일치{" "}
+              {review.outcomes?.matches ?? s.matches}건입니다. 전체 보기에서
+              모든 검사와 대조 대상 없음을 확인할 수 있습니다.
+            </p>
+          )}
+        </section>
+      )}
       <p className="px-4 pb-2 text-[11px] text-slate-500 md:hidden">
         비교표를 좌우로 밀어 다른 서류와 판정을 확인하세요. 항목을 누르면 상세가
         열립니다.
@@ -409,7 +476,7 @@ export function ShippingReviewPanel({
                           ].includes(raw.assessment)) ||
                         (filter === "attention" &&
                           raw.assessment !== "confirmed_match" &&
-                          raw.assessment !== "insufficient_information");
+                          raw.assessment !== "not_applicable");
                       return (
                         eligible &&
                         visible.find((v) =>
@@ -639,8 +706,10 @@ export function ShippingReviewPanel({
               </p>
               {onUpdate &&
                 documents
-                  .filter((d) =>
-                    active.fields.some((f) => f.documentId === d.id),
+                  .filter(
+                    (d) =>
+                      active.fields.some((f) => f.documentId === d.id) ||
+                      active.checks.some((c) => c.documentIds?.includes(d.id)),
                   )
                   .map((d) => (
                     <ShippingFields

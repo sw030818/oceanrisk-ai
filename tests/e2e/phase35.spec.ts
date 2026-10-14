@@ -57,6 +57,9 @@ async function setup(page: Page, changed = false) {
     .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
     .click();
   await expect(page.getByTestId("shipping-review")).toBeVisible();
+  // These legacy checks inspect verified matches and optional diagnostics.
+  // PHASE37 starts at attention; explicitly open the preserved full table.
+  await page.getByLabel("검토 결과 필터").selectOption("all");
   return calls;
 }
 for (const width of [1440, 390])

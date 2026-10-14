@@ -572,11 +572,21 @@ export function reviewShipping(
         role === "goodsDescription" &&
         left &&
         right &&
-        goodsEquivalent(left.field.current.value, right.field.current.value) ===
-          "partial";
+        ["partial", "semantic"].includes(
+          goodsEquivalent(left.field.current.value, right.field.current.value),
+        );
       const representationGuard =
         different &&
         !mappedPort &&
+        !(
+          role === "goodsDescription" &&
+          left &&
+          right &&
+          goodsEquivalent(
+            left.field.current.value,
+            right.field.current.value,
+          ) === "semantic"
+        ) &&
         (role === "goodsDescription" || role.startsWith("portOf"))
           ? [
               "언어·요약·항구명/코드 등 표기 차이일 수 있습니다. 문자열 차이를 물품 또는 항구의 확정 오류로 단정하지 않습니다.",
@@ -825,10 +835,12 @@ export function reviewShipping(
             name &&
             (text32(row.fields.goodsDescription.current.value) === name ||
               (r.status === "evidence_confirmed" &&
-                goodsEquivalent(
-                  description?.field.current.value,
-                  row.fields.goodsDescription.current.value,
-                ) === "partial" &&
+                ["partial", "semantic"].includes(
+                  goodsEquivalent(
+                    description?.field.current.value,
+                    row.fields.goodsDescription.current.value,
+                  ),
+                ) &&
                 !!ra.fields.hsCode &&
                 !!row.fields.hsCode &&
                 verified32(rowRef(a, ra, "hsCode")!) &&

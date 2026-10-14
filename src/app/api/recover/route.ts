@@ -190,7 +190,7 @@ export async function POST(request: Request) {
     }
     return NextResponse.json(
       {
-        phase: "3.6",
+        phase: "3.7",
         mode: "targeted-recovery",
         supplierCalls,
         error: recoveryError,
@@ -206,7 +206,7 @@ export async function POST(request: Request) {
   } catch (e) {
     return NextResponse.json(
       {
-        phase: "3.6",
+        phase: "3.7",
         mode: "targeted-recovery",
         error: safeError(e),
         supplierCalls,
