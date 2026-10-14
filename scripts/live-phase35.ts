@@ -243,6 +243,7 @@ for (let repeat = 1; repeat <= repeats; repeat++) {
             {
               ...baseRow,
               ...baseContainer,
+              name: baseRow.name,
               hbl: "HB-SYN-35-A",
               packages: 80,
               gross: 820,
