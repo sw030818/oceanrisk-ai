@@ -380,7 +380,8 @@ for (let repeat = 1; repeat <= repeats; repeat++) {
     docs.length !== fixtures.length ||
     result.results.some((r) => r.error) ||
     (stage === "normal" &&
-      coreMeanings.some((m) => core[m] !== "confirmed_match"))
+      (coreMeanings.some((m) => core[m] !== "confirmed_match") ||
+        found.length > 0))
   ) {
     process.exitCode = 1;
     break;

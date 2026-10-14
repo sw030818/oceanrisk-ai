@@ -465,8 +465,10 @@ export function withFactReview(
               reasons.push("SCOPE_UNRESOLVED");
               return "unbound:" + text32(f.field.current.value);
             }
+            const owner = goodsCore(g.field.current.value);
+            if (!owner) reasons.push("SCOPE_UNRESOLVED");
             return (
-              goodsCore(g.field.current.value) +
+              (owner || "unbound") +
               ":" +
               (hsSix(f.field.current.value) ?? text32(f.field.current.value))
             );
@@ -483,7 +485,11 @@ export function withFactReview(
                 ? (hsSix(f.field.current.value) ??
                   text32(f.field.current.value))
                 : role === "goodsDescription"
-                  ? goodsCore(f.field.current.value)
+                  ? (() => {
+                      const core = goodsCore(f.field.current.value);
+                      if (!core) reasons.push("SCOPE_UNRESOLVED");
+                      return core || "unbound:" + text32(f.field.current.value);
+                    })()
                   : text32(f.field.current.value);
         const ns = valid.map((s) =>
           [...new Set((s.verified.length ? s.verified : s.refs).map(normalize))]

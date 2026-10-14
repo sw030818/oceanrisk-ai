@@ -3,9 +3,9 @@
   "date": "2026-10-14",
   "kind": "PHASE35 checkpoint; two provider timeouts reserved; prior budgets unchanged",
   "budget": {
-    "documents": 15,
-    "requests": 15,
-    "measuredCostUsd": 0.015727919999999996,
+    "documents": 24,
+    "requests": 24,
+    "measuredCostUsd": 0.02781078999999999,
     "unresolvedCostUpperUsd": 0.026969800000000002,
     "maxDocuments": 60,
     "maxRequests": 75,
@@ -36,15 +36,18 @@
     "kind": "captured actual PHASE34 original response; prior budget unchanged"
   },
   "after": {
-    "sourceSha": "cf168f9a603841d7fec12f9abf63bf2bceee5eee",
-    "kind": "three independent completed sets; 1/3 full core success; HBL missing container anchor in two sets safely protected",
+    "sourceSha": "fdd6ad176dfef6d20af192955506a9f8f908c8b7",
+    "kind": "three complete actual sets; core 9/9 stable; one set had two secondary false positives; free deterministic fix gives zero",
     "normalSets": 3,
-    "fullCoreSuccessSets": 1,
-    "classifiedDocuments": 9,
     "coreConfirmedPerSet": [
       9,
-      7,
-      7
+      9,
+      9
+    ],
+    "secondaryFalsePositivesPerSet": [
+      2,
+      0,
+      0
     ],
     "automaticRetries": 0
   },

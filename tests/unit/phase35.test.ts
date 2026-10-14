@@ -477,3 +477,44 @@ describe("PHASE35 native shipment fact scope and independent verdicts", () => {
     );
   });
 });
+
+describe("literal non-Latin goods cannot become an empty canonical product", () => {
+  it("keeps an unalignable goods owner provisional even with equal verified HS", async () => {
+    const a = await fixture35("house_bl");
+    const b = await fixture35("export_declaration", {
+      totals: { quantity: 720, packageCount: 60, grossWeight: 640 },
+      rows: [
+        {
+          name: "금속 용기",
+          hs: "7323.93-0000",
+          qty: 720,
+          packages: 60,
+          gross: 640,
+        },
+      ],
+    });
+    const r = reviewShipping([a.document, b.document]);
+    expect(core(r, "quantity")?.assessment).toBe("confirmed_match");
+    for (const meaning of ["goodsDescription", "hsCode"]) {
+      expect(core(r, meaning)?.comparison?.reasonCodes).toContain(
+        "SCOPE_UNRESOLVED",
+      );
+      expect(core(r, meaning)?.assessment).not.toBe("confirmed_mismatch");
+      expect(core(r, meaning)?.assessment).not.toBe("confirmed_match");
+    }
+  });
+  it("two different non-Latin descriptions are not an exact match through empty strings", async () => {
+    const a = await fixture35("house_bl", {
+        rows: [{ name: "금속 용기", hs: "7323.93-0000", qty: 720 }],
+      }),
+      b = await fixture35("house_manifest", {
+        rows: [{ name: "유리 용기", hs: "7323.93-0000", qty: 720 }],
+      });
+    const r = reviewShipping([a.document, b.document]);
+    expect(core(r, "goodsDescription")?.assessment).not.toBe("confirmed_match");
+    expect(core(r, "hsCode")?.assessment).not.toBe("confirmed_match");
+    expect(core(r, "goodsDescription")?.comparison?.reasonCodes).toContain(
+      "SCOPE_UNRESOLVED",
+    );
+  });
+});
