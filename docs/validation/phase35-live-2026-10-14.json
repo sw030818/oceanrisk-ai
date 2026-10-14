@@ -3,9 +3,9 @@
   "date": "2026-10-14",
   "kind": "PHASE35 checkpoint; two provider timeouts reserved; prior budgets unchanged",
   "budget": {
-    "documents": 6,
-    "requests": 6,
-    "measuredCostUsd": 0.00453277,
+    "documents": 15,
+    "requests": 15,
+    "measuredCostUsd": 0.015727919999999996,
     "unresolvedCostUpperUsd": 0.026969800000000002,
     "maxDocuments": 60,
     "maxRequests": 75,
@@ -36,12 +36,16 @@
     "kind": "captured actual PHASE34 original response; prior budget unchanged"
   },
   "after": {
-    "sourceSha": "9b0a1dc89e507b8822a70338881678692fc4de89",
-    "kind": "one successful original set assembled after a manual timeout recheck; not final repeated validation",
-    "classifiedDocuments": 3,
-    "verifiedCoreMeanings": 9,
-    "requiredCoreMeanings": 9,
-    "timeouts": 2,
+    "sourceSha": "cf168f9a603841d7fec12f9abf63bf2bceee5eee",
+    "kind": "three independent completed sets; 1/3 full core success; HBL missing container anchor in two sets safely protected",
+    "normalSets": 3,
+    "fullCoreSuccessSets": 1,
+    "classifiedDocuments": 9,
+    "coreConfirmedPerSet": [
+      9,
+      7,
+      7
+    ],
     "automaticRetries": 0
   },
   "privacy": "No uploaded PDFs, document values, complete text, raw provider bodies or secrets in this archive."

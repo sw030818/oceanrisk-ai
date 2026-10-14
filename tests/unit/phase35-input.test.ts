@@ -76,3 +76,36 @@ describe("shipping compact model input preserves independent grounding data", ()
     );
   });
 });
+
+describe("stacked native container/Seal source ownership", () => {
+  it("independently verifies the two identifiers from their own stacked cells", async () => {
+    const { shipping34Fixture } = await import("../fixtures/shipping34");
+    const f = await shipping34Fixture("house_bl");
+    expect(f.document.containers[0].containerNumber.original.status).toBe(
+      "verified",
+    );
+    expect(f.document.containers[0].sealNumber.original.status).toBe(
+      "verified",
+    );
+    const a = f.wire.containers[0].containerNumber.evidence?.blockIds;
+    const b = f.wire.containers[0].sealNumber.evidence?.blockIds;
+    expect(a).not.toEqual(b);
+  });
+  it("a correct Seal value cannot certify an omitted container anchor", async () => {
+    const { shipping34Fixture } = await import("../fixtures/shipping34");
+    const { groundShipping } = await import(
+      "../../src/modules/shipping/ground"
+    );
+    const f = await shipping34Fixture("house_bl");
+    f.wire.containers[0].containerNumber = { value: null, evidence: null };
+    const d = groundShipping(f.wire, f.pdf, "house_bl");
+    expect(d.containers[0].containerNumber.original.status).toBe("missing");
+    expect(d.containers[0].sealNumber.original.value).toBe(
+      f.document.containers[0].sealNumber.original.value,
+    );
+    expect(d.containers[0].sealNumber.original.status).toBe("unverified");
+    expect(d.containers[0].sealNumber.original.verificationCode).toBe(
+      "row_mismatch",
+    );
+  });
+});
