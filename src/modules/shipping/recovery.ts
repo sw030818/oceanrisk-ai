@@ -211,13 +211,19 @@ export function nativeCandidates(
       )
         continue;
       const numeric = numericShippingFields.has(t.role as never);
-      const stripped = b.text
+      let stripped = b.text
         .replace(/^([^:]+):\s*/, (_whole, label: string) =>
           [t.role, rootTotalRole[t.role]].includes(shippingRole(label) ?? "")
             ? ""
             : _whole,
         )
         .trim();
+      if (t.role === "hsCode") {
+        const labelled = stripped.match(
+          /^\(?HS(?:\s+CODE)?\s*:?\s*([0-9][0-9. -]*[0-9])\)?$/i,
+        );
+        if (labelled) stripped = labelled[1].trim();
+      }
       if (
         t.role === "goodsDescription" &&
         stripped.split(/\s*\/\s*/).some((s) => countAtoms(s).length)

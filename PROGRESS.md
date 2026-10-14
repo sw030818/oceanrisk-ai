@@ -537,3 +537,5 @@
 - Next개발서버 정상실행·무료prepare200/1문서/1페이지/aiCalledfalse 확인. 별도$0.50/60문서/75요청 ledger 도구·사전 비용예약·미확인usage 유지·원격증거복원·정상5회 A/B/C/복잡/오류/열순서 변경 PDF 검증 경로 구현. 새 실API 호출은 이 기록 시점0회이며 이후 결과는 validation/phase36-evidence에 저장한다.
 - 최종ship/Actions/Production 같은SHA와 실제 정상5회·오류·복잡·선택적 추가AI 효용은 아직 미검증이다. 완료로 주장하지 않는다.
 - 첫 ship에서521단위/type/build/기존analyze worker는 통과했으나 개발서버 잔존 포트 때문에 브라우저 검사 전 중단됐다. 커밋/Push 없음. 새 recover route의 worker trace 누락도 추가 확인하여 tracing과 runtime검사에 두 PDF경로를 포함하고, 소유 서버 중지·린트 경고 제거 후 전체ship을 재실행한다.
+- f9a7e096dd1587b0a91166ff784cf9434909e08e에서 npmci/type/lint/521단위/56브라우저/build 및 analyze+recover worker 전체ship 통과·GitHubmainPush/공식Production 동일SHA/키설정/자동targetedfalse 확인. 새 실API 첫정상3문서 분류3/3·핵심9/9·정답근거20/20, 기본3요청/알려진$0.00540963/자동재시도0. 단, native cargo HS에 인용 라벨까지 포함한 값이 승인되어 보조HS 확정오탐1을 발견해 다음 반복을 중단했다.
+- 원인: '(HS ...)' 인용 전체는 원문에 있지만 세번 값은 라벨을 제외해야 한다. native 후보에서 명시HS 라벨만 분리하고 독립 검증기에서도 숫자 세번 문법을 검증하도록 수정했다. 같은 실제응답 무료재생은 핵심9/9·확정오탐0이며 실제 HS6자리 차이 탐지 회귀도 추가했다. 과거3문서/비용은 같은 별도36ledger에 유지, 실제5회는 새최종SHA에서 다시 검증한다. 유료 검증 실패를 숨기거나 이전SHA 관측을 최신성공으로 합치지 않는다.

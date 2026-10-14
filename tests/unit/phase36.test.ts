@@ -523,3 +523,53 @@ it("missing weight unit can use its own native column header, but not another pa
     ),
   ).toBe(false);
 });
+it("HS recovery separates the printed label from its literal code before comparison", async () => {
+  const a = await shipping34Fixture("house_bl"),
+    b = await shipping34Fixture("house_manifest");
+  b.document.cargoRecords[0].fields.hsCode = emptyShippingField();
+  const d = recoverNative(b.document, b.pdf),
+    f = d.cargoRecords[0].fields.hsCode;
+  expect(f.current.value).toBe("7010.90-1000");
+  expect(f.current.status).toBe("verified");
+  expect(
+    reviewShipping([a.document, d])
+      .primaryChecks?.filter((c) => c.comparison?.meaning === "hsCode")
+      .some((c) => c.assessment === "confirmed_mismatch"),
+  ).toBe(false);
+});
+it("an entire labelled HS annotation is not the HS value even though the quotation exists", async () => {
+  const f = await shipping34Fixture("house_manifest");
+  const { verifyShippingField } =
+    await import("../../src/modules/shipping/verify");
+  const b = f.pdf.pages[0].blocks!.find((b) => b.text.startsWith("(HS "))!;
+  expect(
+    verifyShippingField(
+      { value: b.text, evidence: { page: 1, blockIds: [b.id] } },
+      f.pdf,
+      "hsCode",
+      "cargo",
+    ).current.status,
+  ).toBe("unverified");
+});
+it("a real printed difference in HS six-digit codes remains a mismatch after recovery", async () => {
+  const a = await fixture35("house_bl"),
+    b = await fixture35("house_manifest", {
+      rows: [
+        {
+          name: "SYNTHETIC METAL BOTTLE 600ML",
+          hs: "7323.94-0000",
+          qty: 720,
+          packages: 60,
+          gross: 640,
+        },
+      ],
+    });
+  b.document.items[0].fields.hsCode = emptyShippingField();
+  const d = recoverNative(b.document, b.pdf);
+  expect(d.items[0].fields.hsCode.current.status).toBe("verified");
+  expect(
+    reviewShipping([a.document, d]).primaryChecks?.find(
+      (c) => c.comparison?.meaning === "hsCode",
+    )?.assessment,
+  ).toBe("confirmed_mismatch");
+});

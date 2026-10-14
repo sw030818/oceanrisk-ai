@@ -145,6 +145,17 @@ export function verifyShippingField(
     );
     return finish();
   }
+  if (
+    role === "hsCode" &&
+    (typeof g.value !== "string" || !/^\d[0-9. -]*\d$/.test(g.value.trim()))
+  ) {
+    g = fail(
+      g,
+      "value_mismatch",
+      "HS 필드는 인용 라벨을 제외한 실제 숫자 세번을 확인해야 합니다.",
+    );
+    return finish();
+  }
   const units = unitParents[role];
   const contextualAtom = (b: PdfBlock) => {
     const parent = geometricRole(page, b);
