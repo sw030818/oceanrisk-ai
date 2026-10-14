@@ -296,7 +296,9 @@ export function ShippingWorkspace() {
             if (analyze)
               setComparisonEnabled(
                 data.capabilities?.pairComparison === true &&
-                  ["3.2", "3.3", "3.4", "3.5", "3.6", "3.7"].includes(data.phase),
+                  ["3.2", "3.3", "3.4", "3.5", "3.6", "3.7"].includes(
+                    data.phase,
+                  ),
               );
             stopAI =
               ["3.3", "3.4", "3.5", "3.6", "3.7"].includes(data.phase) &&
@@ -846,7 +848,7 @@ export function ShippingWorkspace() {
                         <p className="mt-2 text-[11px] text-slate-500">
                           선택 영역: {shippingLabels[result.uploadSlot].title} ·{" "}
                           {result.detectedType
-                            ? `AI 분류: ${shippingLabels[result.detectedType].title}`
+                            ? `${result.document?.classification?.recovery ? "원문 제목 판독" : "AI 분류"}: ${shippingLabels[result.detectedType].title}`
                             : result.document?.classificationStatus ===
                                 "needs_review"
                               ? "AI 분류 미확인"
@@ -915,8 +917,8 @@ export function ShippingWorkspace() {
                         role="alert"
                         className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs leading-6 text-amber-900"
                       >
-                        문서 유형 불일치: 선택 영역과 원문에서 확인된 AI 분류가
-                        다릅니다. 실제 분류의 필드를 표시했습니다. 파일을
+                        문서 유형 불일치: 선택 영역과 원문에서 확인된 판독
+                        유형이 다릅니다. 실제 분류의 필드를 표시했습니다. 파일을
                         교체하거나 영역을 수정해 주세요.
                         <button
                           className="ml-2 underline"

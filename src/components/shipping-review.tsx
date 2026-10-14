@@ -16,7 +16,7 @@ import {
 } from "@/modules/shipping/presentation";
 import { portCode, contextualCarton } from "@/modules/shipping/equivalence";
 import { partyName32 } from "@/modules/shipping/parties";
-import { unit32 } from "@/modules/shipping/review-evidence";
+import { unit32, refKey32 } from "@/modules/shipping/review-evidence";
 import { ShippingFields } from "./shipping-fields";
 import type { GroundedField } from "@/modules/documents/schema";
 const labels: Record<ShippingAssessment, string> = {
@@ -63,7 +63,35 @@ export function ShippingReviewPanel({
       : options.find((g) => g.id === shipment)?.documentIds,
     true,
   );
-  const active = groups.find((g) => g.id === selected);
+  const issueSelection = (() => {
+    if (!selected?.startsWith("issue-selection:")) return undefined;
+    try {
+      const choice = JSON.parse(selected.slice("issue-selection:".length)) as {
+        title: string;
+        checkIds: string[];
+      };
+      const checks = (review.primaryChecks ?? review.checks).filter((c) =>
+        choice.checkIds.includes(c.id),
+      );
+      if (!checks.length) return undefined;
+      return {
+        id: selected,
+        title: choice.title,
+        checks,
+        assessment: [...checks].sort(
+          (a, b) => assessmentRank[a.assessment] - assessmentRank[b.assessment],
+        )[0].assessment,
+        fields: [
+          ...new Map(
+            checks.flatMap((c) => c.fields).map((f) => [refKey32(f), f]),
+          ).values(),
+        ],
+      } satisfies ComparisonGroup;
+    } catch {
+      return undefined;
+    }
+  })();
+  const active = issueSelection ?? groups.find((g) => g.id === selected);
   useEffect(() => {
     if (active && !dialog.current?.open) dialog.current?.showModal();
     else if (!active) dialog.current?.close();
@@ -294,12 +322,13 @@ export function ShippingReviewPanel({
                   <button
                     className="text-xs font-semibold text-blue-700"
                     onClick={() => {
-                      const group = groups.find((g) =>
-                        g.checks.some((c) =>
-                          issue.relatedCheckIds.includes(c.id),
-                        ),
+                      setSelected(
+                        "issue-selection:" +
+                          JSON.stringify({
+                            title: issue.title,
+                            checkIds: issue.relatedCheckIds,
+                          }),
                       );
-                      if (group) setSelected(group.id);
                     }}
                   >
                     판정·원문 근거 확인

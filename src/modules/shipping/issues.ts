@@ -28,14 +28,32 @@ export function reviewIssues(review: ShippingReview): ReviewIssue[] {
       continue;
     const codes = c.comparison?.reasonCodes ?? [];
     const blockingRelations = (review.relationships ?? []).filter(
-      (r) => c.relationshipIds.includes(r.id) && r.status === "conflict",
+      (r) =>
+        c.relationshipIds.includes(r.id) &&
+        (r.status === "conflict" ||
+          r.conflictRoles.length > 0 ||
+          !!r.mappingWarnings?.length),
     );
+    const referenceOrigin =
+      c.category === "reference" &&
+      blockingRelations.some((r) =>
+        c.fields.some(
+          (f) =>
+            r.conflictRoles.includes(f.fieldName) ||
+            r.mappingWarnings?.some((w) => w.role === f.fieldName),
+        ),
+      );
     const relationshipOnly =
-      c.assessment === "provisional_match" &&
+      (c.assessment === "provisional_match" || referenceOrigin) &&
       blockingRelations.length > 0 &&
+      c.fields.length > 0 &&
       c.fields.every(verified32);
     const cause: ReviewIssue["cause"] = relationshipOnly
-      ? "reference_conflict"
+      ? blockingRelations.some(
+          (r) => r.status === "conflict" || r.conflictRoles.length > 0,
+        )
+        ? "reference_conflict"
+        : "scope"
       : c.assessment === "confirmed_mismatch"
         ? c.category === "reference"
           ? "reference_conflict"
@@ -53,18 +71,17 @@ export function reviewIssues(review: ShippingReview): ReviewIssue[] {
       [...new Set(c.fields.map((f) => f.documentId))].sort().join("+");
     // Exact cause signature is intentionally conservative. No category-only or
     // fuzzy-title deduplication that could hide a separate business problem.
-    const key = JSON.stringify([
-      cause,
-      shipment,
-      relationshipOnly
-        ? "relationship_guard"
-        : (c.comparison?.meaning ?? c.category),
-      relationshipOnly
-        ? blockingRelations.map((r) => r.id).sort()
-        : entities.length
-          ? entities
-          : [c.id],
-    ]);
+    const key = relationshipOnly
+      ? JSON.stringify([
+          "reference_dependency",
+          blockingRelations.map((r) => r.id).sort(),
+        ])
+      : JSON.stringify([
+          cause,
+          shipment,
+          c.comparison?.meaning ?? c.category,
+          entities.length ? entities : [c.id],
+        ]);
     const previous = issues.get(key);
     if (previous) {
       previous.relatedCheckIds = [
@@ -74,8 +91,18 @@ export function reviewIssues(review: ShippingReview): ReviewIssue[] {
           ...(c.comparison?.relatedCheckIds ?? []),
         ]),
       ];
-      if (rank(c.assessment) < rank(previous.assessment))
+      if (rank(c.assessment) < rank(previous.assessment)) {
         previous.assessment = c.assessment;
+        previous.severity =
+          c.assessment === "confirmed_mismatch" ? "high" : "attention";
+      }
+      previous.documentIds = [
+        ...new Set([
+          ...previous.documentIds,
+          ...(c.documentIds ?? []),
+          ...c.fields.map((f) => f.documentId),
+        ]),
+      ];
       for (const f of c.fields)
         if (!previous.fields.some((v) => refKey32(v) === refKey32(f)))
           previous.fields.push(f);
@@ -89,7 +116,7 @@ export function reviewIssues(review: ShippingReview): ReviewIssue[] {
           ? "서류 간 참조 연결 확인"
           : (c.title ?? c.category),
         explanation: relationshipOnly
-          ? "같은 값이 기재되어 있지만 선적 참조가 충돌하여 확정 판정을 보류한 검사입니다. 연결 근거를 확인해 주세요."
+          ? "동일한 참조 연결 또는 신고 포함 범위에 의존하는 검사를 함께 표시합니다. 서로 다른 수치·품목의 오류는 별도 문제로 유지합니다. 관련 검사의 실제 값과 연결 근거를 확인해 주세요."
           : c.explanation,
         followUp: c.followUp,
         documentIds: [

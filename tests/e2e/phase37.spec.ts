@@ -110,3 +110,51 @@ for (const missing of [false, true])
       await expect(page.getByTestId("comparison-row")).not.toHaveCount(0);
     }
   });
+
+// Actual live failure reconstructed locally; this route is mocked, not a new paid extraction.
+test("PHASE37 Korean manifest misclassification recovers from the cited title and exposes initial AI history", async ({
+  page,
+}) => {
+  const { groundShipping } = await import("../../src/modules/shipping/ground");
+  const { fixtures } = await scenario37(development37[1]);
+  const wrong = structuredClone(fixtures[2].wire);
+  wrong.type = "house_bl";
+  const results = fixtures.map((f, i) => ({
+    pdf: f.pdf,
+    document: recoverNative(
+      i === 2 ? groundShipping(wrong, f.pdf, "house_manifest") : f.document,
+      f.pdf,
+    ),
+    uploadSlot: f.wire.type as "house_bl",
+    detectedType:
+      i === 2 ? ("house_manifest" as const) : f.document.detectedType,
+    typeMismatch: false,
+    error: null,
+  }));
+  await routeShipping(page, results, "3.7");
+  await page.goto("/");
+  for (const [i, t] of shippingTypes.entries())
+    await page
+      .getByLabel(shippingLabels[t].title + " PDF 파일 선택", { exact: true })
+      .setInputFiles({
+        name: fixtures[i].pdf.fileName,
+        mimeType: "application/pdf",
+        buffer: Buffer.from(fixtures[i].bytes),
+      });
+  await page.getByRole("checkbox").check();
+  await page
+    .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
+    .click();
+  await expect(page.getByTestId("normal-review-summary")).toBeVisible();
+  const doc = page.getByTestId("shipping-document").filter({
+    has: page.getByRole("heading", {
+      name: fixtures[2].pdf.fileName,
+      exact: true,
+    }),
+  });
+  await doc
+    .getByText("AI 추출값·원문 근거 확인 및 수정", { exact: true })
+    .click();
+  await expect(doc).toContainText("최초 AI 유형: House B/L");
+  await expect(doc).toContainText("현재 유형: House 적하목록");
+});

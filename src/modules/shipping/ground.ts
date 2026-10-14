@@ -18,7 +18,11 @@ import {
   type ShippingDocument,
   type ShippingField,
 } from "./schema";
-import { verifyShippingField, verifyClassification } from "./verify";
+import {
+  verifyShippingField,
+  verifyClassification,
+  recoverCitedClassification,
+} from "./verify";
 import type { PdfDocument } from "../documents/schema";
 import type { EntityScope } from "../layout/shipping-cells";
 export function groundShipping(
@@ -27,12 +31,16 @@ export function groundShipping(
   slot: ShippingType,
 ): ShippingDocument {
   const wire = shippingWireSchema.parse(raw);
-  const classification = verifyClassification(
-    wire.type,
-    wire.typeEvidence,
+  const classification = recoverCitedClassification(
+    verifyClassification(wire.type, wire.typeEvidence, pdf),
     pdf,
   );
-  const type = wire.type === "unknown" ? null : wire.type;
+  const type =
+    classification.current.status === "verified"
+      ? (classification.current.value as ShippingType)
+      : wire.type === "unknown"
+        ? null
+        : wire.type;
   const doc = createShippingDocument(pdf, slot);
   const nativeText = pdf.pages
     .filter((p) => p.textSource !== "ocr")
@@ -57,7 +65,7 @@ export function groundShipping(
   doc.detectedType = type;
   doc.classification = classification;
   doc.classificationStatus =
-    classification.original.status === "verified"
+    classification.current.status === "verified"
       ? "classified"
       : "needs_review";
   const keys: readonly string[] = type

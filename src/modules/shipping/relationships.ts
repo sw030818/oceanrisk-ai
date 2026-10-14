@@ -197,6 +197,14 @@ export function relateShipping(
         ),
         status,
         scope,
+        mappingWarnings: declarationMappingMissing
+          ? [
+              {
+                role: "declarationNumber",
+                code: "DECLARATION_MEMBERSHIP_UNRESOLVED",
+              },
+            ]
+          : [],
         sharedRoles: shared.sort(),
         conflictRoles: conflicts.sort(),
         evidence: evidence.sort((a, b) =>

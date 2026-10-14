@@ -1938,7 +1938,7 @@
       "faultDetected": true,
       "confirmedFaultDetected": null,
       "provisional": 0,
-      "independentIssues": 4,
+      "independentIssues": 2,
       "requiredMissing": 0,
       "aggregation": [],
       "primary": [
@@ -2063,7 +2063,7 @@
       "faultDetected": true,
       "confirmedFaultDetected": null,
       "provisional": 26,
-      "independentIssues": 26,
+      "independentIssues": 2,
       "requiredMissing": 0,
       "aggregation": [],
       "primary": [
@@ -3856,9 +3856,9 @@
         }
       ],
       "gold": {
-        "goldFields": 102,
-        "extractedCorrect": 102,
-        "verifiedCorrect": 102,
+        "goldFields": 100,
+        "extractedCorrect": 100,
+        "verifiedCorrect": 100,
         "extractionRecall": 1,
         "verifiedGoldRecall": 1
       }
@@ -5118,6 +5118,6 @@
       }
     }
   ],
-  "sourceSha": "PHASE37 staged source (exact Production SHA recorded in live evidence)",
-  "fixtureVersion": "phase37-v2 (same synthetic PDF bytes, fixed before live evaluation)"
+  "sourceSha": "PHASE37 staged correction; exact SHA in live evidence",
+  "fixtureVersion": "phase37-v2: identical PDF bytes, fixed before live evaluation"
 }

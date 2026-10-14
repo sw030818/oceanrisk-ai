@@ -5272,5 +5272,5 @@
     }
   ],
   "sourceSha": "fd6fa5217da7a872ebeda8a66ba3de9e823689ee",
-  "fixtureVersion": "phase37-v2 (same synthetic PDF bytes, fixed before live evaluation)"
+  "fixtureVersion": "phase37-v2: identical PDF bytes, fixed before live evaluation"
 }

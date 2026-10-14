@@ -1073,13 +1073,16 @@ export function reviewShipping(
             ...(documents.some(
               (d) =>
                 d.id !== bl.id &&
+                d.classificationStatus === "classified" &&
                 d.detectedType === "house_bl" &&
-                identifiers32(d, "houseBlNumber").some(
-                  (f) =>
-                    blid &&
-                    text32(f.field.current.value) ===
-                      text32(blid.field.current.value),
-                ),
+                identifiers32(d, "houseBlNumber")
+                  .filter(verified32)
+                  .some(
+                    (f) =>
+                      blid &&
+                      text32(f.field.current.value) ===
+                        text32(blid.field.current.value),
+                  ),
             )
               ? [
                   "같은 HBL의 복수 원본/버전이 있어 해당 합계의 전체 범위를 확인해야 합니다.",
@@ -1252,6 +1255,7 @@ export function reviewShipping(
         const duplicateDeclarations =
           documents.filter(
             (d) =>
+              d.classificationStatus === "classified" &&
               d.detectedType === "export_declaration" &&
               identifiers32(d, "houseBlNumber").some(
                 (f) =>

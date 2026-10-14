@@ -469,7 +469,7 @@ function titleType(text: string) {
   const korean = t.replace(/(?<=[가-힣])\s+(?=[가-힣])/g, "");
   if (
     /^(?:house\s+b\/?l|house bill of lading|house\s*선하증권|하우스\s*선하증권|h\.?b\.?l\.?)\s*(?:draft|초안)?$/.test(
-      t,
+      korean,
     )
   )
     return "house_bl" as const;
@@ -480,8 +480,8 @@ function titleType(text: string) {
   )
     return "export_declaration" as const;
   if (
-    /^(?:house manifest|house cargo manifest|house 적하목록|적하목록 신고 예정자료)$/.test(
-      t,
+    /^(?:house manifest|house cargo manifest|(?:house|하우스)\s*적하목록|적하목록 신고 예정자료)$/.test(
+      korean,
     )
   )
     return "house_manifest" as const;
@@ -643,4 +643,67 @@ export function verifyClassification(
         : "유형 후보는 있으나 실제 제목/발행 문맥 근거를 확인하지 못했습니다. 선택 영역은 유형 근거가 아닙니다.",
   };
   return { original: field, current: structuredClone(field) };
+}
+
+// Repair only a contradictory TYPE on an already cited, explicit native title.
+// Missing/fabricated citations, unknown candidates, OCR, generic/master titles
+// and mixed supported titles remain unverified. Never consult upload slots.
+export function recoverCitedClassification(
+  input: ShippingField,
+  pdf: PdfDocument,
+): ShippingField {
+  const original = input.original,
+    source = original.source;
+  if (
+    original.status === "verified" ||
+    original.value === "unknown" ||
+    original.verificationCode !== "context_unverified" ||
+    !source?.segments?.length
+  )
+    return input;
+  const page = pdf.pages.find((p) => p.page === source.page);
+  if (!page || page.textSource === "ocr") return input;
+  const all = pdf.pages.flatMap((p) =>
+    titleCandidates(p).map((g) => ({
+      p,
+      g,
+      text: g.map((b) => b.text).join(" "),
+    })),
+  );
+  const known = new Set(all.map((t) => titleType(t.text)).filter(Boolean));
+  if (
+    known.size !== 1 ||
+    all.some((t) =>
+      /^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(t.text.trim()),
+    )
+  )
+    return input;
+  const title = all.find(
+    (t) =>
+      t.p === page &&
+      titleType(t.text) &&
+      t.g.every((b) => source.segments!.some((s) => s.blockId === b.id)),
+  );
+  if (!title) return input;
+  const type = titleType(title.text)!;
+  if (type === original.value) return input;
+  const tested = verifyClassification(
+    type,
+    { page: page.page, blockIds: title.g.map((b) => b.id) },
+    pdf,
+  );
+  if (tested.current.status !== "verified") return input;
+  tested.current.source!.provenance = "pdf_text";
+  tested.current.reason =
+    "인용된 실제 제목의 명시적 유형과 AI 유형 후보가 충돌해, 원문 제목으로 독립 복구했습니다. 최초 AI 후보는 보존합니다.";
+  return {
+    ...input,
+    current: structuredClone(tested.current),
+    recovery: {
+      method: "native",
+      field: structuredClone(tested.current),
+      target: "documentType",
+      failureCode: "WRONG_FIELD_ASSIGNMENT",
+    },
+  };
 }

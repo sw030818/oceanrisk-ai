@@ -54,6 +54,13 @@ for (const s of selected) {
   const metrics = measure37(s, docs);
   const row = {
     ...metrics,
+    classification: docs.map((d) => ({
+      expected: fixtures.find((f) => f.pdf.id === d.id)!.wire.type,
+      aiType: d.classification?.original.value,
+      aiEvidenceVerified: d.classification?.original.status === "verified",
+      finalType: d.detectedType,
+      nativeRecovered: d.classification?.recovery?.method === "native",
+    })),
     gold: goldCoverage37(
       fixtures.map((f) => recoverNative(f.goldDocument, f.pdf)),
       docs,

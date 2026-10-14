@@ -74,6 +74,7 @@ export function declarationGroupChecks(
       docs.some(
         (d) =>
           d.id !== bl.id &&
+          d.classificationStatus === "classified" &&
           d.detectedType === "house_bl" &&
           identifiers32(d, "houseBlNumber")
             .filter(verified32)

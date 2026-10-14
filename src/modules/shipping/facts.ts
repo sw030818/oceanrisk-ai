@@ -224,14 +224,21 @@ export function resolveHblFact(
     doc.detectedType === "export_declaration" &&
     hbl &&
     documents.filter(
-      (d) => d.detectedType === "export_declaration" && factHbl(d) === hbl,
+      (d) =>
+        d.classificationStatus === "classified" &&
+        d.detectedType === "export_declaration" &&
+        factHbl(d) === hbl,
     ).length > 1
   )
     reasons.push("DECLARATION_SCOPE_UNRESOLVED");
   if (
     hbl &&
-    documents.filter((d) => d.detectedType === "house_bl" && factHbl(d) === hbl)
-      .length > 1
+    documents.filter(
+      (d) =>
+        d.classificationStatus === "classified" &&
+        d.detectedType === "house_bl" &&
+        factHbl(d) === hbl,
+    ).length > 1
   )
     reasons.push("DUPLICATE_CARGO");
   const numericFields = [

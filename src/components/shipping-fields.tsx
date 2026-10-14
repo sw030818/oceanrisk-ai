@@ -26,6 +26,10 @@ export function ShippingFields({
     doc.fieldType === null
       ? "분류 미확인 문서"
       : shippingLabels[doc.fieldType ?? doc.uploadType].title;
+  const typeLabel = (v: unknown) =>
+    typeof v === "string" && v in shippingLabels
+      ? shippingLabels[v as keyof typeof shippingLabels].title
+      : "미확인";
   function restore() {
     onUpdate({
       ...doc,
@@ -161,6 +165,14 @@ export function ShippingFields({
         >
           문서 분류의 원문 근거 보기
         </button>
+      )}
+      {doc.classification?.recovery && (
+        <p className="mt-2 text-xs text-blue-800">
+          문서 유형은 인용된 실제 제목으로 독립 복구했습니다. 최초 AI 유형:{" "}
+          {typeLabel(doc.classification.original.value)} · 현재 유형:{" "}
+          {typeLabel(doc.classification.current.value)}. 최초 후보는 이력으로
+          보존됩니다.
+        </p>
       )}
       {doc.informationWarnings.length > 0 && (
         <ul className="mt-4 rounded-lg bg-amber-50 p-4 text-xs leading-6 text-amber-800">

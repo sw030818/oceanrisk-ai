@@ -229,7 +229,6 @@ export function goldCoverage37(
             r.role,
             r.field.current.value,
             r.field.current.source?.page,
-            r.field.current.source?.layout,
             r.field.current.source?.segments?.map((s) => s.blockId),
           ]),
           r,

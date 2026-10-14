@@ -279,7 +279,11 @@ export function withFactReview(
       if (group.length < 2) continue;
       const declarationSubset =
         group.some((d) => d.detectedType === "export_declaration") &&
-        (ds.filter((d) => d.detectedType === "export_declaration").length > 1 ||
+        (ds.filter(
+          (d) =>
+            d.classificationStatus === "classified" &&
+            d.detectedType === "export_declaration",
+        ).length > 1 ||
           group.some(
             (d) =>
               d.detectedType !== "export_declaration" &&

@@ -11,6 +11,10 @@ export type ShippingAssessment =
 export type ShippingRelationship = z.infer<
   typeof shipmentRelationshipSchema
 > & {
+  mappingWarnings?: {
+    role: "declarationNumber";
+    code: "DECLARATION_MEMBERSHIP_UNRESOLVED";
+  }[];
   sharedRoles: string[];
   conflictRoles: string[];
   evidence: ShippingCheck["fields"];
