@@ -38,5 +38,6 @@ export function safeShippingDiagnostics(
     ),
     outcomes: review.outcomes ?? null,
     originalChecks: review.checks.length,
+    recovery: documents.map((d) => d.recoverySummary ?? null),
   };
 }

@@ -5,6 +5,8 @@ import { createShippingDocument, type ShippingDocument } from "./schema";
 import type { ShippingType } from "./catalog";
 export interface ShippingResult {
   aiUsage?: AIUsage;
+  recoveryUsage?: AIUsage;
+  recoveryRequests?: 0 | 1;
   aiModel?: string;
   ocrUsage?: AIUsage;
   ocrPages?: number[];

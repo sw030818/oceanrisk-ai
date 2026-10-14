@@ -79,31 +79,62 @@ export function ShippingFields({
   ) => (
     <div key={label} className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
       {Object.entries(fields).map(([key, f]) => (
-        <EditableField
-          key={key}
-          label={`${label} · ${shippingFieldLabels[key as keyof typeof shippingFieldLabels] ?? (key === "weightUnit" ? "중량 단위" : key)}`}
-          field={f.current}
-          numeric={
-            typeof f.original.value === "number" ||
-            [
-              "quantity",
-              "packageCount",
-              "grossWeight",
-              "netWeight",
-              "declaredWeight",
-            ].includes(key)
-          }
-          missingLabel={
-            doc.extractionStatus === "not_performed" ? "AI 미추출" : undefined
-          }
-          onChange={(value) => update(key, editShippingField(f, value))}
-          onEvidence={() =>
-            onEvidence(
-              f.current,
-              `${label} · ${shippingFieldLabels[key as keyof typeof shippingFieldLabels] ?? (key === "weightUnit" ? "중량 단위" : key)}`,
-            )
-          }
-        />
+        <div key={key}>
+          <EditableField
+            key={key}
+            label={`${label} · ${shippingFieldLabels[key as keyof typeof shippingFieldLabels] ?? (key === "weightUnit" ? "중량 단위" : key)}`}
+            field={f.current}
+            numeric={
+              typeof f.original.value === "number" ||
+              [
+                "quantity",
+                "packageCount",
+                "grossWeight",
+                "netWeight",
+                "declaredWeight",
+              ].includes(key)
+            }
+            missingLabel={
+              doc.extractionStatus === "not_performed" ? "AI 미추출" : undefined
+            }
+            onChange={(value) => update(key, editShippingField(f, value))}
+            onEvidence={() =>
+              onEvidence(
+                f.current,
+                `${label} · ${shippingFieldLabels[key as keyof typeof shippingFieldLabels] ?? (key === "weightUnit" ? "중량 단위" : key)}`,
+              )
+            }
+          />
+          {f.recovery && (
+            <details
+              className="mt-2 text-[10px] leading-5 text-slate-500"
+              data-testid="recovery-history"
+            >
+              <summary className="cursor-pointer font-medium">
+                {f.recovery.method === "native"
+                  ? "PDF 구조에서 자동 복구"
+                  : "선택적 AI 후보 재검증"}{" "}
+                · 최초 AI 이력
+              </summary>
+              <p>
+                최초 AI 후보: {f.original.value ?? "미추출"} ·{" "}
+                {f.original.status} · {f.original.verificationCode}
+              </p>
+              <p>복구 사유: {f.recovery.failureCode} · 원문 재검증 완료</p>
+              {f.original.source && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    onEvidence(f.original, "최초 AI 인용 · 검증 전 후보")
+                  }
+                  className="text-blue-700"
+                >
+                  최초 AI 근거 보기
+                </button>
+              )}
+            </details>
+          )}
+        </div>
       ))}
     </div>
   );
@@ -138,6 +169,19 @@ export function ShippingFields({
           ))}
         </ul>
       )}
+      {doc.recoverySummary &&
+        doc.recoverySummary.nativeApplied + doc.recoverySummary.aiApplied >
+          0 && (
+          <p
+            className="mt-3 rounded-lg bg-blue-50 p-3 text-xs leading-6 text-blue-800"
+            data-testid="recovery-summary"
+          >
+            원문 재검증 후 자동 복구: PDF 구조{" "}
+            {doc.recoverySummary.nativeApplied}개 · 선택적 AI{" "}
+            {doc.recoverySummary.aiApplied}개. 최초 AI 추출값과 자동 복구값은
+            별도 이력으로 보존합니다.
+          </p>
+        )}
       {group(title, doc.fields, (key, field) =>
         onUpdate({ ...doc, fields: { ...doc.fields, [key]: field } }),
       )}
@@ -260,7 +304,12 @@ export function ShippingFields({
       >
         {doc.extractionStatus === "not_performed"
           ? "사용자 입력 초기화"
-          : "원래 AI 추출값 복원"}
+          : doc.recoverySummary &&
+              doc.recoverySummary.nativeApplied +
+                doc.recoverySummary.aiApplied >
+                0
+            ? "검증된 복구값 복원"
+            : "원래 AI 추출값 복원"}
       </button>
     </details>
   );

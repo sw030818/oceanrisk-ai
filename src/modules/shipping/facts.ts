@@ -101,7 +101,7 @@ export const factHbl = (doc: ShippingDocument) => {
   return ids.length === 1 ? ids[0] : null;
 };
 const rowKey = (f: FieldRef) => {
-  const s = f.field.original.source;
+  const s = f.field.current.source;
   return s?.layout ? `${s.page}/${s.layout.tableId}/${s.layout.rowId}` : null;
 };
 function normalized(ref: FieldRef | undefined, meaning: NumericMeaning) {
@@ -312,10 +312,10 @@ export function resolveHblFact(
     [root, unit].every(
       (f) =>
         verified32(f) &&
-        (f.field.original.source?.scopeBasis === "document_field" ||
-          (f.field.original.source?.provenance === "pdf_text" &&
-            !f.field.original.source?.layout &&
-            !!f.field.original.source?.semanticRole)),
+        (f.field.current.source?.scopeBasis === "document_field" ||
+          (f.field.current.source?.provenance === "pdf_text" &&
+            !f.field.current.source?.layout &&
+            !!f.field.current.source?.semanticRole)),
     );
   // A document containing several HBLs cannot lend its document total to one HBL.
   if (!ignoreRoot && !childEdited && rootNative && hbl && uniqueHbl === hbl) {

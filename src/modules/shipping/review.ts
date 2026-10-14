@@ -293,7 +293,7 @@ export function reviewShipping(
             !v.itemId &&
             !v.cargoId &&
             !v.containerId &&
-            v.field.original.source?.scopeBasis === "document_field",
+            v.field.current.source?.scopeBasis === "document_field",
         ) &&
         fs.every(verified32) &&
         values.every((v) => {
@@ -615,8 +615,8 @@ export function reviewShipping(
         f = item.fields[name];
       if (
         !f ||
-        f.original.status !== "verified" ||
-        f.original.source?.scopeBasis !== "entity_row"
+        f.current.status !== "verified" ||
+        f.current.source?.scopeBasis !== "entity_row"
       )
         return undefined;
       return ref32(d, name, f, { itemId: item.id });
@@ -1306,24 +1306,27 @@ export function reviewShipping(
     pairChecks: checks.filter((c) => c.scope !== "triangle").length,
     triangleChecks: checks.filter((c) => c.scope === "triangle").length,
   };
-  return withFactReview({
-    status: checks.length
-      ? checks.every((c) => c.assessment === "confirmed_match")
-        ? "complete"
-        : "needs_review"
-      : "not_performed",
-    checks,
-    relationships,
-    pairStatus: relationships.length ? "performed" : "not_performed",
-    triangleStatus,
-    summary,
-    reason:
-      documents.length < 2
-        ? "분석된 대상 서류가 부족합니다."
-        : triangleStatus === "performed"
-          ? "검증된 공통 연결 범위에 한해 삼각대조를 실행했습니다."
-          : triangleStatus === "insufficient_documents"
-            ? "2종 양자대조를 실행합니다. 삼각대조 대상 3종은 부족합니다."
-            : "3종 문서가 있지만 공통 HBL과 모든 양자 연결의 근거를 확정하지 못해 삼각대조를 보류했습니다.",
-  }, documents);
+  return withFactReview(
+    {
+      status: checks.length
+        ? checks.every((c) => c.assessment === "confirmed_match")
+          ? "complete"
+          : "needs_review"
+        : "not_performed",
+      checks,
+      relationships,
+      pairStatus: relationships.length ? "performed" : "not_performed",
+      triangleStatus,
+      summary,
+      reason:
+        documents.length < 2
+          ? "분석된 대상 서류가 부족합니다."
+          : triangleStatus === "performed"
+            ? "검증된 공통 연결 범위에 한해 삼각대조를 실행했습니다."
+            : triangleStatus === "insufficient_documents"
+              ? "2종 양자대조를 실행합니다. 삼각대조 대상 3종은 부족합니다."
+              : "3종 문서가 있지만 공통 HBL과 모든 양자 연결의 근거를 확정하지 못해 삼각대조를 보류했습니다.",
+    },
+    documents,
+  );
 }

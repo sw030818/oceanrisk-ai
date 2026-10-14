@@ -73,8 +73,45 @@ const groundedSchema = z.object({
 // Original extraction and editable current state remain separate. A correction
 // can never masquerade as a verified AI extraction.
 export const shippingFieldSchema = z
-  .object({ original: groundedSchema, current: groundedSchema })
+  .object({
+    original: groundedSchema,
+    current: groundedSchema,
+    recovery: z
+      .object({
+        method: z.enum(["native", "targeted_ai"]),
+        field: groundedSchema,
+        failureCode: z.enum([
+          "MISSING_EXTRACTION",
+          "WRONG_FIELD_ASSIGNMENT",
+          "WRONG_ENTITY_ASSIGNMENT",
+          "INVALID_CITATION",
+          "NORMALIZED_VALUE_AS_LITERAL",
+          "TRUE_VALUE_MISMATCH",
+          "AMBIGUOUS_SOURCE",
+          "OCR_UNVERIFIED",
+          "SOURCE_NOT_PRESENT",
+          "NOT_APPLICABLE",
+        ]),
+        target: z.string().max(200),
+      })
+      .optional(),
+  })
   .superRefine((field, ctx) => {
+    const recovered = field.recovery?.field;
+    if (
+      recovered &&
+      (field.original.status === "verified" ||
+        recovered.status !== "verified" ||
+        recovered.source?.provenance !== "pdf_text" ||
+        !recovered.source ||
+        recovered.value === null)
+    )
+      ctx.addIssue({
+        code: "custom",
+        message:
+          "Recovery must preserve verified originals and independently verified native evidence",
+      });
+    const proof = recovered ?? field.original;
     if (field.original.status === "user_edited")
       ctx.addIssue({
         code: "custom",
@@ -82,7 +119,7 @@ export const shippingFieldSchema = z
       });
     if (
       field.current.status === "verified" &&
-      JSON.stringify(field.current) !== JSON.stringify(field.original)
+      JSON.stringify(field.current) !== JSON.stringify(proof)
     )
       ctx.addIssue({
         code: "custom",
@@ -90,19 +127,28 @@ export const shippingFieldSchema = z
       });
     if (
       field.current.value !== field.original.value &&
-      field.current.status !== "user_edited"
+      field.current.status !== "user_edited" &&
+      JSON.stringify(field.current) !== JSON.stringify(recovered)
     )
       ctx.addIssue({
         code: "custom",
         message: "A changed value must preserve user correction provenance",
       });
-    for (const part of [field.original, field.current])
+    for (const part of [
+      field.original,
+      field.current,
+      ...(recovered ? [recovered] : []),
+    ])
       if (part.status === "verified" && part.source?.provenance === "ocr")
         ctx.addIssue({
           code: "custom",
           message: "OCR is not independently verified native PDF text",
         });
-    for (const part of [field.original, field.current])
+    for (const part of [
+      field.original,
+      field.current,
+      ...(field.recovery ? [field.recovery.field] : []),
+    ])
       if (part.status === "verified" && (!part.source || part.value === null))
         ctx.addIssue({
           code: "custom",
@@ -113,7 +159,11 @@ export type ShippingField = z.infer<typeof shippingFieldSchema>;
 const semanticField = (key: string) =>
   shippingFieldSchema.superRefine((field, ctx) => {
     const numeric = numericShippingFields.has(key as ShippingFieldKey);
-    for (const part of [field.original, field.current])
+    for (const part of [
+      field.original,
+      field.current,
+      ...(field.recovery ? [field.recovery.field] : []),
+    ])
       if (
         part.value !== null &&
         typeof part.value !== (numeric ? "number" : "string")
@@ -167,6 +217,18 @@ export const shipmentReferenceSchema = z.object({
   number: semanticField("referenceNumber"),
 });
 const common = {
+  recoverySummary: z
+    .object({
+      targets: z.number().int().nonnegative(),
+      nativeApplied: z.number().int().nonnegative(),
+      aiApplied: z.number().int().nonnegative(),
+      unresolved: z.number().int().nonnegative(),
+      nativeDurationMs: z.number().nonnegative(),
+      failures: z.record(z.string(), z.number().int().nonnegative()),
+      extraRequests: z.number().int().min(0).max(1),
+      deferred: z.boolean(),
+    })
+    .optional(),
   id: z.string().min(1),
   fileName: z.string().min(1),
   detectedType: shippingTypeSchema.nullable(),

@@ -93,3 +93,12 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 원본/사용자수정/derived Fact를분리한다. 전체 native행커버리지·검증HBL·유일한독립행/단위/중복·부분/공동포장보호가있을때만HBL기재화물범위를연결/집계한다. 전량무역계약이행과기재화물정합성은다르다. AI배열길이만으로전체화물이라고추정하지않는다.
 - 원본checks/근거진단은보존하고 primaryChecks·원인코드·독립outcomes로중복판정과적용불가를분리한다. 미확인인용/OCR/수정값은verified로승격하지않는다. UI는기존B+A유지하며판정데이터/문구만연결한다.
 - test:phase35:production은새상한을명시하고원본3세트반복·독립오류/범위/복잡사례를검사한다. 무료실제응답재생과새유료성공을구분한다. 정상ship/Actions/Production 동일SHA와별도증거브랜치기록을유지한다.
+
+## PHASE 3.6 — 추출·근거 복구
+- original/최초 검증을 보존하고 native/targeted_ai 복구를 별도 recovery 이력으로 기록한다. 사용자 수정값/최초 verified 값은 덮어쓰지 않는다. current는 독립 재검증한 복구값 또는 사용자 수정값이다.
+- native 행/열/라벨·소유 품목/컨테이너/HBL·페이지·단위를 확인한다. 다른 서류 다수결/전역 숫자 검색/품목으로 합계 복사/OCR 승격 금지. 선택적 AI는 후보 제공만 한다.
+- 일반 Production 추가 AI는 SHIPPING_TARGETED_RECOVERY_ENABLED=false가 기본이다. 명시적 /api/recover는 원문 소유권을 검증한 제한된 후보만 반환한다. 문서당 추가1회·자동 재시도0·남은 전체105초 예산 내에만 처리하며 실패 시 성공한 최초/native 결과를 유지한다.
+- 이번 사용자 새 승인은 $0.50/최대60문서시도/75공급자 요청이다. live-phase36 및 validation/phase36-evidence를 사용하고 이전 ledger는 변경하지 않는다. 추가 요청/출력1536 상한을 호출 전에 예약하고 미확인 usage는 유지한다. 명시적으로 미실행된 추가 요청만 해제한다.
+- test:phase36:production -- --sha=<exactSHA> --stage=normal|recovery|mismatch|complex|holdout --approved-documents=60 --approved-requests=75 --approved-max-cost-usd=0.50. normal은 비공개 원본과 별도 정답 경로, repeat=5; complex는 case로 사례를 지정한다. 무료 개발·전체 ship·Production SHA 확인 후에만 실행한다.
+- 최초AI/Native/선택AI A/B/C를 구분한다. 실제 정상 원본5회·독립오류/복잡선적/독립양식을 기록하고 미검증/보류를 숨기지 않는다. 선택적 AI 실효성이 불확실하면 자동 활성화하지 않는다.
+- 실제 검증 기록은 validation/phase36-evidence에 별도 정상 Commit/Push하고 코드SHA를 유지한다. 실제 문서/원문/원본응답/키는 공개 Git에 저장하지 않는다.

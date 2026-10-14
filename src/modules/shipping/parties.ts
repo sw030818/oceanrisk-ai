@@ -7,7 +7,7 @@ export function partyName32(f: FieldRef | undefined) {
   if (!f || !verified32(f) || typeof f.field.current.value !== "string")
     return null;
   const value = text32(f.field.current.value),
-    blocks = f.field.original.source?.blocks ?? [];
+    blocks = f.field.current.source?.blocks ?? [];
   const parts = blocks
     .map((b) => {
       let text = b.text;

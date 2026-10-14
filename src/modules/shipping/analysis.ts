@@ -1,3 +1,5 @@
+import { recoverNative } from "./recovery";
+import { recoverTargeted } from "./targeted-recovery";
 import { prepareShippingFile, type ShippingResult } from "./prepare";
 import { extractShippingWithOpenAI } from "./openai";
 import { groundShipping } from "./ground";
@@ -17,11 +19,14 @@ export async function analyzeShippingFile(
     allowOCR?: boolean;
     ocr?: typeof ocrPdfPages;
     prepared?: ShippingResult;
+    recovery?: boolean;
+    recoveryDeadline?: number;
   } = {},
 ): Promise<ShippingResult> {
   const result =
     options.prepared ??
     (await prepareShippingFile(file, slot, options.signal, options.documentId));
+  result.recoveryRequests = 0;
   if (result.error) return result;
   if (options.skipAI)
     return {
@@ -83,7 +88,21 @@ export async function analyzeShippingFile(
           },
         }))
     )(result.pdf);
-    const doc = groundShipping(wire, result.pdf, slot);
+    let doc = groundShipping(wire, result.pdf, slot);
+    if (options.recovery !== false) {
+      doc = recoverNative(doc, result.pdf);
+      if (process.env.SHIPPING_TARGETED_RECOVERY_ENABLED === "true") {
+        const recovered = await recoverTargeted(doc, result.pdf, {
+          signal: options.signal,
+          deadline: options.recoveryDeadline,
+          onRequest: () => {
+            result.recoveryRequests = 1;
+          },
+        });
+        doc = recovered.document;
+        result.recoveryUsage = recovered.usage;
+      }
+    }
     if (result.ocrPages?.length || result.pdf.pages.some((p) => p.ocrStatus)) {
       doc.extractionStatus = "partial";
       doc.informationWarnings.push(

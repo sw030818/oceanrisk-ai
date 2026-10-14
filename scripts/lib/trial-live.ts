@@ -23,6 +23,7 @@ export interface TrialPolicy {
   cost: number;
   phases: string[];
   name: string;
+  reserveRecovery?: boolean;
 }
 export interface TrialBudget extends TestBudget {
   requests: number;
@@ -53,15 +54,10 @@ export function reserveTrial(
   b.requests += requests;
   b.unresolvedCostUpperUsd += costs.reduce((a, n) => a + n, 0);
 }
-export async function paidTrial(
+export async function withTrialBudget<T>(
   policy: TrialPolicy,
-  sha: string,
-  stage: string,
-  fixtures: Pick<Fixture32, "bytes" | "pdf" | "wire">[],
-  ocr = false,
-) {
-  if (!/^[a-f0-9]{40}$/.test(sha) || !/^[a-z0-9-]+$/.test(stage))
-    throw new Error("Invalid source or safe stage ID");
+  run: (budget: TrialBudget, save: () => Promise<void>) => Promise<T>,
+): Promise<T> {
   await mkdir(policy.directory, { recursive: true });
   const lock = openSync(policy.directory + "/run.lock", "wx");
   try {
@@ -136,6 +132,32 @@ export async function paidTrial(
       )
     )
       throw new Error("Invalid trial ledger");
+    const save = async () => {
+      await writeFile(
+        policy.directory + "/ledger.tmp",
+        JSON.stringify(budget, null, 2),
+      );
+      await rename(
+        policy.directory + "/ledger.tmp",
+        policy.directory + "/ledger.json",
+      );
+    };
+    return await run(budget, save);
+  } finally {
+    closeSync(lock);
+    unlinkSync(policy.directory + "/run.lock");
+  }
+}
+export async function paidTrial(
+  policy: TrialPolicy,
+  sha: string,
+  stage: string,
+  fixtures: Pick<Fixture32, "bytes" | "pdf" | "wire">[],
+  ocr = false,
+) {
+  if (!/^[a-f0-9]{40}$/.test(sha) || !/^[a-z0-9-]+$/.test(stage))
+    throw new Error("Invalid source or safe stage ID");
+  return withTrialBudget(policy, async (budget, save) => {
     const base = "https://oceanrisk-ai.vercel.app";
     async function status() {
       const s = await (
@@ -158,16 +180,6 @@ export async function paidTrial(
         }),
       })),
     );
-    const save = async () => {
-      await writeFile(
-        policy.directory + "/ledger.tmp",
-        JSON.stringify(budget, null, 2),
-      );
-      await rename(
-        policy.directory + "/ledger.tmp",
-        policy.directory + "/ledger.json",
-      );
-    };
     let batchRequests = 0;
     const batchDurationsMs: number[] = [];
     for (const batch of batches) {
@@ -186,6 +198,16 @@ export async function paidTrial(
               8192,
             ),
       );
+      const extraCosts = fs.map((f) =>
+        policy.reserveRecovery
+          ? requestUpperCost(
+              Buffer.byteLength(
+                JSON.stringify(shippingOpenAIRequest(f.pdf, "gpt-6-luna")),
+              ) + 16384,
+              1536,
+            )
+          : 0,
+      );
       if (
         ocr &&
         (fs.length !== 1 ||
@@ -193,15 +215,20 @@ export async function paidTrial(
           fs[0].bytes.length > 1024 * 1024)
       )
         throw new Error("OCR_EVALUATION_BOUND");
-      reserveTrial(policy, budget, costs, fs.length * (ocr ? 2 : 1));
+      reserveTrial(
+        policy,
+        budget,
+        costs.map((n, i) => n + extraCosts[i]),
+        fs.length * (ocr || policy.reserveRecovery ? 2 : 1),
+      );
       await save();
       console.log(
         JSON.stringify({
           stage,
           sourceSha: sha,
           reservedDocuments: fs.length,
-          reservedRequests: fs.length * (ocr ? 2 : 1),
-          reservedUpperUsd: costs.reduce((a, n) => a + n, 0),
+          reservedRequests: fs.length * (ocr || policy.reserveRecovery ? 2 : 1),
+          reservedUpperUsd: costs.reduce((a, n, i) => a + n + extraCosts[i], 0),
           budget,
           automaticRetries: 0,
         }),
@@ -236,6 +263,19 @@ export async function paidTrial(
         /* unknown usage retains reservation, no automatic retry */
       }
       results.forEach((r, i) => {
+        if (policy.reserveRecovery) {
+          if (r.recoveryRequests === 0) {
+            // Explicitly unissued request: release only its own reservation.
+            budget.requests--;
+            reconcileTestBudget(budget, extraCosts[i], 0);
+          } else {
+            reconcileTestBudget(
+              budget,
+              extraCosts[i],
+              r.recoveryUsage?.estimatedCostUsd ?? null,
+            );
+          }
+        }
         const measured = r.aiUsage?.estimatedCostUsd;
         const vision = r.ocrUsage?.estimatedCostUsd;
         reconcileTestBudget(
@@ -261,8 +301,5 @@ export async function paidTrial(
       sourceSha: sha,
       sourceShaStable: true,
     };
-  } finally {
-    closeSync(lock);
-    unlinkSync(policy.directory + "/run.lock");
-  }
+  });
 }

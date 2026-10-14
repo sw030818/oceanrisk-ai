@@ -32,6 +32,7 @@ export async function fixture35(
     declarationRefs?: string[];
     scope?: string;
     notice?: string;
+    ports?: { loading?: string; discharge?: string };
     rows?: Row35[];
     containers?: Row35[];
     cargos?: Row35[];
@@ -89,8 +90,16 @@ export async function fixture35(
   root("houseBlNumber", "House B/L No", hbl);
   root("shipper", "Shipper", "SYNTHETIC EXPORTER LTD.");
   root("consignee", "Consignee", "SYNTHETIC RECEIVER LTD.");
-  root("portOfLoading", "Port of Loading", "BUSAN, KOREA");
-  root("portOfDischarge", "Port of Discharge", "LOS ANGELES, USA");
+  root(
+    "portOfLoading",
+    "Port of Loading",
+    options.ports?.loading ?? "BUSAN, KOREA",
+  );
+  root(
+    "portOfDischarge",
+    "Port of Discharge",
+    options.ports?.discharge ?? "LOS ANGELES, USA",
+  );
   if (type === "export_declaration") {
     root(
       "declarationNumber",

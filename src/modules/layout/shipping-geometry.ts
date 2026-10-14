@@ -14,6 +14,21 @@ export function nativeCell(page: PdfPage, b: PdfBlock) {
     ?.filter((c) => inside(c, b))
     .sort((a, b) => a.width * a.height - b.width * b.height)[0];
 }
+export function packageGoodsContext(page: PdfPage, b: PdfBlock) {
+  const cell = nativeCell(page, b);
+  if (!cell) return false;
+  const rows = new Map<number, string[]>();
+  for (const v of body(page, cell)) {
+    const xs = rows.get(v.row) ?? [];
+    xs.push(v.text);
+    rows.set(v.row, xs);
+  }
+  const atoms = [...rows.values()].flatMap((xs) => countAtoms(xs.join(" ")));
+  return (
+    atoms.some((a) => a.role === "packageCount") &&
+    atoms.some((a) => a.role === "quantity")
+  );
+}
 const body = (p: PdfPage, c: PdfCell) =>
   (p.blocks ?? [])
     .filter((b) => inside(c, b))
@@ -77,6 +92,7 @@ export function geometricRole(page: PdfPage, b: PdfBlock): string | null {
   ) {
     if (
       heading.role === "packageCount" &&
+      packageGoodsContext(page, b) &&
       /\b(?:PCS|EA|PIECES?)\)?\s*$/i.test(
         body(page, cell)
           .filter((v) => v.row === b.row)

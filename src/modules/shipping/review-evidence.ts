@@ -2,6 +2,7 @@ import { normalizeText } from "../evidence/verify";
 import { canonicalUnit, packageUnit } from "../documents/units";
 import type { ShippingDocument, ShippingField } from "./schema";
 import type { ShippingCheck } from "./review-model";
+import { independentlyVerified } from "./effective";
 export type FieldRef = ShippingCheck["fields"][number];
 export const key32 = (doc: string, kind: string, id: string) =>
   [doc, kind, id].map(encodeURIComponent).join("/");
@@ -28,12 +29,8 @@ export const has32 = (f: ShippingField | undefined) =>
   f?.current.value !== undefined &&
   f.current.value !== "";
 export const verified32 = (r: FieldRef) =>
-  r.field.current.status === "verified" &&
-  r.field.original.status === "verified" &&
-  r.field.original.source?.provenance !== "ocr" &&
-  r.field.current.value !== null &&
-  r.field.original.source?.fileId === r.documentId &&
-  JSON.stringify(r.field.current) === JSON.stringify(r.field.original);
+  independentlyVerified(r.field) &&
+  r.field.current.source?.fileId === r.documentId;
 export function root32(
   doc: ShippingDocument,
   name: string,
@@ -44,7 +41,21 @@ export function root32(
       .filter((e) => e.meaning === name)
       .map((e) => e.field),
   ].filter(has32);
-  if (all.length !== 1) return;
+  if (all.length !== 1) {
+    if (all.some((f) => f.current.status === "user_edited")) return;
+    const proven = all.filter(independentlyVerified),
+      signatures = new Set(
+        proven.map((f) =>
+          JSON.stringify([
+            f.current.value,
+            f.current.source?.page,
+            f.current.source?.segments,
+          ]),
+        ),
+      );
+    if (!proven.length || signatures.size !== 1) return;
+    return { documentId: doc.id, fieldName: name, field: proven[0] };
+  }
   return { documentId: doc.id, fieldName: name, field: all[0] };
 }
 export const ref32 = (

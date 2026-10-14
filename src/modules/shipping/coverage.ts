@@ -1,3 +1,4 @@
+import { effectiveProof } from "./effective";
 import { shippingCell, type EntityScope } from "../layout/shipping-cells";
 import type { PdfDocument } from "../documents/schema";
 import type { ShippingDocument, ShippingField } from "./schema";
@@ -19,8 +20,8 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
           actual.add(`${p.page}/${l.tableId}/${l.rowId}`);
       }
     const extracted = fields.map((f) => {
-      const s = f.original.source;
-      return f.original.status === "verified" && s?.layout
+      const s = effectiveProof(f).source;
+      return effectiveProof(f).status === "verified" && s?.layout
         ? `${s.page}/${s.layout.tableId}/${s.layout.rowId}`
         : null;
     });
@@ -37,22 +38,24 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
     items: rows(
       "item",
       doc.items.map((i) =>
-        i.fields.goodsDescription.original.value !== null
+        effectiveProof(i.fields.goodsDescription).value !== null
           ? i.fields.goodsDescription
           : i.fields.tradeDescription,
       ),
     ),
     containers: rows(
       "container",
-      doc.containers.some((c) => c.containerNumber.original.value !== null)
+      doc.containers.some(
+        (c) => effectiveProof(c.containerNumber).value !== null,
+      )
         ? doc.containers
-            .filter((c) => c.containerNumber.original.value !== null)
+            .filter((c) => effectiveProof(c.containerNumber).value !== null)
             .map((c) => c.containerNumber)
         : doc.cargoRecords
             .filter(
               (c) =>
                 c.fields.containerNumber &&
-                c.fields.containerNumber.original.value !== null,
+                effectiveProof(c.fields.containerNumber).value !== null,
             )
             .map((c) => c.fields.containerNumber),
     ),
@@ -70,13 +73,13 @@ export function nativeFactCoverage(doc: ShippingDocument, pdf: PdfDocument) {
   ) => {
     const native = fields.every(
       (f) =>
-        f.original.status === "verified" &&
-        f.original.source?.provenance !== "ocr" &&
-        !!f.original.source?.layout?.tableId,
+        effectiveProof(f).status === "verified" &&
+        effectiveProof(f).source?.provenance !== "ocr" &&
+        !!effectiveProof(f).source?.layout?.tableId,
     );
     const rows = fields
       .flatMap((f) => {
-        const s = f.original.source;
+        const s = effectiveProof(f).source;
         return s?.layout
           ? [`${s.page}/${s.layout.tableId}/${s.layout.rowId}`]
           : [];
@@ -111,7 +114,7 @@ export function nativeFactCoverage(doc: ShippingDocument, pdf: PdfDocument) {
     items: build(
       "items",
       doc.items.map((i) =>
-        i.fields.goodsDescription.original.value !== null
+        effectiveProof(i.fields.goodsDescription).value !== null
           ? i.fields.goodsDescription
           : i.fields.tradeDescription,
       ),
@@ -119,7 +122,7 @@ export function nativeFactCoverage(doc: ShippingDocument, pdf: PdfDocument) {
     containers: build(
       "containers",
       doc.containers
-        .filter((c) => c.containerNumber.original.value !== null)
+        .filter((c) => effectiveProof(c.containerNumber).value !== null)
         .map((c) => c.containerNumber),
     ),
     cargoRecords: build(

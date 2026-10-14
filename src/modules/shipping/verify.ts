@@ -14,6 +14,7 @@ import {
   nativeCell,
   nativeDocumentField,
   cellHeading,
+  packageGoodsContext,
 } from "../layout/shipping-geometry";
 import { shippingRole, rootTotalRole, unitParents } from "./roles";
 import { atomRole, countAtoms } from "./count-atoms";
@@ -76,6 +77,7 @@ export function verifyShippingField(
   let g = verifyField(resolved, pdf);
   const finish = () => {
     const p = pdf.pages.find((p) => p.page === g.source?.page);
+    if (g.source && p) g.source.provenance = p.textSource ?? "pdf_text";
     if (g.status === "verified" && g.source && p?.cells?.length) {
       if (scope !== "document" && g.source.layout)
         g.source.scopeBasis = "entity_row";
@@ -111,9 +113,47 @@ export function verifyShippingField(
     );
     return finish();
   }
+  if (
+    typeof g.value === "string" &&
+    blocks.some((b) => {
+      const roles = [...b.text.matchAll(/(?:^|[\/;|])\s*([^:\/;|]+):/g)]
+        .map((m) => shippingRole(m[1]))
+        .filter(Boolean);
+      return new Set(roles).size > 1;
+    })
+  ) {
+    g = fail(
+      g,
+      "ambiguous_cell",
+      "여러 필드 라벨을 포함한 문자열 전체를 하나의 필드 값으로 사용하지 않습니다.",
+    );
+    return finish();
+  }
+  if (
+    role.startsWith("portOf") &&
+    scope === "document" &&
+    page.cells?.length &&
+    blocks.every(
+      (b) =>
+        !nativeDocumentField(page, b) && inlineRole(b.text, g.value!) !== role,
+    )
+  ) {
+    g = fail(
+      g,
+      "role_mismatch",
+      "항구 라벨이 있는 실제 원문 셀과 연결되지 않은 주소·국가·인접 셀은 항구 근거로 승인하지 않습니다.",
+    );
+    return finish();
+  }
   const units = unitParents[role];
   const contextualAtom = (b: PdfBlock) => {
     const parent = geometricRole(page, b);
+    if (
+      ["quantity", "quantityUnit"].includes(role) &&
+      ["packageCount", "totalPackageCount"].includes(parent ?? "") &&
+      !packageGoodsContext(page, b)
+    )
+      return null;
     return parent &&
       [
         "quantity",

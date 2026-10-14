@@ -8,11 +8,13 @@ const ports: Record<string, string> = {
   "busan, korea": "KRPUS",
   "busan korea": "KRPUS",
   krpus: "KRPUS",
+  "kr pus": "KRPUS",
   "kr pus / busan": "KRPUS",
   "busan (krpus)": "KRPUS",
   "los angeles": "USLAX",
   "los angeles, usa": "USLAX",
   uslax: "USLAX",
+  "us lax": "USLAX",
   "us lax / los angeles": "USLAX",
   "los angeles (uslax)": "USLAX",
 };
@@ -46,7 +48,7 @@ export function hsSix(v: unknown) {
 export function contextualCarton(ref: FieldRef | undefined) {
   if (!ref || !verified32(ref) || text32(ref.field.current.value) !== "ct")
     return false;
-  const source = ref.field.original.source;
+  const source = ref.field.current.source;
   return (
     ref.fieldName === "packageUnit" &&
     source?.semanticRole === "packageUnit" &&

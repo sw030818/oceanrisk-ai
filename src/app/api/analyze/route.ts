@@ -83,6 +83,9 @@ export async function POST(request: Request) {
               documentId: ids?.[i],
               allowOCR,
               prepared,
+              recoveryDeadline:
+                Date.now() +
+                Math.max(0, 105000 - (performance.now() - started)),
             })
           : prepared;
       results.push(result);
@@ -103,7 +106,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         mode: analyze ? "shipping-analysis" : "pdf-preparation",
-        phase: "3.5",
+        phase: "3.6",
         results,
         summary: summarizeShipping(results, review),
         review,

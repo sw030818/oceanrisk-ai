@@ -5,6 +5,7 @@ const config: NextConfig = {
   serverExternalPackages: ["pdfjs-dist"],
   outputFileTracingIncludes: {
     "/api/analyze": ["./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs"],
+    "/api/recover": ["./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs"],
   },
   poweredByHeader: false,
   async headers() {

@@ -286,7 +286,7 @@ export function ShippingWorkspace() {
               // Older mocked contracts have server-generated IDs; retain their source
               // identity. PHASE3.3 responses must echo each stable upload ID.
               if (
-                ["3.3", "3.4", "3.5"].includes(data.phase) &&
+                ["3.3", "3.4", "3.5", "3.6"].includes(data.phase) &&
                 r.pdf.id !== batch[i].id
               )
                 throw new Error("문서 식별자가 요청과 다릅니다.");
@@ -296,10 +296,10 @@ export function ShippingWorkspace() {
             if (analyze)
               setComparisonEnabled(
                 data.capabilities?.pairComparison === true &&
-                  ["3.2", "3.3", "3.4", "3.5"].includes(data.phase),
+                  ["3.2", "3.3", "3.4", "3.5", "3.6"].includes(data.phase),
               );
             stopAI =
-              ["3.3", "3.4", "3.5"].includes(data.phase) &&
+              ["3.3", "3.4", "3.5", "3.6"].includes(data.phase) &&
               incoming.some(
                 (r) =>
                   r.error &&

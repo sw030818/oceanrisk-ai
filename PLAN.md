@@ -118,3 +118,10 @@ PHASE 2.2 실행 결과: OpenAI Responses 기본 전환, phase별 최종 JSON �
 3. 단일/복수행·컨테이너·신고·부분/공동포장·정확한근거·수정/결정성 회귀; 기존440/50 유지.
 4. 전체ship/main/Production 동일SHA, 새$0.50/60문서/75요청내 원본3회반복·오류·복잡사례 실API검증.
 5. PHASE35 증거브랜치에성과/FP/FN/보류/원문실패/한계/비용보존. UI/OCR/서류종류확대하지않음.
+
+## PHASE 3.6
+1. 기존 main8a79d4f와 PHASE35 수량/항구 실패 응답을 원본 PDF에 무료 재생하여 원인을 분류한다.
+2. 최초 original 보존/approved recovery/current·독립 근거 검증·native 행/역할 검색·coverage/Fact 재계산을 구현한다.
+3. 선택적 추가 AI strict 후보1536/문서당1회/원문 재검증/실패 보존/기본 비활성, 별도 $0.50/60문서/75요청 도구를 구현한다.
+4. 기존482단위/54브라우저와 신규 복구·반례·예산·1440/390px 회귀, npmci/type/lint/build/worker/dev smoke 후 ship한다.
+5. 최종 동일 Production SHA에서 정상3종5회 및 오류/복잡/독립양식 최소 실API 검증. 단계별 정확도·오탐·비용·보류를 증거 브랜치에 저장한다.

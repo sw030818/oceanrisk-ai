@@ -168,7 +168,7 @@ export function withFactReview(
               (ds.find((d) => d.id === f.documentId)?.factCoverage?.items.rows
                 .length === 1 ||
                 !!f.cargoId) &&
-              !!f.field.original.source?.layout?.tableId
+              !!f.field.current.source?.layout?.tableId
             );
           });
         if (aliases) covered.add(c.id);

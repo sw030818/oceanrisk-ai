@@ -3,11 +3,12 @@ export function countAtoms(text: string) {
   const tokens = text
     .trim()
     .replace(/^\(|\)$/g, "")
+    .trim()
     .split(/\s*\/\s*/);
   if (tokens.length > 2) return [];
   const atoms = tokens.map((t) => {
     const m = t.match(
-      /^([0-9]+(?:[,.][0-9]+)*)\s+(PCS|EA|PIECES?|CARTONS?|CTNS?|CT)$/i,
+      /^([0-9]+(?:[,.][0-9]+)*)\s*(PCS|EA|PIECES?|CARTONS?|CTNS?|CT)$/i,
     );
     if (!m) return null;
     const nums = numericTokens(m[1]);
