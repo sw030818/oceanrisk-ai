@@ -539,3 +539,10 @@
 - 첫 ship에서521단위/type/build/기존analyze worker는 통과했으나 개발서버 잔존 포트 때문에 브라우저 검사 전 중단됐다. 커밋/Push 없음. 새 recover route의 worker trace 누락도 추가 확인하여 tracing과 runtime검사에 두 PDF경로를 포함하고, 소유 서버 중지·린트 경고 제거 후 전체ship을 재실행한다.
 - f9a7e096dd1587b0a91166ff784cf9434909e08e에서 npmci/type/lint/521단위/56브라우저/build 및 analyze+recover worker 전체ship 통과·GitHubmainPush/공식Production 동일SHA/키설정/자동targetedfalse 확인. 새 실API 첫정상3문서 분류3/3·핵심9/9·정답근거20/20, 기본3요청/알려진$0.00540963/자동재시도0. 단, native cargo HS에 인용 라벨까지 포함한 값이 승인되어 보조HS 확정오탐1을 발견해 다음 반복을 중단했다.
 - 원인: '(HS ...)' 인용 전체는 원문에 있지만 세번 값은 라벨을 제외해야 한다. native 후보에서 명시HS 라벨만 분리하고 독립 검증기에서도 숫자 세번 문법을 검증하도록 수정했다. 같은 실제응답 무료재생은 핵심9/9·확정오탐0이며 실제 HS6자리 차이 탐지 회귀도 추가했다. 과거3문서/비용은 같은 별도36ledger에 유지, 실제5회는 새최종SHA에서 다시 검증한다. 유료 검증 실패를 숨기거나 이전SHA 관측을 최신성공으로 합치지 않는다.
+
+### PHASE 3.6 — 실제 검증 최종 기록 (2026-10-15, Asia/Seoul)
+- main `fd6fa5217da7a872ebeda8a66ba3de9e823689ee`의 전체ship npmci/type/lint/524단위/56브라우저/build/analyze+recover worker, Actions quality/production·Git일반Push/원격SHA·Vercel Git status success/공식Production 동일SHA 확인. 관리API Ready enum은HTTP403으로 직접확인불가.
+- 정상원본3종 독립5회: 최초8/8/7/9/9→Native/최종9/9/9/9/9, 분류15/15·정답근거100/100·확정오탐0. 이전 f9a7e09의 HS라벨 오탐1은 별도보존하고 최신성과로 혼합하지 않았다.
+- 추가실제targeted-only1요청/2항구 literal재검증2/2/$0.0001344/2522ms, 합성최초후보와 실제최초전체분석은 구분한다. 자동추가AI는false 유지. 오류7종TP7/FP0/FN0, 다품목/다중컨테이너/부분/공유/복수신고/열순서변형 API실패·확정오탐0. 복수신고총수량은 누락HBL참조/없는·미검증문서합계로 잠정/정보부족을 유지했으며 확정집계완료로 주장하지 않는다.
+- 공식UI 실제응답재생1440/390px 원문/수정복원/인쇄/overflow없음·추가유료0. 누적새36예산41문서/41요청/$0.046804025, 미확인usage0건(부동소수잔여예약은ledger유지), 최대$0.50/60/75, 자동재시도0. 과거ledger불변, 추가유료검증종료.
+- 안전한 전체수치/예산/실패원인/한계는 docs/validation/phase36-live-2026-10-14.json 및 phase36-report.md, validation/phase36-evidence에서 정상커밋/Push한다. main검증SHA를바꾸지않는다. 실제PDF/원문/원본공급자응답/키는Git에저장하지않는다.
