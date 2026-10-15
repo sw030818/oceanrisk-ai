@@ -7,7 +7,7 @@ export type GoodsMeaning =
   | "different"
   | "insufficient";
 const vocabulary: [string, RegExp][] = [
-  ["kind:bottle", /보온병|물병|\bbottles?\b/gi],
+  ["kind:bottle", /보온병|물병|\bbottles?\b|(?<=vacuum\s)flasks?\b|\bthermos(?:es)?\b/gi],
   ["kind:shirt", /티셔츠|\bt[ -]?shirts?\b/gi],
   ["kind:glove", /장갑|\bgloves?\b/gi],
   ["kind:valve", /밸브|\bvalves?\b/gi],

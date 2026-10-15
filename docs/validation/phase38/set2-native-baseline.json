@@ -1,0 +1,52 @@
+{
+  "kind": "Free actual Set2 native PDF + explicit oracle candidates; NO original AI response; NO provider calls",
+  "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+  "classification": {
+    "status": "unverified",
+    "reason": "유형 후보는 있으나 실제 제목/발행 문맥 근거를 확인하지 못했습니다. 선택 영역은 유형 근거가 아닙니다."
+  },
+  "fields": [
+    {
+      "role": "grossWeight",
+      "status": "unverified",
+      "code": "role_mismatch",
+      "reason": "값은 존재하지만 해당 필드의 실제 라벨/열 의미와 다릅니다."
+    },
+    {
+      "role": "grossWeightUnit",
+      "status": "unverified",
+      "code": "role_mismatch",
+      "reason": "단위는 실제 수량/포장/중량 라벨과 같은 행 또는 해당 표의 명시적 단위 헤더에 연결되어야 합니다."
+    },
+    {
+      "role": "packageCount",
+      "status": "unverified",
+      "code": "role_mismatch",
+      "reason": "값은 존재하지만 해당 필드의 실제 라벨/열 의미와 다릅니다."
+    },
+    {
+      "role": "packageUnit",
+      "status": "unverified",
+      "code": "role_mismatch",
+      "reason": "단위는 실제 수량/포장/중량 라벨과 같은 행 또는 해당 표의 명시적 단위 헤더에 연결되어야 합니다."
+    },
+    {
+      "role": "quantity",
+      "status": "unverified",
+      "code": "role_mismatch",
+      "reason": "값은 존재하지만 해당 필드의 실제 라벨/열 의미와 다릅니다."
+    },
+    {
+      "role": "quantityUnit",
+      "status": "unverified",
+      "code": "role_mismatch",
+      "reason": "단위는 실제 수량/포장/중량 라벨과 같은 행 또는 해당 표의 명시적 단위 헤더에 연결되어야 합니다."
+    },
+    {
+      "role": "goodsDescription",
+      "status": "verified",
+      "code": "verified",
+      "reason": "실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다."
+    }
+  ]
+}

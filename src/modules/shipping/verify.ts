@@ -6,6 +6,7 @@ import type {
 } from "../documents/schema";
 import { resolveCitation } from "../ai/citations";
 import { verifyField, normalizeText } from "../evidence/verify";
+import { physicalLines, spanText } from "../layout/physical-spans";
 import { numericTokens } from "../evidence/numbers";
 import { labelForValue, evidenceBlocks } from "../layout/relations";
 import { shippingCell, type EntityScope } from "../layout/shipping-cells";
@@ -50,9 +51,20 @@ function anchors(blocks: PdfBlock[], value: string | number) {
     return blocks.filter((b) => numericTokens(b.text).includes(value));
   const exact = blocks.filter((b) => literal(b.text, value));
   if (exact.length) return exact;
-  const body = blocks.filter((b) => !shippingRole(b.text));
-  const joined = body.map((b) => b.text).join(" ");
-  return normalizeText(joined) === normalizeText(value) ? body : [];
+  // A citation may include a numbered/split label as well as the value. Match
+  // complete literal block spans, not a string substring or the entire quote.
+  const matches: PdfBlock[] = [];
+  for (let start = 0; start < blocks.length; start++)
+    for (
+      let end = start + 1;
+      end <= Math.min(blocks.length, start + 12);
+      end++
+    ) {
+      const span = blocks.slice(start, end);
+      if (normalizeText(spanText(span)) === normalizeText(value))
+        matches.push(...span);
+    }
+  return [...new Map(matches.map((b) => [b.id, b])).values()];
 }
 function fail(
   g: GroundedField<string | number>,
@@ -569,26 +581,30 @@ export function verifyClassification(
     title = titles.find(
       (t) => t.p === page && /^bill of lading$/i.test(t.text.trim()),
     );
-    const house = (page?.blocks ?? []).filter((b) =>
-      /^house\s*b\/?l\s*\/\s*(?:ocean|sea) freight$/i.test(b.text.trim()),
+    const phrases = page ? physicalLines(page) : [];
+    const house = phrases.filter((g) =>
+      /^house\s*b\/?l\s*\/\s*(?:ocean|sea) freight$/i.test(spanText(g).trim()),
     );
     const issuer =
       house.length === 1
-        ? (page?.blocks ?? []).find((b) => {
+        ? phrases.find((g) => {
             if (
               !/^(?:carrier\s*\/\s*forwarder|carrier|freight forwarder|issued by|issuer|발행자|운송주선인)\s*:?$/i.test(
-                b.text.trim(),
-              ) ||
-              b.y >= house[0].y
+                spanText(g).trim(),
+              )
             )
               return false;
-            const cell = nativeCell(page!, house[0]),
-              labelCell = nativeCell(page!, b);
-            if (cell) return cell === labelCell;
+            const h = house[0][0],
+              b = g[0];
+            const hc = nativeCell(page!, h),
+              ic = nativeCell(page!, b);
+            // Same independently drawn issuer cell, or a bounded local issuer section.
             return (
-              Math.abs(b.x - house[0].x) <=
-                Math.max(b.height, house[0].height) * 2 &&
-              house[0].y - b.y <= Math.max(b.height, house[0].height) * 6
+              b.y < h.y &&
+              (hc
+                ? hc === ic
+                : Math.abs(b.x - h.x) <= Math.max(b.height, h.height) * 2 &&
+                  h.y - b.y <= Math.max(b.height, h.height) * 6)
             );
           })
         : undefined;
@@ -601,9 +617,10 @@ export function verifyClassification(
       house.length === 1 &&
       !!issuer &&
       !master &&
-      (cited(title) || house.every((h) => blocks!.some((b) => b.id === h.id)));
+      (cited(title) ||
+        house[0].every((h) => blocks!.some((b) => b.id === h.id)));
     if (valid)
-      blocks = [...title!.g, issuer!, ...house].filter(
+      blocks = [...title!.g, ...issuer!, ...house[0]].filter(
         (b, i, bs) => bs.findIndex((x) => x.id === b.id) === i,
       );
   } else valid = valid && !!title;

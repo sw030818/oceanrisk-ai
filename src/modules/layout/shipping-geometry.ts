@@ -1,5 +1,6 @@
 import type { PdfPage, PdfBlock, PdfCell } from "../documents/schema";
 import { numericTokens } from "../evidence/numbers";
+import { physicalLines, spanText } from "./physical-spans";
 import { countAtoms } from "../shipping/count-atoms";
 import { shippingRole } from "../shipping/roles";
 import type { EntityScope } from "./shipping-cells";
@@ -33,7 +34,21 @@ const body = (p: PdfPage, c: PdfCell) =>
   (p.blocks ?? [])
     .filter((b) => inside(c, b))
     .sort((a, b) => a.y - b.y || a.x - b.x);
-export function cellHeading(page: PdfPage, cell: PdfCell) {
+type Heading = ReturnType<typeof computeCellHeading>;
+const headingCache = new WeakMap<PdfPage, WeakMap<PdfCell, { signature: string; value: Heading }>>();
+export function cellHeading(page: PdfPage, cell: PdfCell): Heading {
+  let cache = headingCache.get(page);
+  if (!cache) { cache = new WeakMap(); headingCache.set(page, cache); }
+  // PDFs are immutable in the pipeline, but editors/tests may alter blocks.
+  // Include content and geometry so a cached heading never proves stale text.
+  const signature = JSON.stringify([(page.cells ?? []).map(c => [c.x,c.y,c.width,c.height]), (page.blocks ?? []).map(b => [b.id,b.text,b.x,b.y,b.width,b.height,b.row])]);
+  const previous = cache.get(cell);
+  if (previous?.signature === signature) return previous.value;
+  const value = computeCellHeading(page, cell);
+  cache.set(cell, { signature, value });
+  return value;
+}
+function computeCellHeading(page: PdfPage, cell: PdfCell) {
   const bs = body(page, cell);
   if (!bs.length) return null;
   const first = bs[0];
@@ -55,10 +70,23 @@ export function cellHeading(page: PdfPage, cell: PdfCell) {
     )
   )
     return null;
-  const head = shippingRole(first.text)
-    ? [first]
-    : bs.filter((b) => b.y - first.y <= Math.max(first.height, b.height) * 1.7);
-  const whole = head.map((b) => b.text).join(" ");
+  const lines = physicalLines(page, bs);
+  let head = lines[0] ?? [first];
+  // A heading may wrap across two/three physical lines; stop at the first
+  // recognized semantic label or before numeric data, not at a fixed page Y.
+  for (const line of lines.slice(1, 3)) {
+    if (
+      shippingRole(spanText(head)) ||
+      line[0].y - head.at(-1)!.y >
+        Math.max(first.height, line[0].height) * 2.5 ||
+      line.some(
+        (b) => numericTokens(b.text).length && !/^\(\d+\)$/.test(b.text.trim()),
+      )
+    )
+      break;
+    head = [...head, ...line];
+  }
+  const whole = spanText(head);
   // Shared Container/Seal column: container identifier establishes the row;
   // the Seal requires its own literal SEAL label within that same closed cell.
   const cleaned = whole.replace(/\s*&\s*Seal No\.?$/i, "");
@@ -243,6 +271,20 @@ export function nativeTableLink(
 export function nativeDocumentField(page: PdfPage, b: PdfBlock) {
   const c = nativeCell(page, b),
     h = c && cellHeading(page, c);
+  if (c && h?.role && ["quantity", "packageCount", "grossWeight", "netWeight", "totalQuantity", "totalPackageCount", "totalGrossWeight", "totalNetWeight"].includes(h.role)) {
+    const occurrences = new Map<string, number>();
+    for (const line of physicalLines(page, body(page, c))) {
+      if (line.some(v => h.blocks.includes(v))) continue;
+      const text = spanText(line);
+      if (/^(?:HS|SEAL|CONTAINER)\b/i.test(text.trim())) continue;
+      const atoms = countAtoms(text);
+      const role = h.role.replace(/^total([A-Z])/, (_, x: string) => x.toLowerCase());
+      if (!["quantity", "packageCount", "grossWeight", "netWeight"].includes(role)) continue;
+      for (const r of atoms.length ? atoms.map(a => a.role) : numericTokens(text).map(() => role))
+        occurrences.set(r, (occurrences.get(r) ?? 0) + 1);
+    }
+    if ([...occurrences.values()].some(n=>n>1)) return false;
+  }
   return (
     !!h?.role &&
     h.blocks.some((v) => v.y < b.y - 2) &&

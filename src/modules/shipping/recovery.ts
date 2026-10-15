@@ -10,6 +10,8 @@ import {
 import { shippingRole, unitParents, rootTotalRole } from "./roles";
 import { labelForValue } from "../layout/relations";
 import { numericShippingFields } from "./catalog";
+import { physicalLines, spanText } from "../layout/physical-spans";
+import { portMeaning } from "./ports";
 import { numericTokens } from "../evidence/numbers";
 import { countAtoms } from "./count-atoms";
 import { verifyShippingField } from "./verify";
@@ -36,6 +38,10 @@ const eligible = new Set([
   "packageUnit",
   "grossWeight",
   "grossWeightUnit",
+  "netWeight",
+  "netWeightUnit",
+  "vessel",
+  "voyage",
   "weightUnit",
   "quantity",
   "quantityUnit",
@@ -47,7 +53,13 @@ const eligible = new Set([
   "consignee",
 ]);
 export function recoveryTargets(doc: ShippingDocument): RecoveryTarget[] {
-  if (doc.classificationStatus !== "classified") return [];
+  // A caller explicitly withholding a previously verified type is an unsupported
+  // snapshot, not an unverified-title case. Preserve that existing opt-out.
+  if (
+    doc.classificationStatus !== "classified" &&
+    doc.classification?.current.status === "verified"
+  )
+    return [];
   const out: RecoveryTarget[] = [];
   const add = (
     fields: Record<string, ShippingField>,
@@ -170,7 +182,27 @@ export function nativeCandidates(
     return out;
   for (const p of pdf.pages) {
     if (p.textSource === "ocr") continue;
+    const joined = new Set<string>();
+    if (!numericShippingFields.has(t.role as never) && !unitParents[t.role])
+      for (const line of physicalLines(p)) {
+        if (line.length < 2 || shippingRole(spanText(line))) continue;
+        const value = spanText(line);
+        if (t.role.startsWith("portOf") && !portMeaning(value)) continue;
+        const c = {
+          value,
+          evidence: { page: p.page, blockIds: line.map((b) => b.id) },
+        };
+        // Same verifier, same ownership, real IDs; never global value search.
+        if (
+          verifyShippingField(c, pdf, t.role, t.scope, t.owner).current
+            .status === "verified"
+        ) {
+          out.push(c);
+          for (const b of line) joined.add(b.id);
+        }
+      }
     for (const b of p.blocks ?? []) {
+      if (joined.has(b.id)) continue;
       if (!unitParents[t.role] && shippingRole(b.text)) continue;
       const link = shippingCell(p, [b], t.scope);
       const headingRole = shippingRole(b.text);
@@ -339,7 +371,18 @@ export function recoverNative(
   const start = performance.now(),
     doc = structuredClone(input),
     targets = recoveryTargets(doc);
-  if (doc.classificationStatus !== "classified") return doc;
+  if (
+    doc.classificationStatus !== "classified" &&
+    doc.classification?.current.status === "verified"
+  )
+    return doc;
+  if (doc.classificationStatus !== "classified")
+    doc.informationWarnings = [
+      ...new Set([
+        ...doc.informationWarnings,
+        "문서 유형이 미확인이므로 개별 원문 근거 복구와 서류 간 확정 판정을 구분합니다.",
+      ]),
+    ];
   // A printed document-level goods count/unit may not be a native wire field
   // for a transport form. Preserve it as an explicitly native additional field,
   // never invent an initial AI value or borrow a product quantity from elsewhere.

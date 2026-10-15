@@ -19,6 +19,7 @@ export function unicodePdf(
   options: {
     borders?: { x: number; y: number; width: number; height: number }[][];
     sizes?: [number, number][];
+    fragmentedFonts?: boolean;
   } = {},
 ): Uint8Array {
   const objects: string[] = [];
@@ -42,6 +43,14 @@ export function unicodePdf(
   const font = obj(
     `<< /Type /Font /Subtype /Type0 /BaseFont /SyntheticUnicode /Encoding /Identity-H /DescendantFonts [${descendant} 0 R] /ToUnicode ${cmapId} 0 R >>`,
   );
+  // Distinct font resources force genuine separate PDF.js text items in the
+  // adversarial word-block fixture; default fixture bytes remain unchanged.
+  let alternate = 0;
+  if (options.fragmentedFonts) {
+    const descriptor2 = obj("<< /Type /FontDescriptor /FontName /SyntheticAlternate /Flags 4 /FontBBox [0 -200 1000 1000] /ItalicAngle 0 /Ascent 800 /Descent -200 /CapHeight 700 /StemV 80 >>");
+    const descendant2 = obj(`<< /Type /Font /Subtype /CIDFontType2 /BaseFont /SyntheticAlternate /CIDSystemInfo << /Registry (Adobe) /Ordering (Identity) /Supplement 0 >> /FontDescriptor ${descriptor2} 0 R /DW 500 /CIDToGIDMap /Identity >>`);
+    alternate = obj(`<< /Type /Font /Subtype /Type0 /BaseFont /SyntheticAlternate /Encoding /Identity-H /DescendantFonts [${descendant2} 0 R] /ToUnicode ${cmapId} 0 R >>`);
+  }
   const ids: number[] = [];
   for (const [pageIndex, cells] of pages.entries()) {
     const [pageWidth, pageHeight] = options.sizes?.[pageIndex] ?? [842, 842];
@@ -54,11 +63,11 @@ export function unicodePdf(
         .join("\n") +
       "\n" +
       cells
-        .map((c) => {
+        .map((c, index) => {
           const hex = [...c.text]
             .map((char) => char.charCodeAt(0).toString(16).padStart(4, "0"))
             .join("");
-          return `BT /F1 ${c.size ?? 9} Tf 1 0 0 1 ${c.x} ${pageHeight - c.y} Tm <${hex}> Tj ET`;
+          return `BT /${alternate && index % 2 ? "F2" : "F1"} ${c.size ?? 9} Tf 1 0 0 1 ${c.x} ${pageHeight - c.y} Tm <${hex}> Tj ET`;
         })
         .join("\n");
     const stream = obj(
@@ -66,7 +75,7 @@ export function unicodePdf(
     );
     ids.push(
       obj(
-        `<< /Type /Page /Parent ${tree} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${font} 0 R >> >> /Contents ${stream} 0 R >>`,
+        `<< /Type /Page /Parent ${tree} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${font} 0 R${alternate ? ` /F2 ${alternate} 0 R` : ""} >> >> /Contents ${stream} 0 R >>`,
       ),
     );
   }

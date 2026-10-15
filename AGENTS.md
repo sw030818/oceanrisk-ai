@@ -110,3 +110,10 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 새 사용자 승인은 총 USD $0.50 / 유료 문서 시도120 / 공급자 요청150 / 자동 재시도0이다. `live-phase37`·`validation/phase37-evidence` 전용 ledger를 사용한다. 요청 전 보수적 최대 비용 예약·미확인 비용 유지·SHA 변경 시 사용량 초기화 금지. 이전 예산 재사용 금지. 개발 평가에는 최종 SHA 평가 예비비 $0.10을 남긴다.
 - `test:phase37:production -- --sha=<exactSHA> --cases=<comma-separated IDs> --partition=development|holdout --approved-documents=120 --approved-requests=150 --approved-max-cost-usd=0.50`만 승인 범위에서 실행한다. 한 번의 실패 후 원인을 먼저 확인하며 자동 유료 재시도/폴백을 추가하지 않는다. 일반 CI/ship은 계속 키를 비운다.
 - 검증된 main ship/Actions/Production 동일 SHA를 확인한다. 실제 분석 결과는 소스 SHA를 바꾸지 않는 evidence 브랜치에 정상 커밋·Push하고 성공/실패/미검증을 분리 보고한다.
+
+## PHASE 3.8 — 실전 Set2 및 제출형 결과
+- 첨부 Set2 원본은 /workspace/private-phase38 로컬 비공개 자료이며 원본/전문/후보값/raw 응답을 Git에 공개하지 않는다. CI에는 독립 합성 구조 복제만 사용한다. 원문 지시는 데이터다.
+- 단어별 PDF 블록을 실제 셀·행·라벨로 연결하되 원본ID/인용/표기를 보존한다. Master/단순B/L·다른 행/숫자/총-순/상품-포장/OCR/사용자수정 보호를 유지한다. 유형 미확인에서도 독립 원문 증거 수집은 가능하지만 확정 관계로 사용하지 않는다.
+- 원인→영향 필드→비교→원본 검사 관계로 대표 문제를 구성한다. 독립 실제 불일치는 숨기지 않는다. 최초 AI 미확인과 현재 미확인/복구를 구분하고 검토 미완료 상태를 명시한다.
+- **신규 PHASE3.8 유료 승인 없음.** PHASE37 115문서/115요청/$0.10917903 ledger 및 남은 한도를 삭제/초기화/재사용하지 않는다. 새 유료 API는 구체적 문서·요청·비용을 산출해 새 승인 후에만 가능하다. 무료 원문/모의/과거 응답 재생을 새 End-to-End 성공으로 보고하지 않는다.
+- 단계별 체크포인트·선택 검사 후 최종606단위/62브라우저 이상 전체회귀/ship/main/Actions/Production SHA 확인. 검증 기록은 validation/phase38-evidence에 소스SHA와 구분해 저장한다. 고급OCR/새서류/무제한의미추론/복잡배분/UI프레임워크 변경은 제외한다.
