@@ -22,6 +22,7 @@ import {
   verified32,
   type FieldRef,
 } from "./review-evidence";
+import { resolveDeclarationScopes } from "./declaration-scope";
 import { withReviewIssues } from "./issues";
 import { compareGoods } from "./goods-semantics";
 import { portCode, hsSix, goodsCore } from "./equivalence";
@@ -858,6 +859,7 @@ export function withFactReview(
           },
     );
   }
+  resolveDeclarationScopes(primary, review.checks, documents, relations);
   primary.sort((a, b) => a.id.localeCompare(b.id));
   const outcomes = {
     matches: primary.filter((c) => c.assessment === "confirmed_match").length,

@@ -5,9 +5,7 @@ import type { z } from "zod";
 import type { shipmentRelationshipSchema } from "./schema";
 import type { ShippingField } from "./schema";
 export type ShippingAssessment =
-  | Assessment
-  | "not_comparable"
-  | "not_applicable";
+  Assessment | "not_comparable" | "not_applicable";
 export type ShippingRelationship = z.infer<
   typeof shipmentRelationshipSchema
 > & {
@@ -20,6 +18,15 @@ export type ShippingRelationship = z.infer<
   evidence: ShippingCheck["fields"];
 };
 export interface ShippingCheck {
+  // Produced only by deterministic, fully grounded declaration aggregation.
+  declarationCoverage?: {
+    hblDocumentId: string;
+    declarationDocumentIds: string[];
+  };
+  scopeResolution?: {
+    groupCheckId: string;
+    kind: "subset" | "allocation" | "aligned_carriers";
+  };
   documentIds?: string[];
   comparison?: {
     meaning: string;

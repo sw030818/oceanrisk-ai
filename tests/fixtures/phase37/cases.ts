@@ -54,22 +54,6 @@ export async function scenario37(s: Scenario37) {
     ],
   }));
   const m = specs[2];
-  if (s.error) {
-    const k = s.error;
-    if (k === "quantity") m.rows[0].quantity -= 12;
-    else if (k === "goodsDescription")
-      m.rows[0].name = "POLYPROPYLENE INDUSTRIAL PIPE 30MM";
-    else if (k === "packageCount") m.packages -= 4;
-    else if (k === "grossWeight") m.gross -= 87.5;
-    else if (k === "containerNumber") m.container = "OTHER-CN-37";
-    else if (k === "sealNumber") m.seal = "OTHER-SEAL-37";
-    else if (k === "houseBlNumber") m.hbl = "OTHER-HBL-37";
-    else if (k === "declarationNumber") {
-      specs[0].declarations = [decl];
-      m.declarations = ["OTHER-DECL-37"];
-    } else if (k === "portOfLoading") m.loading = "NZAKL";
-    else m.discharge = "NZAKL";
-  }
   if (s.variant === "multi-container")
     for (const d of specs)
       d.containerRows = [
@@ -130,5 +114,21 @@ export async function scenario37(s: Scenario37) {
     m.omitRows = [1];
   }
   if (s.variant === "unsupported") m.unsupported = true;
+  if (s.error) {
+    const k = s.error;
+    if (k === "quantity") m.rows[0].quantity -= 12;
+    else if (k === "goodsDescription")
+      m.rows[0].name = "POLYPROPYLENE INDUSTRIAL PIPE 30MM";
+    else if (k === "packageCount") m.packages -= 4;
+    else if (k === "grossWeight") m.gross -= 87.5;
+    else if (k === "containerNumber") m.container = "OTHER-CN-37";
+    else if (k === "sealNumber") m.seal = "OTHER-SEAL-37";
+    else if (k === "houseBlNumber") m.hbl = "OTHER-HBL-37";
+    else if (k === "declarationNumber") {
+      specs[0].declarations = [decl];
+      m.declarations = ["OTHER-DECL-37"];
+    } else if (k === "portOfLoading") m.loading = "NZAKL";
+    else m.discharge = "NZAKL";
+  }
   return { scenario: s, fixtures: await Promise.all(specs.map(render37)) };
 }

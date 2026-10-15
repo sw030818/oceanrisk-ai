@@ -3,11 +3,7 @@ import { refKey32, verified32 } from "./review-evidence";
 export interface ReviewIssue {
   id: string;
   cause:
-    | "value_conflict"
-    | "reference_conflict"
-    | "evidence"
-    | "missing"
-    | "scope";
+    "value_conflict" | "reference_conflict" | "evidence" | "missing" | "scope";
   severity: "high" | "attention";
   assessment: ShippingCheck["assessment"];
   title: string;
@@ -71,17 +67,23 @@ export function reviewIssues(review: ShippingReview): ReviewIssue[] {
       [...new Set(c.fields.map((f) => f.documentId))].sort().join("+");
     // Exact cause signature is intentionally conservative. No category-only or
     // fuzzy-title deduplication that could hide a separate business problem.
-    const key = relationshipOnly
+    const allocation = c.scopeResolution?.kind === "allocation";
+    const key = allocation
       ? JSON.stringify([
-          "reference_dependency",
-          blockingRelations.map((r) => r.id).sort(),
+          "declaration_allocation",
+          c.scopeResolution!.groupCheckId,
         ])
-      : JSON.stringify([
-          cause,
-          shipment,
-          c.comparison?.meaning ?? c.category,
-          entities.length ? entities : [c.id],
-        ]);
+      : relationshipOnly
+        ? JSON.stringify([
+            "reference_dependency",
+            blockingRelations.map((r) => r.id).sort(),
+          ])
+        : JSON.stringify([
+            cause,
+            shipment,
+            c.comparison?.meaning ?? c.category,
+            entities.length ? entities : [c.id],
+          ]);
     const previous = issues.get(key);
     if (previous) {
       previous.relatedCheckIds = [
@@ -112,12 +114,16 @@ export function reviewIssues(review: ShippingReview): ReviewIssue[] {
         cause,
         severity: c.assessment === "confirmed_mismatch" ? "high" : "attention",
         assessment: c.assessment,
-        title: relationshipOnly
-          ? "서류 간 참조 연결 확인"
-          : (c.title ?? c.category),
-        explanation: relationshipOnly
-          ? "동일한 참조 연결 또는 신고 포함 범위에 의존하는 검사를 함께 표시합니다. 서로 다른 수치·품목의 오류는 별도 문제로 유지합니다. 관련 검사의 실제 값과 연결 근거를 확인해 주세요."
-          : c.explanation,
+        title: allocation
+          ? "복수 신고 포장·중량 배분 확인"
+          : relationshipOnly
+            ? "서류 간 참조 연결 확인"
+            : (c.title ?? c.category),
+        explanation: allocation
+          ? "전체 신고 목록과 품목 수량 대응은 별도 검사에서 검증했습니다. 포장 개수·중량은 개별 신고의 배분 또는 공동 기재 범위를 입증하지 못해 함께 확인합니다. 관련 검사와 원문은 모두 보존합니다."
+          : relationshipOnly
+            ? "동일한 참조 연결 또는 신고 포함 범위에 의존하는 검사를 함께 표시합니다. 서로 다른 수치·품목의 오류는 별도 문제로 유지합니다. 관련 검사의 실제 값과 연결 근거를 확인해 주세요."
+            : c.explanation,
         followUp: c.followUp,
         documentIds: [
           ...new Set([

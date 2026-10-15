@@ -19,7 +19,7 @@
     "relationshipExpected": 92,
     "normalScenarios": 10,
     "normalWithHolds": 0,
-    "unresolvedCoreComparisons": 114
+    "unresolvedCoreComparisons": 101
   },
   "rows": [
     {
@@ -2762,8 +2762,8 @@
       "confirmedFalsePositives": [],
       "faultDetected": false,
       "confirmedFaultDetected": null,
-      "provisional": 21,
-      "independentIssues": 37,
+      "provisional": 8,
+      "independentIssues": 1,
       "requiredMissing": 0,
       "aggregation": [
         {
@@ -2789,7 +2789,7 @@
         },
         {
           "meaning": "goodsDescription",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED",
             "SCOPE_UNRESOLVED"
@@ -2809,7 +2809,7 @@
         },
         {
           "meaning": "hsCode",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED",
             "SCOPE_UNRESOLVED"
@@ -2834,7 +2834,7 @@
         },
         {
           "meaning": "quantity",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED"
           ]
@@ -2868,7 +2868,7 @@
         },
         {
           "meaning": "goodsDescription",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED",
             "SCOPE_UNRESOLVED"
@@ -2888,7 +2888,7 @@
         },
         {
           "meaning": "hsCode",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED",
             "SCOPE_UNRESOLVED"
@@ -2913,7 +2913,7 @@
         },
         {
           "meaning": "quantity",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED"
           ]
@@ -2945,7 +2945,7 @@
         },
         {
           "meaning": "goodsDescription",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED",
             "SCOPE_UNRESOLVED"
@@ -2965,7 +2965,7 @@
         },
         {
           "meaning": "hsCode",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED",
             "SCOPE_UNRESOLVED"
@@ -2990,7 +2990,7 @@
         },
         {
           "meaning": "quantity",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED"
           ]
@@ -3024,7 +3024,7 @@
         },
         {
           "meaning": "goodsDescription",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED",
             "SCOPE_UNRESOLVED"
@@ -3044,7 +3044,7 @@
         },
         {
           "meaning": "hsCode",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED",
             "SCOPE_UNRESOLVED"
@@ -3069,7 +3069,7 @@
         },
         {
           "meaning": "quantity",
-          "status": "provisional_mismatch",
+          "status": "not_applicable",
           "codes": [
             "DECLARATION_SCOPE_UNRESOLVED"
           ]
@@ -3118,10 +3118,8 @@
         },
         {
           "meaning": "hsCode",
-          "status": "provisional_match",
-          "codes": [
-            "SCOPE_UNRESOLVED"
-          ]
+          "status": "confirmed_match",
+          "codes": []
         },
         {
           "meaning": "packageCount",
@@ -5118,6 +5116,6 @@
       }
     }
   ],
-  "sourceSha": "PHASE37 staged correction; exact SHA in live evidence",
-  "fixtureVersion": "phase37-v2: identical PDF bytes, fixed before live evaluation"
+  "sourceSha": "PHASE37 staged declaration scope correction; exact SHA in live evidence",
+  "fixtureVersion": "phase37-v2: same existing PDF bytes; compound faults now applied after structural variants"
 }

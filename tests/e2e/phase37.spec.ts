@@ -76,9 +76,8 @@ for (const missing of [false, true])
       error: null,
     }));
     if (missing) {
-      const { emptyShippingField } = await import(
-        "../../src/modules/shipping/schema"
-      );
+      const { emptyShippingField } =
+        await import("../../src/modules/shipping/schema");
       results[1].document.fields.exporter = emptyShippingField();
     }
     await routeShipping(page, results, "3.7");
@@ -157,4 +156,62 @@ test("PHASE37 Korean manifest misclassification recovers from the cited title an
     .click();
   await expect(doc).toContainText("최초 AI 유형: House B/L");
   await expect(doc).toContainText("현재 유형: House 적하목록");
+});
+
+test("PHASE37 mobile multi-declaration replaces whole-vs-subset checks but retains the allocation problem and all evidence", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 950 });
+  const { fixtures } = await scenario37(development37[20]);
+  await routeShipping(
+    page,
+    fixtures.map((f) => ({
+      pdf: f.pdf,
+      document: recoverNative(f.document, f.pdf),
+      uploadSlot: f.wire.type as "house_bl",
+      detectedType: f.document.detectedType,
+      typeMismatch: false,
+      error: null,
+    })),
+    "3.7",
+  );
+  await page.goto("/");
+  for (const type of shippingTypes) {
+    await page
+      .getByLabel(shippingLabels[type].title + " PDF 파일 선택", {
+        exact: true,
+      })
+      .setInputFiles(
+        fixtures
+          .filter((f) => f.wire.type === type)
+          .map((f) => ({
+            name: f.pdf.fileName,
+            mimeType: "application/pdf",
+            buffer: Buffer.from(f.bytes),
+          })),
+      );
+  }
+  await page.getByRole("checkbox").check();
+  await page
+    .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
+    .click();
+  await expect(page.getByTestId("review-issue")).toHaveCount(1);
+  await expect(page.getByTestId("review-issue")).toContainText(
+    "복수 신고 포장·중량 배분 확인",
+  );
+  await page
+    .getByTestId("review-issue")
+    .getByRole("button", { name: "판정·원문 근거 확인" })
+    .click();
+  const panel = page.getByRole("dialog", { name: "상세 분석 패널" });
+  await expect(panel).toBeVisible();
+  await expect(panel).toContainText("원문");
+  await page.keyboard.press("Escape");
+  await page.getByLabel("검토 결과 필터").selectOption("all");
+  expect(await page.getByTestId("comparison-row").count()).toBeGreaterThan(20);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
 });

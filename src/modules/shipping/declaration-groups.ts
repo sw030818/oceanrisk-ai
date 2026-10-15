@@ -105,6 +105,14 @@ export function declarationGroupChecks(
       )
     )
       blockers.push("부분선적 또는 전체 신고 포함 범위가 미확인입니다.");
+    if (
+      [bl, ...linked].some(
+        (d) =>
+          d.fields.shipmentScope?.current.value != null &&
+          d.fields.shipmentScope.current.status !== "verified",
+      )
+    )
+      blockers.push("선적 범위의 사용자 수정 또는 미확인 근거가 있습니다.");
     if ([bl, ...linked].some((d) => !d.collectionCoverage?.items.complete))
       blockers.push("실제 품목 표의 전체 행 포함을 확인하지 못했습니다.");
     if (
@@ -218,6 +226,10 @@ export function declarationGroupChecks(
         "신고 목록·전체 품목 포함·분할 배분을 확인해 주세요. 같은 품목이나 공동 포장은 자동 합산하지 않습니다.",
       ...(!blockers.length
         ? {
+            declarationCoverage: {
+              hblDocumentId: bl.id,
+              declarationDocumentIds: linked.map((d) => d.id),
+            },
             computedValues: [
               {
                 documentId: bl.id,
