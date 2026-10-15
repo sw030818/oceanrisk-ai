@@ -1,0 +1,646 @@
+{
+  "id": "dev37-21",
+  "partition": "development",
+  "kind": "complex",
+  "layout": "reversed",
+  "language": "mixed",
+  "variant": "multi-declaration",
+  "expectedFault": null,
+  "expectedDocuments": 4,
+  "documents": 4,
+  "classified": 4,
+  "fieldPresent": 109,
+  "fieldVerified": 109,
+  "expectedPairCount": 5,
+  "relationshipTP": 5,
+  "relationshipFP": 0,
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "declarationNumber",
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "declarationNumber",
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    }
+  ],
+  "confirmedErrors": [],
+  "confirmedFalsePositives": [],
+  "faultDetected": false,
+  "confirmedFaultDetected": null,
+  "provisional": 8,
+  "independentIssues": 1,
+  "requiredMissing": 0,
+  "aggregation": [
+    {
+      "assessment": "confirmed_match",
+      "derived": 2
+    }
+  ],
+  "primary": [
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED",
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "provisional_match",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED",
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "status": "provisional_match",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "not_applicable",
+      "codes": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED",
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "provisional_match",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED",
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "status": "provisional_match",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED",
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "provisional_match",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED",
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "status": "provisional_match",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "not_applicable",
+      "codes": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED",
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "provisional_match",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED",
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "status": "provisional_match",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "not_applicable",
+      "codes": [
+        "DECLARATION_SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "not_applicable",
+      "codes": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "packageCount",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    }
+  ],
+  "classification": [
+    {
+      "expected": "house_bl",
+      "aiType": "house_bl",
+      "aiEvidenceVerified": true,
+      "finalType": "house_bl",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "export_declaration",
+      "aiType": "export_declaration",
+      "aiEvidenceVerified": true,
+      "finalType": "export_declaration",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "export_declaration",
+      "aiType": "export_declaration",
+      "aiEvidenceVerified": true,
+      "finalType": "export_declaration",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "house_manifest",
+      "aiType": "house_manifest",
+      "aiEvidenceVerified": true,
+      "finalType": "house_manifest",
+      "nativeRecovered": false
+    }
+  ],
+  "gold": {
+    "goldFields": 102,
+    "extractedCorrect": 102,
+    "verifiedCorrect": 102,
+    "extractionRecall": 1,
+    "verifiedGoldRecall": 1
+  },
+  "goldInitial": {
+    "goldFields": 102,
+    "extractedCorrect": 102,
+    "verifiedCorrect": 102,
+    "extractionRecall": 1,
+    "verifiedGoldRecall": 1
+  },
+  "recovery": [
+    {
+      "targets": 10,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 10,
+      "nativeDurationMs": 644,
+      "failures": {
+        "MISSING_EXTRACTION": 3,
+        "SOURCE_NOT_PRESENT": 6,
+        "AMBIGUOUS_SOURCE": 1
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 7,
+      "nativeApplied": 1,
+      "aiApplied": 0,
+      "unresolved": 6,
+      "nativeDurationMs": 291,
+      "failures": {
+        "MISSING_EXTRACTION": 3,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 6,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 6,
+      "nativeDurationMs": 240,
+      "failures": {
+        "MISSING_EXTRACTION": 3,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 9,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 9,
+      "nativeDurationMs": 499,
+      "failures": {
+        "MISSING_EXTRACTION": 3,
+        "SOURCE_NOT_PRESENT": 6
+      },
+      "extraRequests": 0,
+      "deferred": false
+    }
+  ],
+  "usage": [
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 18171,
+        "inputTokens": 9117,
+        "outputTokens": 1449,
+        "cachedInputTokens": 9114,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00081594,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 14868,
+        "inputTokens": 8806,
+        "outputTokens": 1221,
+        "cachedInputTokens": 8803,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00069883,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 15365,
+        "inputTokens": 8811,
+        "outputTokens": 1207,
+        "cachedInputTokens": 8808,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00069188,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 18405,
+        "inputTokens": 8885,
+        "outputTokens": 1364,
+        "cachedInputTokens": 8882,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00077112,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    }
+  ],
+  "batchDurationsMs": [
+    35235,
+    47320
+  ],
+  "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+  "durationMs": 90490,
+  "inputHashes": [
+    "b07ac02d94f4110f98051e78a8841feb9f212ea9831e44783a2f4f72ac3039b6",
+    "f16677cbb54aad8709aa375ed59d554dbafb49c0827c9e4081c393ac7d2ff2c2",
+    "057480c4ef2a3d97a59b845b9d12c04cf974002e587c55c2b403859c4b172c4b",
+    "e07ecf3e60b68837db8b32188c82adfd4d5963db1fd299ae2b0107128faf9545"
+  ],
+  "responseDocuments": 4,
+  "failedDocuments": [],
+  "budget": {
+    "documents": 81,
+    "requests": 81,
+    "measuredCostUsd": 0.07667960500000001,
+    "unresolvedCostUpperUsd": 1.734723475976807e-17,
+    "maxDocuments": 120,
+    "maxRequests": 150,
+    "maxCostUsd": 0.5
+  }
+}

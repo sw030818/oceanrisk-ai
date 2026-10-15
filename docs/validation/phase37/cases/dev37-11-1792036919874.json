@@ -1,0 +1,275 @@
+{
+  "id": "dev37-11",
+  "partition": "development",
+  "kind": "error",
+  "layout": "continued",
+  "language": "ko",
+  "variant": null,
+  "expectedFault": "quantity",
+  "expectedDocuments": 3,
+  "documents": 3,
+  "classified": 3,
+  "fieldPresent": 72,
+  "fieldVerified": 72,
+  "expectedPairCount": 3,
+  "relationshipTP": 3,
+  "relationshipFP": 0,
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    }
+  ],
+  "confirmedErrors": [
+    "quantity"
+  ],
+  "confirmedFalsePositives": [],
+  "faultDetected": true,
+  "confirmedFaultDetected": true,
+  "provisional": 0,
+  "independentIssues": 1,
+  "requiredMissing": 0,
+  "aggregation": [],
+  "primary": [
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "not_applicable",
+      "codes": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "packageCount",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "confirmed_mismatch",
+      "codes": []
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    }
+  ],
+  "classification": [
+    {
+      "expected": "house_bl",
+      "aiType": "house_bl",
+      "aiEvidenceVerified": true,
+      "finalType": "house_bl",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "export_declaration",
+      "aiType": "export_declaration",
+      "aiEvidenceVerified": true,
+      "finalType": "export_declaration",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "house_manifest",
+      "aiType": "house_manifest",
+      "aiEvidenceVerified": true,
+      "finalType": "house_manifest",
+      "nativeRecovered": false
+    }
+  ],
+  "gold": {
+    "goldFields": 68,
+    "extractedCorrect": 68,
+    "verifiedCorrect": 68,
+    "extractionRecall": 1,
+    "verifiedGoldRecall": 1
+  },
+  "goldInitial": {
+    "goldFields": 68,
+    "extractedCorrect": 67,
+    "verifiedCorrect": 67,
+    "extractionRecall": 0.9852941176470589,
+    "verifiedGoldRecall": 0.9852941176470589
+  },
+  "recovery": [
+    {
+      "targets": 5,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 5,
+      "nativeDurationMs": 165,
+      "failures": {
+        "MISSING_EXTRACTION": 2,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 7,
+      "nativeApplied": 1,
+      "aiApplied": 0,
+      "unresolved": 6,
+      "nativeDurationMs": 181,
+      "failures": {
+        "MISSING_EXTRACTION": 3,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 6,
+      "nativeApplied": 1,
+      "aiApplied": 0,
+      "unresolved": 5,
+      "nativeDurationMs": 198,
+      "failures": {
+        "MISSING_EXTRACTION": 2,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    }
+  ],
+  "usage": [
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 13743,
+        "inputTokens": 8544,
+        "outputTokens": 1113,
+        "cachedInputTokens": 8541,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00064221,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 15067,
+        "inputTokens": 8745,
+        "outputTokens": 1176,
+        "cachedInputTokens": 8742,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.00067572,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 15175,
+        "inputTokens": 8540,
+        "outputTokens": 1088,
+        "cachedInputTokens": 8537,
+        "cacheWriteTokens": 0,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0006296699999999999,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    }
+  ],
+  "batchDurationsMs": [
+    30936,
+    26622
+  ],
+  "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+  "durationMs": 69109,
+  "inputHashes": [
+    "7b35bc3ae50216942980f9d0b9c44cd6eaa69c4b436eafaad0efa88995cc2201",
+    "61ec32b398abee9e9ccac694cc7052c1eb67dfee2fb3e0a1af42c6f91a00f4f9",
+    "92b3c9dcb2eb07fd63e258784cba501cbc1d54b20d871ae3f2976b8859904473"
+  ],
+  "responseDocuments": 3,
+  "failedDocuments": [],
+  "budget": {
+    "documents": 77,
+    "requests": 77,
+    "measuredCostUsd": 0.07370183500000001,
+    "unresolvedCostUpperUsd": 1.3877787807814457e-17,
+    "maxDocuments": 120,
+    "maxRequests": 150,
+    "maxCostUsd": 0.5
+  }
+}

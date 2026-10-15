@@ -1,0 +1,269 @@
+{
+  "id": "dev37-27",
+  "partition": "development",
+  "kind": "uncertain",
+  "layout": "reversed",
+  "language": "mixed",
+  "variant": "missing-reference",
+  "expectedFault": null,
+  "expectedDocuments": 3,
+  "documents": 3,
+  "classified": 3,
+  "fieldPresent": 71,
+  "fieldVerified": 71,
+  "expectedPairCount": 3,
+  "relationshipTP": 1,
+  "relationshipFP": 0,
+  "relationships": [
+    {
+      "status": "proposed",
+      "sharedRoles": [],
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "sharedRoles": [],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    }
+  ],
+  "confirmedErrors": [],
+  "confirmedFalsePositives": [],
+  "faultDetected": false,
+  "confirmedFaultDetected": null,
+  "provisional": 0,
+  "independentIssues": 28,
+  "requiredMissing": 2,
+  "aggregation": [],
+  "primary": [
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "not_applicable",
+      "codes": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "packageCount",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    }
+  ],
+  "classification": [
+    {
+      "expected": "house_bl",
+      "aiType": "house_bl",
+      "aiEvidenceVerified": true,
+      "finalType": "house_bl",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "export_declaration",
+      "aiType": "export_declaration",
+      "aiEvidenceVerified": true,
+      "finalType": "export_declaration",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "house_manifest",
+      "aiType": "house_manifest",
+      "aiEvidenceVerified": true,
+      "finalType": "house_manifest",
+      "nativeRecovered": false
+    }
+  ],
+  "gold": {
+    "goldFields": 67,
+    "extractedCorrect": 67,
+    "verifiedCorrect": 67,
+    "extractionRecall": 1,
+    "verifiedGoldRecall": 1
+  },
+  "goldInitial": {
+    "goldFields": 67,
+    "extractedCorrect": 67,
+    "verifiedCorrect": 67,
+    "extractionRecall": 1,
+    "verifiedGoldRecall": 1
+  },
+  "recovery": [
+    {
+      "targets": 5,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 5,
+      "nativeDurationMs": 188,
+      "failures": {
+        "MISSING_EXTRACTION": 2,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 6,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 6,
+      "nativeDurationMs": 256,
+      "failures": {
+        "MISSING_EXTRACTION": 3,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 5,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 5,
+      "nativeDurationMs": 197,
+      "failures": {
+        "MISSING_EXTRACTION": 2,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    }
+  ],
+  "usage": [
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 12031,
+        "inputTokens": 8604,
+        "outputTokens": 1109,
+        "cachedInputTokens": 5912,
+        "cacheWriteTokens": 2689,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0009500450000000001,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 15485,
+        "inputTokens": 8689,
+        "outputTokens": 1176,
+        "cachedInputTokens": 5912,
+        "cacheWriteTokens": 2774,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0009941700000000002,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 12805,
+        "inputTokens": 8586,
+        "outputTokens": 1109,
+        "cachedInputTokens": 5912,
+        "cacheWriteTokens": 2671,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0009477950000000001,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    }
+  ],
+  "batchDurationsMs": [
+    28697,
+    13384
+  ],
+  "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+  "durationMs": 46022,
+  "inputHashes": [
+    "7f419dbf917a1eb07aba0a3f9ecdcf709a90456d95880e50d09682de47f9a32f",
+    "86ea1cfa603fbb1fd8938589cd6be690343249f24a14edc66eb42fd43b8d053c",
+    "e438744ecbc3843a3488592997d7bde3fa4e149e7a29141d8990099d96cc0180"
+  ],
+  "responseDocuments": 3,
+  "failedDocuments": [],
+  "budget": {
+    "documents": 87,
+    "requests": 87,
+    "measuredCostUsd": 0.08195500000000001,
+    "unresolvedCostUpperUsd": 1.214306433183765e-17,
+    "maxDocuments": 120,
+    "maxRequests": 150,
+    "maxCostUsd": 0.5
+  }
+}

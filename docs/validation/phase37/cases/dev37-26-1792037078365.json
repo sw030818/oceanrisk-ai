@@ -1,0 +1,279 @@
+{
+  "id": "dev37-26",
+  "partition": "development",
+  "kind": "uncertain",
+  "layout": "ledger",
+  "language": "ko",
+  "variant": "partial",
+  "expectedFault": null,
+  "expectedDocuments": 3,
+  "documents": 3,
+  "classified": 3,
+  "fieldPresent": 71,
+  "fieldVerified": 71,
+  "expectedPairCount": 3,
+  "relationshipTP": 3,
+  "relationshipFP": 0,
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    }
+  ],
+  "confirmedErrors": [],
+  "confirmedFalsePositives": [],
+  "faultDetected": false,
+  "confirmedFaultDetected": null,
+  "provisional": 3,
+  "independentIssues": 9,
+  "requiredMissing": 0,
+  "aggregation": [],
+  "primary": [
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "not_applicable",
+      "codes": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "provisional_match",
+      "codes": [
+        "PARTIAL_SHIPMENT"
+      ]
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "packageCount",
+      "status": "provisional_match",
+      "codes": [
+        "PARTIAL_SHIPMENT"
+      ]
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "provisional_mismatch",
+      "codes": [
+        "PARTIAL_SHIPMENT"
+      ]
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    }
+  ],
+  "classification": [
+    {
+      "expected": "house_bl",
+      "aiType": "house_bl",
+      "aiEvidenceVerified": true,
+      "finalType": "house_bl",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "export_declaration",
+      "aiType": "export_declaration",
+      "aiEvidenceVerified": true,
+      "finalType": "export_declaration",
+      "nativeRecovered": false
+    },
+    {
+      "expected": "house_manifest",
+      "aiType": "house_manifest",
+      "aiEvidenceVerified": true,
+      "finalType": "house_manifest",
+      "nativeRecovered": false
+    }
+  ],
+  "gold": {
+    "goldFields": 68,
+    "extractedCorrect": 66,
+    "verifiedCorrect": 66,
+    "extractionRecall": 0.9705882352941176,
+    "verifiedGoldRecall": 0.9705882352941176
+  },
+  "goldInitial": {
+    "goldFields": 68,
+    "extractedCorrect": 66,
+    "verifiedCorrect": 66,
+    "extractionRecall": 0.9705882352941176,
+    "verifiedGoldRecall": 0.9705882352941176
+  },
+  "recovery": [
+    {
+      "targets": 5,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 5,
+      "nativeDurationMs": 82,
+      "failures": {
+        "MISSING_EXTRACTION": 2,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 7,
+      "nativeApplied": 1,
+      "aiApplied": 0,
+      "unresolved": 6,
+      "nativeDurationMs": 104,
+      "failures": {
+        "MISSING_EXTRACTION": 3,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 5,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 5,
+      "nativeDurationMs": 82,
+      "failures": {
+        "MISSING_EXTRACTION": 2,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    }
+  ],
+  "usage": [
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 14287,
+        "inputTokens": 7680,
+        "outputTokens": 993,
+        "cachedInputTokens": 5912,
+        "cacheWriteTokens": 1765,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0007765450000000001,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 15841,
+        "inputTokens": 7770,
+        "outputTokens": 1077,
+        "cachedInputTokens": 5912,
+        "cacheWriteTokens": 1855,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.000829795,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 13796,
+        "inputTokens": 7684,
+        "outputTokens": 993,
+        "cachedInputTokens": 5912,
+        "cacheWriteTokens": 1769,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0007770450000000001,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    }
+  ],
+  "batchDurationsMs": [
+    30959,
+    14178
+  ],
+  "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+  "durationMs": 48291,
+  "inputHashes": [
+    "c2c9e9a39902a8a447f118002ffe07603b4f2f1f1974a645b8bedfff39d29689",
+    "262295b4e54f5b729ac1357f1c644f716cca88c9435af6afb37cdee2d26f6a71",
+    "b0fb16dd714beafd03a1d2c7b6a36be58a3213e5163997841f3071e5ea1b7d75"
+  ],
+  "responseDocuments": 3,
+  "failedDocuments": [],
+  "budget": {
+    "documents": 84,
+    "requests": 84,
+    "measuredCostUsd": 0.07906299000000001,
+    "unresolvedCostUpperUsd": 1.214306433183765e-17,
+    "maxDocuments": 120,
+    "maxRequests": 150,
+    "maxCostUsd": 0.5
+  }
+}

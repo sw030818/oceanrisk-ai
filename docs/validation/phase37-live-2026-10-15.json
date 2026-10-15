@@ -1,17 +1,17 @@
 {
   "phase": "3.7",
-  "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+  "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
   "kind": "Actual OpenAI Responses on generated synthetic PDFs; fixed truth withheld from provider; no real customer generalization claim",
   "budget": {
-    "documents": 71,
-    "requests": 71,
-    "measuredCostUsd": 0.069969205,
-    "unresolvedCostUpperUsd": 1.3877787807814457e-17,
+    "documents": 87,
+    "requests": 87,
+    "measuredCostUsd": 0.08195500000000001,
+    "unresolvedCostUpperUsd": 1.214306433183765e-17,
     "maxDocuments": 120,
     "maxRequests": 150,
     "maxCostUsd": 0.5
   },
-  "sourceAttempts": 23,
+  "sourceAttempts": 28,
   "allAttempts": [
     {
       "id": "dev37-1",
@@ -219,161 +219,206 @@
       "documents": 3,
       "classified": 3,
       "issues": 6
+    },
+    {
+      "id": "dev37-2",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "dev37-2-1792036850087.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "dev37-11",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "dev37-11-1792036919874.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    },
+    {
+      "id": "dev37-21",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "dev37-21-1792037012530.json",
+      "failedDocuments": [],
+      "documents": 4,
+      "classified": 4,
+      "issues": 1
+    },
+    {
+      "id": "dev37-26",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "dev37-26-1792037078365.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 9
+    },
+    {
+      "id": "dev37-27",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "dev37-27-1792037125269.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 28
     }
   ],
   "finalSource": {
     "allAttempts": {
       "summary": {
-        "scenarios": 20,
-        "documents": 62,
-        "classified": 62,
-        "fieldPresent": 1580,
-        "fieldVerified": 1556,
-        "fieldVerificationRate": 0.9848101265822785,
-        "errorScenarios": 10,
-        "flaggedFaults": 10,
-        "confirmedTP": 8,
+        "scenarios": 5,
+        "documents": 16,
+        "classified": 16,
+        "fieldPresent": 395,
+        "fieldVerified": 395,
+        "fieldVerificationRate": 1,
+        "errorScenarios": 1,
+        "flaggedFaults": 1,
+        "confirmedTP": 1,
         "confirmedFP": 0,
         "confirmedFN": 0,
         "confirmedPrecision": 1,
         "confirmedRecall": 1,
-        "relationshipTP": 60,
+        "relationshipTP": 15,
         "relationshipFP": 0,
-        "relationshipExpected": 62,
-        "normalScenarios": 5,
+        "relationshipExpected": 17,
+        "normalScenarios": 1,
         "normalWithHolds": 0,
-        "unresolvedCoreComparisons": 71
+        "unresolvedCoreComparisons": 11
       },
       "goldNative": {
-        "goldFields": 1458,
-        "extractedCorrect": 1458,
-        "verifiedCorrect": 1458,
-        "extractionRecall": 1,
-        "verifiedGoldRecall": 1
+        "goldFields": 373,
+        "extractedCorrect": 371,
+        "verifiedCorrect": 371,
+        "extractionRecall": 0.9946380697050938,
+        "verifiedGoldRecall": 0.9946380697050938
       },
       "goldInitial": {
-        "goldFields": 1458,
-        "extractedCorrect": 1456,
-        "verifiedCorrect": 1454,
-        "extractionRecall": 0.9986282578875172,
-        "verifiedGoldRecall": 0.9972565157750343
+        "goldFields": 373,
+        "extractedCorrect": 370,
+        "verifiedCorrect": 370,
+        "extractionRecall": 0.9919571045576407,
+        "verifiedGoldRecall": 0.9919571045576407
       },
       "rawClassification": {
-        "correct": 62,
-        "total": 62
+        "correct": 16,
+        "total": 16
       },
       "nativeTypeRecoveries": 0,
-      "independentIssues": 94,
+      "independentIssues": 39,
       "normalWithAnyIssues": 0,
       "providerDurationMs": {
-        "count": 62,
-        "mean": 9789.016129032258,
-        "median": 10950,
-        "max": 16297
+        "count": 16,
+        "mean": 14595.6875,
+        "median": 14868,
+        "max": 18405
       },
-      "estimatedCostUsd": 0.061113795
+      "estimatedCostUsd": 0.011985795
     },
     "firstAttemptPerDistinctCase": {
       "summary": {
-        "scenarios": 20,
-        "documents": 62,
-        "classified": 62,
-        "fieldPresent": 1580,
-        "fieldVerified": 1556,
-        "fieldVerificationRate": 0.9848101265822785,
-        "errorScenarios": 10,
-        "flaggedFaults": 10,
-        "confirmedTP": 8,
+        "scenarios": 5,
+        "documents": 16,
+        "classified": 16,
+        "fieldPresent": 395,
+        "fieldVerified": 395,
+        "fieldVerificationRate": 1,
+        "errorScenarios": 1,
+        "flaggedFaults": 1,
+        "confirmedTP": 1,
         "confirmedFP": 0,
         "confirmedFN": 0,
         "confirmedPrecision": 1,
         "confirmedRecall": 1,
-        "relationshipTP": 60,
+        "relationshipTP": 15,
         "relationshipFP": 0,
-        "relationshipExpected": 62,
-        "normalScenarios": 5,
+        "relationshipExpected": 17,
+        "normalScenarios": 1,
         "normalWithHolds": 0,
-        "unresolvedCoreComparisons": 71
+        "unresolvedCoreComparisons": 11
       },
       "goldNative": {
-        "goldFields": 1458,
-        "extractedCorrect": 1458,
-        "verifiedCorrect": 1458,
-        "extractionRecall": 1,
-        "verifiedGoldRecall": 1
+        "goldFields": 373,
+        "extractedCorrect": 371,
+        "verifiedCorrect": 371,
+        "extractionRecall": 0.9946380697050938,
+        "verifiedGoldRecall": 0.9946380697050938
       },
       "goldInitial": {
-        "goldFields": 1458,
-        "extractedCorrect": 1456,
-        "verifiedCorrect": 1454,
-        "extractionRecall": 0.9986282578875172,
-        "verifiedGoldRecall": 0.9972565157750343
+        "goldFields": 373,
+        "extractedCorrect": 370,
+        "verifiedCorrect": 370,
+        "extractionRecall": 0.9919571045576407,
+        "verifiedGoldRecall": 0.9919571045576407
       },
       "rawClassification": {
-        "correct": 62,
-        "total": 62
+        "correct": 16,
+        "total": 16
       },
       "nativeTypeRecoveries": 0,
-      "independentIssues": 94,
+      "independentIssues": 39,
       "normalWithAnyIssues": 0,
       "providerDurationMs": {
-        "count": 62,
-        "mean": 9789.016129032258,
-        "median": 10950,
-        "max": 16297
+        "count": 16,
+        "mean": 14595.6875,
+        "median": 14868,
+        "max": 18405
       },
-      "estimatedCostUsd": 0.061113795
+      "estimatedCostUsd": 0.011985795
     },
     "development": {
       "summary": {
-        "scenarios": 20,
-        "documents": 62,
-        "classified": 62,
-        "fieldPresent": 1580,
-        "fieldVerified": 1556,
-        "fieldVerificationRate": 0.9848101265822785,
-        "errorScenarios": 10,
-        "flaggedFaults": 10,
-        "confirmedTP": 8,
+        "scenarios": 5,
+        "documents": 16,
+        "classified": 16,
+        "fieldPresent": 395,
+        "fieldVerified": 395,
+        "fieldVerificationRate": 1,
+        "errorScenarios": 1,
+        "flaggedFaults": 1,
+        "confirmedTP": 1,
         "confirmedFP": 0,
         "confirmedFN": 0,
         "confirmedPrecision": 1,
         "confirmedRecall": 1,
-        "relationshipTP": 60,
+        "relationshipTP": 15,
         "relationshipFP": 0,
-        "relationshipExpected": 62,
-        "normalScenarios": 5,
+        "relationshipExpected": 17,
+        "normalScenarios": 1,
         "normalWithHolds": 0,
-        "unresolvedCoreComparisons": 71
+        "unresolvedCoreComparisons": 11
       },
       "goldNative": {
-        "goldFields": 1458,
-        "extractedCorrect": 1458,
-        "verifiedCorrect": 1458,
-        "extractionRecall": 1,
-        "verifiedGoldRecall": 1
+        "goldFields": 373,
+        "extractedCorrect": 371,
+        "verifiedCorrect": 371,
+        "extractionRecall": 0.9946380697050938,
+        "verifiedGoldRecall": 0.9946380697050938
       },
       "goldInitial": {
-        "goldFields": 1458,
-        "extractedCorrect": 1456,
-        "verifiedCorrect": 1454,
-        "extractionRecall": 0.9986282578875172,
-        "verifiedGoldRecall": 0.9972565157750343
+        "goldFields": 373,
+        "extractedCorrect": 370,
+        "verifiedCorrect": 370,
+        "extractionRecall": 0.9919571045576407,
+        "verifiedGoldRecall": 0.9919571045576407
       },
       "rawClassification": {
-        "correct": 62,
-        "total": 62
+        "correct": 16,
+        "total": 16
       },
       "nativeTypeRecoveries": 0,
-      "independentIssues": 94,
+      "independentIssues": 39,
       "normalWithAnyIssues": 0,
       "providerDurationMs": {
-        "count": 62,
-        "mean": 9789.016129032258,
-        "median": 10950,
-        "max": 16297
+        "count": 16,
+        "mean": 14595.6875,
+        "median": 14868,
+        "max": 18405
       },
-      "estimatedCostUsd": 0.061113795
+      "estimatedCostUsd": 0.011985795
     },
     "holdout": {
       "summary": {
@@ -433,43 +478,7 @@
         "layout": "ledger",
         "language": "ko",
         "variant": null,
-        "artifact": "dev37-2-1792035176205.json"
-      },
-      {
-        "id": "dev37-3",
-        "partition": "development",
-        "kind": "normal",
-        "layout": "reversed",
-        "language": "mixed",
-        "variant": null,
-        "artifact": "dev37-3-1792035223152.json"
-      },
-      {
-        "id": "dev37-4",
-        "partition": "development",
-        "kind": "normal",
-        "layout": "bilingual",
-        "language": "en",
-        "variant": null,
-        "artifact": "dev37-4-1792035248885.json"
-      },
-      {
-        "id": "dev37-5",
-        "partition": "development",
-        "kind": "normal",
-        "layout": "continued",
-        "language": "ko",
-        "variant": null,
-        "artifact": "dev37-5-1792035273895.json"
-      },
-      {
-        "id": "dev37-6",
-        "partition": "development",
-        "kind": "normal",
-        "layout": "header-units",
-        "language": "mixed",
-        "variant": null,
-        "artifact": "dev37-6-1792035299306.json"
+        "artifact": "dev37-2-1792036850087.json"
       },
       {
         "id": "dev37-11",
@@ -478,88 +487,7 @@
         "layout": "continued",
         "language": "ko",
         "variant": null,
-        "artifact": "dev37-11-1792035348095.json"
-      },
-      {
-        "id": "dev37-12",
-        "partition": "development",
-        "kind": "error",
-        "layout": "header-units",
-        "language": "mixed",
-        "variant": null,
-        "artifact": "dev37-12-1792035388008.json"
-      },
-      {
-        "id": "dev37-13",
-        "partition": "development",
-        "kind": "error",
-        "layout": "cards",
-        "language": "en",
-        "variant": null,
-        "artifact": "dev37-13-1792035412564.json"
-      },
-      {
-        "id": "dev37-14",
-        "partition": "development",
-        "kind": "error",
-        "layout": "ledger",
-        "language": "ko",
-        "variant": null,
-        "artifact": "dev37-14-1792035434016.json"
-      },
-      {
-        "id": "dev37-15",
-        "partition": "development",
-        "kind": "error",
-        "layout": "reversed",
-        "language": "mixed",
-        "variant": null,
-        "artifact": "dev37-15-1792035460584.json"
-      },
-      {
-        "id": "dev37-16",
-        "partition": "development",
-        "kind": "error",
-        "layout": "bilingual",
-        "language": "en",
-        "variant": null,
-        "artifact": "dev37-16-1792035506818.json"
-      },
-      {
-        "id": "dev37-17",
-        "partition": "development",
-        "kind": "error",
-        "layout": "continued",
-        "language": "ko",
-        "variant": null,
-        "artifact": "dev37-17-1792035548865.json"
-      },
-      {
-        "id": "dev37-18",
-        "partition": "development",
-        "kind": "error",
-        "layout": "header-units",
-        "language": "mixed",
-        "variant": null,
-        "artifact": "dev37-18-1792035590352.json"
-      },
-      {
-        "id": "dev37-19",
-        "partition": "development",
-        "kind": "error",
-        "layout": "cards",
-        "language": "en",
-        "variant": null,
-        "artifact": "dev37-19-1792035631370.json"
-      },
-      {
-        "id": "dev37-20",
-        "partition": "development",
-        "kind": "error",
-        "layout": "ledger",
-        "language": "ko",
-        "variant": null,
-        "artifact": "dev37-20-1792035669527.json"
+        "artifact": "dev37-11-1792036919874.json"
       },
       {
         "id": "dev37-21",
@@ -568,43 +496,25 @@
         "layout": "reversed",
         "language": "mixed",
         "variant": "multi-declaration",
-        "artifact": "dev37-21-1792035789612.json"
+        "artifact": "dev37-21-1792037012530.json"
       },
       {
-        "id": "dev37-22",
+        "id": "dev37-26",
         "partition": "development",
-        "kind": "complex",
-        "layout": "bilingual",
-        "language": "en",
-        "variant": "multi-item",
-        "artifact": "dev37-22-1792035839088.json"
-      },
-      {
-        "id": "dev37-23",
-        "partition": "development",
-        "kind": "complex",
-        "layout": "continued",
+        "kind": "uncertain",
+        "layout": "ledger",
         "language": "ko",
-        "variant": "multi-container",
-        "artifact": "dev37-23-1792035889483.json"
+        "variant": "partial",
+        "artifact": "dev37-26-1792037078365.json"
       },
       {
-        "id": "dev37-24",
+        "id": "dev37-27",
         "partition": "development",
-        "kind": "complex",
-        "layout": "header-units",
+        "kind": "uncertain",
+        "layout": "reversed",
         "language": "mixed",
-        "variant": "split-item",
-        "artifact": "dev37-24-1792035953305.json"
-      },
-      {
-        "id": "dev37-25",
-        "partition": "development",
-        "kind": "complex",
-        "layout": "cards",
-        "language": "en",
-        "variant": "shared",
-        "artifact": "dev37-25-1792035990356.json"
+        "variant": "missing-reference",
+        "artifact": "dev37-27-1792037125269.json"
       }
     ],
     "repeats": []
@@ -622,5 +532,5 @@
     "Raw current redundant document fields can remain unverified while valid item-level fields compare",
     "Relationship counts use predetermined fixture ground truth, not production traffic"
   ],
-  "generatedAt": "2026-10-15T03:47:00.998Z"
+  "generatedAt": "2026-10-15T04:06:27.824Z"
 }
