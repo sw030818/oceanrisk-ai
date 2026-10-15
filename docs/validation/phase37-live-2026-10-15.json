@@ -1,0 +1,537 @@
+{
+  "phase": "3.7",
+  "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+  "kind": "Actual OpenAI Responses on generated synthetic PDFs; fixed truth withheld from provider; no real customer generalization claim",
+  "budget": {
+    "documents": 54,
+    "requests": 54,
+    "measuredCostUsd": 0.051604190000000015,
+    "unresolvedCostUpperUsd": 1.734723475976807e-17,
+    "maxDocuments": 120,
+    "maxRequests": 150,
+    "maxCostUsd": 0.5
+  },
+  "sourceAttempts": 18,
+  "allAttempts": [
+    {
+      "id": "dev37-1",
+      "sourceSha": "726c4aa1e8f5000fc15165805a33be86044f7b3b",
+      "artifact": "dev37-1-1792020402324.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "dev37-2",
+      "sourceSha": "726c4aa1e8f5000fc15165805a33be86044f7b3b",
+      "artifact": "dev37-2-1792020445113.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 2,
+      "issues": 25
+    },
+    {
+      "id": "dev37-3",
+      "sourceSha": "726c4aa1e8f5000fc15165805a33be86044f7b3b",
+      "artifact": "dev37-3-1792020475664.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "dev37-2",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-2-1792035176205.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "dev37-3",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-3-1792035223152.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "dev37-4",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-4-1792035248885.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "dev37-5",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-5-1792035273895.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "dev37-6",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-6-1792035299306.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "dev37-11",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-11-1792035348095.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    },
+    {
+      "id": "dev37-12",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-12-1792035388008.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    },
+    {
+      "id": "dev37-13",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-13-1792035412564.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    },
+    {
+      "id": "dev37-14",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-14-1792035434016.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 2
+    },
+    {
+      "id": "dev37-15",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-15-1792035460584.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    },
+    {
+      "id": "dev37-16",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-16-1792035506818.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 2
+    },
+    {
+      "id": "dev37-17",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-17-1792035548865.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 2
+    },
+    {
+      "id": "dev37-18",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-18-1792035590352.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 2
+    },
+    {
+      "id": "dev37-19",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-19-1792035631370.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    },
+    {
+      "id": "dev37-20",
+      "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+      "artifact": "dev37-20-1792035669527.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    }
+  ],
+  "finalSource": {
+    "allAttempts": {
+      "summary": {
+        "scenarios": 15,
+        "documents": 45,
+        "classified": 45,
+        "fieldPresent": 1107,
+        "fieldVerified": 1088,
+        "fieldVerificationRate": 0.982836495031617,
+        "errorScenarios": 10,
+        "flaggedFaults": 10,
+        "confirmedTP": 8,
+        "confirmedFP": 0,
+        "confirmedFN": 0,
+        "confirmedPrecision": 1,
+        "confirmedRecall": 1,
+        "relationshipTP": 41,
+        "relationshipFP": 0,
+        "relationshipExpected": 43,
+        "normalScenarios": 5,
+        "normalWithHolds": 0,
+        "unresolvedCoreComparisons": 28
+      },
+      "goldNative": {
+        "goldFields": 1022,
+        "extractedCorrect": 1022,
+        "verifiedCorrect": 1022,
+        "extractionRecall": 1,
+        "verifiedGoldRecall": 1
+      },
+      "goldInitial": {
+        "goldFields": 1022,
+        "extractedCorrect": 1020,
+        "verifiedCorrect": 1018,
+        "extractionRecall": 0.9980430528375733,
+        "verifiedGoldRecall": 0.9960861056751468
+      },
+      "rawClassification": {
+        "correct": 45,
+        "total": 45
+      },
+      "nativeTypeRecoveries": 0,
+      "independentIssues": 14,
+      "normalWithAnyIssues": 0,
+      "providerDurationMs": {
+        "count": 45,
+        "mean": 8533.244444444445,
+        "median": 7084,
+        "max": 13976
+      },
+      "estimatedCostUsd": 0.04274878
+    },
+    "firstAttemptPerDistinctCase": {
+      "summary": {
+        "scenarios": 15,
+        "documents": 45,
+        "classified": 45,
+        "fieldPresent": 1107,
+        "fieldVerified": 1088,
+        "fieldVerificationRate": 0.982836495031617,
+        "errorScenarios": 10,
+        "flaggedFaults": 10,
+        "confirmedTP": 8,
+        "confirmedFP": 0,
+        "confirmedFN": 0,
+        "confirmedPrecision": 1,
+        "confirmedRecall": 1,
+        "relationshipTP": 41,
+        "relationshipFP": 0,
+        "relationshipExpected": 43,
+        "normalScenarios": 5,
+        "normalWithHolds": 0,
+        "unresolvedCoreComparisons": 28
+      },
+      "goldNative": {
+        "goldFields": 1022,
+        "extractedCorrect": 1022,
+        "verifiedCorrect": 1022,
+        "extractionRecall": 1,
+        "verifiedGoldRecall": 1
+      },
+      "goldInitial": {
+        "goldFields": 1022,
+        "extractedCorrect": 1020,
+        "verifiedCorrect": 1018,
+        "extractionRecall": 0.9980430528375733,
+        "verifiedGoldRecall": 0.9960861056751468
+      },
+      "rawClassification": {
+        "correct": 45,
+        "total": 45
+      },
+      "nativeTypeRecoveries": 0,
+      "independentIssues": 14,
+      "normalWithAnyIssues": 0,
+      "providerDurationMs": {
+        "count": 45,
+        "mean": 8533.244444444445,
+        "median": 7084,
+        "max": 13976
+      },
+      "estimatedCostUsd": 0.04274878
+    },
+    "development": {
+      "summary": {
+        "scenarios": 15,
+        "documents": 45,
+        "classified": 45,
+        "fieldPresent": 1107,
+        "fieldVerified": 1088,
+        "fieldVerificationRate": 0.982836495031617,
+        "errorScenarios": 10,
+        "flaggedFaults": 10,
+        "confirmedTP": 8,
+        "confirmedFP": 0,
+        "confirmedFN": 0,
+        "confirmedPrecision": 1,
+        "confirmedRecall": 1,
+        "relationshipTP": 41,
+        "relationshipFP": 0,
+        "relationshipExpected": 43,
+        "normalScenarios": 5,
+        "normalWithHolds": 0,
+        "unresolvedCoreComparisons": 28
+      },
+      "goldNative": {
+        "goldFields": 1022,
+        "extractedCorrect": 1022,
+        "verifiedCorrect": 1022,
+        "extractionRecall": 1,
+        "verifiedGoldRecall": 1
+      },
+      "goldInitial": {
+        "goldFields": 1022,
+        "extractedCorrect": 1020,
+        "verifiedCorrect": 1018,
+        "extractionRecall": 0.9980430528375733,
+        "verifiedGoldRecall": 0.9960861056751468
+      },
+      "rawClassification": {
+        "correct": 45,
+        "total": 45
+      },
+      "nativeTypeRecoveries": 0,
+      "independentIssues": 14,
+      "normalWithAnyIssues": 0,
+      "providerDurationMs": {
+        "count": 45,
+        "mean": 8533.244444444445,
+        "median": 7084,
+        "max": 13976
+      },
+      "estimatedCostUsd": 0.04274878
+    },
+    "holdout": {
+      "summary": {
+        "scenarios": 0,
+        "documents": 0,
+        "classified": 0,
+        "fieldPresent": 0,
+        "fieldVerified": 0,
+        "fieldVerificationRate": null,
+        "errorScenarios": 0,
+        "flaggedFaults": 0,
+        "confirmedTP": 0,
+        "confirmedFP": 0,
+        "confirmedFN": 0,
+        "confirmedPrecision": null,
+        "confirmedRecall": null,
+        "relationshipTP": 0,
+        "relationshipFP": 0,
+        "relationshipExpected": 0,
+        "normalScenarios": 0,
+        "normalWithHolds": 0,
+        "unresolvedCoreComparisons": 0
+      },
+      "goldNative": {
+        "goldFields": 0,
+        "extractedCorrect": 0,
+        "verifiedCorrect": 0,
+        "extractionRecall": null,
+        "verifiedGoldRecall": null
+      },
+      "goldInitial": {
+        "goldFields": 0,
+        "extractedCorrect": 0,
+        "verifiedCorrect": 0,
+        "extractionRecall": null,
+        "verifiedGoldRecall": null
+      },
+      "rawClassification": {
+        "correct": 0,
+        "total": 0
+      },
+      "nativeTypeRecoveries": 0,
+      "independentIssues": 0,
+      "normalWithAnyIssues": 0,
+      "providerDurationMs": {
+        "count": 0,
+        "mean": null,
+        "max": null
+      },
+      "estimatedCostUsd": 0
+    },
+    "distinctCases": [
+      {
+        "id": "dev37-2",
+        "partition": "development",
+        "kind": "normal",
+        "layout": "ledger",
+        "language": "ko",
+        "variant": null,
+        "artifact": "dev37-2-1792035176205.json"
+      },
+      {
+        "id": "dev37-3",
+        "partition": "development",
+        "kind": "normal",
+        "layout": "reversed",
+        "language": "mixed",
+        "variant": null,
+        "artifact": "dev37-3-1792035223152.json"
+      },
+      {
+        "id": "dev37-4",
+        "partition": "development",
+        "kind": "normal",
+        "layout": "bilingual",
+        "language": "en",
+        "variant": null,
+        "artifact": "dev37-4-1792035248885.json"
+      },
+      {
+        "id": "dev37-5",
+        "partition": "development",
+        "kind": "normal",
+        "layout": "continued",
+        "language": "ko",
+        "variant": null,
+        "artifact": "dev37-5-1792035273895.json"
+      },
+      {
+        "id": "dev37-6",
+        "partition": "development",
+        "kind": "normal",
+        "layout": "header-units",
+        "language": "mixed",
+        "variant": null,
+        "artifact": "dev37-6-1792035299306.json"
+      },
+      {
+        "id": "dev37-11",
+        "partition": "development",
+        "kind": "error",
+        "layout": "continued",
+        "language": "ko",
+        "variant": null,
+        "artifact": "dev37-11-1792035348095.json"
+      },
+      {
+        "id": "dev37-12",
+        "partition": "development",
+        "kind": "error",
+        "layout": "header-units",
+        "language": "mixed",
+        "variant": null,
+        "artifact": "dev37-12-1792035388008.json"
+      },
+      {
+        "id": "dev37-13",
+        "partition": "development",
+        "kind": "error",
+        "layout": "cards",
+        "language": "en",
+        "variant": null,
+        "artifact": "dev37-13-1792035412564.json"
+      },
+      {
+        "id": "dev37-14",
+        "partition": "development",
+        "kind": "error",
+        "layout": "ledger",
+        "language": "ko",
+        "variant": null,
+        "artifact": "dev37-14-1792035434016.json"
+      },
+      {
+        "id": "dev37-15",
+        "partition": "development",
+        "kind": "error",
+        "layout": "reversed",
+        "language": "mixed",
+        "variant": null,
+        "artifact": "dev37-15-1792035460584.json"
+      },
+      {
+        "id": "dev37-16",
+        "partition": "development",
+        "kind": "error",
+        "layout": "bilingual",
+        "language": "en",
+        "variant": null,
+        "artifact": "dev37-16-1792035506818.json"
+      },
+      {
+        "id": "dev37-17",
+        "partition": "development",
+        "kind": "error",
+        "layout": "continued",
+        "language": "ko",
+        "variant": null,
+        "artifact": "dev37-17-1792035548865.json"
+      },
+      {
+        "id": "dev37-18",
+        "partition": "development",
+        "kind": "error",
+        "layout": "header-units",
+        "language": "mixed",
+        "variant": null,
+        "artifact": "dev37-18-1792035590352.json"
+      },
+      {
+        "id": "dev37-19",
+        "partition": "development",
+        "kind": "error",
+        "layout": "cards",
+        "language": "en",
+        "variant": null,
+        "artifact": "dev37-19-1792035631370.json"
+      },
+      {
+        "id": "dev37-20",
+        "partition": "development",
+        "kind": "error",
+        "layout": "ledger",
+        "language": "ko",
+        "variant": null,
+        "artifact": "dev37-20-1792035669527.json"
+      }
+    ],
+    "repeats": []
+  },
+  "holdout": {
+    "manifestSha256": "527d317209a8d990672ccc38f8a789035f8eabb6c0871a842ac83bde6061047d",
+    "synthetic": true,
+    "sharedGeneratorFamilies": true
+  },
+  "limitations": [
+    "Synthetic only; no independent real-customer PDF cohort",
+    "Finite bilingual lexicon and curated ports; unseen meanings remain provisional",
+    "Confirmed metrics exclude HBL/declaration reference faults, measured separately as warnings",
+    "Field verification rate among present values differs from fixed gold owner/source recall",
+    "Raw current redundant document fields can remain unverified while valid item-level fields compare",
+    "Relationship counts use predetermined fixture ground truth, not production traffic"
+  ],
+  "generatedAt": "2026-10-15T03:41:20.496Z",
+  "checkpoint": "Partial checkpoint: normal/error evaluation complete; complex/holdout/repeat pending. Ledger cumulative, never reset."
+}

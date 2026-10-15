@@ -125,3 +125,6 @@ PHASE 2.2 실행 결과: OpenAI Responses 기본 전환, phase별 최종 JSON �
 3. 선택적 추가 AI strict 후보1536/문서당1회/원문 재검증/실패 보존/기본 비활성, 별도 $0.50/60문서/75요청 도구를 구현한다.
 4. 기존482단위/54브라우저와 신규 복구·반례·예산·1440/390px 회귀, npmci/type/lint/build/worker/dev smoke 후 ship한다.
 5. 최종 동일 Production SHA에서 정상3종5회 및 오류/복잡/독립양식 최소 실API 검증. 단계별 정확도·오탐·비용·보류를 증거 브랜치에 저장한다.
+
+## PHASE 3.7 재개 체크포인트
+엔진·문제중심UI·600단위/61브라우저·main/Production 배포 완료. 새 정상/오류 실API 평가 완료, 복잡·Holdout·반복 및 최종 evidence 보고 진행 중. 누적 예산은 docs/validation/phase37-live-2026-10-15.json의 budget을 복원하며 초기화하지 않는다.

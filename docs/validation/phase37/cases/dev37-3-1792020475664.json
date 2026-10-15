@@ -1,0 +1,250 @@
+{
+  "id": "dev37-3",
+  "partition": "development",
+  "kind": "normal",
+  "layout": "reversed",
+  "language": "mixed",
+  "variant": null,
+  "expectedFault": null,
+  "expectedDocuments": 3,
+  "documents": 3,
+  "classified": 3,
+  "fieldPresent": 72,
+  "fieldVerified": 72,
+  "expectedPairCount": 3,
+  "relationshipTP": 3,
+  "relationshipFP": 0,
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "sharedRoles": [
+        "houseBlNumber"
+      ],
+      "conflictRoles": []
+    }
+  ],
+  "confirmedErrors": [],
+  "confirmedFalsePositives": [],
+  "faultDetected": false,
+  "confirmedFaultDetected": null,
+  "provisional": 0,
+  "independentIssues": 0,
+  "requiredMissing": 0,
+  "aggregation": [],
+  "primary": [
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "not_applicable",
+      "codes": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "packageCount",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "codes": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "codes": []
+    }
+  ],
+  "gold": {
+    "goldFields": 68,
+    "extractedCorrect": 68,
+    "verifiedCorrect": 68,
+    "extractionRecall": 1,
+    "verifiedGoldRecall": 1
+  },
+  "goldInitial": {
+    "goldFields": 68,
+    "extractedCorrect": 68,
+    "verifiedCorrect": 68,
+    "extractionRecall": 1,
+    "verifiedGoldRecall": 1
+  },
+  "recovery": [
+    {
+      "targets": 5,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 5,
+      "nativeDurationMs": 239,
+      "failures": {
+        "MISSING_EXTRACTION": 2,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 7,
+      "nativeApplied": 1,
+      "aiApplied": 0,
+      "unresolved": 6,
+      "nativeDurationMs": 307,
+      "failures": {
+        "MISSING_EXTRACTION": 3,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    },
+    {
+      "targets": 5,
+      "nativeApplied": 0,
+      "aiApplied": 0,
+      "unresolved": 5,
+      "nativeDurationMs": 218,
+      "failures": {
+        "MISSING_EXTRACTION": 2,
+        "SOURCE_NOT_PRESENT": 3
+      },
+      "extraRequests": 0,
+      "deferred": false
+    }
+  ],
+  "usage": [
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 8071,
+        "inputTokens": 8530,
+        "outputTokens": 1114,
+        "cachedInputTokens": 5837,
+        "cacheWriteTokens": 2690,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0009519200000000001,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 7872,
+        "inputTokens": 8727,
+        "outputTokens": 1179,
+        "cachedInputTokens": 5837,
+        "cacheWriteTokens": 2887,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.001009045,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    },
+    {
+      "usage": {
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "requestCount": 1,
+        "retryCount": 0,
+        "durationMs": 8216,
+        "inputTokens": 8514,
+        "outputTokens": 1112,
+        "cachedInputTokens": 5837,
+        "cacheWriteTokens": 2674,
+        "reasoningTokens": 0,
+        "estimatedCostUsd": 0.0009489200000000001,
+        "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      },
+      "recoveryUsage": null,
+      "errorCode": null
+    }
+  ],
+  "batchDurationsMs": [
+    17541,
+    8884
+  ],
+  "sourceSha": "726c4aa1e8f5000fc15165805a33be86044f7b3b",
+  "durationMs": 29432,
+  "inputHashes": [
+    "21730f7217794dfe05d514704676f364578b45c1510ebb65d56137332d265966",
+    "bee5bc3fdfa6addfe0c38cb377b3345b6847d941ef7be2f8520b209c6ec95292",
+    "69f16f02448f1ff39aca6fc02310484c1a531154746076e0e1f8e4119150f661"
+  ],
+  "responseDocuments": 3,
+  "failedDocuments": [],
+  "budget": {
+    "documents": 9,
+    "requests": 9,
+    "measuredCostUsd": 0.008855410000000001,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 120,
+    "maxRequests": 150,
+    "maxCostUsd": 0.5
+  }
+}

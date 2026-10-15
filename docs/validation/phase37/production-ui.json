@@ -1,0 +1,25 @@
+{
+  "sourceSha": "b38f30f6996a68360659618918759b1e02c939af",
+  "extractionSha": "b38f30f6996a68360659618918759b1e02c939af",
+  "kind": "official Production assets + prior actual OpenAI response replay; no additional provider calls",
+  "observations": [
+    {
+      "width": 1440,
+      "verifiedRows": 12,
+      "overflow": false,
+      "evidenceAndDrawer": true,
+      "editRestore": true,
+      "print": true,
+      "additionalPaidRequests": 0
+    },
+    {
+      "width": 390,
+      "verifiedRows": 12,
+      "overflow": false,
+      "evidenceAndDrawer": true,
+      "editRestore": true,
+      "print": true,
+      "additionalPaidRequests": 0
+    }
+  ]
+}
