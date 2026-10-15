@@ -1,0 +1,130 @@
+{
+  "frozenAt": "2026-10-15T08:15:00+09:00",
+  "partition": "holdout",
+  "scenarios": [
+    {
+      "id": "hold37-1",
+      "partition": "holdout",
+      "kind": "normal",
+      "layout": "reversed",
+      "language": "ko",
+      "product": {
+        "en": "COTTON T SHIRT MODEL TX9",
+        "ko": "면 티셔츠 모델 TX9",
+        "hs": "6109.10-0000",
+        "quantity": 650
+      },
+      "loading": "NLRTM",
+      "discharge": "JPTYO"
+    },
+    {
+      "id": "hold37-2",
+      "partition": "holdout",
+      "kind": "normal",
+      "layout": "ledger",
+      "language": "mixed",
+      "product": {
+        "en": "COPPER ELECTRIC CABLE 4MM",
+        "ko": "구리 전기 케이블 4MM",
+        "hs": "8544.49-0000",
+        "quantity": 190
+      },
+      "loading": "HKHKG",
+      "discharge": "NZAKL"
+    },
+    {
+      "id": "hold37-3",
+      "partition": "holdout",
+      "kind": "normal",
+      "layout": "continued",
+      "language": "en",
+      "product": {
+        "en": "PLASTIC STORAGE BOX 12L",
+        "ko": "플라스틱 수납 상자 12L",
+        "hs": "3924.90-0000",
+        "quantity": 230
+      },
+      "loading": "USLGB",
+      "discharge": "DEHAM"
+    },
+    {
+      "id": "hold37-4",
+      "partition": "holdout",
+      "kind": "normal",
+      "layout": "header-units",
+      "language": "ko",
+      "product": {
+        "en": "ALUMINIUM BALL VALVE MODEL DV8",
+        "ko": "알루미늄 볼 밸브 모델 DV8",
+        "hs": "8481.80-0000",
+        "quantity": 88
+      },
+      "loading": "VNHPH",
+      "discharge": "AEJEA"
+    },
+    {
+      "id": "hold37-5",
+      "partition": "holdout",
+      "kind": "error",
+      "layout": "cards",
+      "language": "en",
+      "product": {
+        "en": "CERAMIC DINNER PLATE 19CM",
+        "ko": "도자기 식사 접시 19CM",
+        "hs": "6912.00-0000",
+        "quantity": 1000
+      },
+      "loading": "NLRTM",
+      "discharge": "JPTYO",
+      "error": "quantity"
+    },
+    {
+      "id": "hold37-6",
+      "partition": "holdout",
+      "kind": "error",
+      "layout": "bilingual",
+      "language": "mixed",
+      "product": {
+        "en": "POLYESTER BACKPACK MODEL TR4",
+        "ko": "폴리에스터 배낭 모델 TR4",
+        "hs": "4202.92-0000",
+        "quantity": 580
+      },
+      "loading": "HKHKG",
+      "discharge": "NZAKL",
+      "error": "sealNumber"
+    },
+    {
+      "id": "hold37-7",
+      "partition": "holdout",
+      "kind": "error",
+      "layout": "reversed",
+      "language": "ko",
+      "product": {
+        "en": "RUBBER SAFETY GLOVES SIZE M",
+        "ko": "고무 안전 장갑 사이즈 M",
+        "hs": "4015.19-0000",
+        "quantity": 2400
+      },
+      "loading": "USLGB",
+      "discharge": "DEHAM",
+      "error": "goodsDescription"
+    },
+    {
+      "id": "hold37-8",
+      "partition": "holdout",
+      "kind": "complex",
+      "layout": "continued",
+      "language": "mixed",
+      "product": {
+        "en": "GLASS STORAGE JAR 750ML",
+        "ko": "유리 저장 용기 750ML",
+        "hs": "7010.90-0000",
+        "quantity": 460
+      },
+      "loading": "VNHPH",
+      "discharge": "AEJEA",
+      "variant": "multi-declaration"
+    }
+  ]
+}

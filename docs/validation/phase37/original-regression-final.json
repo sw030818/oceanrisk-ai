@@ -1,0 +1,142 @@
+{
+  "kind": "Existing private original PDFs + prior actual response free replay; zero new API calls",
+  "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+  "cases": [
+    {
+      "case": "private-original-regression-1",
+      "core": [
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        }
+      ],
+      "confirmed": 9,
+      "expected": 9,
+      "semanticLimitations": [
+        {
+          "meaning": "goodsDescription",
+          "status": "provisional_mismatch",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "hsCode",
+          "status": "provisional_mismatch",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "private-original-regression-2",
+      "core": [
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        }
+      ],
+      "confirmed": 9,
+      "expected": 9,
+      "semanticLimitations": [
+        {
+          "meaning": "goodsDescription",
+          "status": "provisional_mismatch",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "hsCode",
+          "status": "provisional_mismatch",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -3,15 +3,15 @@
   "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
   "kind": "Actual OpenAI Responses on generated synthetic PDFs; fixed truth withheld from provider; no real customer generalization claim",
   "budget": {
-    "documents": 87,
-    "requests": 87,
-    "measuredCostUsd": 0.08195500000000001,
-    "unresolvedCostUpperUsd": 1.214306433183765e-17,
+    "documents": 115,
+    "requests": 115,
+    "measuredCostUsd": 0.10917903000000002,
+    "unresolvedCostUpperUsd": 3.469446951953614e-18,
     "maxDocuments": 120,
     "maxRequests": 150,
     "maxCostUsd": 0.5
   },
-  "sourceAttempts": 28,
+  "sourceAttempts": 37,
   "allAttempts": [
     {
       "id": "dev37-1",
@@ -264,110 +264,191 @@
       "documents": 3,
       "classified": 3,
       "issues": 28
+    },
+    {
+      "id": "hold37-1",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "hold37-1-1792037273406.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "hold37-2",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "hold37-2-1792037313705.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "hold37-3",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "hold37-3-1792037364376.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "hold37-4",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "hold37-4-1792037420845.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
+    },
+    {
+      "id": "hold37-5",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "hold37-5-1792037476095.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    },
+    {
+      "id": "hold37-6",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "hold37-6-1792037542784.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 1
+    },
+    {
+      "id": "hold37-7",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "hold37-7-1792037588752.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 7
+    },
+    {
+      "id": "hold37-8",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "hold37-8-1792037657135.json",
+      "failedDocuments": [],
+      "documents": 4,
+      "classified": 4,
+      "issues": 1
+    },
+    {
+      "id": "dev37-2",
+      "sourceSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+      "artifact": "dev37-2-1792037702405.json",
+      "failedDocuments": [],
+      "documents": 3,
+      "classified": 3,
+      "issues": 0
     }
   ],
   "finalSource": {
     "allAttempts": {
       "summary": {
-        "scenarios": 5,
-        "documents": 16,
-        "classified": 16,
-        "fieldPresent": 395,
-        "fieldVerified": 395,
-        "fieldVerificationRate": 1,
-        "errorScenarios": 1,
-        "flaggedFaults": 1,
-        "confirmedTP": 1,
+        "scenarios": 14,
+        "documents": 44,
+        "classified": 44,
+        "fieldPresent": 1090,
+        "fieldVerified": 1082,
+        "fieldVerificationRate": 0.9926605504587156,
+        "errorScenarios": 4,
+        "flaggedFaults": 4,
+        "confirmedTP": 4,
         "confirmedFP": 0,
         "confirmedFN": 0,
         "confirmedPrecision": 1,
         "confirmedRecall": 1,
-        "relationshipTP": 15,
+        "relationshipTP": 44,
         "relationshipFP": 0,
-        "relationshipExpected": 17,
-        "normalScenarios": 1,
+        "relationshipExpected": 46,
+        "normalScenarios": 6,
         "normalWithHolds": 0,
-        "unresolvedCoreComparisons": 11
+        "unresolvedCoreComparisons": 20
       },
       "goldNative": {
-        "goldFields": 373,
-        "extractedCorrect": 371,
-        "verifiedCorrect": 371,
-        "extractionRecall": 0.9946380697050938,
-        "verifiedGoldRecall": 0.9946380697050938
+        "goldFields": 1019,
+        "extractedCorrect": 1017,
+        "verifiedCorrect": 1017,
+        "extractionRecall": 0.9980372914622179,
+        "verifiedGoldRecall": 0.9980372914622179
       },
       "goldInitial": {
-        "goldFields": 373,
-        "extractedCorrect": 370,
-        "verifiedCorrect": 370,
-        "extractionRecall": 0.9919571045576407,
-        "verifiedGoldRecall": 0.9919571045576407
+        "goldFields": 1019,
+        "extractedCorrect": 1016,
+        "verifiedCorrect": 1013,
+        "extractionRecall": 0.9970559371933267,
+        "verifiedGoldRecall": 0.9941118743866536
       },
       "rawClassification": {
-        "correct": 16,
-        "total": 16
+        "correct": 44,
+        "total": 44
       },
       "nativeTypeRecoveries": 0,
-      "independentIssues": 39,
+      "independentIssues": 49,
       "normalWithAnyIssues": 0,
       "providerDurationMs": {
-        "count": 16,
-        "mean": 14595.6875,
-        "median": 14868,
-        "max": 18405
+        "count": 44,
+        "mean": 14345.977272727272,
+        "median": 14250,
+        "max": 33534
       },
-      "estimatedCostUsd": 0.011985795
+      "estimatedCostUsd": 0.039209825000000004
     },
     "firstAttemptPerDistinctCase": {
       "summary": {
-        "scenarios": 5,
-        "documents": 16,
-        "classified": 16,
-        "fieldPresent": 395,
-        "fieldVerified": 395,
-        "fieldVerificationRate": 1,
-        "errorScenarios": 1,
-        "flaggedFaults": 1,
-        "confirmedTP": 1,
+        "scenarios": 13,
+        "documents": 41,
+        "classified": 41,
+        "fieldPresent": 1018,
+        "fieldVerified": 1010,
+        "fieldVerificationRate": 0.9921414538310412,
+        "errorScenarios": 4,
+        "flaggedFaults": 4,
+        "confirmedTP": 4,
         "confirmedFP": 0,
         "confirmedFN": 0,
         "confirmedPrecision": 1,
         "confirmedRecall": 1,
-        "relationshipTP": 15,
+        "relationshipTP": 41,
         "relationshipFP": 0,
-        "relationshipExpected": 17,
-        "normalScenarios": 1,
+        "relationshipExpected": 43,
+        "normalScenarios": 5,
         "normalWithHolds": 0,
-        "unresolvedCoreComparisons": 11
+        "unresolvedCoreComparisons": 20
       },
       "goldNative": {
-        "goldFields": 373,
-        "extractedCorrect": 371,
-        "verifiedCorrect": 371,
-        "extractionRecall": 0.9946380697050938,
-        "verifiedGoldRecall": 0.9946380697050938
+        "goldFields": 951,
+        "extractedCorrect": 949,
+        "verifiedCorrect": 949,
+        "extractionRecall": 0.9978969505783386,
+        "verifiedGoldRecall": 0.9978969505783386
       },
       "goldInitial": {
-        "goldFields": 373,
-        "extractedCorrect": 370,
-        "verifiedCorrect": 370,
-        "extractionRecall": 0.9919571045576407,
-        "verifiedGoldRecall": 0.9919571045576407
+        "goldFields": 951,
+        "extractedCorrect": 948,
+        "verifiedCorrect": 945,
+        "extractionRecall": 0.9968454258675079,
+        "verifiedGoldRecall": 0.9936908517350158
       },
       "rawClassification": {
-        "correct": 16,
-        "total": 16
+        "correct": 41,
+        "total": 41
       },
       "nativeTypeRecoveries": 0,
-      "independentIssues": 39,
+      "independentIssues": 49,
       "normalWithAnyIssues": 0,
       "providerDurationMs": {
-        "count": 16,
-        "mean": 14595.6875,
-        "median": 14868,
-        "max": 18405
+        "count": 41,
+        "mean": 14571.658536585366,
+        "median": 14281,
+        "max": 33534
       },
-      "estimatedCostUsd": 0.011985795
+      "estimatedCostUsd": 0.037444795
     },
     "development": {
       "summary": {
@@ -422,53 +503,54 @@
     },
     "holdout": {
       "summary": {
-        "scenarios": 0,
-        "documents": 0,
-        "classified": 0,
-        "fieldPresent": 0,
-        "fieldVerified": 0,
-        "fieldVerificationRate": null,
-        "errorScenarios": 0,
-        "flaggedFaults": 0,
-        "confirmedTP": 0,
+        "scenarios": 8,
+        "documents": 25,
+        "classified": 25,
+        "fieldPresent": 623,
+        "fieldVerified": 615,
+        "fieldVerificationRate": 0.9871589085072231,
+        "errorScenarios": 3,
+        "flaggedFaults": 3,
+        "confirmedTP": 3,
         "confirmedFP": 0,
         "confirmedFN": 0,
-        "confirmedPrecision": null,
-        "confirmedRecall": null,
-        "relationshipTP": 0,
+        "confirmedPrecision": 1,
+        "confirmedRecall": 1,
+        "relationshipTP": 26,
         "relationshipFP": 0,
-        "relationshipExpected": 0,
-        "normalScenarios": 0,
+        "relationshipExpected": 26,
+        "normalScenarios": 4,
         "normalWithHolds": 0,
-        "unresolvedCoreComparisons": 0
+        "unresolvedCoreComparisons": 9
       },
       "goldNative": {
-        "goldFields": 0,
-        "extractedCorrect": 0,
-        "verifiedCorrect": 0,
-        "extractionRecall": null,
-        "verifiedGoldRecall": null
+        "goldFields": 578,
+        "extractedCorrect": 578,
+        "verifiedCorrect": 578,
+        "extractionRecall": 1,
+        "verifiedGoldRecall": 1
       },
       "goldInitial": {
-        "goldFields": 0,
-        "extractedCorrect": 0,
-        "verifiedCorrect": 0,
-        "extractionRecall": null,
-        "verifiedGoldRecall": null
+        "goldFields": 578,
+        "extractedCorrect": 578,
+        "verifiedCorrect": 575,
+        "extractionRecall": 1,
+        "verifiedGoldRecall": 0.9948096885813149
       },
       "rawClassification": {
-        "correct": 0,
-        "total": 0
+        "correct": 25,
+        "total": 25
       },
       "nativeTypeRecoveries": 0,
-      "independentIssues": 0,
+      "independentIssues": 10,
       "normalWithAnyIssues": 0,
       "providerDurationMs": {
-        "count": 0,
-        "mean": null,
-        "max": null
+        "count": 25,
+        "mean": 14556.28,
+        "median": 14250,
+        "max": 33534
       },
-      "estimatedCostUsd": 0
+      "estimatedCostUsd": 0.025459
     },
     "distinctCases": [
       {
@@ -515,9 +597,161 @@
         "language": "mixed",
         "variant": "missing-reference",
         "artifact": "dev37-27-1792037125269.json"
+      },
+      {
+        "id": "hold37-1",
+        "partition": "holdout",
+        "kind": "normal",
+        "layout": "reversed",
+        "language": "ko",
+        "variant": null,
+        "artifact": "hold37-1-1792037273406.json"
+      },
+      {
+        "id": "hold37-2",
+        "partition": "holdout",
+        "kind": "normal",
+        "layout": "ledger",
+        "language": "mixed",
+        "variant": null,
+        "artifact": "hold37-2-1792037313705.json"
+      },
+      {
+        "id": "hold37-3",
+        "partition": "holdout",
+        "kind": "normal",
+        "layout": "continued",
+        "language": "en",
+        "variant": null,
+        "artifact": "hold37-3-1792037364376.json"
+      },
+      {
+        "id": "hold37-4",
+        "partition": "holdout",
+        "kind": "normal",
+        "layout": "header-units",
+        "language": "ko",
+        "variant": null,
+        "artifact": "hold37-4-1792037420845.json"
+      },
+      {
+        "id": "hold37-5",
+        "partition": "holdout",
+        "kind": "error",
+        "layout": "cards",
+        "language": "en",
+        "variant": null,
+        "artifact": "hold37-5-1792037476095.json"
+      },
+      {
+        "id": "hold37-6",
+        "partition": "holdout",
+        "kind": "error",
+        "layout": "bilingual",
+        "language": "mixed",
+        "variant": null,
+        "artifact": "hold37-6-1792037542784.json"
+      },
+      {
+        "id": "hold37-7",
+        "partition": "holdout",
+        "kind": "error",
+        "layout": "reversed",
+        "language": "ko",
+        "variant": null,
+        "artifact": "hold37-7-1792037588752.json"
+      },
+      {
+        "id": "hold37-8",
+        "partition": "holdout",
+        "kind": "complex",
+        "layout": "continued",
+        "language": "mixed",
+        "variant": "multi-declaration",
+        "artifact": "hold37-8-1792037657135.json"
       }
     ],
-    "repeats": []
+    "repeats": [
+      {
+        "id": "dev37-2",
+        "attempts": [
+          {
+            "artifact": "dev37-2-1792036850087.json",
+            "classified": 3,
+            "confirmedErrors": [],
+            "provisional": 0,
+            "issues": 0,
+            "gold": {
+              "goldFields": 68,
+              "extractedCorrect": 68,
+              "verifiedCorrect": 68,
+              "extractionRecall": 1,
+              "verifiedGoldRecall": 1
+            },
+            "classification": [
+              {
+                "expected": "house_bl",
+                "aiType": "house_bl",
+                "aiEvidenceVerified": true,
+                "finalType": "house_bl",
+                "nativeRecovered": false
+              },
+              {
+                "expected": "export_declaration",
+                "aiType": "export_declaration",
+                "aiEvidenceVerified": true,
+                "finalType": "export_declaration",
+                "nativeRecovered": false
+              },
+              {
+                "expected": "house_manifest",
+                "aiType": "house_manifest",
+                "aiEvidenceVerified": true,
+                "finalType": "house_manifest",
+                "nativeRecovered": false
+              }
+            ]
+          },
+          {
+            "artifact": "dev37-2-1792037702405.json",
+            "classified": 3,
+            "confirmedErrors": [],
+            "provisional": 0,
+            "issues": 0,
+            "gold": {
+              "goldFields": 68,
+              "extractedCorrect": 68,
+              "verifiedCorrect": 68,
+              "extractionRecall": 1,
+              "verifiedGoldRecall": 1
+            },
+            "classification": [
+              {
+                "expected": "house_bl",
+                "aiType": "house_bl",
+                "aiEvidenceVerified": true,
+                "finalType": "house_bl",
+                "nativeRecovered": false
+              },
+              {
+                "expected": "export_declaration",
+                "aiType": "export_declaration",
+                "aiEvidenceVerified": true,
+                "finalType": "export_declaration",
+                "nativeRecovered": false
+              },
+              {
+                "expected": "house_manifest",
+                "aiType": "house_manifest",
+                "aiEvidenceVerified": true,
+                "finalType": "house_manifest",
+                "nativeRecovered": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "holdout": {
     "manifestSha256": "527d317209a8d990672ccc38f8a789035f8eabb6c0871a842ac83bde6061047d",
@@ -530,7 +764,160 @@
     "Confirmed metrics exclude HBL/declaration reference faults, measured separately as warnings",
     "Field verification rate among present values differs from fixed gold owner/source recall",
     "Raw current redundant document fields can remain unverified while valid item-level fields compare",
-    "Relationship counts use predetermined fixture ground truth, not production traffic"
+    "Relationship counts use predetermined fixture ground truth, not production traffic",
+    "dev37-26: optional exporter-side Shipper/Consignee roles omitted by AI and not added by current native recovery; 2 missing fixed gold fields remain unverified/missing. Exporter is not assumed to equal Shipper.",
+    "dev37-27: missing-reference document retains 28 business review issues; proposed-relation/missing-field consequence grouping remains incomplete.",
+    "hold37-7: one goods conflict yields 7 review issues including dependent HS/row checks; root-cause grouping is not complete.",
+    "Multi-declaration full/individual quantity scope is resolved only with complete independently verified item lists; unclear cargo-only or shared allocation remains conservative.",
+    "No new paid OCR evaluation in PHASE37; OCR candidates remain unverified.",
+    "Vercel Git status completed and exact app SHA verified; management API Ready not directly observed."
   ],
-  "generatedAt": "2026-10-15T04:06:27.824Z"
+  "generatedAt": "2026-10-15T04:15:15.659Z",
+  "accounting": {
+    "estimatedCostFromAllResponseUsage": 0.10917902999999998,
+    "requestsWithUsage": 115,
+    "documentsWithArtifacts": 115,
+    "unknownRequests": 0,
+    "floatingPointResidueUsd": 3.469446951953614e-18,
+    "note": "Tiny unresolved cost is arithmetic residue only; every request has usage. Raw cumulative ledger retained, not reset.",
+    "automaticRetries": 0,
+    "remainingDocuments": 5,
+    "remainingRequests": 35,
+    "estimatedRemainingUsd": 0.39082097
+  },
+  "additionalMetrics": {
+    "distinctPaidCasesAllSHAs": 31,
+    "byLayoutFinalDistinct": {
+      "continued": {
+        "documents": 10,
+        "classified": 10,
+        "rawCorrect": 10,
+        "goldFields": 238,
+        "verifiedGold": 238
+      },
+      "ledger": {
+        "documents": 9,
+        "classified": 9,
+        "rawCorrect": 9,
+        "goldFields": 204,
+        "verifiedGold": 202
+      },
+      "reversed": {
+        "documents": 13,
+        "classified": 13,
+        "rawCorrect": 13,
+        "goldFields": 305,
+        "verifiedGold": 305
+      },
+      "header-units": {
+        "documents": 3,
+        "classified": 3,
+        "rawCorrect": 3,
+        "goldFields": 68,
+        "verifiedGold": 68
+      },
+      "cards": {
+        "documents": 3,
+        "classified": 3,
+        "rawCorrect": 3,
+        "goldFields": 68,
+        "verifiedGold": 68
+      },
+      "bilingual": {
+        "documents": 3,
+        "classified": 3,
+        "rawCorrect": 3,
+        "goldFields": 68,
+        "verifiedGold": 68
+      }
+    },
+    "bilingualSimpleGoods": {
+      "cases": 7,
+      "correct": 7,
+      "rows": [
+        {
+          "id": "dev37-11",
+          "expected": "confirmed_match",
+          "correct": true,
+          "statuses": [
+            "confirmed_match"
+          ]
+        },
+        {
+          "id": "dev37-2",
+          "expected": "confirmed_match",
+          "correct": true,
+          "statuses": [
+            "confirmed_match"
+          ]
+        },
+        {
+          "id": "hold37-1",
+          "expected": "confirmed_match",
+          "correct": true,
+          "statuses": [
+            "confirmed_match"
+          ]
+        },
+        {
+          "id": "hold37-2",
+          "expected": "confirmed_match",
+          "correct": true,
+          "statuses": [
+            "confirmed_match"
+          ]
+        },
+        {
+          "id": "hold37-4",
+          "expected": "confirmed_match",
+          "correct": true,
+          "statuses": [
+            "confirmed_match"
+          ]
+        },
+        {
+          "id": "hold37-6",
+          "expected": "confirmed_match",
+          "correct": true,
+          "statuses": [
+            "confirmed_match"
+          ]
+        },
+        {
+          "id": "hold37-7",
+          "expected": "confirmed_mismatch",
+          "correct": true,
+          "statuses": [
+            "confirmed_mismatch"
+          ]
+        }
+      ],
+      "note": "Bounded supported synthetic product vocabulary; excludes aggregation and uncertain scope."
+    },
+    "confirmedErrorMetricsScope": "HBL record comparisons in fixed truth; reference faults separately counted as warnings; business-warning duplication is not a confirmed FP metric.",
+    "timingAndCostFinalDistinct": {
+      "caseWallTimeMsTotal": 719176,
+      "meanWallTimePerDocumentMs": 17540.878048780487,
+      "estimatedCostPerDocumentUsd": 0.0009132876829268294,
+      "note": "Case wall time includes sequential multipart batches and local evaluation; provider latency separately reported."
+    }
+  },
+  "stability": [
+    {
+      "id": "dev37-2",
+      "attempts": 2,
+      "identicalPdfBytes": true,
+      "identicalCoreAssessments": true,
+      "goldVerifiedCounts": [
+        68,
+        68
+      ],
+      "issueCounts": [
+        0,
+        0
+      ],
+      "note": "Two repeats of one NEW synthetic shipment; no general statistical stability claim."
+    }
+  ],
+  "completedAt": "2026-10-15T04:17:58.302214+00:00"
 }
