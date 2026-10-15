@@ -1,0 +1,17 @@
+{
+  "sourceSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+  "filesScanned": 52,
+  "issues": [],
+  "newPaidProviderCalls": 0,
+  "phase38LiveLedgerCreated": false,
+  "previous37Budget": {
+    "documents": 115,
+    "requests": 115,
+    "measuredCostUsd": 0.10917903000000002,
+    "unresolvedCostUpperUsd": 3.469446951953614e-18,
+    "maxDocuments": 120,
+    "maxRequests": 150,
+    "maxCostUsd": 0.5
+  },
+  "previous37LedgerSha256": "90d2b5f39a9a1d646653baca45770bdf173c0bf20922a04d214c13e78af68aa6"
+}

@@ -1,0 +1,26 @@
+{
+  "phase": "3.8",
+  "sourceSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+  "approvalStatus": "PENDING - proposed caps are NOT user approval",
+  "providerCallsExecuted": false,
+  "budget": {
+    "documents": 0,
+    "requests": 0,
+    "measuredCostUsd": 0,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 8,
+    "maxRequests": 8,
+    "maxCostUsd": 0.1
+  },
+  "automaticRetries": 0,
+  "previousPhase37BudgetPreserved": {
+    "documents": 115,
+    "requests": 115,
+    "measuredCostUsd": 0.10917903000000002,
+    "unresolvedCostUpperUsd": 3.469446951953614e-18,
+    "maxDocuments": 120,
+    "maxRequests": 150,
+    "maxCostUsd": 0.5
+  },
+  "note": "No PHASE38 paid request executed and no prior phase budget reused. This zero-usage archive permits future cumulative restoration; it does not authorize a call."
+}

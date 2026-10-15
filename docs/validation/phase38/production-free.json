@@ -1,0 +1,28 @@
+{
+  "kind": "Actual Production browser + attached PDFs, explicit free prepare only, NOT AI analysis",
+  "sha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+  "deploymentId": "dpl_CUy77HNXRBgqosYPVpoggtxMgMcA",
+  "documents": 3,
+  "batches": 2,
+  "providerRequests": 0,
+  "reads": [
+    {
+      "pages": 1,
+      "blocks": 226,
+      "extractionStatus": "not_performed"
+    },
+    {
+      "pages": 1,
+      "blocks": 92,
+      "extractionStatus": "not_performed"
+    },
+    {
+      "pages": 1,
+      "blocks": 67,
+      "extractionStatus": "not_performed"
+    }
+  ],
+  "desktop": true,
+  "mobile": true,
+  "comparison": "not_performed"
+}

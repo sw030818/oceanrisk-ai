@@ -1,7 +1,7 @@
 {
   "kind": "Actual attached PDFs with explicit oracle field values and title candidates. Native verification only, NO AI extraction, NO provider calls. Candidate search is evaluation-only; production ownership verifier makes every decision.",
-  "sourceSha": "ac7d6f4283a13a4064e9877a0f357f86748ddd3a",
-  "workingTree": "modified",
+  "sourceSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+  "workingTree": "clean",
   "classification": {
     "verified": 3,
     "total": 3

@@ -1,0 +1,22 @@
+{
+  "phase": "3.8",
+  "capabilities": {
+    "pdfPreparation": true,
+    "multiFileBatches": true,
+    "selectiveOCR": true,
+    "nativeRecovery": true,
+    "automaticTargetedRecovery": false,
+    "documentClassification": true,
+    "aiExtraction": true,
+    "pairComparison": true,
+    "triangularComparison": true
+  },
+  "aiConfigured": true,
+  "provider": "openai",
+  "model": "gpt-6-luna",
+  "deployment": {
+    "commitSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+    "id": "dpl_CUy77HNXRBgqosYPVpoggtxMgMcA",
+    "environment": "production"
+  }
+}

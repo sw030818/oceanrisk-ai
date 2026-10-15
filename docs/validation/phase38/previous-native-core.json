@@ -1,0 +1,110 @@
+{
+  "sourceSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+  "kind": "Previous cached actual AI results with native recovery and original PDF input; no new AI extraction/provider calls",
+  "rows": [
+    {
+      "case": "previous-cached-original-1",
+      "core": [
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        }
+      ],
+      "confirmedMatches": 9,
+      "expectedCore": 9
+    },
+    {
+      "case": "previous-cached-original-2",
+      "core": [
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "reasons": []
+        }
+      ],
+      "confirmedMatches": 9,
+      "expectedCore": 9
+    }
+  ]
+}

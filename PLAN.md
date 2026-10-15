@@ -132,3 +132,8 @@ PHASE 2.2 실행 결과: OpenAI Responses 기본 전환, phase별 최종 JSON �
 ## PHASE 3.8
 A 원본Set2 확보·실제원인재현·분할블록/헤더/발행문맥/독립native복구. B 의미/단위·원인→후속검사 통합·확정오류보존. C 현재근거실패/대표문제/서류별원문비교/간결보고서. D 실제PDF+독립합성정상/오류·606/62회귀·전체ship/main/Actions/Production·별도evidence. 신규유료API승인없음; 승인전0호출, 기존ledger보존. STAGE A선택검사완료,나머지진행.
 - A 완료:837668f · 분할 원문/House 발행 근거. B 완료:ac7d6f4 · 원인 연결/독립 오류 PDF/표기 보존. C 진행: 현재·최초 증거 분리/대표 비교/모바일 카드/인쇄. D 대기: 전체회귀/기존 실제 응답 무료 재생/ship/Production·Actions/증거 브랜치. 신규 유료8문서8요청/$0.10 승인 질문 대기(자동재시도0), 승인 전 호출 금지.
+
+## PHASE 3.8 최종 체크포인트 (증거 브랜치)
+- A/B/C 및 D의 구현·무료 독립평가·631단위/64브라우저·ship/main/Actions/Production SHA 확인 완료. 소스 f174b41fc680fc93cfa371cc7a777df19c9e796b.
+- 남은 단일 승인 의존 작업: PHASE38 8문서8요청/$0.10 신규유료검증(아직 승인 없음). 승인 시 main의 정확한최종SHA와Production을확인하고 live-phase38 전용원격/로컬ledger를복원해 정상3개→개별오류5개를무재시도로실행한다. 기존37 예산 재사용/초기화 금지. 증거 브랜치의0사용량 기록은 승인이 아니다.
+- private-phase38/trial-input.json 및 실제 PDF/변형은 비공개 로컬에 유지한다. 최초AI/Native/검증/비교를분리하며결과가나쁘면그대로기록한다. 코드추가수정시전체게이트/동일SHA재배포후남은승인한도만사용하며과거SHA성공을새SHA로보고하지않는다.

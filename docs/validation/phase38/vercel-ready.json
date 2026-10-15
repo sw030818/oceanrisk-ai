@@ -1,0 +1,7 @@
+{
+  "checkedAt": "2026-10-15T23:19:04.625Z",
+  "deploymentId": "dpl_CUy77HNXRBgqosYPVpoggtxMgMcA",
+  "httpStatus": 403,
+  "readyState": null,
+  "reason": "Vercel control-plane query denied; no Vercel credential available. Ready not directly verified."
+}

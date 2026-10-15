@@ -1,0 +1,159 @@
+{
+  "sourceSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+  "checkedAt": "2026-10-15T23:20:11.527Z",
+  "tests": {
+    "npmCi": "pass",
+    "typecheck": "pass",
+    "eslint": "pass",
+    "unit": {
+      "passed": 631,
+      "existing": 606,
+      "new": 25,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 64,
+      "existing": 62,
+      "new": 2,
+      "failed": 0
+    },
+    "productionBuild": "pass",
+    "pdfWorkers": {
+      "analyze": "pass",
+      "recover": "pass"
+    }
+  },
+  "github": {
+    "sha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+    "checkedAt": "2026-10-15T23:19:45.513Z",
+    "actions": [
+      {
+        "id": 38822480039,
+        "status": "completed",
+        "conclusion": "success",
+        "sha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38822480039"
+      }
+    ],
+    "checks": [
+      {
+        "name": "production",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38822480039/job/116723173303"
+      },
+      {
+        "name": "quality",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38822480039/job/116722061624"
+      }
+    ],
+    "status": {
+      "state": "success",
+      "contexts": [
+        {
+          "context": "Vercel",
+          "state": "success",
+          "target_url": "https://vercel.com/pack-mate/oceanrisk-ai/CUy77HNXRBgqosYPVpoggtxMgMcA"
+        }
+      ]
+    },
+    "deployments": [
+      {
+        "id": 7106726350,
+        "sha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+        "environment": "Production",
+        "statuses": [
+          {
+            "state": "success",
+            "environment_url": "https://oceanrisk-b7bdy2dlg-pack-mate.vercel.app",
+            "target_url": "https://oceanrisk-b7bdy2dlg-pack-mate.vercel.app"
+          }
+        ]
+      }
+    ]
+  },
+  "production": {
+    "expectedSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+    "verified": true,
+    "deploymentId": "dpl_CUy77HNXRBgqosYPVpoggtxMgMcA",
+    "reason": "Production HTTP response serves the expected SHA and has the OpenAI key configured. This is not key validity, a real AI accuracy test or Vercel control-plane Ready confirmation.",
+    "attempts": 9
+  },
+  "productionFreeBrowser": {
+    "kind": "Actual Production browser + attached PDFs, explicit free prepare only, NOT AI analysis",
+    "sha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+    "deploymentId": "dpl_CUy77HNXRBgqosYPVpoggtxMgMcA",
+    "documents": 3,
+    "batches": 2,
+    "providerRequests": 0,
+    "reads": [
+      {
+        "pages": 1,
+        "blocks": 226,
+        "extractionStatus": "not_performed"
+      },
+      {
+        "pages": 1,
+        "blocks": 92,
+        "extractionStatus": "not_performed"
+      },
+      {
+        "pages": 1,
+        "blocks": 67,
+        "extractionStatus": "not_performed"
+      }
+    ],
+    "desktop": true,
+    "mobile": true,
+    "comparison": "not_performed"
+  },
+  "vercelControlPlane": {
+    "checkedAt": "2026-10-15T23:19:04.625Z",
+    "deploymentId": "dpl_CUy77HNXRBgqosYPVpoggtxMgMcA",
+    "httpStatus": 403,
+    "readyState": null,
+    "reason": "Vercel control-plane query denied; no Vercel credential available. Ready not directly verified."
+  },
+  "set2FreeNative": {
+    "classification": {
+      "verified": 3,
+      "total": 3
+    },
+    "numericUnitEvidence": {
+      "verified": 20,
+      "total": 20
+    },
+    "notNewAI": true
+  },
+  "paid": {
+    "phase": "3.8",
+    "approval": "pending",
+    "documents": 0,
+    "requests": 0,
+    "costUsd": 0,
+    "automaticRetries": 0,
+    "previousPhase37": {
+      "documents": 115,
+      "requests": 115,
+      "measuredCostUsd": 0.10917903000000002,
+      "unresolvedCostUpperUsd": 3.469446951953614e-18,
+      "maxDocuments": 120,
+      "maxRequests": 150,
+      "maxCostUsd": 0.5
+    }
+  },
+  "limitations": [
+    "No new paid OpenAI extraction approved or executed; actual Set2 AI pipeline and five mutated actual PDF extraction cases remain unverified",
+    "The user-reported 37/9/32/24 prior full results cannot be replayed without their original AI response",
+    "Partial specifications, unsupported descriptions, declaration allocation and OCR remain conservative; raw checks retained",
+    "Vercel control-plane Ready state could not be read (HTTP403); GitHub Vercel success and official Production SHA independently verified"
+  ],
+  "resolvedValidationFailures": [
+    "Initial new PDF fixture fragmentation and integration timeouts corrected; ownership protections retained",
+    "Initial print heading/single-table compatibility restored; final full browser suite passed",
+    "Free Production harness expected an AI review panel in prepare mode; corrected to require no review panel, no AI and unchanged not_performed results",
+    "A TypeScript inference error in the final causal grouping stopped ship before push; explicitly typed and revalidated"
+  ]
+}

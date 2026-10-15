@@ -1,0 +1,161 @@
+
+> oceanrisk-ai@0.1.0 ship
+> tsx scripts/ship.ts --message fix: connect proven product meaning holds to their HS dependencies
+
+
+> oceanrisk-ai@0.1.0 verify
+> node scripts/verify.mjs
+
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 419 packages in 20s
+
+> oceanrisk-ai@0.1.0 typecheck
+> tsc --noEmit
+
+
+> oceanrisk-ai@0.1.0 lint
+> eslint .
+
+
+> oceanrisk-ai@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /workspace/oceanrisk-ai
+
+
+ Test Files  37 passed (37)
+      Tests  631 passed (631)
+   Start at  23:12:00
+   Duration  74.47s (transform 2.02s, setup 0ms, import 20.09s, tests 119.59s, environment 5ms)
+
+
+> oceanrisk-ai@0.1.0 build
+> next build
+
+▲ Next.js 16.4.0 (Turbopack)
+✓ Running next.config.ts took 28ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.0s
+  Running TypeScript ...
+  Finished TypeScript in 6.6s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/3) ...
+✓ Generating static pages using 4 workers (3/3) in 264ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/analyze
+├ ƒ /api/recover
+└ ƒ /api/status
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+> oceanrisk-ai@0.1.0 verify:runtime
+> node scripts/verify-runtime.mjs
+
+Deployable analyze PDF API trace includes its worker: PASS
+Deployable recover PDF API trace includes its worker: PASS
+
+> oceanrisk-ai@0.1.0 test:e2e
+> playwright test
+
+[WebServer] (node:449209) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:449222) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 64 tests using 2 workers
+
+(node:449243) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:449242) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 tests/e2e/openai.spec.ts:3:1 › external OpenAI disclosure and explicit free PDF-only mode are explicit, without an access code (1.3s)
+  ✓   1 tests/e2e/phase15.spec.ts:3:1 › pending comparison is explicit and mobile results do not overflow (2.1s)
+  ✓   3 tests/e2e/openai.spec.ts:19:1 › an old live AI response is rejected rather than shown as shipping verification (1.8s)
+  ✓   4 tests/e2e/phase15.spec.ts:18:1 › partial preparation preserves readable PDF and reports the failed file (1.8s)
+  ✓   6 tests/e2e/phase15.spec.ts:30:1 › loading, no bearer header, server error and retry stay clear (1.5s)
+  ✓   5 tests/e2e/phase2.spec.ts:10:1 › three independent red-PDF slots support replace, remove, drag-drop and desktop/mobile layout (1.9s)
+  ✓   7 tests/e2e/phase15.spec.ts:60:1 › all unreadable PDFs produce failure, never an AI success (1.7s)
+  ✓   8 tests/e2e/phase2.spec.ts:57:1 › single file can prepare native PDF but cannot claim a comparison (3.0s)
+  ✓   9 tests/e2e/phase23.spec.ts:5:1 › shipping field names distinguish declared goods quantity from package count (2.6s)
+  ✓  10 tests/e2e/phase2.spec.ts:72:1 › three documents form safe multipart batches and preserve selected types without claiming AI classification (1.9s)
+  ✓  11 tests/e2e/phase23.spec.ts:29:1 › misleading filenames do not become an AI document-type verdict (1.9s)
+  ✓  13 tests/e2e/phase23.spec.ts:44:1 › original PDF evidence and manual corrections remain inspectable on mobile with no quantitative claim (1.4s)
+  ✓  12 tests/e2e/phase31.spec.ts:67:1 › MOCKED AI: three actual synthetic PDF types expose multiple items, containers, cargo and declarations (5.2s)
+  ✓  14 tests/e2e/phase32.spec.ts:72:1 › MOCK AI + real PDF: two types run pair comparison and explicitly lack triangle targets (3.1s)
+  ✓  16 tests/e2e/phase32.spec.ts:90:1 › MOCK AI + real PDF: three normal documents show confirmed shared triangle with no false definitive warning (3.1s)
+  ✓  15 tests/e2e/phase31.spec.ts:114:1 › MOCKED AI: mobile source page/blocks, original/current correction and restore (5.1s)
+  ✓  17 tests/e2e/phase32.spec.ts:114:1 › MOCK AI + real PDF: multiple actual differences expose file/page/blocks and follow-up action (4.1s)
+  ✓  18 tests/e2e/phase31.spec.ts:155:1 › MOCKED AI: mismatched actual type displays actual fields, slot swap preserves original choice with no new API request (3.9s)
+  ✓  19 tests/e2e/phase32.spec.ts:129:1 › MOCK AI + real PDF: mobile edit/restore recalculates provisional result without another OpenAI request (3.3s)
+  ✓  20 tests/e2e/phase31.spec.ts:187:1 › MOCKED AI: wrong container row remains unverified, partial result does not hide independent fields (3.6s)
+  ✓  21 tests/e2e/phase32.spec.ts:161:1 › MOCK AI + real PDF: uncertain references retain candidates and never pretend to complete a triangle (4.1s)
+  ✓  22 tests/e2e/phase31.spec.ts:210:1 › MOCKED AI: partial provider failure retains original PDF and clearly identifies quota error (3.6s)
+  ✓  23 tests/e2e/phase32.spec.ts:183:1 › MOCK AI + real PDF: one provider failure does not stop the remaining pair review (2.9s)
+  ✓  24 tests/e2e/phase31.spec.ts:225:1 › ACTUAL LOCAL server without key: no provider request, readable PDF retained and later AI work stopped (3.3s)
+  ✓  26 tests/e2e/phase33.spec.ts:90:1 › multiple selection appends, duplicate names have unique IDs, individual remove and replace preserve siblings (1.8s)
+  ✓  27 tests/e2e/phase33.spec.ts:129:1 › multiple simultaneous dropped files append and do not replace prior files (1.3s)
+  ✓  25 tests/e2e/phase32.spec.ts:198:1 › MOCK AI + real PDF: an extra declaration remains a fourth qualified document, without duplicate sums (5.0s)
+  ✓  29 tests/e2e/phase32.spec.ts:210:1 › MOCK AI + real PDF: actual classification governs review despite wrong upload slots (3.3s)
+  ✓  30 tests/e2e/phase32.spec.ts:221:1 › MOCK AI + real PDF: explicit user relationship confirmation remains provisional and costs no new request (3.3s)
+  ✓  28 tests/e2e/phase33.spec.ts:146:1 › six documents in three batches retain qualified sources and cross-batch declaration aggregation (7.5s)
+  ✓  32 tests/e2e/phase33.spec.ts:169:1 › a failed middle batch preserves four successes and continues later independent documents (3.3s)
+  ✓  31 tests/e2e/phase34.spec.ts:66:3 › compact comparison, evidence drawer and navigation 1440px (4.5s)
+  ✓  34 tests/e2e/phase34.spec.ts:66:3 › compact comparison, evidence drawer and navigation 390px (4.6s)
+  ✓  33 tests/e2e/phase33.spec.ts:184:1 › mobile correction and restoration recompute without an additional paid request (6.0s)
+  ✓  35 tests/e2e/phase34.spec.ts:105:3 › mismatch filter and grouped warning detail 1440px (3.3s)
+  ✓  36 tests/e2e/phase33.spec.ts:212:1 › native PDF-only mode handles six documents with duplicate names and zero AI capabilities (3.0s)
+  ✓  37 tests/e2e/phase34.spec.ts:105:3 › mismatch filter and grouped warning detail 390px (3.0s)
+  ✓  38 tests/e2e/phase33.spec.ts:246:1 › large files split into byte-safe requests rather than raising Vercel body limits (4.4s)
+  ✓  39 tests/e2e/phase34.spec.ts:126:1 › six documents remain distinct and can select verified shipment groups (4.5s)
+  ✓  41 tests/e2e/phase34.spec.ts:142:1 › partial and unconfirmed classification explain actual stage failure (1.8s)
+  ✓  40 tests/e2e/phase33.spec.ts:276:1 › print report includes reviewed values and source references without whole PDF text (5.0s)
+  ✓  42 tests/e2e/phase34.spec.ts:149:1 › classification uncertainty is distinct from upload count (2.5s)
+  ✓  43 tests/e2e/phase33.spec.ts:293:1 › a server-deferred document moves to a fresh single-file batch without erasing prior successes (4.6s)
+  ✓  44 tests/e2e/phase34.spec.ts:158:1 › drawer editing/restoring recalculates free and keeps original source (3.9s)
+  ✓  46 tests/e2e/phase34.spec.ts:183:1 › print report has grouped comparison, source references and explicit limits (2.7s)
+  ✓  45 tests/e2e/phase33.spec.ts:302:1 › adding a file after analysis retains existing edits and analyzes only the new document (6.2s)
+  ✓  47 tests/e2e/phase35.spec.ts:66:3 › PHASE35 native single-row HBL scope and neutral inapplicable fields 1440px (3.8s)
+  ✓  49 tests/e2e/phase35.spec.ts:66:3 › PHASE35 native single-row HBL scope and neutral inapplicable fields 390px (3.2s)
+  ✓  48 tests/e2e/phase33.spec.ts:325:1 › result filters separate confirmed matches from uncertainty without any new API request (5.4s)
+  ✓  50 tests/e2e/phase35.spec.ts:101:1 › PHASE35 root correction on previously missing AI aggregate recomputes without approving source or calling AI (4.1s)
+  ✓  51 tests/e2e/phase36.spec.ts:11:3 › PHASE36 recovered values retain initial history, source and free edit/restore 1440px (4.6s)
+  ✓  52 tests/e2e/phase35.spec.ts:127:1 › PHASE35 independent mismatch and print summary preserve source diagnostics (3.3s)
+  ✓  53 tests/e2e/phase36.spec.ts:11:3 › PHASE36 recovered values retain initial history, source and free edit/restore 390px (4.4s)
+  ✓  54 tests/e2e/phase37.spec.ts:11:3 › PHASE37 attention-first preserves all checks, evidence and issue detail 1440px (3.7s)
+  ✓  55 tests/e2e/phase38.spec.ts:10:3 › PHASE38 current evidence summary, compact values and report 1440px (4.3s)
+  ✓  56 tests/e2e/phase37.spec.ts:11:3 › PHASE37 attention-first preserves all checks, evidence and issue detail 390px (3.6s)
+  ✓  58 tests/e2e/phase37.spec.ts:66:3 › PHASE37 normal verified summary is distinct from optional inapplicability (2.8s)
+  ✓  57 tests/e2e/phase38.spec.ts:10:3 › PHASE38 current evidence summary, compact values and report 390px (4.4s)
+  ✓  60 tests/e2e/workspace.spec.ts:8:1 › shipping workspace validates formats, has three slots and fits mobile (988ms)
+  ✓  59 tests/e2e/phase37.spec.ts:66:3 › PHASE37 mandatory missing field stays visible with document identity (3.0s)
+  ✓  61 tests/e2e/workspace.spec.ts:38:1 › actual server PDF preparation reads pages and blocks without OpenAI, independently of key presence (2.4s)
+  ✓  62 tests/e2e/phase37.spec.ts:114:1 › PHASE37 Korean manifest misclassification recovers from the cited title and exposes initial AI history (3.2s)
+  ✓  63 tests/e2e/workspace.spec.ts:63:1 › user input retains separate unverified provenance, restore and reset (2.2s)
+  ✓  64 tests/e2e/phase37.spec.ts:161:1 › PHASE37 mobile multi-declaration replaces whole-vs-subset checks but retains the allocation problem and all evidence (4.4s)
+
+  64 passed (1.9m)
+All local release checks passed. This does not prove a live OpenAI call or Vercel deployment.
+GitHub main push verified: f174b41fc680fc93cfa371cc7a777df19c9e796b
+
+> oceanrisk-ai@0.1.0 check:production
+> tsx scripts/check-production.ts --sha f174b41fc680fc93cfa371cc7a777df19c9e796b
+
+Production check 1/20: Production has not served the expected commit SHA.
+Production check 2/20: Production has not served the expected commit SHA.
+Production check 3/20: Production has not served the expected commit SHA.
+Production check 4/20: Production has not served the expected commit SHA.
+Production check 5/20: Production has not served the expected commit SHA.
+Production check 6/20: Production has not served the expected commit SHA.
+Production check 7/20: Production has not served the expected commit SHA.
+Production check 8/20: Production has not served the expected commit SHA.
+{"expectedSha":"f174b41fc680fc93cfa371cc7a777df19c9e796b","verified":true,"deploymentId":"dpl_CUy77HNXRBgqosYPVpoggtxMgMcA","reason":"Production HTTP response serves the expected SHA and has the OpenAI key configured. This is not key validity, a real AI accuracy test or Vercel control-plane Ready confirmation.","attempts":9}

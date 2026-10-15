@@ -1,0 +1,65 @@
+{
+  "kind": "Independent public synthetic native PDF + oracle regression; not real AI extraction or new blind holdout",
+  "sourceSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+  "rows": [
+    {
+      "role": "grossWeight",
+      "source": "Actual newly generated independent synthetic PDF with physically changed field + explicit oracle candidate; NO new AI extraction",
+      "nativeChangedTextPresent": true,
+      "confirmedTP": 1,
+      "confirmedFN": 0,
+      "confirmedFalsePositives": [],
+      "businessIssues": 2,
+      "rawChecks": 24
+    },
+    {
+      "role": "quantity",
+      "source": "Actual newly generated independent synthetic PDF with physically changed field + explicit oracle candidate; NO new AI extraction",
+      "nativeChangedTextPresent": true,
+      "confirmedTP": 1,
+      "confirmedFN": 0,
+      "confirmedFalsePositives": [],
+      "businessIssues": 1,
+      "rawChecks": 24
+    },
+    {
+      "role": "sealNumber",
+      "source": "Actual newly generated independent synthetic PDF with physically changed field + explicit oracle candidate; NO new AI extraction",
+      "nativeChangedTextPresent": true,
+      "confirmedTP": 1,
+      "confirmedFN": 0,
+      "confirmedFalsePositives": [],
+      "businessIssues": 1,
+      "rawChecks": 24
+    },
+    {
+      "role": "hsCode",
+      "source": "Actual newly generated independent synthetic PDF with physically changed field + explicit oracle candidate; NO new AI extraction",
+      "nativeChangedTextPresent": true,
+      "confirmedTP": 1,
+      "confirmedFN": 0,
+      "confirmedFalsePositives": [],
+      "businessIssues": 1,
+      "rawChecks": 24
+    },
+    {
+      "role": "goodsDescription",
+      "source": "Actual newly generated independent synthetic PDF with physically changed field + explicit oracle candidate; NO new AI extraction",
+      "nativeChangedTextPresent": true,
+      "confirmedTP": 1,
+      "confirmedFN": 0,
+      "confirmedFalsePositives": [],
+      "businessIssues": 2,
+      "rawChecks": 19
+    }
+  ],
+  "normal": {
+    "confirmedFalsePositives": 0,
+    "rawChecks": 24
+  },
+  "totals": {
+    "confirmedTP": 5,
+    "confirmedFN": 0,
+    "confirmedFP": 0
+  }
+}
