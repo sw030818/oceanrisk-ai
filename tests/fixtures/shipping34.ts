@@ -19,6 +19,9 @@ export async function shipping34Fixture(
   type: ShippingType,
   change: {
     hbl?: string;
+    quantity?: number;
+    goods?: string;
+    hsCode?: string;
     packages?: number;
     weight?: number;
     seal?: string;
@@ -30,7 +33,10 @@ export async function shipping34Fixture(
   const hbl = change.hbl ?? "HB-SYN-R34-401",
     packages = change.packages ?? 60,
     weight = change.weight ?? 640,
-    seal = change.seal ?? "SEAL-SYN-401";
+    seal = change.seal ?? "SEAL-SYN-401",
+    quantity = change.quantity ?? 720,
+    goods = change.goods ?? "GLASS STORAGE JARS",
+    hsCode = change.hsCode ?? "7010.90-1000";
   const cells: { text: string; x: number; y: number; size?: number }[] = [],
     borders: { x: number; y: number; width: number; height: number }[] = [];
   const text = (t: string, x: number, y: number, size = 9) => {
@@ -107,7 +113,7 @@ export async function shipping34Fixture(
   if (type !== "house_bl") {
     root("packageCount", "총 포장개수", `${packages} ${unit}`, 30, 310, 130);
     root("grossWeight", "총중량", `${weight}.000 KG`, 170, 310, 130);
-    root("quantity", "총 수량", "720 EA", 310, 310, 130);
+    root("quantity", "총 수량", `${quantity} EA`, 310, 310, 130);
   }
   const fields: Record<string, string[]> = {};
   if (type === "house_bl") {
@@ -125,11 +131,11 @@ export async function shipping34Fixture(
     const sn = text("SEAL: " + seal, 36, 451);
     const pn = text(String(packages), 166, 427);
     const pu = text(unit, 192, 427);
-    const q = text("(720", 166, 452);
+    const q = text(`(${quantity}`, 166, 452);
     const qu = text("PCS)", 198, 452);
-    const g = text("GLASS STORAGE JARS", 286, 427);
+    const g = text(goods, 286, 427);
     text("HS:", 286, 451);
-    const hs = text("7010.90-1000", 307, 451);
+    const hs = text(hsCode, 307, 451);
     const gw = text(`${weight} KGS`, 441, 427);
     fields.goodsDescription = [g];
     fields.hsCode = [hs];
@@ -188,10 +194,10 @@ export async function shipping34Fixture(
       const hb = text(hbl, 36, 440),
         cn = text("SYN-U3401401", 176, 440),
         sn = text(seal, 296, 440),
-        g = text("GLASS STORAGE JARS", 401, 440),
+        g = text(goods, 401, 440),
         pack = text(`${packages} CTN`, 596, 440),
         gw = text(`${weight}.000`, 706, 440);
-      text("(HS 7010.90-1000)", 401, 456);
+      text(`(HS ${hsCode})`, 401, 456);
       fields.goodsDescription = [g];
       fields.houseBlNumber = [hb];
       fields.containerNumber = [cn];
@@ -215,9 +221,9 @@ export async function shipping34Fixture(
       ];
     } else {
       const g = text("유리 보관 용기", 36, 440),
-        eng = text("GLASS STORAGE JARS", 36, 454),
-        hs = text("7010.90-1000", 281, 440),
-        qty = text("720 EA", 396, 440);
+        eng = text(goods, 36, 454),
+        hs = text(hsCode, 281, 440),
+        qty = text(`${quantity} EA`, 396, 440);
       fields.goodsDescription = [g, eng];
       fields.hsCode = [hs];
       fields.quantity = [qty];
@@ -261,10 +267,10 @@ export async function shipping34Fixture(
     packageUnit: unit,
     grossWeight: weight,
     grossWeightUnit: type === "house_bl" ? "KGS" : "KG",
-    quantity: 720,
+    quantity,
     quantityUnit: type === "house_bl" ? "PCS" : "EA",
-    goodsDescription: "GLASS STORAGE JARS",
-    hsCode: "7010.90-1000",
+    goodsDescription: goods,
+    hsCode,
   };
   for (const [k, ts] of Object.entries(targets))
     if (wire.fields[k]) wire.fields[k] = { value: val[k], evidence: cite(ts) };
@@ -287,7 +293,7 @@ export async function shipping34Fixture(
   for (const [k, ts] of Object.entries(fields)) {
     let value = val[k];
     if (k === "goodsDescription" && type === "export_declaration")
-      value = "유리 보관 용기 GLASS STORAGE JARS";
+      value = "유리 보관 용기 " + goods;
     if (k === "containerNumber") value = "SYN-U3401401";
     if (k === "sealNumber") value = seal;
     if (k === "packageUnit") value = unit;
