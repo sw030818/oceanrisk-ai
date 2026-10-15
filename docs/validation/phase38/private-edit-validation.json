@@ -1,0 +1,45 @@
+{
+  "kind": "Free actual PDF stream mutation and PDF.js re-extraction; no provider calls; files remain private",
+  "results": [
+    {
+      "kind": "weight",
+      "replacements": 2,
+      "nativeValueChanged": true,
+      "oldLiteralRemoved": true,
+      "pages": 1,
+      "sha256": "fb0157027814b5ae649f27f6052d8093e614f8ced8ea7f89d0925a1a8598db68"
+    },
+    {
+      "kind": "quantity",
+      "replacements": 2,
+      "nativeValueChanged": true,
+      "oldLiteralRemoved": true,
+      "pages": 1,
+      "sha256": "4b11aee515a738569ed86f778445039e954a760a533228e86f0a502ee92a568b"
+    },
+    {
+      "kind": "seal",
+      "replacements": 1,
+      "nativeValueChanged": true,
+      "oldLiteralRemoved": true,
+      "pages": 1,
+      "sha256": "6e19f0d98cb3f61c3f608a7743b1c1d89f7f7d47b4ee4f1f5877cbb275bee1b5"
+    },
+    {
+      "kind": "hbl",
+      "replacements": 2,
+      "nativeValueChanged": true,
+      "oldLiteralRemoved": true,
+      "pages": 1,
+      "sha256": "aacae82137698c472449dbb63a77c6c6682bedc30838b7cf7508c2eb350942c6"
+    },
+    {
+      "kind": "hs",
+      "replacements": 1,
+      "nativeValueChanged": true,
+      "oldLiteralRemoved": true,
+      "pages": 1,
+      "sha256": "57f43eedc1a337ab73563a33116629e744fdba19493b8f3f075d15911b78c3e0"
+    }
+  ]
+}

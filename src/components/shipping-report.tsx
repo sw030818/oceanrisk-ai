@@ -6,6 +6,7 @@ import {
   comparisonGroups,
   comparisonDisplayFields,
 } from "@/modules/shipping/presentation";
+import { pairedReadings } from "@/modules/shipping/display-reading";
 import { assessmentLabels } from "@/modules/rules/model";
 export function ShippingReport({
   results,
@@ -63,30 +64,24 @@ export function ShippingReport({
         )}
         {review.outcomes && (
           <p>
-            대조 대상 없음 {review.outcomes.notApplicable} · 원문 검증 실패{" "}
-            {review.outcomes.evidenceFailed} · 원본 검사{" "}
+            대조 대상 없음 {review.outcomes.notApplicable} · 현재 원문 근거
+            미확인{" "}
+            {review.outcomes.evidenceUnverified ??
+              review.outcomes.evidenceFailed}{" "}
+            · 최초 AI 미확인 {review.outcomes.evidenceFailed} · 복구{" "}
+            {review.outcomes.evidenceRecovered ?? 0} · 원본 검사{" "}
             {review.outcomes.checksExecuted} / 독립 판정{" "}
             {review.outcomes.independentChecks}
           </p>
         )}
-        <h2 className="mt-4 font-bold">업무상 우선 확인</h2>
-        <ul>
-          {review.issues?.map((issue) => (
-            <li key={issue.id} className="mb-2">
-              <strong>
-                {issue.title} · {labels[issue.assessment]}
-              </strong>
-              <p>{issue.explanation}</p>
-              <p>{issue.followUp}</p>
-              <p>
-                {issue.documentIds
-                  .map((id) => docs.find((d) => d.id === id)?.fileName ?? id)
-                  .join(" · ")}
-              </p>
-            </li>
-          ))}
-        </ul>
-        <p>모든 검사와 근거는 아래 비교표에 보존됩니다.</p>
+        {(review.outcomes?.evidenceUnverified ??
+          review.outcomes?.evidenceFailed ??
+          0) > 0 && (
+          <p className="my-2 font-bold">
+            검토 미완료 · 근거 미확인 항목이 남아 있습니다. 오류 0건을 전체
+            정상으로 해석하지 마세요.
+          </p>
+        )}
         <h2 className="mt-4 font-bold">분석 대상</h2>
         <ul>
           {results.map((r) => (
@@ -112,6 +107,26 @@ export function ShippingReport({
             </li>
           ))}
         </ul>
+        <h2 className="mt-4 font-bold">불일치 및 확인 필요 사항</h2>
+        <ul>
+          {review.issues?.map((issue) => (
+            <li key={issue.id} className="mb-2">
+              <strong>
+                {issue.title} · {labels[issue.assessment]}
+              </strong>
+              <p>
+                관련 검사 {issue.relatedCheckIds.length}건 · {issue.explanation}
+              </p>
+              <p>{issue.followUp}</p>
+              <p>
+                {issue.documentIds
+                  .map((id) => docs.find((d) => d.id === id)?.fileName ?? id)
+                  .join(" · ")}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <p>모든 검사와 근거는 아래 비교표에 보존됩니다.</p>
         <h2 className="my-3 font-bold">서류별 통합 비교표</h2>
         <table className="w-full border-collapse text-left text-[9px]">
           <thead>
@@ -129,28 +144,28 @@ export function ShippingReport({
                 <th className="align-top">{g.title}</th>
                 {shippingTypes.map((t) => (
                   <td key={t} className="align-top">
-                    {comparisonDisplayFields(g)
-                      .filter(
+                    {pairedReadings(
+                      comparisonDisplayFields(g).filter(
                         (f) =>
                           docs.find((d) => d.id === f.documentId)
                             ?.detectedType === t,
-                      )
-                      .map((f, i) => (
-                        <p key={i}>
-                          {String(f.field.current.value ?? "정보 없음")} ·{" "}
-                          {f.field.current.status === "verified"
-                            ? "원문 확인"
-                            : f.field.current.status === "user_edited"
-                              ? "사용자 수정"
-                              : "근거 미확인"}
-                          <br />
-                          {f.field.original.source?.fileName ?? f.documentId} ·
-                          p.{f.field.original.source?.page ?? "?"} ·{" "}
-                          {f.field.original.source?.segments
-                            ?.map((s) => s.blockId)
-                            .join(", ") ?? "블록 없음"}
-                        </p>
-                      ))}
+                      ),
+                    ).map(({ field: f, text }, i) => (
+                      <p key={i}>
+                        {text} ·{" "}
+                        {f.field.current.status === "verified"
+                          ? "원문 확인"
+                          : f.field.current.status === "user_edited"
+                            ? "사용자 수정"
+                            : "근거 미확인"}
+                        <br />
+                        {f.field.original.source?.fileName ?? f.documentId} · p.
+                        {f.field.original.source?.page ?? "?"} ·{" "}
+                        {f.field.original.source?.segments
+                          ?.map((s) => s.blockId)
+                          .join(", ") ?? "블록 없음"}
+                      </p>
+                    ))}
                   </td>
                 ))}
                 <td className="align-top">
@@ -160,37 +175,25 @@ export function ShippingReport({
             ))}
           </tbody>
         </table>
-        <h2 className="my-3 font-bold">불일치 및 확인 필요 사항</h2>
-        <ul>
-          {groups
-            .filter(
-              (g) =>
-                ![
-                  "confirmed_match",
-                  "insufficient_information",
-                  "not_comparable",
-                  "not_applicable",
-                ].includes(g.assessment),
-            )
-            .map((g) => (
-              <li key={g.id} className="mb-3">
-                <strong>
-                  {g.title} · {labels[g.assessment]}
-                </strong>
-                {[...new Set(g.checks.map((c) => c.explanation))].map((w) => (
-                  <p key={w}>{w}</p>
-                ))}
-                <p>
-                  {[
-                    ...new Set(g.checks.flatMap((c) => c.uncertainties ?? [])),
-                  ].join(" ")}
-                </p>
-                <p>
-                  다음 확인:{" "}
-                  {[...new Set(g.checks.map((c) => c.followUp))].join(" ")}
-                </p>
-              </li>
-            ))}
+        <h2 className="my-3 font-bold">원본 검사 기록 (보존)</h2>
+        <ul className="text-[8px]">
+          {review.checks.map((c) => (
+            <li key={c.id} className="border-b border-slate-200 py-1">
+              <strong>
+                {c.title ?? c.category} · {labels[c.assessment]}
+              </strong>{" "}
+              — {c.comparison?.reasonCodes?.join(", ") || c.explanation}
+              <br />
+              {[
+                ...new Set(
+                  c.fields.map(
+                    (f) =>
+                      `${docs.find((d) => d.id === f.documentId)?.fileName ?? f.documentId} p.${f.field.current.source?.page ?? "?"} ${f.field.current.source?.segments?.map((s) => s.blockId).join(",") ?? "근거 없음"}`,
+                  ),
+                ),
+              ].join(" / ")}
+            </li>
+          ))}
         </ul>
         <h2 className="my-3 font-bold">분석 제한 사항</h2>
         <p>

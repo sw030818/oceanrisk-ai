@@ -14,6 +14,7 @@ import {
   geometricRole,
   nativeCell,
   nativeDocumentField,
+  nativeDocumentFieldAmbiguous,
   cellHeading,
   packageGoodsContext,
 } from "../layout/shipping-geometry";
@@ -212,6 +213,17 @@ export function verifyShippingField(
         ]),
       ]
     : anchors(blocks, g.value!);
+  if (
+    scope === "document" &&
+    values.some((b) => nativeDocumentFieldAmbiguous(page, b, role))
+  ) {
+    g = fail(
+      g,
+      "row_mismatch",
+      "같은 원문 셀에 해당 수치의 여러 행이 있어 한 행을 문서 전체 기재값으로 확정할 수 없습니다.",
+    );
+    return finish();
+  }
   const locations = values
     .map((b) => shippingCell(page, [b], scope))
     .filter((l): l is Location => !!l);

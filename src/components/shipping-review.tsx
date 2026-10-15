@@ -17,10 +17,17 @@ import {
 import { portCode, contextualCarton } from "@/modules/shipping/equivalence";
 import { partyName32 } from "@/modules/shipping/parties";
 import { unit32, refKey32 } from "@/modules/shipping/review-evidence";
+import {
+  literalReading,
+  pairedReadings,
+} from "@/modules/shipping/display-reading";
+import { shippingFieldLabels } from "@/modules/shipping/catalog";
 import { ShippingFields } from "./shipping-fields";
 import type { GroundedField } from "@/modules/documents/schema";
 const labels: Record<ShippingAssessment, string> = {
   ...assessmentLabels,
+  provisional_match: "값은 같지만 근거 확인 필요 (잠정 일치)",
+  provisional_mismatch: "차이가 있으나 확정 전 확인 필요 (잠정 불일치)",
   not_comparable: "비교 불가",
   not_applicable: "대조 대상 없음",
 };
@@ -160,7 +167,7 @@ export function ShippingReviewPanel({
       title={`${f.field.current.source?.fileName ?? "원문 없음"} · ${f.field.current.source?.page ?? "?"}페이지`}
     >
       <span className="font-medium">
-        {displayed ?? String(f.field.current.value ?? "정보 없음")}
+        {displayed ?? literalReading(f.field)}
       </span>
       <span
         className={`ml-1 text-[10px] ${f.field.current.status === "verified" ? "text-emerald-700" : f.field.current.status === "missing" ? "text-slate-400" : "text-orange-700"}`}
@@ -180,44 +187,7 @@ export function ShippingReviewPanel({
       (f) =>
         documents.find((d) => d.id === f.documentId)?.detectedType === type,
     );
-    const owner = (f: ComparisonGroup["fields"][number]) =>
-      [f.documentId, f.itemId ?? f.cargoId ?? f.containerId ?? "document"].join(
-        "/",
-      );
-    const unique = fs.filter(
-      (f, i) =>
-        fs.findIndex(
-          (v) =>
-            owner(v) === owner(f) &&
-            v.fieldName === f.fieldName &&
-            v.field.current.status === f.field.current.status &&
-            v.field.current.value === f.field.current.value,
-        ) === i,
-    );
-    const paired = new Set<ComparisonGroup["fields"][number]>();
-    const values = unique.map((f) => {
-      const unitKey =
-        f.fieldName === "packageCount" ? "packageUnit" : f.fieldName + "Unit";
-      const unit =
-        typeof f.field.current.value === "number" &&
-        f.field.current.status === "verified"
-          ? unique.find(
-              (v) =>
-                owner(v) === owner(f) &&
-                (v.fieldName === unitKey ||
-                  (f.containerId && v.fieldName === "weightUnit")) &&
-                v.field.current.status === "verified",
-            )
-          : undefined;
-      if (unit) paired.add(unit);
-      return {
-        field: f,
-        text: unit
-          ? `${f.field.current.value} ${unit.field.current.value}`
-          : undefined,
-      };
-    });
-    return values.filter((v) => !paired.has(v.field));
+    return pairedReadings(fs);
   };
   return (
     <section
@@ -240,11 +210,56 @@ export function ShippingReviewPanel({
           {s.conflictingRelationships} / 양자 검사 {s.pairChecks} · 삼각 검사{" "}
           {s.triangleChecks}
         </p>
+        <div
+          data-testid="review-kpis"
+          className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4"
+        >
+          {[
+            [
+              "확정 불일치",
+              review.outcomes?.mismatches ?? s.confirmedMismatches,
+            ],
+            [
+              "확인 필요",
+              review.issues?.filter(
+                (i) => i.assessment !== "confirmed_mismatch",
+              ).length ?? s.needsReview,
+            ],
+            [
+              "현재 원문 근거 미확인",
+              review.outcomes?.evidenceUnverified ??
+                review.outcomes?.evidenceFailed ??
+                0,
+            ],
+            ["확인된 일치", review.outcomes?.matches ?? s.matches],
+          ].map(([label, value]) => (
+            <div
+              key={label}
+              className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            >
+              <p className="text-[11px] text-slate-600">{label}</p>
+              <p className="mt-1 text-xl font-bold text-[#142744]">{value}</p>
+            </div>
+          ))}
+        </div>
+        {!!(
+          review.outcomes?.evidenceUnverified ?? review.outcomes?.evidenceFailed
+        ) && (
+          <p
+            data-testid="review-incomplete"
+            className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-amber-900"
+          >
+            검토 미완료 · 원문 근거를 확인하지 못한 필드가 남아 있습니다. 확정
+            불일치 0건은 모든 서류가 정상이라는 뜻이 아닙니다.
+          </p>
+        )}
         {review.outcomes && (
           <p className="mt-2 text-xs text-slate-500">
             독립 판정 {review.outcomes.independentChecks} · 대조 대상 없음{" "}
-            {review.outcomes.notApplicable} · 원문 검증 실패{" "}
-            {review.outcomes.evidenceFailed} (원본 검사 진단은 상세에 보존)
+            {review.outcomes.notApplicable} · 최초 AI 근거 미확인{" "}
+            {review.outcomes.evidenceFailed} · 현재 복구{" "}
+            {review.outcomes.evidenceRecovered ?? 0} (원본 검사 진단은 상세에
+            보존)
           </p>
         )}
         <div className="mt-4 flex flex-wrap gap-2">
@@ -338,6 +353,23 @@ export function ShippingReviewPanel({
                   {issue.explanation}
                 </p>
                 <p className="mt-1 text-xs text-slate-700">{issue.followUp}</p>
+                <p className="mt-1 break-words text-[11px] text-slate-600">
+                  영향 항목:{" "}
+                  {[
+                    ...new Set(
+                      issue.affectedFieldNames ??
+                        issue.fields.map((f) => f.fieldName),
+                    ),
+                  ]
+                    .map(
+                      (k) =>
+                        shippingFieldLabels[
+                          k as keyof typeof shippingFieldLabels
+                        ] ?? (k === "documentType" ? "문서 유형" : k),
+                    )
+                    .join(" · ")}{" "}
+                  · 관련 검사 {issue.relatedCheckIds.length}건
+                </p>
                 <p className="mt-1 break-words text-[10px] text-slate-500">
                   {issue.documentIds
                     .map(
@@ -353,7 +385,9 @@ export function ShippingReviewPanel({
               data-testid="normal-review-summary"
               className="rounded-lg bg-emerald-50 p-3 text-xs text-emerald-900"
             >
-              현재 실행된 검사에서 확인할 문제가 없습니다. 확인된 일치{" "}
+              {(review.outcomes?.evidenceUnverified ?? 0) > 0
+                ? "현재 비교에서 확인된 오류는 없지만 원문 근거 검토가 남아 있습니다. 확인된 일치 "
+                : "현재 실행된 검사에서 확인할 문제가 없습니다. 확인된 일치 "}
               {review.outcomes?.matches ?? s.matches}건입니다. 전체 보기에서
               모든 검사와 대조 대상 없음을 확인할 수 있습니다.
             </p>
@@ -361,7 +395,7 @@ export function ShippingReviewPanel({
         </section>
       )}
       <p className="px-4 pb-2 text-[11px] text-slate-500 md:hidden">
-        비교표를 좌우로 밀어 다른 서류와 판정을 확인하세요. 항목을 누르면 상세가
+        항목별 카드에서 서류 원문값을 비교하세요. 값을 누르면 PDF 근거가
         열립니다.
       </p>
       <div
@@ -370,11 +404,11 @@ export function ShippingReviewPanel({
         aria-label="문서 비교표 스크롤"
         tabIndex={0}
       >
-        <table className="w-full min-w-[700px] table-fixed text-left text-xs">
+        <table className="w-full table-fixed text-left text-xs md:min-w-[700px]">
           <caption className="sr-only">
             선적서류 비교표. 같은 종류의 복수 문서는 파일명을 함께 표시합니다.
           </caption>
-          <thead className="border-b border-slate-200 bg-slate-50">
+          <thead className="hidden border-b border-slate-200 bg-slate-50 md:table-header-group">
             <tr>
               <th className="w-[19%] p-3">항목</th>
               {shippingTypes.map((t) => (
@@ -385,14 +419,24 @@ export function ShippingReviewPanel({
               <th className="w-[14%] p-3">판정 / 상세</th>
             </tr>
           </thead>
-          <tbody>
-            {visible.map((g) => (
+          <tbody className="block md:table-row-group">
+            {(filter === "attention" && review.issues
+              ? visible.filter((g) =>
+                  review.issues!.some(
+                    (issue) =>
+                      issue.relatedCheckIds.find((id) =>
+                        visible.some((v) => v.checks.some((c) => c.id === id)),
+                      ) === g.checks[0]?.id,
+                  ),
+                )
+              : visible
+            ).map((g) => (
               <tr
                 key={g.id}
                 data-testid="comparison-row"
-                className="border-b border-slate-100 align-top hover:bg-slate-50/70"
+                className="mb-3 grid grid-cols-1 gap-2 rounded-lg border border-slate-200 p-3 align-top md:mb-0 md:table-row md:rounded-none md:border-0 md:border-b md:border-slate-100 md:p-0 md:hover:bg-slate-50/70"
               >
-                <th className="sticky left-0 z-[1] break-words bg-white p-3 font-semibold">
+                <th className="break-words bg-white font-semibold md:sticky md:left-0 md:z-[1] md:p-3">
                   <button
                     onClick={() => setSelected(g.id)}
                     className="text-left hover:text-blue-700"
@@ -404,7 +448,10 @@ export function ShippingReviewPanel({
                   </p>
                 </th>
                 {shippingTypes.map((t) => (
-                  <td key={t} className="p-3">
+                  <td key={t} className="block min-w-0 md:table-cell md:p-3">
+                    <p className="mb-1 text-[10px] font-semibold text-slate-500 md:hidden">
+                      {shippingLabels[t].title}
+                    </p>
                     <div className="space-y-2">
                       {tableFields(g, t).map(({ field: f, text }, i) => (
                         <div key={i}>
@@ -416,11 +463,11 @@ export function ShippingReviewPanel({
                                 ?.fileName
                             }
                           >
-                            {
-                              documents.find((d) => d.id === f.documentId)
-                                ?.fileName
-                            }{" "}
-                            · p.{f.field.current.source?.page ?? "?"}
+                            {documents.filter((d) => d.detectedType === t)
+                              .length > 1
+                              ? `${documents.find((d) => d.id === f.documentId)?.fileName} · `
+                              : ""}
+                            p.{f.field.current.source?.page ?? "?"}
                           </p>
                         </div>
                       ))}
@@ -456,7 +503,7 @@ export function ShippingReviewPanel({
                     </div>
                   </td>
                 ))}
-                <td className="p-3">
+                <td className="block md:table-cell md:p-3">
                   <span
                     className={`inline-block rounded px-2 py-1 text-[10px] font-semibold ${color(g.assessment)}`}
                   >

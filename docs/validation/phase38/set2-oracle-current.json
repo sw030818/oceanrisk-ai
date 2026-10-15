@@ -1,0 +1,133 @@
+{
+  "kind": "Actual attached PDFs with explicit oracle field values and title candidates. Native verification only, NO AI extraction, NO provider calls. Candidate search is evaluation-only; production ownership verifier makes every decision.",
+  "sourceSha": "ac7d6f4283a13a4064e9877a0f357f86748ddd3a",
+  "workingTree": "modified",
+  "classification": {
+    "verified": 3,
+    "total": 3
+  },
+  "numericUnitEvidence": {
+    "verified": 20,
+    "total": 20
+  },
+  "rows": [
+    {
+      "type": "house_bl",
+      "classification": "verified",
+      "fields": [
+        {
+          "role": "grossWeight",
+          "verified": true,
+          "candidateSpans": 2
+        },
+        {
+          "role": "grossWeightUnit",
+          "verified": true,
+          "candidateSpans": 2
+        },
+        {
+          "role": "packageCount",
+          "verified": true,
+          "candidateSpans": 4
+        },
+        {
+          "role": "packageUnit",
+          "verified": true,
+          "candidateSpans": 4
+        },
+        {
+          "role": "quantity",
+          "verified": true,
+          "candidateSpans": 2
+        },
+        {
+          "role": "quantityUnit",
+          "verified": true,
+          "candidateSpans": 2
+        }
+      ]
+    },
+    {
+      "type": "export_declaration",
+      "classification": "verified",
+      "fields": [
+        {
+          "role": "grossWeight",
+          "verified": true,
+          "candidateSpans": 2
+        },
+        {
+          "role": "grossWeightUnit",
+          "verified": true,
+          "candidateSpans": 3
+        },
+        {
+          "role": "packageCount",
+          "verified": true,
+          "candidateSpans": 4
+        },
+        {
+          "role": "packageUnit",
+          "verified": true,
+          "candidateSpans": 2
+        },
+        {
+          "role": "quantity",
+          "verified": true,
+          "candidateSpans": 6
+        },
+        {
+          "role": "quantityUnit",
+          "verified": true,
+          "candidateSpans": 8
+        },
+        {
+          "role": "netWeight",
+          "verified": true,
+          "candidateSpans": 2
+        },
+        {
+          "role": "netWeightUnit",
+          "verified": true,
+          "candidateSpans": 3
+        }
+      ]
+    },
+    {
+      "type": "house_manifest",
+      "classification": "verified",
+      "fields": [
+        {
+          "role": "grossWeight",
+          "verified": true,
+          "candidateSpans": 4
+        },
+        {
+          "role": "grossWeightUnit",
+          "verified": true,
+          "candidateSpans": 4
+        },
+        {
+          "role": "packageCount",
+          "verified": true,
+          "candidateSpans": 6
+        },
+        {
+          "role": "packageUnit",
+          "verified": true,
+          "candidateSpans": 4
+        },
+        {
+          "role": "quantity",
+          "verified": true,
+          "candidateSpans": 4
+        },
+        {
+          "role": "quantityUnit",
+          "verified": true,
+          "candidateSpans": 4
+        }
+      ]
+    }
+  ]
+}

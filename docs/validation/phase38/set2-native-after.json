@@ -1,0 +1,53 @@
+{
+  "kind": "Free actual Set2 native PDF + explicit oracle candidates; NO original AI response; NO provider calls",
+  "sourceSha": "837668f",
+  "evaluation": "current working tree, free original PDF verification only",
+  "classification": {
+    "status": "verified",
+    "reason": "실제 제목과 House 표시·페이지를 독립 확인했습니다."
+  },
+  "fields": [
+    {
+      "role": "grossWeight",
+      "status": "verified",
+      "code": "verified",
+      "reason": "실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다."
+    },
+    {
+      "role": "grossWeightUnit",
+      "status": "verified",
+      "code": "verified",
+      "reason": "해당 필드의 실제 단위 셀/헤더와 원문을 대조했습니다."
+    },
+    {
+      "role": "packageCount",
+      "status": "verified",
+      "code": "verified",
+      "reason": "실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다."
+    },
+    {
+      "role": "packageUnit",
+      "status": "verified",
+      "code": "verified",
+      "reason": "해당 필드의 실제 단위 셀/헤더와 원문을 대조했습니다."
+    },
+    {
+      "role": "quantity",
+      "status": "verified",
+      "code": "verified",
+      "reason": "실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다."
+    },
+    {
+      "role": "quantityUnit",
+      "status": "verified",
+      "code": "verified",
+      "reason": "해당 필드의 실제 단위 셀/헤더와 원문을 대조했습니다."
+    },
+    {
+      "role": "goodsDescription",
+      "status": "verified",
+      "code": "verified",
+      "reason": "실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다."
+    }
+  ]
+}

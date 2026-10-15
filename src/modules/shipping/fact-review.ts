@@ -23,6 +23,7 @@ import {
   type FieldRef,
 } from "./review-evidence";
 import { resolveDeclarationScopes } from "./declaration-scope";
+import { directGoodsConflicts } from "./direct-goods-conflicts";
 import { withReviewIssues } from "./issues";
 import { compareGoods } from "./goods-semantics";
 import { portCode, hsSix, goodsCore } from "./equivalence";
@@ -457,7 +458,7 @@ export function withFactReview(
             )
               reasons.push("SCOPE_UNRESOLVED");
           }
-        if (role === "sealNumber") {
+          if (role === "sealNumber") {
             const c = f.containerId
                 ? d.containers.find((c) => c.id === f.containerId)
                 : null,
@@ -602,8 +603,21 @@ export function withFactReview(
             reasons.push("SCOPE_UNRESOLVED");
         }
         if (role === "hsCode" && reasons.includes("SCOPE_UNRESOLVED")) {
-          const literalSets = valid.map(s => [...new Set((s.verified.length ? s.verified : s.refs).map(f => hsSix(f.field.current.value) ?? text32(f.field.current.value)))].sort().join("|"));
-          if (literalSets[0] && literalSets.every(s => s === literalSets[0])) same = true;
+          const literalSets = valid.map((s) =>
+            [
+              ...new Set(
+                (s.verified.length ? s.verified : s.refs).map(
+                  (f) =>
+                    hsSix(f.field.current.value) ??
+                    text32(f.field.current.value),
+                ),
+              ),
+            ]
+              .sort()
+              .join("|"),
+          );
+          if (literalSets[0] && literalSets.every((s) => s === literalSets[0]))
+            same = true;
         }
         if (role === "sealNumber") {
           const containers = group.map((d) =>
@@ -627,10 +641,22 @@ export function withFactReview(
             s.verified.length ? s.verified : s.refs,
           );
           const pairs = candidates.flatMap((f, i) =>
-            candidates.slice(i + 1)
-              .filter(g => g.documentId !== f.documentId)
-              .map(g => compareGoods(f.field.current.value, g.field.current.value).status));
-          if (pairs.length && pairs.every(status => ["exact", "semantic", "partial"].includes(status))) same = true;
+            candidates
+              .slice(i + 1)
+              .filter((g) => g.documentId !== f.documentId)
+              .map(
+                (g) =>
+                  compareGoods(f.field.current.value, g.field.current.value)
+                    .status,
+              ),
+          );
+          if (
+            pairs.length &&
+            pairs.every((status) =>
+              ["exact", "semantic", "partial"].includes(status),
+            )
+          )
+            same = true;
           if (
             candidates.some((f, i) =>
               candidates
@@ -655,11 +681,16 @@ export function withFactReview(
         }
         if (
           role === "goodsDescription" &&
-          (valid.some((s) => !(s.doc.items.length ? s.doc.factCoverage?.items.complete : s.doc.factCoverage?.cargoRecords.complete)) ||
+          (valid.some(
+            (s) =>
+              !(s.doc.items.length
+                ? s.doc.factCoverage?.items.complete
+                : s.doc.factCoverage?.cargoRecords.complete),
+          ) ||
             valid.some((s) => {
-              const rows = (s.doc.items.length ? s.doc.items : s.doc.cargoRecords).map((i) =>
-                goodsCore(i.fields.goodsDescription.current.value),
-              );
+              const rows = (
+                s.doc.items.length ? s.doc.items : s.doc.cargoRecords
+              ).map((i) => goodsCore(i.fields.goodsDescription.current.value));
               return rows.length !== new Set(rows).size;
             }))
         )
@@ -869,11 +900,20 @@ export function withFactReview(
     );
   }
   resolveDeclarationScopes(primary, review.checks, documents, relations);
+  directGoodsConflicts(documents, review, primary);
   primary.sort((a, b) => a.id.localeCompare(b.id));
   for (const d of documents) {
-    if (d.extractionStatus === "not_performed" || d.classificationStatus === "classified") continue;
-    const refs = d.classification ? [ref32(d, "documentType", d.classification)] : [];
-    add([d], "", "documentType", "reference", refs, "needs_review", ["EVIDENCE_UNVERIFIED"]);
+    if (
+      d.extractionStatus === "not_performed" ||
+      d.classificationStatus === "classified"
+    )
+      continue;
+    const refs = d.classification
+      ? [ref32(d, "documentType", d.classification)]
+      : [];
+    add([d], "", "documentType", "reference", refs, "needs_review", [
+      "EVIDENCE_UNVERIFIED",
+    ]);
     primary.at(-1)!.title = "문서 유형의 원문 근거 확인 필요";
   }
   const outcomes = {
@@ -900,10 +940,27 @@ export function withFactReview(
         ).length,
       0,
     ),
-    evidenceUnverified: documents.reduce((n, d) => n + shippingValues(d).filter(f => f.current.value !== null && f.current.status === "unverified").length, 0),
-    evidenceRecovered: documents.reduce((n, d) => n + shippingValues(d).filter(f => f.recovery && f.current.status === "verified").length, 0),
+    evidenceUnverified: documents.reduce(
+      (n, d) =>
+        n +
+        shippingValues(d).filter(
+          (f) => f.current.value !== null && f.current.status === "unverified",
+        ).length,
+      0,
+    ),
+    evidenceRecovered: documents.reduce(
+      (n, d) =>
+        n +
+        shippingValues(d).filter(
+          (f) => f.recovery && f.current.status === "verified",
+        ).length,
+      0,
+    ),
     checksExecuted: review.checks.length,
     independentChecks: primary.length,
   };
-  return withReviewIssues({ ...review, primaryChecks: primary, outcomes }, documents);
+  return withReviewIssues(
+    { ...review, primaryChecks: primary, outcomes },
+    documents,
+  );
 }

@@ -35,21 +35,41 @@ const body = (p: PdfPage, c: PdfCell) =>
     .filter((b) => inside(c, b))
     .sort((a, b) => a.y - b.y || a.x - b.x);
 type Heading = ReturnType<typeof computeCellHeading>;
-const headingCache = new WeakMap<PdfPage, WeakMap<PdfCell, { signature: string; value: Heading }>>();
+const headingCache = new WeakMap<
+  PdfPage,
+  WeakMap<PdfCell, { signature: string; value: Heading }>
+>();
 export function cellHeading(page: PdfPage, cell: PdfCell): Heading {
   let cache = headingCache.get(page);
-  if (!cache) { cache = new WeakMap(); headingCache.set(page, cache); }
+  if (!cache) {
+    cache = new WeakMap();
+    headingCache.set(page, cache);
+  }
   // PDFs are immutable in the pipeline, but editors/tests may alter blocks.
   // Include content and geometry so a cached heading never proves stale text.
-  const signature = JSON.stringify([(page.cells ?? []).map(c => [c.x,c.y,c.width,c.height]), (page.blocks ?? []).map(b => [b.id,b.text,b.x,b.y,b.width,b.height,b.row])]);
+  const bs = body(page, cell);
+  const contextualUnit = /^(?:CTNS?|CARTONS?|PKGS?)$/i.test(
+    bs[0]?.text.trim() ?? "",
+  );
+  const signature = JSON.stringify([
+    (page.cells ?? []).map((c) => [c.x, c.y, c.width, c.height]),
+    (contextualUnit ? (page.blocks ?? []) : bs).map((b) => [
+      b.id,
+      b.text,
+      b.x,
+      b.y,
+      b.width,
+      b.height,
+      b.row,
+    ]),
+  ]);
   const previous = cache.get(cell);
   if (previous?.signature === signature) return previous.value;
-  const value = computeCellHeading(page, cell);
+  const value = computeCellHeading(page, cell, bs);
   cache.set(cell, { signature, value });
   return value;
 }
-function computeCellHeading(page: PdfPage, cell: PdfCell) {
-  const bs = body(page, cell);
+function computeCellHeading(page: PdfPage, cell: PdfCell, bs: PdfBlock[]) {
   if (!bs.length) return null;
   const first = bs[0];
   // Repeated data units such as CTNS may lexically resemble a quantity
@@ -268,23 +288,45 @@ export function nativeTableLink(
     unit,
   };
 }
+export function nativeDocumentFieldAmbiguous(
+  page: PdfPage,
+  b: PdfBlock,
+  role?: string,
+) {
+  const c = nativeCell(page, b),
+    h = c && cellHeading(page, c);
+  if (!c || !h?.role) return false;
+  const base = (r: string) =>
+    r
+      .replace(/^total([A-Z])/, (_, x: string) => x.toLowerCase())
+      .replace(/^packageUnit$/, "packageCount")
+      .replace(/Unit$/, "");
+  const wanted = base(role ?? geometricRole(page, b) ?? h.role);
+  if (
+    !["quantity", "packageCount", "grossWeight", "netWeight"].includes(wanted)
+  )
+    return false;
+  let active = base(h.role),
+    count = 0;
+  for (const line of physicalLines(page, body(page, c))) {
+    if (line.some((v) => h.blocks.includes(v))) continue;
+    const text = spanText(line);
+    if (/^(?:HS|SEAL|CONTAINER)\b/i.test(text.trim())) continue;
+    const label =
+      shippingRole(text) ?? shippingRole(text.replace(/[:\s]*[0-9].*$/, ""));
+    if (label) active = base(label);
+    const atoms = countAtoms(text);
+    const roles = atoms.length
+      ? atoms.map((a) => a.role)
+      : numericTokens(text).map(() => active);
+    count += roles.filter((r) => r === wanted).length;
+  }
+  return count > 1;
+}
 export function nativeDocumentField(page: PdfPage, b: PdfBlock) {
   const c = nativeCell(page, b),
     h = c && cellHeading(page, c);
-  if (c && h?.role && ["quantity", "packageCount", "grossWeight", "netWeight", "totalQuantity", "totalPackageCount", "totalGrossWeight", "totalNetWeight"].includes(h.role)) {
-    const occurrences = new Map<string, number>();
-    for (const line of physicalLines(page, body(page, c))) {
-      if (line.some(v => h.blocks.includes(v))) continue;
-      const text = spanText(line);
-      if (/^(?:HS|SEAL|CONTAINER)\b/i.test(text.trim())) continue;
-      const atoms = countAtoms(text);
-      const role = h.role.replace(/^total([A-Z])/, (_, x: string) => x.toLowerCase());
-      if (!["quantity", "packageCount", "grossWeight", "netWeight"].includes(role)) continue;
-      for (const r of atoms.length ? atoms.map(a => a.role) : numericTokens(text).map(() => role))
-        occurrences.set(r, (occurrences.get(r) ?? 0) + 1);
-    }
-    if ([...occurrences.values()].some(n=>n>1)) return false;
-  }
+  if (nativeDocumentFieldAmbiguous(page, b)) return false;
   return (
     !!h?.role &&
     h.blocks.some((v) => v.y < b.y - 2) &&

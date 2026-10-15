@@ -5,7 +5,12 @@ import { refKey32, verified32 } from "./review-evidence";
 export interface ReviewIssue {
   id: string;
   cause:
-    "value_conflict" | "reference_conflict" | "evidence" | "missing" | "scope" | "classification";
+    | "value_conflict"
+    | "reference_conflict"
+    | "evidence"
+    | "missing"
+    | "scope"
+    | "classification";
   severity: "high" | "attention";
   assessment: ShippingCheck["assessment"];
   title: string;
@@ -21,7 +26,10 @@ const rank = (s: ShippingCheck["assessment"]) =>
   s === "confirmed_mismatch" ? 0 : s === "provisional_mismatch" ? 1 : 2;
 // Group by the same cause AND shipment AND affected entity. Different item rows,
 // documents with absent references and unrelated faults never share a key.
-export function reviewIssues(review: ShippingReview, documents: ShippingDocument[] = []): ReviewIssue[] {
+export function reviewIssues(
+  review: ShippingReview,
+  documents: ShippingDocument[] = [],
+): ReviewIssue[] {
   const issues = new Map<string, ReviewIssue>();
   for (const c of review.primaryChecks ?? review.checks) {
     if (c.assessment === "confirmed_match" || c.assessment === "not_applicable")
@@ -30,22 +38,60 @@ export function reviewIssues(review: ShippingReview, documents: ShippingDocument
     if (causal.length) {
       for (const root of causal) {
         const key = "root:" + root.key;
-        const ids = [...new Set([c.id, ...(c.comparison?.relatedCheckIds ?? [])])];
+        const ids = [
+          ...new Set([c.id, ...(c.comparison?.relatedCheckIds ?? [])]),
+        ];
         const previous = issues.get(key);
         if (previous) {
-          previous.relatedCheckIds = [...new Set([...previous.relatedCheckIds, ...ids])];
-          previous.documentIds = [...new Set([...previous.documentIds, ...(c.documentIds ?? [])])];
-          previous.affectedFieldNames = [...new Set([...(previous.affectedFieldNames ?? []), ...c.fields.map(f => f.fieldName)])];
-          for (const f of c.fields) if (!previous.fields.some(v => refKey32(v) === refKey32(f))) previous.fields.push(f);
-          if (rank(c.assessment) < rank(previous.assessment)) previous.assessment = c.assessment;
-        } else issues.set(key, {
-          id: key, rootCauseIds: [root.key], cause: root.kind, severity: "attention", assessment: c.assessment,
-          title: root.kind === "classification" ? "문서 유형의 원문 근거 확인 필요" : "필드 원문 근거 확인 필요",
-          explanation: root.kind === "classification" ? "문서 유형을 입증하지 못해 관련 비교는 잠정입니다. 독립적으로 확인된 필드와 원본 검사는 보존합니다." : root.fields.map(f => f.field.current.reason).filter(Boolean).join(" "),
-          followUp: root.kind === "classification" ? "표제와 House 발행 문맥을 원문에서 확인해 주세요." : "해당 필드의 라벨·값·행 소속을 원문에서 확인해 주세요. 수정값은 원문 검증과 구분합니다.",
-          documentIds: [...new Set([...(c.documentIds ?? []), ...root.fields.map(f => f.documentId)])],
-          relatedCheckIds: ids, fields: [...c.fields], affectedFieldNames: [...new Set(c.fields.map(f => f.fieldName))],
-        });
+          previous.relatedCheckIds = [
+            ...new Set([...previous.relatedCheckIds, ...ids]),
+          ];
+          previous.documentIds = [
+            ...new Set([...previous.documentIds, ...(c.documentIds ?? [])]),
+          ];
+          previous.affectedFieldNames = [
+            ...new Set([
+              ...(previous.affectedFieldNames ?? []),
+              ...c.fields.map((f) => f.fieldName),
+            ]),
+          ];
+          for (const f of c.fields)
+            if (!previous.fields.some((v) => refKey32(v) === refKey32(f)))
+              previous.fields.push(f);
+          if (rank(c.assessment) < rank(previous.assessment))
+            previous.assessment = c.assessment;
+        } else
+          issues.set(key, {
+            id: key,
+            rootCauseIds: [root.key],
+            cause: root.kind,
+            severity: "attention",
+            assessment: c.assessment,
+            title:
+              root.kind === "classification"
+                ? "문서 유형의 원문 근거 확인 필요"
+                : "필드 원문 근거 확인 필요",
+            explanation:
+              root.kind === "classification"
+                ? "문서 유형을 입증하지 못해 관련 비교는 잠정입니다. 독립적으로 확인된 필드와 원본 검사는 보존합니다."
+                : root.fields
+                    .map((f) => f.field.current.reason)
+                    .filter(Boolean)
+                    .join(" "),
+            followUp:
+              root.kind === "classification"
+                ? "표제와 House 발행 문맥을 원문에서 확인해 주세요."
+                : "해당 필드의 라벨·값·행 소속을 원문에서 확인해 주세요. 수정값은 원문 검증과 구분합니다.",
+            documentIds: [
+              ...new Set([
+                ...(c.documentIds ?? []),
+                ...root.fields.map((f) => f.documentId),
+              ]),
+            ],
+            relatedCheckIds: ids,
+            fields: [...c.fields],
+            affectedFieldNames: [...new Set(c.fields.map((f) => f.fieldName))],
+          });
       }
       continue;
     }
@@ -169,6 +215,9 @@ export function reviewIssues(review: ShippingReview, documents: ShippingDocument
       rank(a.assessment) - rank(b.assessment) || a.id.localeCompare(b.id),
   );
 }
-export function withReviewIssues(review: ShippingReview, documents: ShippingDocument[] = []): ShippingReview {
+export function withReviewIssues(
+  review: ShippingReview,
+  documents: ShippingDocument[] = [],
+): ShippingReview {
   return { ...review, issues: reviewIssues(review, documents) };
 }

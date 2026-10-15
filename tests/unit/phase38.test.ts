@@ -102,8 +102,9 @@ it("collects independent native fields while classification remains unverified, 
 }, 10000);
 
 it("uses bounded flask/thermos vocabulary without equating lab vessels or conflicting capacity", async () => {
-  const { compareGoods } =
-    await import("../../src/modules/shipping/goods-semantics");
+  const { compareGoods } = await import(
+    "../../src/modules/shipping/goods-semantics"
+  );
   expect(
     compareGoods(
       "STAINLESS STEEL VACUUM FLASK 600ML",
@@ -119,4 +120,28 @@ it("uses bounded flask/thermos vocabulary without equating lab vessels or confli
   expect(compareGoods("GLASS LAB FLASK", "GLASS BOTTLE").status).not.toBe(
     "semantic",
   );
+});
+
+it("rejects a document total borrowed from one of two numeric rows in the same native cell", async () => {
+  const { unicodePdf } = await import("../fixtures/shipping31");
+  const { extractPdfText } = await import("../../src/modules/pdf/extract");
+  const bytes = unicodePdf(
+    [
+      [
+        { text: "Gross Weight", x: 35, y: 40 },
+        { text: "640 KGS", x: 35, y: 70 },
+        { text: "641 KGS", x: 35, y: 95 },
+      ],
+    ],
+    { borders: [[{ x: 25, y: 25, width: 180, height: 100 }]] },
+  );
+  const pages = await extractPdfText(bytes, undefined, false, true),
+    pdf = { id: "multi-native", fileName: "synthetic-multi.pdf", pages };
+  const b = pages[0].blocks!.find((b) => b.text === "640 KGS")!;
+  const f = verifyShippingField(
+    { value: 640, evidence: { page: 1, blockIds: [b.id] } },
+    pdf,
+    "grossWeight",
+  );
+  expect(f.current.status).not.toBe("verified");
 });
