@@ -140,3 +140,50 @@ it("preserves the verified original numeric spelling and pairs only same-owner u
   ]);
   expect(wrong).toHaveLength(2);
 });
+
+it("links compatible partial product meaning and identical HS owner holds without hiding an actual HS conflict", async () => {
+  const fs = await Promise.all([
+    shipping34Fixture("house_bl"),
+    shipping34Fixture("export_declaration"),
+    shipping34Fixture("house_manifest"),
+  ]);
+  const { recoverNative } = await import("../../src/modules/shipping/recovery");
+  const r = reviewShipping(fs.map((f) => recoverNative(f.document, f.pdf)));
+  const issue = r.issues!.find((i) =>
+    i.rootCauseIds?.some((k) => k.includes("product-meaning")),
+  );
+  expect(issue).toBeDefined();
+  expect(issue!.affectedFieldNames).toEqual(
+    expect.arrayContaining(["goodsDescription", "hsCode"]),
+  );
+  expect(issue!.relatedCheckIds).toEqual(
+    expect.arrayContaining(
+      r
+        .primaryChecks!.filter(
+          (c) =>
+            ["goodsDescription", "hsCode"].includes(
+              c.comparison?.meaning ?? "",
+            ) && c.assessment === "provisional_match",
+        )
+        .map((c) => c.id),
+    ),
+  );
+  const changed = await shipping34Fixture("house_manifest", {
+    hsCode: "3924.10-0000",
+  });
+  const bad = reviewShipping([
+    ...fs.slice(0, 2).map((f) => recoverNative(f.document, f.pdf)),
+    recoverNative(changed.document, changed.pdf),
+  ]);
+  expect(
+    bad.issues!.some((i) =>
+      i.rootCauseIds?.some((k) => k.includes("product-meaning")),
+    ),
+  ).toBe(false);
+  expect(
+    bad.primaryChecks!.some(
+      (c) =>
+        c.comparison?.meaning === "hsCode" && c.assessment.endsWith("mismatch"),
+    ),
+  ).toBe(true);
+}, 15000);

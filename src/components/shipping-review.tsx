@@ -332,7 +332,12 @@ export function ShippingReviewPanel({
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h4 className="text-xs font-semibold">
-                    {issue.title} · {labels[issue.assessment]}
+                    {issue.title} ·{" "}
+                    {issue.rootCauseIds?.some((k) =>
+                      k.includes("product-meaning"),
+                    )
+                      ? "공통 품목군 · 규격 확인 필요"
+                      : labels[issue.assessment]}
                   </h4>
                   <button
                     className="text-xs font-semibold text-blue-700"

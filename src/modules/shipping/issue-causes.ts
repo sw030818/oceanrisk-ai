@@ -3,7 +3,7 @@ import type { ShippingCheck } from "./review-model";
 import { refKey32, ref32, verified32, type FieldRef } from "./review-evidence";
 export interface IssueCause {
   key: string;
-  kind: "classification" | "evidence";
+  kind: "classification" | "evidence" | "scope";
   fields: FieldRef[];
 }
 // Causal links, not fuzzy title/category deduplication. An unverified owner
@@ -86,4 +86,77 @@ export function evidenceCauses(
     }
   }
   return [...roots.values()];
+}
+
+import { compareGoods } from "./goods-semantics";
+// Equal literal HS values can be held solely by the same unresolved product
+// meaning. Connect that dependency only for unique, independently grounded
+// owners in exactly the same document/HBL scope; never absorb a true HS error.
+export function semanticCauses(
+  c: ShippingCheck,
+  docs: ShippingDocument[],
+): IssueCause[] {
+  if (
+    c.assessment !== "provisional_match" ||
+    !["goodsDescription", "hsCode"].includes(c.comparison?.meaning ?? "") ||
+    !c.comparison?.hbl ||
+    !c.comparison.reasonCodes.length ||
+    c.comparison.reasonCodes.some((r) => r !== "SCOPE_UNRESOLVED") ||
+    c.fields.some((f) => !verified32(f))
+  )
+    return [];
+  const ids = [
+    ...new Set(c.documentIds ?? c.fields.map((f) => f.documentId)),
+  ].sort();
+  if (ids.length < 2) return [];
+  const owners: { g: FieldRef; h: FieldRef }[] = [];
+  for (const id of ids) {
+    const d = docs.find((d) => d.id === id);
+    if (!d || d.classificationStatus !== "classified") return [];
+    const entity =
+      d.items.length === 1 && d.factCoverage?.items.complete
+        ? d.items[0]
+        : !d.items.length &&
+            d.cargoRecords.length === 1 &&
+            d.factCoverage?.cargoRecords.complete
+          ? d.cargoRecords[0]
+          : undefined;
+    if (!entity) return [];
+    const ref = d.items.length ? { itemId: entity.id } : { cargoId: entity.id };
+    const goods = entity.fields.goodsDescription,
+      hs = entity.fields.hsCode;
+    if (!goods || !hs) return [];
+    const g = ref32(d, "goodsDescription", goods, ref),
+      h = ref32(d, "hsCode", hs, ref);
+    if (!verified32(g) || !verified32(h)) return [];
+    owners.push({ g, h });
+  }
+  const hs = owners.map((o) =>
+    String(o.h.field.current.value).replace(/[.\s-]/g, ""),
+  );
+  if (!hs[0] || hs.some((v) => v !== hs[0])) return [];
+  const meanings = owners.flatMap((o, i) =>
+    owners
+      .slice(i + 1)
+      .map(
+        (p) =>
+          compareGoods(o.g.field.current.value, p.g.field.current.value).status,
+      ),
+  );
+  if (
+    !meanings.includes("partial") ||
+    meanings.some((s) => !["exact", "semantic", "partial"].includes(s))
+  )
+    return [];
+  return [
+    {
+      key: JSON.stringify([
+        "product-meaning",
+        c.comparison.hbl,
+        owners.map((o) => refKey32(o.g)).sort(),
+      ]),
+      kind: "scope",
+      fields: owners.map((o) => o.g),
+    },
+  ];
 }
