@@ -93,3 +93,17 @@ it("a partial third description does not hide an independently proven product co
     ).toBe(false);
   }
 }, 15000);
+
+it("never applies the carrier-only conflict fallback to an individual declaration", async () => {
+  const fs = await Promise.all([
+    shipping34Fixture("house_bl"),
+    shipping34Fixture("export_declaration", { goods: "COTTON T SHIRTS" }),
+  ]);
+  const r = reviewShipping(fs.map((f) => recoverNative(f.document, f.pdf)));
+  expect(r.relationships!.some((r) => r.status === "evidence_confirmed")).toBe(
+    true,
+  );
+  expect(r.primaryChecks!.some((c) => c.id.startsWith("direct-goods/"))).toBe(
+    false,
+  );
+}, 15000);

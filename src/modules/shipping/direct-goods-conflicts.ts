@@ -45,6 +45,14 @@ export function directGoodsConflicts(
   };
   for (const [i, a] of documents.entries())
     for (const b of documents.slice(i + 1)) {
+      // This independent fallback is carrier-to-carrier only. An individual
+      // export declaration may legitimately cover another product subset.
+      if (
+        new Set([a.detectedType, b.detectedType]).size !== 2 ||
+        ![a.detectedType, b.detectedType].includes("house_bl") ||
+        ![a.detectedType, b.detectedType].includes("house_manifest")
+      )
+        continue;
       const hbl = factHbl(a),
         fa = owner(a),
         fb = owner(b);
