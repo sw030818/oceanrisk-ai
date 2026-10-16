@@ -1,0 +1,54 @@
+{
+  "kind": "Private actual Set2 oracle native sources + MOCK semantic opinion; NOT OpenAI extraction",
+  "sourceProducts": 3,
+  "pairs": 2,
+  "whole": 2,
+  "status": "complete",
+  "before": {
+    "matches": 7,
+    "mismatches": 0,
+    "review": 3,
+    "requiredMissing": 4,
+    "notApplicable": 12,
+    "notComparable": 0,
+    "evidenceFailed": 0,
+    "evidenceUnverified": 0,
+    "evidenceRecovered": 6,
+    "checksExecuted": 52,
+    "independentChecks": 26
+  },
+  "after": {
+    "matches": 7,
+    "mismatches": 0,
+    "review": 5,
+    "requiredMissing": 4,
+    "notApplicable": 12,
+    "notComparable": 0,
+    "evidenceFailed": 0,
+    "evidenceUnverified": 0,
+    "evidenceRecovered": 6,
+    "checksExecuted": 52,
+    "independentChecks": 28
+  },
+  "confirmedFalsePositives": 0,
+  "semantic": [
+    {
+      "assessment": "provisional_match",
+      "validationCode": "AI_INCOMPLETE_ATTRIBUTES"
+    },
+    {
+      "assessment": "provisional_match",
+      "validationCode": "AI_INCOMPLETE_ATTRIBUTES"
+    }
+  ],
+  "held": [
+    {
+      "meaning": "goodsDescription",
+      "assessment": "provisional_match"
+    },
+    {
+      "meaning": "hsCode",
+      "assessment": "provisional_match"
+    }
+  ]
+}

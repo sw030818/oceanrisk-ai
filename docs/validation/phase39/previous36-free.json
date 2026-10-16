@@ -1,0 +1,18 @@
+{
+  "sourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+  "newProviderRequests": 0,
+  "sets": [
+    {
+      "kind": "Previous actual first responses + current native extraction/recovery; no new API",
+      "confirmedCore": 9,
+      "expectedCore": 9,
+      "goodsAndHs": "scope holds preserved"
+    },
+    {
+      "kind": "Previous actual first responses + current native extraction/recovery; no new API",
+      "confirmedCore": 9,
+      "expectedCore": 9,
+      "goodsAndHs": "scope holds preserved"
+    }
+  ]
+}

@@ -20,7 +20,7 @@
     "automaticRetries": 0,
     "composition": "Set2 initial3 + 17 development triplets51 + final same-SHA Set2 repeat3 and blind holdout3",
     "reservedFinalDocuments": 6,
-    "estimatedSourceRequestUpperUsd": 0.8235521249999999,
+    "estimatedSourceRequestUpperUsd": 0.8238320749999999,
     "estimateScope": "Upper bounds for expected oracle-derived request shapes only; actual unknown AI shapes are individually reserved before every request; budget stops prevail",
     "approvedCostUsd": null,
     "proposedCaps": {
@@ -28,5 +28,6 @@
       "documents": 60,
       "requests": 120
     }
-  }
+  },
+  "sourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678"
 }

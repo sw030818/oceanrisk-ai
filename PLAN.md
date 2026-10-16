@@ -146,3 +146,7 @@ A 원본Set2 확보·실제원인재현·분할블록/헤더/발행문맥/독립
 3. 완료: 별도 ReportLab 54합성PDF/18선적(개발17·의미 미평가 Holdout1), native oracle/MOCK 평가, 서버 무결성·오류·모바일/원문모드 회귀 및 별도 신규예산 runner. 승인 전 실제0호출, 기존ledger 보존.
 4. 진행: frozen ship npmci/type/lint/전체 단위/Production build/PDF worker/69브라우저, main 일반Push/Actions/정확 Production SHA 및 실제 Set2 무료 prepare.
 5. 대기: 사용자 신규 $10/60문서/120요청 명시 승인. 계획60문서/최대80요청(자동재시도0, 최종6문서 확보), oracle request 형태의 예약 추정합 약$0.824이며 실제 요청마다 상한을 재예약한다. 승인 전 E2E 완료 주장 금지. 소스 SHA를 유지하고 validation/phase39-evidence에 최종 무료 성과·승인상태를 보존한다.
+
+### PHASE 3.9 최종 체크포인트
+- 구현/무료독립평가/720단위/69브라우저/빌드·worker/main Push/Actions quality·production/공식 동일SHA/Set2 무료UI 완료. 소스 a57ffaf10e836f74e2e2cffb1d551d632cc4e678, 증거 validation/phase39-evidence.
+- 실제 신규 first extraction 및 semantic E2E는 승인 대기, 실제0/$0. 제안 $10·60문서·120요청, 계획 최대80요청/최종6문서 확보/자동재시도0. 이전 ledger 초기화·재사용 금지. 승인 없이 남은 유료실증을 실행하지 않는다.

@@ -630,3 +630,12 @@
 - 717단위/Production build/PDF worker 통과 후 브라우저 gate 도중, 의미 분석 429 실패가 내부 safe error에만 남고 기존 결과 설명에는 일반 실패로 표시되는 점을 발견했다. Push 전 해당 ship만 중지하고 안전한 오류 메시지를 판정 설명에 연결했다. 기존 화면/스타일 변경 없이 한도 도달 이유를 표시하며 원본 검사는 유지한다. 회귀1개 추가 후 전체 gate 재실행한다.
 - 최종 안전성 검토에서 한 품목행에 여러 모델이 함께 있는 KIT를 AI가 임의로 한 모델씩 골라 인용할 경우 확정 차이로 승격될 수 있는 경계를 추가 재현했다. 공통 라벨은 실제 모델/규격 역할의 일반 라벨로 제한(상품 사전 아님)하고, 인용한 속성값이 해당 원문 소유 범위의 모든 동일 라벨 출현과 일관될 때만 확정 가능하게 했다. 상품 단어를 모델 라벨로 재분류하는 반례와 공백 인용 반례도 보호한다. Push 전 gate를 중지했으며 신규 실제 API0회다.
 - 속성 소속 보강 이후 타입 검사 및 의미/독립PDF 선택 회귀48개 통과. 최종 frozen gate 대상은 기존647개를 포함한720단위·69브라우저다. 이 이후 소스 변경 없이 전체 ship을 재실행한다.
+
+### PHASE 3.9 — 최종 무료 검증·배포 기록
+- 소스 main/origin/main/공식 Production 동일 SHA: a57ffaf10e836f74e2e2cffb1d551d632cc4e678. 일반 Push 확인, 강제 Push/기록 삭제 없음. 최종 ship: npmci/typecheck/lint/720단위(43파일)/Production build/분석·복구 PDF worker/69브라우저 모두 통과.
+- GitHub Actions38852023074 quality·production 모두 success. Vercel Git Production 배포 success, dpl_ADBE52SkAHCaTeGLSMCrsQGm6bRU, 공식 endpoint SHA 일치. 관리 API Ready 별도 조회는 하지 않았다.
+- 공식사이트 실제 Set2 PDF3개/무료 prepare2배치/226·92·67 native블록/데스크톱·390px 모바일 통과, 실제 공급자 요청0. 신규 semantic endpoint도 서명 없는 요청400·aiCalled:false 확인. 클라이언트 JS11개 서버 비밀/서명 marker0.
+- 최종 무료 oracle+MOCK 재평가17개발사례 10TP/0FP/2FN→12TP/0FP/0FN 유지. 54합성PDF의 올바른 native후보54/54분류·1593/1593근거는 최초AI성능이 아니다. Holdout 의미 미평가. 기존 실제 원본 응답2세트 핵심9/9씩, PHASE37 저장응답44문서/4오류 TP4·FP0·FN0 무료 재생 보존.
+- **신규 실제 OpenAI 추출/의미 API는 미실행: 0문서/0요청/$0. PHASE3.9 전체 실증 완료가 아니다.** 첨부지시문11번에 따라 별도$10/60문서/120요청 승인 질문을 제시했고 승인 전 실행하지 않는다. 기존 예산/ledger 변경 없음.
+- 의미 분석은 검증된 동일HBL 후보에 연결하며 신고참조만 있는 관계/모호한 복수 선적은 기존 결정적·사용자 확인 경로로 남는다. Set2 HBL 전체범위 미입증 goods/HS는 보류를 유지한다. AI 번역·재질 의견은 잠정이며,40쌍·24서류·3MiB 안전 상한 초과는 미완료로 명시한다.
+- 최종 무료 결과·테스트 구분·남은 제한·원격 상태는 validation/phase39-evidence의 docs/validation/phase39에 기록했다. 이 브랜치는 증거 기록용이며 Production 소스SHA를 바꾸지 않는다. 다음 단계는 신규 승인 후 동일SHA 실제 first extraction/semantic 평가·실패원인 분석이며 자동 재시도0이다.

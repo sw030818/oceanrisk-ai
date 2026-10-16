@@ -1,0 +1,214 @@
+{
+  "kind": "PHASE39 final FREE verification evidence; no new paid OpenAI analysis",
+  "sourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+  "checkedAt": "2026-10-16T04:47:55.604Z",
+  "unitTests": 720,
+  "browserTests": 69,
+  "shipGate": [
+    "npm ci",
+    "typecheck",
+    "lint",
+    "720 unit tests",
+    "Production build",
+    "PDF workers",
+    "69 Production-server browser tests"
+  ],
+  "productionUnsignedRequest": {
+    "sourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+    "enginePhase": "3.9",
+    "status": 400,
+    "errorCode": "INVALID_REQUEST",
+    "aiCalled": false,
+    "kind": "Invalid unsigned request rejected before provider; NOT semantic AI evaluation"
+  },
+  "clientBundleCheck": {
+    "clientJavaScriptFiles": 11,
+    "serverSecretOrSignerMarkers": []
+  },
+  "newPaid": {
+    "documents": 0,
+    "requests": 0,
+    "costUsd": 0,
+    "approval": "NOT_APPROVED"
+  },
+  "github": {
+    "sha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+    "checkedAt": "2026-10-16T04:46:55.749Z",
+    "actions": [
+      {
+        "id": 38852023074,
+        "status": "completed",
+        "conclusion": "success",
+        "sha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38852023074"
+      }
+    ],
+    "checks": [
+      {
+        "name": "production",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38852023074/job/116816069365"
+      },
+      {
+        "name": "quality",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38852023074/job/116815132508"
+      }
+    ],
+    "status": {
+      "state": "success",
+      "contexts": [
+        {
+          "context": "Vercel",
+          "state": "success",
+          "target_url": "https://vercel.com/pack-mate/oceanrisk-ai/ADBE52SkAHCaTeGLSMCrsQGm6bRU"
+        }
+      ]
+    },
+    "deployments": [
+      {
+        "id": 7111130020,
+        "sha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+        "environment": "Production",
+        "statuses": [
+          {
+            "state": "success",
+            "environment_url": "https://oceanrisk-nff41eq71-pack-mate.vercel.app",
+            "target_url": "https://oceanrisk-nff41eq71-pack-mate.vercel.app"
+          }
+        ]
+      }
+    ]
+  },
+  "production": {
+    "kind": "Actual Production browser + attached PDFs, explicit free prepare only, NOT AI analysis",
+    "sha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+    "deploymentId": "dpl_ADBE52SkAHCaTeGLSMCrsQGm6bRU",
+    "documents": 3,
+    "batches": 2,
+    "providerRequests": 0,
+    "reads": [
+      {
+        "pages": 1,
+        "blocks": 226,
+        "extractionStatus": "not_performed"
+      },
+      {
+        "pages": 1,
+        "blocks": 92,
+        "extractionStatus": "not_performed"
+      },
+      {
+        "pages": 1,
+        "blocks": 67,
+        "extractionStatus": "not_performed"
+      }
+    ],
+    "desktop": true,
+    "mobile": true,
+    "comparison": "not_performed"
+  },
+  "set2OracleAndMock": {
+    "kind": "Private actual Set2 oracle native sources + MOCK semantic opinion; NOT OpenAI extraction",
+    "sourceProducts": 3,
+    "pairs": 2,
+    "whole": 2,
+    "status": "complete",
+    "before": {
+      "matches": 7,
+      "mismatches": 0,
+      "review": 3,
+      "requiredMissing": 4,
+      "notApplicable": 12,
+      "notComparable": 0,
+      "evidenceFailed": 0,
+      "evidenceUnverified": 0,
+      "evidenceRecovered": 6,
+      "checksExecuted": 52,
+      "independentChecks": 26
+    },
+    "after": {
+      "matches": 7,
+      "mismatches": 0,
+      "review": 5,
+      "requiredMissing": 4,
+      "notApplicable": 12,
+      "notComparable": 0,
+      "evidenceFailed": 0,
+      "evidenceUnverified": 0,
+      "evidenceRecovered": 6,
+      "checksExecuted": 52,
+      "independentChecks": 28
+    },
+    "confirmedFalsePositives": 0,
+    "semantic": [
+      {
+        "assessment": "provisional_match",
+        "validationCode": "AI_INCOMPLETE_ATTRIBUTES"
+      },
+      {
+        "assessment": "provisional_match",
+        "validationCode": "AI_INCOMPLETE_ATTRIBUTES"
+      }
+    ],
+    "held": [
+      {
+        "meaning": "goodsDescription",
+        "assessment": "provisional_match"
+      },
+      {
+        "meaning": "hsCode",
+        "assessment": "provisional_match"
+      }
+    ]
+  },
+  "nativeWrappedRecovery": {
+    "kind": "Actual Set2 native missing-candidate injection, not AI extraction",
+    "candidateCount": 1,
+    "before": "missing",
+    "after": "verified",
+    "originalRetained": true,
+    "wholeNameRecovered": true,
+    "sourceBlocks": 2,
+    "method": "native"
+  },
+  "modifiedActualPdfOracle": {
+    "kind": "Physically changed private Set2 PDF, old correct oracle response re-grounded on new source; NO AI",
+    "currentVerified": true,
+    "nativeRecovery": true,
+    "differenceRetained": true,
+    "confirmed": false
+  },
+  "previousActualResponsesFreeReplay": {
+    "scenarios": 14,
+    "documents": 44,
+    "classified": 44,
+    "fieldPresent": 1090,
+    "fieldVerified": 1082,
+    "fieldVerificationRate": 0.9926605504587156,
+    "errorScenarios": 4,
+    "flaggedFaults": 4,
+    "confirmedTP": 4,
+    "confirmedFP": 0,
+    "confirmedFN": 0,
+    "confirmedPrecision": 1,
+    "confirmedRecall": 1,
+    "relationshipTP": 44,
+    "relationshipFP": 0,
+    "relationshipExpected": 46,
+    "normalScenarios": 6,
+    "normalWithHolds": 0,
+    "unresolvedCoreComparisons": 20
+  },
+  "limitations": [
+    "No new OpenAI first extraction or semantic E2E results; actual accuracy, latency and cost are unmeasured.",
+    "New independent fixtures are synthetic, with three layout families; not 18 independent layouts.",
+    "AI language/material equivalence or difference remains provisional without independent proof.",
+    "Set2 HBL complete product scope is unproved in oracle grounding, so related goods/HS holds are retained.",
+    "Semantic candidates currently require a verified same HBL; declaration-only or ambiguous multi-shipment associations remain with the existing deterministic/manual path.",
+    "40 candidate pairs, 24 signed documents and 3MiB endpoint safety bounds can leave explicit partial results.",
+    "No Vercel management Ready query without a management credential; public exact-SHA and Git deployment success are recorded separately."
+  ]
+}

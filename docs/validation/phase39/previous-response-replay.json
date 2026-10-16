@@ -1,0 +1,27 @@
+{
+  "kind": "Previously parsed actual OpenAI PHASE37 responses; deterministic review replay only; no new extraction or API calls",
+  "extractionSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+  "evaluation": "PHASE39 deterministic review, no new AI extraction",
+  "evaluationSha": "1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281",
+  "summary": {
+    "scenarios": 14,
+    "documents": 44,
+    "classified": 44,
+    "fieldPresent": 1090,
+    "fieldVerified": 1082,
+    "fieldVerificationRate": 0.9926605504587156,
+    "errorScenarios": 4,
+    "flaggedFaults": 4,
+    "confirmedTP": 4,
+    "confirmedFP": 0,
+    "confirmedFN": 0,
+    "confirmedPrecision": 1,
+    "confirmedRecall": 1,
+    "relationshipTP": 44,
+    "relationshipFP": 0,
+    "relationshipExpected": 46,
+    "normalScenarios": 6,
+    "normalWithHolds": 0,
+    "unresolvedCoreComparisons": 20
+  }
+}
