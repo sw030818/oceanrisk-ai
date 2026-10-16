@@ -1,3 +1,4 @@
+import { goodsComparisonValue } from "./goods-context";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck } from "./review-model";
 import { refKey32, ref32, verified32, type FieldRef } from "./review-evidence";
@@ -140,7 +141,7 @@ export function semanticCauses(
       .slice(i + 1)
       .map(
         (p) =>
-          compareGoods(o.g.field.current.value, p.g.field.current.value).status,
+          compareGoods(goodsComparisonValue(o.g.field), goodsComparisonValue(p.g.field)).status,
       ),
   );
   if (

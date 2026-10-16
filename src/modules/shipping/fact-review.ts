@@ -1,3 +1,4 @@
+import { goodsComparisonValue } from "./goods-context";
 import type { ShippingDocument } from "./schema";
 import type {
   ShippingReview,
@@ -449,8 +450,8 @@ export function withFactReview(
                       f.documentId !== g.documentId &&
                       ["partial", "insufficient"].includes(
                         compareGoods(
-                          f.field.current.value,
-                          g.field.current.value,
+                          goodsComparisonValue(f.field),
+                          goodsComparisonValue(g.field),
                         ).status,
                       ),
                   ),
@@ -517,7 +518,7 @@ export function withFactReview(
               reasons.push("SCOPE_UNRESOLVED");
               return "unbound:" + text32(f.field.current.value);
             }
-            const owner = goodsCore(g.field.current.value);
+            const owner = goodsCore(goodsComparisonValue(g.field));
             if (!owner) reasons.push("SCOPE_UNRESOLVED");
             return (
               (owner || "unbound") +
@@ -538,7 +539,7 @@ export function withFactReview(
                   text32(f.field.current.value))
                 : role === "goodsDescription"
                   ? (() => {
-                      const core = goodsCore(f.field.current.value);
+                      const core = goodsCore(goodsComparisonValue(f.field));
                       if (!core) reasons.push("SCOPE_UNRESOLVED");
                       return core || "unbound:" + text32(f.field.current.value);
                     })()
@@ -589,11 +590,11 @@ export function withFactReview(
                     (f) =>
                       !right.some(
                         (g) =>
-                          goodsCore(f.field.current.value) ===
-                            goodsCore(g.field.current.value) ||
+                          goodsCore(goodsComparisonValue(f.field)) ===
+                            goodsCore(goodsComparisonValue(g.field)) ||
                           compareGoods(
-                            f.field.current.value,
-                            g.field.current.value,
+                            goodsComparisonValue(f.field),
+                            goodsComparisonValue(g.field),
                           ).status === "semantic",
                       ),
                   ),
@@ -646,7 +647,7 @@ export function withFactReview(
               .filter((g) => g.documentId !== f.documentId)
               .map(
                 (g) =>
-                  compareGoods(f.field.current.value, g.field.current.value)
+                  compareGoods(goodsComparisonValue(f.field), goodsComparisonValue(g.field))
                     .status,
               ),
           );
@@ -663,7 +664,7 @@ export function withFactReview(
                 .slice(i + 1)
                 .some((g) =>
                   ["partial", "insufficient"].includes(
-                    compareGoods(f.field.current.value, g.field.current.value)
+                    compareGoods(goodsComparisonValue(f.field), goodsComparisonValue(g.field))
                       .status,
                   ),
                 ),
@@ -690,7 +691,7 @@ export function withFactReview(
             valid.some((s) => {
               const rows = (
                 s.doc.items.length ? s.doc.items : s.doc.cargoRecords
-              ).map((i) => goodsCore(i.fields.goodsDescription.current.value));
+              ).map((i) => goodsCore(goodsComparisonValue(i.fields.goodsDescription)));
               return rows.length !== new Set(rows).size;
             }))
         )

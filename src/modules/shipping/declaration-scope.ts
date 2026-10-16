@@ -1,3 +1,4 @@
+import { goodsComparisonValue } from "./goods-context";
 import type { ShippingCheck, ShippingRelationship } from "./review-model";
 import type { ShippingDocument } from "./schema";
 import { goodsCore } from "./equivalence";
@@ -32,7 +33,7 @@ export function resolveDeclarationScopes(
       const unit = unit32(i.fields.quantityUnit.current.value, "quantity");
       if (!refs.every(verified32) || !unit) return null;
       return JSON.stringify([
-        goodsCore(i.fields.goodsDescription.current.value),
+        goodsCore(goodsComparisonValue(i.fields.goodsDescription)),
         text32(i.fields.hsCode.current.value),
         Number(i.fields.quantity.current.value) * unit.factor,
         unit.unit,

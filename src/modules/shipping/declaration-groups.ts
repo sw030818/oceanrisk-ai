@@ -1,3 +1,4 @@
+import { goodsComparisonValue } from "./goods-context";
 import { goodsCore } from "./equivalence";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck, ShippingRelationship } from "./review-model";
@@ -124,7 +125,7 @@ export function declarationGroupChecks(
     )
       blockers.push("품명·HS·수량·단위 중 일부 근거가 미확인입니다.");
     const identity = (r: (typeof refs)[number]) =>
-      goodsCore(r.description.field.current.value) +
+      goodsCore(goodsComparisonValue(r.description.field)) +
       "/" +
       text32(r.hs.field.current.value);
     const keys = refs.map(identity),

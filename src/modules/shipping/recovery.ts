@@ -8,7 +8,7 @@ import {
   nativeDocumentField,
 } from "../layout/shipping-geometry";
 import { shippingRole, unitParents, rootTotalRole } from "./roles";
-import { labelForValue } from "../layout/relations";
+import { shippingLabelForValue as labelForValue } from "../layout/shipping-label";
 import { numericShippingFields } from "./catalog";
 import { physicalLines, spanText } from "../layout/physical-spans";
 import { portMeaning } from "./ports";
@@ -16,6 +16,7 @@ import { numericTokens } from "../evidence/numbers";
 import { countAtoms } from "./count-atoms";
 import { verifyShippingField } from "./verify";
 import { independentlyVerified } from "./effective";
+import { nativeGoodsSpans } from "./goods-context";
 import { collectionCoverage32, nativeFactCoverage } from "./coverage";
 import type { Candidate } from "./ai-schema";
 export type FailureCode = NonNullable<ShippingField["recovery"]>["failureCode"];
@@ -183,9 +184,17 @@ export function nativeCandidates(
   for (const p of pdf.pages) {
     if (p.textSource === "ocr") continue;
     const joined = new Set<string>();
+    if (t.role === "goodsDescription")
+      for (const span of nativeGoodsSpans(p)) {
+        const c = { value: spanText(span), evidence: { page: p.page, blockIds: span.map((b) => b.id) } };
+        if (verifyShippingField(c, pdf, t.role, t.scope, t.owner).current.status === "verified") {
+          out.push(c);
+          for (const b of span) joined.add(b.id);
+        }
+      }
     if (!numericShippingFields.has(t.role as never) && !unitParents[t.role])
       for (const line of physicalLines(p)) {
-        if (line.length < 2 || shippingRole(spanText(line))) continue;
+        if (line.some((b) => joined.has(b.id)) || line.length < 2 || shippingRole(spanText(line))) continue;
         const value = spanText(line);
         if (t.role.startsWith("portOf") && !portMeaning(value)) continue;
         const c = {
@@ -266,11 +275,6 @@ export function nativeCandidates(
         );
         if (labelled) stripped = labelled[1].trim();
       }
-      if (
-        t.role === "goodsDescription" &&
-        stripped.split(/\s*\/\s*/).some((s) => countAtoms(s).length)
-      )
-        continue;
       const vals: (string | number)[] = numeric
         ? atoms.length
           ? atoms.map((a) => a.value)

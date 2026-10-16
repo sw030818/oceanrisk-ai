@@ -597,3 +597,18 @@
 - 최종 ship 첫 실행은 npm ci/type/lint 및 단위629/629까지 통과했으나, 배포 전 코드 검토에서 독립 상품 충돌 보완 경로가 개별 신고의 부분 품목 범위를 혼동할 여지를 발견해 자체 중단했다(원격 Push0). 보완 경로는 전체 원문 범위가 검증된 HBL–Manifest 양자에 한정하고, 기존 수출신고/복수신고 판정은 그대로 둔다. 새 실제 PDF 신고 반례 후 최종 전체 ship을 다시 실행한다.
 - c59173f는 전체630단위/64브라우저·빌드/worker/Actions quality·production·Vercel Git상태성공과공식Production SHA일치까지확인했다. 실제첨부PDF3개원문보기는2배치/226·92·67블록/모바일·데스크톱으로무료통과(공급자0). 별도Vercel관리API는403으로Ready직접조회불가. 초기무료브라우저스크립트가prepare에서없는비교패널을기대한선택자오류를수정했고실제앱오류는아니었다.
 - 최종문제구조검토에서추가확인:같은HBL·같은검증된유일품목소유자·같은전체HS원문·명시충돌없는부분품명의미만보류원인인경우,품명과HS소속의존보류를동일원인으로연결한다. 다른HS·독립수량/Seal/품명충돌·복수/미확인소유자는합치지않는다. 원본/독립검사및상태를변경하지않고대표문제와의존관계를보존한다. 실제HS충돌보호포함선택20/20통과. 이보완도전체ship/동일SHA를다시검증한다. 신규유료승인은계속대기·공급자0회.
+
+## PHASE 3.8.1 — engine-only checkpoint (2026-10-16 UTC)
+- 시작 main/origin/main=f174b41fc680fc93cfa371cc7a777df19c9e796b, clean. PHASE38 최종 기록은 validation/phase38-evidence/bbc00f9에 보존되어 있으며 재구현하지 않았다. UI/UX/보고서 파일 변경 없음.
+- 실제 Set2 HBL native 파싱은 250과 CARTONS를 각각 정확히 보존했다. 사용자 보고 251의 최초 OpenAI 응답은 저장되어 있지 않아 최초 생성 원인은 확인 불가다. 251을 주입한 별도 무료 재현에서 기존 Native Recovery 실패는 확인했다: 닫힌 용적 셀의 수치가 다른 셀의 포장 라벨에 연결되어 서로 다른 두 후보로 판정됐다. 원본 f174b41 archive와 수정본을 같은 PDF/후보로 비교했다.
+- shipping 전용 label fallback을 실제 vector-cell 경계로 제한했다. 같은 원문 재현에서 251 original/unverified를 보존하고 정확한 포장 셀의 250만 current/native/verified로 복구했다. 숫자 다수결·다른 문서 값 복사·전역 동일 숫자 승인은 추가하지 않았다.
+- 혼합 화물 설명 전체를 복구 대상에서 제외하던 조건을 제거했다. 검증된 goods 셀의 원문 전체는 보존하고, 서로 다른 물품/포장 단위가 명시된 두 suffix만 비교용 화물 주석으로 분리했다. 모델·용량·규격과 모호한 단일 수량 suffix는 삭제하지 않는다. 기존 goodsEquivalent의 partial 계약도 유지했다.
+- 동일 native 품목 셀/행의 한영 2줄에 한해 원문 block ID를 가진 goodsContext를 별도 보존한다. 다른 행/셀/문서/원문에 없는 block/OCR은 연결하지 않는다. 비교용 설명은 original/current 원문값과 분리하며 사용자 수정·명시 속성 충돌·미지원 설명은 자동 병합하지 않는다. Set2 신고필증의 실제 한영 원문 2개 연결, 750mL 누락은 partial, 명시 900mL 충돌은 different. Manifest의 실제 STAINLESS STEEL / VACUUM FLASKS 두 줄도 연결하되 다른 문서에서 문구를 복사하지 않는다.
+- 무료 Set2 올바른 후보 검사: 유형3/3·수치/단위20/20 유지, 실제 3문서 oracle 비교 확정 오탐0. 이는 AI 추출 성공률이 아니다. 실제 Manifest의 포장 원문을 변경한 비공개 PDF에서 변경값249를 native 검증하고250으로 되돌리지 않았다. 불완전한 범위의 비교는 provisional_mismatch로 보호한다.
+- 독립 합성 PDF 실제 내용을 바꾼 포장/물품수량/총중량/Seal/HS/품명6종은 confirmed TP6/FP0/FN0, 정상 FP0. HBL 참조 충돌은 기존 독립 관계 경고 회귀를 유지한다.
+- PHASE37 개발30사례/93문서: 원문필드2292/2292, 오류8 TP/FP0/FN0 + 참조 경고2, 정상10사례 core hold0, 관계88/92. 과거 실제 응답14사례44문서 무료 재계산: 원문1082/1090, 오류4 TP/FP0/FN0, 관계44/46. PHASE36 이전 원본 실제 응답2세트 재생은 핵심9/9 유지; 품명/HS 부분 의미와 미지원 native 필드는 그대로 보류한다. 새 OpenAI 호출과 구분한다.
+- 추가14단위 검사 단독14/14 통과(6.63초). 이후 Manifest 실제 두 줄 품명을 별도 후보로 나누는 native 복구 문제를 추가 발견해 배포 전 첫 ship을 중단했다(커밋/Push 없음). 같은 닫힌 셀의 연속된 설명 문단을 실제 원본 ID로 재구성하되 명시 상품 속성 충돌·다른 역할·다른 문단은 합치지 않는2개 회귀를 추가했다. 중간 전체 검사는 이전 변경 snapshot에서642/642 통과. 한 번의 병렬 PDF 평가 중 신규13검사에서3 timeout 발생했고, 단독 재실행14/14로 해소했다. 최종 frozen stage의 npm ci/type/lint/전체647이상/브라우저64/build/PDF workers는 ship에서 검증 예정이며 아직 성공을 선행 주장하지 않는다.
+- 유료 문서/공급자 요청/비용 모두0. 새 PHASE38/381 ledger 없음. 기존 PHASE37 ledger115문서115요청/$0.10917903은 변경하지 않았다. 이전8문서 예산 제안은 승인되지 않았으며 실행하지 않는다. 최초 AI 재분석·새 E2E 정확도는 미검증.
+- 다음: final ship(main 일반Push) → Actions quality/production → 공개 Production 정확SHA → 최종 sanitized 증거를 validation/phase381-evidence 별도 브랜치에 저장. 원본 PDF/원문/응답/키는 공개 Git에서 제외한다.
+
+- 추가 줄바꿈 복구를 포함한 선택26검사(신규16+기존38단계10) 모두 통과. 실제 Set2 Manifest 동일 missing 후보는 f174b41에서 분리 후보2개/복구 실패, 수정본에서는 전체 품명 후보1개/원본2블록 native 검증으로 복구했다. 첫 ship은 이 추가 결함을 발견해 검증 도중 안전 중단(exit143, HEAD f174b41 유지)했으며 수정 후 전체 gate를 새로 실행한다.

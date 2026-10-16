@@ -28,6 +28,10 @@ const sourceSchema = evidenceSchema.extend({
     )
     .max(12)
     .optional(),
+  goodsContext: z.array(z.object({
+    value: z.string().max(300),
+    blockIds: z.array(z.string()).min(1).max(12),
+  })).max(2).optional(),
   semanticRole: z.string().optional(),
   provenance: z.enum(["pdf_text", "ocr"]).optional(),
   layout: z

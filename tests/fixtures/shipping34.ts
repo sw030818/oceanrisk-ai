@@ -18,6 +18,10 @@ import {
 export async function shipping34Fixture(
   type: ShippingType,
   change: {
+    wrappedGoods?: boolean;
+    volume?: number;
+    localGoods?: string;
+    goodsSize?: number;
     hbl?: string;
     quantity?: number;
     goods?: string;
@@ -127,6 +131,11 @@ export async function shipping34Fixture(
     text("(16) Description of Goods", 286, 382, 8);
     text("(17) Gross", 441, 382, 8);
     text("Weight", 441, 394, 8);
+    if (change.volume !== undefined) {
+      text("Measurement", 556, 382, 8);
+      text(String(change.volume), 556, 427);
+      text("CBM", 600, 427);
+    }
     const cn = text("SYN-U3401401", 36, 427);
     const sn = text("SEAL: " + seal, 36, 451);
     const pn = text(String(packages), 166, 427);
@@ -194,11 +203,13 @@ export async function shipping34Fixture(
       const hb = text(hbl, 36, 440),
         cn = text("SYN-U3401401", 176, 440),
         sn = text(seal, 296, 440),
-        g = text(goods, 401, 440),
+        g = text(change.wrappedGoods ? goods.split(" ").slice(0, 2).join(" ") : goods, 401, 440, change.goodsSize ?? 9),
         pack = text(`${packages} CTN`, 596, 440),
         gw = text(`${weight}.000`, 706, 440);
-      text(`(HS ${hsCode})`, 401, 456);
-      fields.goodsDescription = [g];
+      const continuation = change.wrappedGoods
+        ? text(goods.split(" ").slice(2).join(" "), 401, 453, change.goodsSize ?? 9) : null;
+      text(`(HS ${hsCode})`, 401, change.wrappedGoods ? 469 : 456);
+      fields.goodsDescription = continuation ? [g, continuation] : [g];
       fields.houseBlNumber = [hb];
       fields.containerNumber = [cn];
       fields.sealNumber = [sn];
@@ -220,7 +231,7 @@ export async function shipping34Fixture(
         },
       ];
     } else {
-      const g = text("유리 보관 용기", 36, 440),
+      const g = text(change.localGoods ?? "유리 보관 용기", 36, 440),
         eng = text(goods, 36, 454),
         hs = text(hsCode, 281, 440),
         qty = text(`${quantity} EA`, 396, 440);
@@ -293,7 +304,7 @@ export async function shipping34Fixture(
   for (const [k, ts] of Object.entries(fields)) {
     let value = val[k];
     if (k === "goodsDescription" && type === "export_declaration")
-      value = "유리 보관 용기 " + goods;
+      value = (change.localGoods ?? "유리 보관 용기") + " " + goods;
     if (k === "containerNumber") value = "SYN-U3401401";
     if (k === "sealNumber") value = seal;
     if (k === "packageUnit") value = unit;

@@ -1,3 +1,4 @@
+import { goodsComparisonValue } from "./goods-context";
 // Native facts and derived HBL scopes. Never mutate original/current fields.
 import type { ShippingDocument } from "./schema";
 import {
@@ -385,8 +386,8 @@ export function resolveHblFact(
     ),
     names: itemRows.map((i) =>
       goodsCore(
-        i.fields.goodsDescription.current.value ??
-          i.fields.tradeDescription.current.value,
+        goodsComparisonValue(i.fields.goodsDescription) ??
+          goodsComparisonValue(i.fields.tradeDescription),
       ),
     ),
   });

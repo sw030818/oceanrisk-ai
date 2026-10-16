@@ -1,5 +1,5 @@
 import { goodsMeaning, compareGoods } from "./goods-semantics";
-import { countAtoms } from "./count-atoms";
+import { cargoDescription } from "./cargo-description";
 import { text32, verified32, type FieldRef } from "./review-evidence";
 import { portMeaning } from "./ports";
 export const portCode = (v: unknown) => portMeaning(v)?.code ?? null;
@@ -7,10 +7,7 @@ export function goodsCore(v: unknown) {
   if (typeof v !== "string") return "";
   // Preserve Unicode and all product qualifiers; only count annotations and
   // explicit HS annotations are separated from the product meaning.
-  const cleaned = text32(v)
-    .split(/\s*\/\s*/)
-    .filter((part) => !countAtoms(part).length)
-    .join(" ")
+  const cleaned = text32(cargoDescription(v).goods)
     .replace(/\(([^)]*)\)/g, (whole, body: string) =>
       !/^HS\s+[0-9. -]+$/i.test(body) ? body : " ",
     )
@@ -22,7 +19,12 @@ export function goodsCore(v: unknown) {
 export function goodsEquivalent(a: unknown, b: unknown) {
   if (text32(a) === text32(b)) return "exact" as const;
   const meaning = compareGoods(a, b).status;
-  if (meaning === "semantic") return "semantic" as const;
+  if (meaning === "semantic") {
+    const annotated =
+      (typeof a === "string" && cargoDescription(a).annotations.length > 0) ||
+      (typeof b === "string" && cargoDescription(b).annotations.length > 0);
+    return annotated ? "partial" as const : "semantic" as const;
+  }
   if (meaning === "different") return "different" as const;
   const left = goodsCore(a),
     right = goodsCore(b);

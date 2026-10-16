@@ -8,7 +8,8 @@ import { resolveCitation } from "../ai/citations";
 import { verifyField, normalizeText } from "../evidence/verify";
 import { physicalLines, spanText } from "../layout/physical-spans";
 import { numericTokens } from "../evidence/numbers";
-import { labelForValue, evidenceBlocks } from "../layout/relations";
+import { evidenceBlocks } from "../layout/relations";
+import { shippingLabelForValue as labelForValue } from "../layout/shipping-label";
 import { shippingCell, type EntityScope } from "../layout/shipping-cells";
 import {
   geometricRole,
@@ -19,6 +20,7 @@ import {
   packageGoodsContext,
 } from "../layout/shipping-geometry";
 import { shippingRole, rootTotalRole, unitParents } from "./roles";
+import { nativeGoodsContext } from "./goods-context";
 import { atomRole, countAtoms } from "./count-atoms";
 import type { Candidate } from "./ai-schema";
 import type { ShippingField } from "./schema";
@@ -479,6 +481,13 @@ export function verifyShippingField(
     return finish();
   }
   if (g.source) {
+    if (role === "goodsDescription") {
+      const context = nativeGoodsContext(page, values, scope);
+      if (context) {
+        const source = { ...g.source, goodsContext: context };
+        g.source = source;
+      }
+    }
     g.source.semanticRole = actual!;
     if (location) g.source.layout = location;
     g.reason = "실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.";

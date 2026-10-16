@@ -132,3 +132,10 @@ PHASE 2.2 실행 결과: OpenAI Responses 기본 전환, phase별 최종 JSON �
 ## PHASE 3.8
 A 원본Set2 확보·실제원인재현·분할블록/헤더/발행문맥/독립native복구. B 의미/단위·원인→후속검사 통합·확정오류보존. C 현재근거실패/대표문제/서류별원문비교/간결보고서. D 실제PDF+독립합성정상/오류·606/62회귀·전체ship/main/Actions/Production·별도evidence. 신규유료API승인없음; 승인전0호출, 기존ledger보존. STAGE A선택검사완료,나머지진행.
 - A 완료:837668f · 분할 원문/House 발행 근거. B 완료:ac7d6f4 · 원인 연결/독립 오류 PDF/표기 보존. C 진행: 현재·최초 증거 분리/대표 비교/모바일 카드/인쇄. D 대기: 전체회귀/기존 실제 응답 무료 재생/ship/Production·Actions/증거 브랜치. 신규 유료8문서8요청/$0.10 승인 질문 대기(자동재시도0), 승인 전 호출 금지.
+
+## PHASE 3.8.1 — 현재 작업 (이전 UI 계획 종료)
+1. 완료: main f174b41 clean 복원, 실제 Set2 native source/원본 응답 부재 확인. 251 주입 회귀와 f174b41 archive 비교.
+2. 완료: native 셀 경계 라벨 연결, 포장/용적 분리, 혼합 화물 설명 원문 보존/비교 정규화, 실제 동일 품목 한영 원문 context. UI/보고서 변경 없음.
+3. 완료: 신규14 선택 회귀 및 Manifest 실제 줄바꿈 전체 품명 복구 추가2 회귀, Set2 올바른 후보20/20·오탐0, 변경된 실제 포장 원문 보존, 독립6오류/기존37평가/이전36응답 무료 재생. API0, 기존ledger 보존.
+4. 진행 예정: frozen stage ship의 npmci/type/lint/전체 단위/64브라우저/build/worker, main 일반Push, Actions quality/production 및 공식사이트 정확SHA 확인.
+5. 최종 메타데이터는 validation/phase381-evidence에 보존한다. 최초251 생성 경로와 새 OpenAI 추출 성능은 원본 응답·신규 유료 승인 부재로 미확인이다. 기존 예산/제안 재사용 금지.

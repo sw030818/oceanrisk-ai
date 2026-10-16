@@ -1,3 +1,4 @@
+import { goodsComparisonValue } from "./goods-context";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck, ShippingReview } from "./review-model";
 import { factHbl } from "./facts";
@@ -77,7 +78,7 @@ export function directGoodsConflicts(
       );
       if (
         !rel ||
-        compareGoods(fa.field.current.value, fb.field.current.value).status !==
+        compareGoods(goodsComparisonValue(fa.field), goodsComparisonValue(fb.field)).status !==
           "different"
       )
         continue;

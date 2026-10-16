@@ -1,3 +1,4 @@
+import { cargoDescription } from "./cargo-description";
 // Bounded, explainable vocabulary, not a translation model. Unknown text is
 // retained; HS equality never supplies a missing product meaning or qualifier.
 export type GoodsMeaning =
@@ -47,7 +48,7 @@ const clean = (v: unknown) =>
 export function goodsMeaning(value: unknown) {
   const original = typeof value === "string" ? value : "",
     normalized = clean(value);
-  let rest = normalized.replace(/[()]/g, " ");
+  let rest = clean(cargoDescription(original).goods).replace(/[()]/g, " ");
   const attributes = new Set<string>();
   // Korean jar phrase carries both literal material and kind.
   if (/유리\s*저장\s*용기/.test(rest)) {
