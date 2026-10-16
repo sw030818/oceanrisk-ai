@@ -612,3 +612,13 @@
 - 다음: final ship(main 일반Push) → Actions quality/production → 공개 Production 정확SHA → 최종 sanitized 증거를 validation/phase381-evidence 별도 브랜치에 저장. 원본 PDF/원문/응답/키는 공개 Git에서 제외한다.
 
 - 추가 줄바꿈 복구를 포함한 선택26검사(신규16+기존38단계10) 모두 통과. 실제 Set2 Manifest 동일 missing 후보는 f174b41에서 분리 후보2개/복구 실패, 수정본에서는 전체 품명 후보1개/원본2블록 native 검증으로 복구했다. 첫 ship은 이 추가 결함을 발견해 검증 도중 안전 중단(exit143, HEAD f174b41 유지)했으며 수정 후 전체 gate를 새로 실행한다.
+
+### PHASE 3.8.1 최종 완료 기록 — evidence branch
+- 검증·Push·Production 소스 SHA: 1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281 (main). source tree cefece20c851ae99472f9cdf9a9395567aedddc7.
+- 최종 ship 전체 성공: npm ci419 dependencies, typecheck/lint,647단위,64브라우저,Production build,analyze/recover worker. 기존631+신규16; 기존브라우저64유지. UI/보고서 소스 수정 없음.
+- GitHub Actions38828659450의quality/production 모두success. Vercel Git success 및 공식oceanrisk-ai.vercel.app 공개Production commitSHA 동일, deployment dpl_9wRGW8V7HcxgFfnYD3r1n98zK3k2. 관리API Ready는 직접 조회하지 않았으며 Git배포성공/공개정확SHA와 구분한다.
+- 최종커밋에서 실제Set2원문 무료 재확인: 유형3/3·수치/단위20/20, 잘못된251→실제250 native복구(최초251보존), 누락된Manifest두줄품명→원본2블록전체복구. 신규실제OpenAI호출0/문서0/$0, 최초251생성원인미확인.
+- 실제사이트에서Set2 PDF3개/2배치 prepare 성공, 원문블록226/92/67,desktop/mobile성공. aiCalled:false 및review:not_performed 유지,공급자요청0. 이를AI분석성공으로보고하지않는다.
+- 독립합성 실제PDF변경6종 오류TP6/FP0/FN0·정상FP0. 기존37개발30사례93문서 및 저장응답14사례44문서 회귀·이전36원본2세트 핵심9/9 유지. 자세한조건/잔여보류는 docs/validation/phase381/README.md와evaluation.json에보존한다.
+- 최초AI값251의발생단계는원본응답없어미확인. 실제Set2변경포장249는원문확인·잠정차이로표시하며범위부족을확정오류로완화하지않았다. 품명/HS부분의미·미지원OCR·모호/누락필드는보류한다. 추가OpenAI E2E는별도승인전미실행이다.
+- 이완료기록은validation/phase381-evidence에별도일반Commit/Push하여검증한Production소스SHA를유지한다. 원본PDF/키/전문/raw응답은Git에없다. 기존PHASE37 ledger해시90d2b5f39a9a1d646653baca45770bdf173c0bf20922a04d214c13e78af68aa6 그대로이다.

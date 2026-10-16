@@ -139,3 +139,6 @@ A 원본Set2 확보·실제원인재현·분할블록/헤더/발행문맥/독립
 3. 완료: 신규14 선택 회귀 및 Manifest 실제 줄바꿈 전체 품명 복구 추가2 회귀, Set2 올바른 후보20/20·오탐0, 변경된 실제 포장 원문 보존, 독립6오류/기존37평가/이전36응답 무료 재생. API0, 기존ledger 보존.
 4. 진행 예정: frozen stage ship의 npmci/type/lint/전체 단위/64브라우저/build/worker, main 일반Push, Actions quality/production 및 공식사이트 정확SHA 확인.
 5. 최종 메타데이터는 validation/phase381-evidence에 보존한다. 최초251 생성 경로와 새 OpenAI 추출 성능은 원본 응답·신규 유료 승인 부재로 미확인이다. 기존 예산/제안 재사용 금지.
+
+### PHASE 3.8.1 종료
+main1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281에서전체ship(647단위/64브라우저/build/worker/npmci/type/lint),GitHub quality/production 및공식Production동일SHA완료. 실제Set2무료prepare3개·최종source근거/복구재현완료. 검증증거는validation/phase381-evidence의docs/validation/phase381에보존. 신규OpenAI0회·최초251원응답없음·부분범위/의미보류를한계로명시. 후속기능추가없음.

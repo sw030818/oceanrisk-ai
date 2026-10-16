@@ -1,0 +1,83 @@
+{
+  "sourceSha": "1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281",
+  "github": {
+    "sha": "1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281",
+    "checkedAt": "2026-10-16T00:21:18.362Z",
+    "actions": [
+      {
+        "id": 38828659450,
+        "status": "completed",
+        "conclusion": "success",
+        "sha": "1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38828659450"
+      }
+    ],
+    "checks": [
+      {
+        "name": "production",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38828659450/job/116742651935"
+      },
+      {
+        "name": "quality",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/38828659450/job/116742000654"
+      }
+    ],
+    "status": {
+      "state": "success",
+      "contexts": [
+        {
+          "context": "Vercel",
+          "state": "success",
+          "target_url": "https://vercel.com/pack-mate/oceanrisk-ai/9wRGW8V7HcxgFfnYD3r1n98zK3k2"
+        }
+      ]
+    },
+    "deployments": [
+      {
+        "id": 7107637831,
+        "sha": "1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281",
+        "environment": "Production",
+        "statuses": [
+          {
+            "state": "success",
+            "environment_url": "https://oceanrisk-1ghvsup6r-pack-mate.vercel.app",
+            "target_url": "https://oceanrisk-1ghvsup6r-pack-mate.vercel.app"
+          }
+        ]
+      }
+    ]
+  },
+  "production": {
+    "kind": "Actual Production browser + attached PDFs, explicit free prepare only, NOT AI analysis",
+    "sha": "1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281",
+    "deploymentId": "dpl_9wRGW8V7HcxgFfnYD3r1n98zK3k2",
+    "documents": 3,
+    "batches": 2,
+    "providerRequests": 0,
+    "reads": [
+      {
+        "pages": 1,
+        "blocks": 226,
+        "extractionStatus": "not_performed"
+      },
+      {
+        "pages": 1,
+        "blocks": 92,
+        "extractionStatus": "not_performed"
+      },
+      {
+        "pages": 1,
+        "blocks": 67,
+        "extractionStatus": "not_performed"
+      }
+    ],
+    "desktop": true,
+    "mobile": true,
+    "comparison": "not_performed"
+  },
+  "vercelControlPlaneReady": "Not directly queried: no Vercel management credential; Git deployment success and exact public Production SHA are reported separately."
+}

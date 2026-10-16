@@ -1,0 +1,661 @@
+{
+  "sourceSha": "1fadc0be1ae5d3bf3ce3dffe6532e4ff35c02281",
+  "sourceTree": "cefece20c851ae99472f9cdf9a9395567aedddc7",
+  "baselineSha": "f174b41fc680fc93cfa371cc7a777df19c9e796b",
+  "newOpenAIExtraction": {
+    "attempts": 0,
+    "documents": 0,
+    "requests": 0,
+    "costUsd": 0,
+    "accuracy": null,
+    "reason": "No new approval; original Set2 Production response unavailable"
+  },
+  "oracleNativePdf": {
+    "kind": "Explicit correct or injected wrong/missing candidates on actual private PDF, NOT new AI extraction",
+    "classifications": {
+      "before": {
+        "verified": 3,
+        "total": 3
+      },
+      "after": {
+        "verified": 3,
+        "total": 3
+      }
+    },
+    "numericUnitProof": {
+      "before": {
+        "verified": 20,
+        "total": 20
+      },
+      "after": {
+        "verified": 20,
+        "total": 20
+      }
+    },
+    "packageInjection": {
+      "originalAIResponse": false,
+      "initialCandidate": 251,
+      "before": {
+        "status": "unverified",
+        "candidates": 2
+      },
+      "after": {
+        "original": 251,
+        "current": 250,
+        "status": "verified",
+        "candidates": 1,
+        "method": "native"
+      },
+      "firstProduction251Cause": "Unknown; missing original response. Cross-cell volume mislabelling demonstrably blocked native recovery, not proven to have generated 251."
+    },
+    "wrappedProduct": {
+      "before": {
+        "kind": "Actual Set2 native missing-candidate injection, not AI extraction",
+        "candidateCount": 2,
+        "before": "missing",
+        "after": "missing",
+        "originalRetained": true,
+        "wholeNameRecovered": false,
+        "sourceBlocks": 0
+      },
+      "after": {
+        "kind": "Actual Set2 native missing-candidate injection, not AI extraction",
+        "candidateCount": 1,
+        "before": "missing",
+        "after": "verified",
+        "originalRetained": true,
+        "wholeNameRecovered": true,
+        "sourceBlocks": 2,
+        "method": "native"
+      }
+    },
+    "bilingual": {
+      "kind": "Actual attached native PDF + oracle candidates, zero AI calls",
+      "summaries": [
+        {
+          "type": "export_declaration",
+          "status": "verified",
+          "aliasCount": 2,
+          "hasSourceOwner": true,
+          "comparisonToEnglish": "partial",
+          "explicitCapacityConflict": "different"
+        },
+        {
+          "type": "house_manifest",
+          "status": "verified",
+          "aliasCount": 0,
+          "hasSourceOwner": true,
+          "comparisonToEnglish": "exact",
+          "explicitCapacityConflict": "partial"
+        },
+        {
+          "type": "unlabelled_manifest_summary",
+          "status": "verified",
+          "code": "verified",
+          "rawPreserved": true,
+          "comparisonResidual": "",
+          "comparisonToEnglish": "partial"
+        }
+      ]
+    },
+    "threeDocumentComparison": {
+      "kind": "Explicit correct oracle candidates on actual private Set2 native PDF; not AI extraction",
+      "diagnostics": [
+        {
+          "type": "house_bl",
+          "classification": "classified",
+          "packageCount": "verified",
+          "goodsStatus": "verified",
+          "goodsContext": 0
+        },
+        {
+          "type": "export_declaration",
+          "classification": "classified",
+          "packageCount": "verified",
+          "goodsStatus": "verified",
+          "goodsContext": 2
+        },
+        {
+          "type": "house_manifest",
+          "classification": "classified",
+          "packageCount": "verified",
+          "goodsStatus": "verified",
+          "goodsContext": 0
+        }
+      ],
+      "counts": {
+        "not_applicable": 18,
+        "insufficient_information": 9,
+        "confirmed_match": 7,
+        "provisional_match": 16,
+        "needs_review": 2
+      },
+      "confirmedFalsePositives": 0,
+      "checks": [
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "exporter",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "consignee",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "containerNumber",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "declarationNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "hsCode",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "shipper",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "consignee",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "shipper",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "party",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "containerNumber",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "declarationNumber",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "assessment": "needs_review",
+          "reasons": []
+        },
+        {
+          "meaning": "goods",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfLoading",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "quantity",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "party",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "consignee",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "containerNumber",
+          "assessment": "needs_review",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "hsCode",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "quantity",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "assessment": "insufficient_information",
+          "reasons": [
+            "FIELD_NOT_EXTRACTED"
+          ]
+        },
+        {
+          "meaning": "weight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfLoading",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "quantity",
+          "assessment": "provisional_match",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "shipper",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        }
+      ]
+    },
+    "physicallyChangedActualPackages": {
+      "kind": "Physically changed private Set2 PDF, old correct oracle response re-grounded on new source; NO AI",
+      "originalCandidate": 250,
+      "originalStatus": "unverified",
+      "current": 249,
+      "status": "verified",
+      "method": "native",
+      "checks": [
+        {
+          "assessment": "provisional_mismatch",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "assessment": "provisional_mismatch",
+          "reasons": [
+            "SCOPE_UNRESOLVED"
+          ]
+        }
+      ],
+      "confirmedMismatchDetected": false,
+      "differenceDetected": true
+    }
+  },
+  "independentSyntheticOracle": {
+    "summary": {
+      "confirmedTP": 6,
+      "confirmedFN": 0,
+      "confirmedFP": 0
+    },
+    "normal": {
+      "confirmedFalsePositives": 0,
+      "rawChecks": 24
+    },
+    "cases": [
+      {
+        "role": "packageCount",
+        "changedPdfSource": true,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0
+      },
+      {
+        "role": "grossWeight",
+        "changedPdfSource": true,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0
+      },
+      {
+        "role": "quantity",
+        "changedPdfSource": true,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0
+      },
+      {
+        "role": "sealNumber",
+        "changedPdfSource": true,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0
+      },
+      {
+        "role": "hsCode",
+        "changedPdfSource": true,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0
+      },
+      {
+        "role": "goodsDescription",
+        "changedPdfSource": true,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0
+      }
+    ]
+  },
+  "phase37Oracle": {
+    "scenarios": 30,
+    "documents": 93,
+    "classified": 92,
+    "fieldPresent": 2292,
+    "fieldVerified": 2292,
+    "fieldVerificationRate": 1,
+    "errorScenarios": 10,
+    "flaggedFaults": 10,
+    "confirmedTP": 8,
+    "confirmedFP": 0,
+    "confirmedFN": 0,
+    "confirmedPrecision": 1,
+    "confirmedRecall": 1,
+    "relationshipTP": 88,
+    "relationshipFP": 0,
+    "relationshipExpected": 92,
+    "normalScenarios": 10,
+    "normalWithHolds": 0,
+    "unresolvedCoreComparisons": 101
+  },
+  "cached37ReviewReplay": {
+    "kind": "Stored parsed/grounded snapshots; current deterministic review only, no new AI extraction or new native grounding of every stored field",
+    "summary": {
+      "scenarios": 14,
+      "documents": 44,
+      "classified": 44,
+      "fieldPresent": 1090,
+      "fieldVerified": 1082,
+      "fieldVerificationRate": 0.9926605504587156,
+      "errorScenarios": 4,
+      "flaggedFaults": 4,
+      "confirmedTP": 4,
+      "confirmedFP": 0,
+      "confirmedFN": 0,
+      "confirmedPrecision": 1,
+      "confirmedRecall": 1,
+      "relationshipTP": 44,
+      "relationshipFP": 0,
+      "relationshipExpected": 46,
+      "normalScenarios": 6,
+      "normalWithHolds": 0,
+      "unresolvedCoreComparisons": 20
+    }
+  },
+  "cached36NativeReplay": [
+    {
+      "artifact": "normal-1-0b18d1d-d51",
+      "coreMatches": 9,
+      "coreDenominator": 9,
+      "remainingPartial": [
+        "goodsDescription",
+        "hsCode"
+      ]
+    },
+    {
+      "artifact": "normal-2-6de65c8-d30",
+      "coreMatches": 9,
+      "coreDenominator": 9,
+      "remainingPartial": [
+        "goodsDescription",
+        "hsCode"
+      ]
+    }
+  ],
+  "quality": {
+    "npmCi": true,
+    "typecheck": true,
+    "lint": true,
+    "unitTests": 647,
+    "browserTests": 64,
+    "productionBuild": true,
+    "pdfWorkers": [
+      "analyze",
+      "recover"
+    ],
+    "uiOrReportSourceChanged": false
+  },
+  "paidBudget": {
+    "newApproval": false,
+    "newDocuments": 0,
+    "newRequests": 0,
+    "newCostUsd": 0,
+    "oldPhase37LedgerUnchanged": true,
+    "oldPhase37LedgerSha256": "90d2b5f39a9a1d646653baca45770bdf173c0bf20922a04d214c13e78af68aa6"
+  },
+  "intermediateFailures": {
+    "parallelPdfTestTimeouts": 3,
+    "resolvedByIsolatedRun": true,
+    "firstShip": "Cancelled before commit/push to fix newly confirmed wrapped-name recovery; exit143 and base HEAD preserved"
+  },
+  "limitations": [
+    "The first actual AI response producing 251 is unavailable; its initial cause remains unknown.",
+    "No fresh OpenAI E2E or prompt-quality measurement.",
+    "Changed actual Set2 packages are source-verified and detected provisionally when shipment scope is incomplete; no forced confirmed mismatch.",
+    "Unknown attributes, incomplete row/reference coverage, ambiguous multiple source candidates, user edits and OCR remain protected.",
+    "Bilingual context is deliberately bounded to two native lines in one proven item/cargo cell."
+  ]
+}
