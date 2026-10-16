@@ -4,6 +4,7 @@ export function GET() {
   return NextResponse.json(
     {
       phase: "3.8",
+      enginePhase: "3.9",
       capabilities: {
         pdfPreparation: true,
         multiFileBatches: true,
@@ -13,6 +14,7 @@ export function GET() {
           process.env.SHIPPING_TARGETED_RECOVERY_ENABLED === "true",
         documentClassification: true,
         aiExtraction: true,
+        semanticAnalysis: true,
         pairComparison: true,
         triangularComparison: true,
       },

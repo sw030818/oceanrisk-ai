@@ -1,0 +1,32 @@
+{
+  "phase": "3.9",
+  "approval": "NOT_APPROVED",
+  "providerRequests": 0,
+  "automaticRetries": 0,
+  "budget": {
+    "documents": 0,
+    "requests": 0,
+    "measuredCostUsd": 0,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 10
+  },
+  "limitsAreProposalOnly": true,
+  "plan": {
+    "status": "NOT_APPROVED",
+    "documents": 60,
+    "providerRequestsAtMost": 80,
+    "automaticRetries": 0,
+    "composition": "Set2 initial3 + 17 development triplets51 + final same-SHA Set2 repeat3 and blind holdout3",
+    "reservedFinalDocuments": 6,
+    "estimatedSourceRequestUpperUsd": 0.8235521249999999,
+    "estimateScope": "Upper bounds for expected oracle-derived request shapes only; actual unknown AI shapes are individually reserved before every request; budget stops prevail",
+    "approvedCostUsd": null,
+    "proposedCaps": {
+      "costUsd": 10,
+      "documents": 60,
+      "requests": 120
+    }
+  }
+}

@@ -24,6 +24,8 @@ import {
   failedShippingUpload,
   type ShippingUpload,
 } from "@/modules/shipping/batches";
+import { semanticWireSchema, type SemanticReport } from "@/modules/shipping/semantic-schema";
+import { semanticContext } from "@/modules/shipping/semantic-context";
 import { reviewShipping } from "@/modules/shipping/review";
 import { ShippingReviewPanel } from "./shipping-review";
 import { ShippingReport } from "./shipping-report";
@@ -64,6 +66,7 @@ export function ShippingWorkspace() {
   const [progress, setProgress] = useState<Record<string, UploadProgress>>({});
   const [reusedDocuments, setReusedDocuments] = useState(0);
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
+  const [semantic, setSemantic] = useState<SemanticReport | undefined>();
   const [resultAnalysis, setResultAnalysis] = useState(false);
   const [comparisonEnabled, setComparisonEnabled] = useState(false);
   const [confirmedRelationships, setConfirmedRelationships] = useState<
@@ -97,13 +100,14 @@ export function ShippingWorkspace() {
       comparisonEnabled
         ? reviewShipping(
             results.flatMap((r) => (r.document ? [r.document] : [])),
-            { confirmedRelationships },
+            { confirmedRelationships, semantic },
           )
         : { status: "not_performed" as const, checks: [] },
-    [results, comparisonEnabled, confirmedRelationships],
+    [results, comparisonEnabled, confirmedRelationships, semantic],
   );
   const canPrepare = entries.length > 0 && consent && !busy;
   function invalidate(retained?: Set<string>) {
+    setSemantic(undefined);
     setResults((current) =>
       retained ? current.filter((r) => retained.has(r.pdf.id)) : [],
     );
@@ -351,6 +355,23 @@ export function ShippingWorkspace() {
             ]),
           ),
         }));
+      }
+      if (analyze && !stopAI && !controller.signal.aborted && token === run.current) {
+        const documents = merged.flatMap(r=>!r.error&&r.document&&r.document.extractionStatus!=="not_performed"?[r.document]:[]), context = semanticContext(documents);
+        // One request after ALL upload batches. Mock/legacy/prepare results have
+        // no server receipt and can never accidentally trigger a paid stage.
+        const snapshots = merged.flatMap(r=>r.semanticSnapshot?[r.semanticSnapshot]:[]);
+        if (context.pairs.length && snapshots.length === documents.length) {
+          try {
+            const response = await fetch("/api/semantic",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({snapshots}),signal:controller.signal});
+            const data = await response.json();
+            if(!response.ok)throw new Error(data.error?.message??"상품 의미 분석을 완료하지 못했습니다.");
+            if(!data.semantic || !["complete","partial","failed","not_needed"].includes(data.semantic.status) || typeof data.semantic.inputKey!=="string" || !semanticWireSchema.safeParse(data.semantic.decisions).success)throw new Error("상품 의미 분석 응답 형식을 확인하지 못했습니다.");
+            if(token === run.current)setSemantic(data.semantic);
+          } catch(e) {
+            if(token === run.current)setSemantic({status:"failed",inputKey:context.key,decisions:{pairs:[]},requestedPairs:context.pairs.length,omittedPairs:context.omittedPairs,error:{code:"SEMANTIC_FAILED",message:e instanceof Error?e.message:"상품 의미 분석 실패"}});
+          }
+        }
       }
       if (token === run.current) {
         setTab("results");

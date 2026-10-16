@@ -1,0 +1,434 @@
+[
+  {
+    "case": "chair-normal",
+    "type": "house_bl",
+    "file": "chair-normal-house_bl.pdf",
+    "sha256": "c0d9d4411d4013054529744a8933a5f980b2ec4fc99cc67e2f66d340a8a62a7b",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "chair-normal",
+    "type": "export_declaration",
+    "file": "chair-normal-export_declaration.pdf",
+    "sha256": "5c6f14bf977528ee21007dd7d68f4193359d668f9f7cd4f69805bc9811e915da",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "chair-normal",
+    "type": "house_manifest",
+    "file": "chair-normal-house_manifest.pdf",
+    "sha256": "2e9363b65431ed5f987689854b2ad2b70a0d5664522f13cb712c98b82d492b98",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "laptop-ram",
+    "type": "house_bl",
+    "file": "laptop-ram-house_bl.pdf",
+    "sha256": "8d258156f839d1b26bfac7c89ab91c9d25d9722f09cb79d26278d8faa0bb8be8",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "laptop-ram",
+    "type": "export_declaration",
+    "file": "laptop-ram-export_declaration.pdf",
+    "sha256": "291c7433c322b32f83cc2f13fd8d8972869ed2a0d85842c656722568aba7e783",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "laptop-ram",
+    "type": "house_manifest",
+    "file": "laptop-ram-house_manifest.pdf",
+    "sha256": "6ade3803e9c8d605c8c02e53a7167a7f97d5b1f996114c10f7d1a409208d39de",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "machine-model",
+    "type": "house_bl",
+    "file": "machine-model-house_bl.pdf",
+    "sha256": "80177eb13e3eca34b7dc51567d3a327e6302a210a5cec728790aafca104da7c9",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "machine-model",
+    "type": "export_declaration",
+    "file": "machine-model-export_declaration.pdf",
+    "sha256": "c8fcc4a7be42074bd8514e4ffc9a7fdc28ce2530de91be64959e13bc50d791c9",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "machine-model",
+    "type": "house_manifest",
+    "file": "machine-model-house_manifest.pdf",
+    "sha256": "19815909d50db3bc95adca01224714b45c7ebc6cf2038537d5f47357e18fd4ae",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-material",
+    "type": "house_bl",
+    "file": "apparel-material-house_bl.pdf",
+    "sha256": "c480c1af9ef737a6ab0214c5e9771f332314929bca77c44d7f01b221a707c06d",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-material",
+    "type": "export_declaration",
+    "file": "apparel-material-export_declaration.pdf",
+    "sha256": "80f08175db60ccbba937d98d2e3f0021d92152e901e3751f465540f83bdfa360",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-material",
+    "type": "house_manifest",
+    "file": "apparel-material-house_manifest.pdf",
+    "sha256": "9707e02fd4b4c9a138e654ea998ace8a7b975e64d3cd641b56a7bd87eb9f0653",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-size",
+    "type": "house_bl",
+    "file": "apparel-size-house_bl.pdf",
+    "sha256": "e56c1aa19c97fe7b7cde3b2a91ef42954b21d7ac95a80b717b70ed58d6b30cff",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-size",
+    "type": "export_declaration",
+    "file": "apparel-size-export_declaration.pdf",
+    "sha256": "4efcc54eacbe716dabed9e3689a8a7e3ab58ee72836069e3329e5ba337f5522a",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-size",
+    "type": "house_manifest",
+    "file": "apparel-size-house_manifest.pdf",
+    "sha256": "17c68723d50c18175e2dc61ef40ef42ba361f0b1ec7103ddc0eab38dba8998a4",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "machine-normal",
+    "type": "house_bl",
+    "file": "machine-normal-house_bl.pdf",
+    "sha256": "962bd8658f3d601005dbb5d7f754a2a28562f94a6c07747a331e43ec2c2fbf4f",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "machine-normal",
+    "type": "export_declaration",
+    "file": "machine-normal-export_declaration.pdf",
+    "sha256": "043aadde0002a91f779ddd6803992033f0780185fd47e632c509167ab813c937",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "machine-normal",
+    "type": "house_manifest",
+    "file": "machine-normal-house_manifest.pdf",
+    "sha256": "be16b4c8d932c701ffd25754177b14afe877de567a9a37070278d55fff7c7b77",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "unfamiliar-normal",
+    "type": "house_bl",
+    "file": "unfamiliar-normal-house_bl.pdf",
+    "sha256": "18e405189039c3460b27955d5cac9bca69df0bb15090beec7ec1236bb597ce6b",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "unfamiliar-normal",
+    "type": "export_declaration",
+    "file": "unfamiliar-normal-export_declaration.pdf",
+    "sha256": "c2dbfa04389267998f74731f988b4f2c4d6b836fcdbaf00bd38ef9ad83a19408",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "unfamiliar-normal",
+    "type": "house_manifest",
+    "file": "unfamiliar-normal-house_manifest.pdf",
+    "sha256": "73120d8dd9186168dc8a42e8d1a3cc2b59b59e4f5eaa3f7f3116a09de24fe4cf",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "multi-normal",
+    "type": "house_bl",
+    "file": "multi-normal-house_bl.pdf",
+    "sha256": "e731bfcf35ff275e8e25336bc7cb49180e9430df4be4fccfea03defb9600e404",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "multi-normal",
+    "type": "export_declaration",
+    "file": "multi-normal-export_declaration.pdf",
+    "sha256": "ba968bb69127ced857d5523a1b37edcd605491803100c700e403aa46b1e25792",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "multi-normal",
+    "type": "house_manifest",
+    "file": "multi-normal-house_manifest.pdf",
+    "sha256": "143bb53f5d76c25a384e10edfaa72cf3b01198d4c01b473a7f3d7b71050774fa",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "mixed-shipment",
+    "type": "house_bl",
+    "file": "mixed-shipment-house_bl.pdf",
+    "sha256": "5b34d60bd15bb3d5492133f7fe99af0471baa7f70b01991b4bf55050ed4b9326",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "mixed-shipment",
+    "type": "export_declaration",
+    "file": "mixed-shipment-export_declaration.pdf",
+    "sha256": "1e43f4aa87e48a3797f06fd686aff35ef79cbc541629cdbda7e4a7aa22da184e",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "mixed-shipment",
+    "type": "house_manifest",
+    "file": "mixed-shipment-house_manifest.pdf",
+    "sha256": "3cd15ca47b0ca4d2ea81fec5900c350bcc9f1ed84e2dc877f3379008bbd217be",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "quantity-error",
+    "type": "house_bl",
+    "file": "quantity-error-house_bl.pdf",
+    "sha256": "ac2f3faedd9cc89e0fccba8e07adfce608e2deff1e2a7ee1a3d7c8dcd3af9035",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "quantity-error",
+    "type": "export_declaration",
+    "file": "quantity-error-export_declaration.pdf",
+    "sha256": "e5a3a165578167544d3d3dc3aa6c24875ec02d91cb96a16e12da2313372d076d",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "quantity-error",
+    "type": "house_manifest",
+    "file": "quantity-error-house_manifest.pdf",
+    "sha256": "5fbda21cbb14bdefaa46a0cf5cde86248ade9cc2636febf8e972f4743ff293ce",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "package-error",
+    "type": "house_bl",
+    "file": "package-error-house_bl.pdf",
+    "sha256": "8f6ac5fed76f42d206c24046b18d49f0e1019576e26f8cb1fc4ce3d7ee0ff658",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "package-error",
+    "type": "export_declaration",
+    "file": "package-error-export_declaration.pdf",
+    "sha256": "c77c36ff92e1617c4528583228b0c48adf655a410573bbeaa53e08db275c9f39",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "package-error",
+    "type": "house_manifest",
+    "file": "package-error-house_manifest.pdf",
+    "sha256": "55d86d5fb0da96f62fde2cb0dda2a04373f16539dd6a13fefa5605764c9c6e3c",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "weight-error",
+    "type": "house_bl",
+    "file": "weight-error-house_bl.pdf",
+    "sha256": "34ad84975094c7d7e41ef9945c1ff4dfcc8d23fe290708601df36b5d902fefad",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "weight-error",
+    "type": "export_declaration",
+    "file": "weight-error-export_declaration.pdf",
+    "sha256": "7d456286a55e3197aca4324ef0cfcc17ae8695c3f083e1e600933fc2188bcacc",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "weight-error",
+    "type": "house_manifest",
+    "file": "weight-error-house_manifest.pdf",
+    "sha256": "c610407188e874963a378844955330d5d0486cdd940a3dd463ba57cb9b8d6a0b",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "container-error",
+    "type": "house_bl",
+    "file": "container-error-house_bl.pdf",
+    "sha256": "cb361b8cbd82ffe43a7bb8ce7da1283591ac1d72607a10424c20712617d9eda9",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "container-error",
+    "type": "export_declaration",
+    "file": "container-error-export_declaration.pdf",
+    "sha256": "37d580dbb72b7861457c048bb3e2cb6a8d64bfb25a58101facf5782650031791",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "container-error",
+    "type": "house_manifest",
+    "file": "container-error-house_manifest.pdf",
+    "sha256": "04addfa27a84ea901eb4b7f0256316a6f139fac762d3ba714a3495a643e103fc",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "seal-error",
+    "type": "house_bl",
+    "file": "seal-error-house_bl.pdf",
+    "sha256": "35ac7923096960da16ac7f4ef1d917152b9a03ad61404982204b19da73fea0da",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "seal-error",
+    "type": "export_declaration",
+    "file": "seal-error-export_declaration.pdf",
+    "sha256": "821336b7eaec71ee5494e2ab521aa5a5be2bbaef235966d9485a37762330ead5",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "seal-error",
+    "type": "house_manifest",
+    "file": "seal-error-house_manifest.pdf",
+    "sha256": "0873a9d880072035b624a58410d9b3b77c179b77ec37a2123a7dd87c7882ca0b",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "hbl-error",
+    "type": "house_bl",
+    "file": "hbl-error-house_bl.pdf",
+    "sha256": "ec58d1f8f5ed84eb323796bcea681af88c89b3fae3f31ced849c22e2c7c1823f",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "hbl-error",
+    "type": "export_declaration",
+    "file": "hbl-error-export_declaration.pdf",
+    "sha256": "7f58848b26bc25f75f0025bc46597a2dc0b60f3618c529580253446edd112925",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "hbl-error",
+    "type": "house_manifest",
+    "file": "hbl-error-house_manifest.pdf",
+    "sha256": "e829907abebbab92dacd504eb82203924753a96ff60fc13d8b04437574edc332",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "hs-error",
+    "type": "house_bl",
+    "file": "hs-error-house_bl.pdf",
+    "sha256": "a461fe0be6be2708a121f4ddfb48ef54fdddaffb8c4af0f1a268439969a31ffa",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "hs-error",
+    "type": "export_declaration",
+    "file": "hs-error-export_declaration.pdf",
+    "sha256": "dbdb40047fbce77a4ab243eebf0622ea77758f3ff9270613795b895d542d2544",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "hs-error",
+    "type": "house_manifest",
+    "file": "hs-error-house_manifest.pdf",
+    "sha256": "8e96d8b02cadf619ff8530db893f210dfc22499b59c24009bac38cea0f2e7a09",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-normal",
+    "type": "house_bl",
+    "file": "apparel-normal-house_bl.pdf",
+    "sha256": "99d866895d0bc316a3bb008ec788296ca5d2bc9a6db8c63b2f8971ac40def657",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-normal",
+    "type": "export_declaration",
+    "file": "apparel-normal-export_declaration.pdf",
+    "sha256": "70fe0090addd1d830d31da8e6ef2fbed104d4a0bb068aac7479cf2d56ed2246a",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "apparel-normal",
+    "type": "house_manifest",
+    "file": "apparel-normal-house_manifest.pdf",
+    "sha256": "fb10d308635fb51fdcec6563bde3be360d7ada856092490d78e19327b71bc22c",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "development"
+  },
+  {
+    "case": "holdout-unfamiliar",
+    "type": "house_bl",
+    "file": "holdout-unfamiliar-house_bl.pdf",
+    "sha256": "bfa074535dea37e332221f7782052fe6bd78118804720573ea5cc921431d9192",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "holdout"
+  },
+  {
+    "case": "holdout-unfamiliar",
+    "type": "export_declaration",
+    "file": "holdout-unfamiliar-export_declaration.pdf",
+    "sha256": "13f090489ebafd61c86066e7290437a98b0a06866b2833f25933605c31efa3d5",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "holdout"
+  },
+  {
+    "case": "holdout-unfamiliar",
+    "type": "house_manifest",
+    "file": "holdout-unfamiliar-house_manifest.pdf",
+    "sha256": "ebd007c99a0476ff3d8b111c2e57a749f182c0aaa990e28887170a46e3411a51",
+    "generator": "ReportLab embedded Noto Sans KR",
+    "partition": "holdout"
+  }
+]

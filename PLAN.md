@@ -139,3 +139,10 @@ A 원본Set2 확보·실제원인재현·분할블록/헤더/발행문맥/독립
 3. 완료: 신규14 선택 회귀 및 Manifest 실제 줄바꿈 전체 품명 복구 추가2 회귀, Set2 올바른 후보20/20·오탐0, 변경된 실제 포장 원문 보존, 독립6오류/기존37평가/이전36응답 무료 재생. API0, 기존ledger 보존.
 4. 진행 예정: frozen stage ship의 npmci/type/lint/전체 단위/64브라우저/build/worker, main 일반Push, Actions quality/production 및 공식사이트 정확SHA 확인.
 5. 최종 메타데이터는 validation/phase381-evidence에 보존한다. 최초251 생성 경로와 새 OpenAI 추출 성능은 원본 응답·신규 유료 승인 부재로 미확인이다. 기존 예산/제안 재사용 금지.
+
+## PHASE 3.9 — 현재 작업 체크포인트
+1. 완료: main 1fadc0b 복원, 기존 사전 의존 goods/HS 보류 경로와 OpenAI transport/네이티브 검증 분석.
+2. 완료: strict 의미 스키마/Responses 모듈/검증된 후보 그래프/원문 인용 검증/속성 독립 비교/원본 보존·수정 무효화. 서버 서명 자료를 사용하는 별도 semantic endpoint와 전체 업로드 배치 후 1회 연결. UI 디자인 변경 없음.
+3. 완료: 별도 ReportLab 54합성PDF/18선적(개발17·의미 미평가 Holdout1), native oracle/MOCK 평가, 서버 무결성·오류·모바일/원문모드 회귀 및 별도 신규예산 runner. 승인 전 실제0호출, 기존ledger 보존.
+4. 진행: frozen ship npmci/type/lint/전체 단위/Production build/PDF worker/69브라우저, main 일반Push/Actions/정확 Production SHA 및 실제 Set2 무료 prepare.
+5. 대기: 사용자 신규 $10/60문서/120요청 명시 승인. 계획60문서/최대80요청(자동재시도0, 최종6문서 확보), oracle request 형태의 예약 추정합 약$0.824이며 실제 요청마다 상한을 재예약한다. 승인 전 E2E 완료 주장 금지. 소스 SHA를 유지하고 validation/phase39-evidence에 최종 무료 성과·승인상태를 보존한다.

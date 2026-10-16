@@ -123,3 +123,10 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 원문값/최초 AI original/검증한 recovery/current/비교용 goodsContext를 구분한다. 같은 품목의 실제 native 한영 원문만 연결하며 사용자 수정·다른 행/문서·OCR·없는 인용을 승격하지 않는다.
 - 신규 유료 API 승인 없음. 새 API0회, 이전 단계 ledger/잔여 예산·미승인 제안 재사용 금지. 최초 응답이 없으면251 최초 생성 원인을 추정 확정하지 않는다.
 - 기존631단위/64브라우저 및 독립 오류를 보존하고 기존 ship/main/Actions/Production exactSHA 절차를 따른다. 최종 무료/모의/저장 응답 재생과 새 실제 추출을 분리한 증거는 validation/phase381-evidence에 저장한다.
+
+## PHASE 3.9 — evidence-bound AI semantics (현재 지침)
+- 1차 추출·native 검증 뒤 같은 검증 HBL의 품목 후보를 하나의 추가 Responses 요청으로 의미 분석한다. 미지원 상품 사전은 진입 조건이 아니다. exact 문자열·다른 선적·미검증/OCR/사용자 수정 근거에는 불필요한 호출을 하지 않는다.
+- 언어적 동등성은 잠정이며 AI 의견만으로 확정하지 않는다. 명시 공통 속성 라벨/값·정확한 행/블록·유일 전체 범위를 독립 검증한 모델/규격 차이만 확정 가능하다. 누락 속성 추정·같은 HS로 상품 동일성 확정 금지. 기존 numeric/reference/사용자 수정/복수 신고 원본 검사는 보존한다.
+- 서버의 키 기반 HMAC 확인 자료는 두 번째 요청의 변조 방지용이다. 로그인·접근 코드가 아니며 native 근거 검증을 대신하지 않는다. 최초 원문 확인/추출/복구와 AI 의미 의견·native 속성 검사를 분리하고 수정/배포SHA/키 변경 시 이전 의미 결과를 사용하지 않는다.
+- **신규 유료 검증은 아직 미승인.** $10/60문서/120요청은 제안이며 이전 예산 재사용 금지. 승인 전 실제0회. 승인 후에만 test:phase39:production -- --sha=<exactSHA> --case=<case> --approved-documents=60 --approved-requests=120 --approved-max-cost-usd=10.00 실행; 플래그 자체는 승인이 아니다. live-phase39/validation/phase39-evidence 별도 누적ledger, SHA 변경시 초기화 금지, 미확인 비용 유지, 요청 전 예약, 자동 재시도0회.
+- Set2 및 독립 ReportLab 한영·다품목·오류 PDF를 사용하되 oracle/native 무료·MOCK 의미·새 실제 E2E를 별도로 보고한다. Holdout 의미 정답은 개발 조정/프롬프트에 쓰지 않는다. 메인 ship/Actions/Production exactSHA와 별도 evidence 브랜치 정책 유지. UI 디자인/보고서 레이아웃 변경 없음.

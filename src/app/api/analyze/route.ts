@@ -1,3 +1,4 @@
+import { signSemanticSnapshot } from "@/modules/shipping/semantic-receipt";
 import { reviewShipping } from "@/modules/shipping/review";
 import type { ShippingReview } from "@/modules/shipping/review-model";
 import { analyzeShippingFile } from "@/modules/shipping/analysis";
@@ -88,6 +89,8 @@ export async function POST(request: Request) {
                 Math.max(0, 105000 - (performance.now() - started)),
             })
           : prepared;
+      if (analyze && !result.error && result.document && result.aiModel)
+        result.semanticSnapshot = signSemanticSnapshot(result.document);
       results.push(result);
       if (
         result.error &&
@@ -114,6 +117,7 @@ export async function POST(request: Request) {
           pdfPreparation: true,
           documentClassification: analyze,
           aiExtraction: analyze,
+          semanticAnalysis: analyze,
           pairComparison: analyze,
           triangularComparison: analyze,
         },

@@ -1,0 +1,20 @@
+[
+ {"id":"chair-normal","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","hs":"9401.69-0000"},
+ {"id":"laptop-ram","en":"LAPTOP COMPUTER 16GB RAM","ko":"노트북 컴퓨터 16GB RAM","manifest":"LAPTOP COMPUTER 8GB RAM","fault":"specification","hs":"8471.30-0000"},
+ {"id":"machine-model","en":"AXIAL ACTUATOR MODEL A16","ko":"축방향 액추에이터 MODEL A16","manifest":"AXIAL ACTUATOR MODEL A18","fault":"model","hs":"8481.80-0000"},
+ {"id":"apparel-material","en":"COTTON WORK SHIRT SIZE L","ko":"면 작업 셔츠 SIZE L","manifest":"POLYESTER WORK SHIRT SIZE L","fault":"material","hs":"6109.10-0000"},
+ {"id":"apparel-size","en":"COTTON WORK SHIRT SIZE L","ko":"면 작업 셔츠 SIZE L","manifest":"COTTON WORK SHIRT SIZE XL","fault":"size","hs":"6109.10-0000"},
+ {"id":"machine-normal","en":"PNEUMATIC ROTARY UNION MODEL U47","ko":"공압 회전 유니온 MODEL U47","hs":"8481.80-0000"},
+ {"id":"unfamiliar-normal","en":"ION EXCHANGE MEMBRANE CARTRIDGE","ko":"이온 교환 분리막 카트리지","hs":"8421.99-0000"},
+ {"id":"multi-normal","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","second":{"en":"PNEUMATIC ROTARY UNION MODEL U47","ko":"공압 회전 유니온 MODEL U47","hs":"8481.80-0000"},"hs":"9401.69-0000"},
+ {"id":"mixed-shipment","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","fault":"houseBlNumber","mixed":true,"hs":"9401.69-0000"},
+ {"id":"quantity-error","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","fault":"quantity","hs":"9401.69-0000"},
+ {"id":"package-error","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","fault":"packageCount","hs":"9401.69-0000"},
+ {"id":"weight-error","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","fault":"grossWeight","hs":"9401.69-0000"},
+ {"id":"container-error","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","fault":"containerNumber","hs":"9401.69-0000"},
+ {"id":"seal-error","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","fault":"sealNumber","hs":"9401.69-0000"},
+ {"id":"hbl-error","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","fault":"houseBlNumber","hs":"9401.69-0000"},
+ {"id":"hs-error","en":"WOODEN DINING CHAIR","ko":"원목 식탁 의자","fault":"hsCode","hs":"9401.69-0000"},
+ {"id":"apparel-normal","en":"COTTON WORK SHIRT SIZE L","ko":"면 작업 셔츠 SIZE L","hs":"6109.10-0000"},
+ {"id":"holdout-unfamiliar","en":"ULTRASONIC FLOW TRANSDUCER MODEL Z9","ko":"초음파 유량 변환기 MODEL Z9","hs":"9026.10-0000","partition":"holdout"}
+]

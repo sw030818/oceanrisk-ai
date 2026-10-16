@@ -32,7 +32,8 @@
     "test:phase35:production": "tsx scripts/live-phase35.ts",
     "test:phase37:production": "tsx scripts/live-phase37.ts",
     "test:phase37": "tsx scripts/evaluate-phase37.ts",
-    "test:phase36:production": "tsx scripts/live-phase36.ts"
+    "test:phase36:production": "tsx scripts/live-phase36.ts",
+    "test:phase39:production": "tsx scripts/live-phase39.ts"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

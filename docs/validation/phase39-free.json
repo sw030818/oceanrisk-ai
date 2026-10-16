@@ -1,0 +1,720 @@
+{
+  "kind": "FREE oracle-candidate native verification + MOCK semantic evaluation; NOT OpenAI E2E",
+  "providerRequests": 0,
+  "newPaidCostUsd": 0,
+  "independentGenerator": "ReportLab embedded Korean font",
+  "syntheticCases": 18,
+  "developmentCases": 17,
+  "holdoutSemanticEvaluated": false,
+  "rows": [
+    {
+      "case": "chair-normal",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "laptop-ram",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "goodsDescription",
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 1,
+        "provisionalDetection": true
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "goodsDescription",
+        "confirmedMeanings": [
+          "goodsDescription"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": true
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_LITERAL_ATTRIBUTE_CONFLICT"
+      ]
+    },
+    {
+      "case": "machine-model",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "goodsDescription",
+        "confirmedMeanings": [
+          "goodsDescription"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": true
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "goodsDescription",
+        "confirmedMeanings": [
+          "goodsDescription"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": true
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_LITERAL_ATTRIBUTE_CONFLICT"
+      ]
+    },
+    {
+      "case": "apparel-material",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "goodsDescription",
+        "confirmedMeanings": [
+          "goodsDescription"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": true
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "goodsDescription",
+        "confirmedMeanings": [
+          "goodsDescription"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": true
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "AI_SEMANTIC_DIFFERENCE"
+      ]
+    },
+    {
+      "case": "apparel-size",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "goodsDescription",
+        "confirmedMeanings": [
+          "goodsDescription"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": true
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "goodsDescription",
+        "confirmedMeanings": [
+          "goodsDescription"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": true
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_LITERAL_ATTRIBUTE_CONFLICT"
+      ]
+    },
+    {
+      "case": "machine-normal",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "unfamiliar-normal",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "multi-normal",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 114,
+      "verifiedFields": 114,
+      "sourceProducts": 6,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE"
+      ]
+    },
+    {
+      "case": "mixed-shipment",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "houseBlNumber",
+        "confirmedMeanings": [
+          "houseBlNumber"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "houseBlNumber",
+        "confirmedMeanings": [
+          "houseBlNumber"
+        ],
+        "provisionalMeanings": [],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER",
+        "AI_SEMANTIC_EQUIVALENCE"
+      ]
+    },
+    {
+      "case": "quantity-error",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "quantity",
+        "confirmedMeanings": [
+          "quantity"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "quantity",
+        "confirmedMeanings": [
+          "quantity"
+        ],
+        "provisionalMeanings": [],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "package-error",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "packageCount",
+        "confirmedMeanings": [
+          "packageCount"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "packageCount",
+        "confirmedMeanings": [
+          "packageCount"
+        ],
+        "provisionalMeanings": [],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "weight-error",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "grossWeight",
+        "confirmedMeanings": [
+          "grossWeight"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "grossWeight",
+        "confirmedMeanings": [
+          "grossWeight"
+        ],
+        "provisionalMeanings": [],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "container-error",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "containerNumber",
+        "confirmedMeanings": [
+          "containerNumber"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription",
+          "sealNumber"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "containerNumber",
+        "confirmedMeanings": [
+          "containerNumber"
+        ],
+        "provisionalMeanings": [
+          "sealNumber"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "seal-error",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "sealNumber",
+        "confirmedMeanings": [
+          "sealNumber"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "sealNumber",
+        "confirmedMeanings": [
+          "sealNumber"
+        ],
+        "provisionalMeanings": [],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "hbl-error",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "houseBlNumber",
+        "confirmedMeanings": [
+          "houseBlNumber"
+        ],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "houseBlNumber",
+        "confirmedMeanings": [
+          "houseBlNumber"
+        ],
+        "provisionalMeanings": [],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER",
+        "AI_SEMANTIC_EQUIVALENCE"
+      ]
+    },
+    {
+      "case": "hs-error",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "hsCode",
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription",
+          "hsCode"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 1,
+        "provisionalDetection": true
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": "hsCode",
+        "confirmedMeanings": [
+          "hsCode"
+        ],
+        "provisionalMeanings": [],
+        "TP": 1,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "apparel-normal",
+      "partition": "development",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "semantic": "complete",
+      "semanticCodes": [
+        "AI_SEMANTIC_EQUIVALENCE",
+        "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+      ]
+    },
+    {
+      "case": "holdout-unfamiliar",
+      "partition": "holdout",
+      "kind": "Synthetic independent ReportLab PDFs; oracle first candidates; MOCK semantics",
+      "classified": 3,
+      "presentFields": 87,
+      "verifiedFields": 87,
+      "sourceProducts": 3,
+      "before": {
+        "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+        "expectedMeaning": null,
+        "confirmedMeanings": [],
+        "provisionalMeanings": [
+          "goodsDescription"
+        ],
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+        "provisionalDetection": false
+      },
+      "after": null,
+      "semantic": "holdout-not-evaluated",
+      "semanticCodes": []
+    }
+  ],
+  "proposedLivePlan": {
+    "status": "NOT_APPROVED",
+    "documents": 60,
+    "providerRequestsAtMost": 80,
+    "automaticRetries": 0,
+    "composition": "Set2 initial3 + 17 development triplets51 + final same-SHA Set2 repeat3 and blind holdout3",
+    "reservedFinalDocuments": 6,
+    "estimatedSourceRequestUpperUsd": 0.8235521249999999,
+    "estimateScope": "Upper bounds for expected oracle-derived request shapes only; actual unknown AI shapes are individually reserved before every request; budget stops prevail",
+    "approvedCostUsd": null,
+    "proposedCaps": {
+      "costUsd": 10,
+      "documents": 60,
+      "requests": 120
+    }
+  }
+}

@@ -18,6 +18,7 @@ export type ShippingRelationship = z.infer<
   evidence: ShippingCheck["fields"];
 };
 export interface ShippingCheck {
+  semantic?: { source: "openai"; relation: import("./semantic-schema").SemanticDecision["relation"]; validationCode: string; model?: string; claims: import("./semantic-schema").SemanticDecision["claims"]; nativeClaims?: import("./semantic-schema").SemanticDecision["claims"]; prior?: { assessment: ShippingAssessment; explanation: string; reasonCodes: FactReason[] } };
   // Produced only by deterministic, fully grounded declaration aggregation.
   declarationCoverage?: {
     hblDocumentId: string;
@@ -78,6 +79,7 @@ export interface ShippingCheck {
   followUp: string;
 }
 export interface ShippingReview {
+  semantic?: import("./semantic-schema").SemanticReport;
   issues?: import("./issues").ReviewIssue[];
   primaryChecks?: ShippingCheck[];
   outcomes?: {

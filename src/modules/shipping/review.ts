@@ -1,3 +1,5 @@
+import { withSemanticReview } from "./semantic-integration";
+import type { SemanticReport } from "./semantic-schema";
 import { withFactReview } from "./fact-review";
 import { partyMatch32 } from "./parties";
 import type { ShippingDocument } from "./schema";
@@ -112,7 +114,7 @@ function blockers32(
 }
 export function reviewShipping(
   input: ShippingDocument[],
-  options: { confirmedRelationships?: string[] } = {},
+  options: { confirmedRelationships?: string[]; semantic?: SemanticReport } = {},
 ): ShippingReview {
   const documents = [...input]
     .filter((d) => d.extractionStatus !== "not_performed")
@@ -1322,7 +1324,7 @@ export function reviewShipping(
     pairChecks: checks.filter((c) => c.scope !== "triangle").length,
     triangleChecks: checks.filter((c) => c.scope === "triangle").length,
   };
-  return withFactReview(
+  return withSemanticReview(withFactReview(
     {
       status: checks.length
         ? checks.every((c) => c.assessment === "confirmed_match")
@@ -1344,5 +1346,5 @@ export function reviewShipping(
               : "3종 문서가 있지만 공통 HBL과 모든 양자 연결의 근거를 확정하지 못해 삼각대조를 보류했습니다.",
     },
     documents,
-  );
+  ), documents, options.semantic);
 }

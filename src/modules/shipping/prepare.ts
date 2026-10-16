@@ -4,6 +4,7 @@ import type { AIUsage, PdfDocument } from "../documents/schema";
 import { createShippingDocument, type ShippingDocument } from "./schema";
 import type { ShippingType } from "./catalog";
 export interface ShippingResult {
+  semanticSnapshot?: import("./semantic-receipt").SemanticSnapshot;
   aiUsage?: AIUsage;
   recoveryUsage?: AIUsage;
   recoveryRequests?: 0 | 1;
