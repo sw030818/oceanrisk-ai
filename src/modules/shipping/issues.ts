@@ -32,7 +32,7 @@ export function reviewIssues(
 ): ReviewIssue[] {
   const issues = new Map<string, ReviewIssue>();
   for (const c of review.primaryChecks ?? review.checks) {
-    if (c.assessment === "confirmed_match" || c.assessment === "not_applicable")
+    if (c.disposition === "informational" || c.assessment === "confirmed_match" || c.assessment === "not_applicable")
       continue;
     const causal = evidenceCauses(c, documents);
     if (!causal.length) causal.push(...semanticCauses(c, documents));

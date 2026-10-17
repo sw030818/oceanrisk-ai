@@ -630,3 +630,14 @@
 - 717단위/Production build/PDF worker 통과 후 브라우저 gate 도중, 의미 분석 429 실패가 내부 safe error에만 남고 기존 결과 설명에는 일반 실패로 표시되는 점을 발견했다. Push 전 해당 ship만 중지하고 안전한 오류 메시지를 판정 설명에 연결했다. 기존 화면/스타일 변경 없이 한도 도달 이유를 표시하며 원본 검사는 유지한다. 회귀1개 추가 후 전체 gate 재실행한다.
 - 최종 안전성 검토에서 한 품목행에 여러 모델이 함께 있는 KIT를 AI가 임의로 한 모델씩 골라 인용할 경우 확정 차이로 승격될 수 있는 경계를 추가 재현했다. 공통 라벨은 실제 모델/규격 역할의 일반 라벨로 제한(상품 사전 아님)하고, 인용한 속성값이 해당 원문 소유 범위의 모든 동일 라벨 출현과 일관될 때만 확정 가능하게 했다. 상품 단어를 모델 라벨로 재분류하는 반례와 공백 인용 반례도 보호한다. Push 전 gate를 중지했으며 신규 실제 API0회다.
 - 속성 소속 보강 이후 타입 검사 및 의미/독립PDF 선택 회귀48개 통과. 최종 frozen gate 대상은 기존647개를 포함한720단위·69브라우저다. 이 이후 소스 변경 없이 전체 ship을 재실행한다.
+
+## 핵심 엔진 최종 안정화 — 2026-10-18 Asia/Seoul
+- Git main/origin a57ffaf10e836f74e2e2cffb1d551d632cc4e678 및 사용자 변경 없음 확인. Set2 원본3개 존재. 로컬키 없음, Production 기존 키 보유 경로 사용. 환경 startup 지침 초안을 현 지시 USD2로 저장(적용은 환경설정 저장/Publish와 별개), 로컬dev HTTP200·OpenAI안내·status 확인.
+- 실제baseline: Set2 3문서/4공급자요청, 확인비용$0.0064682, 미확인0, 약54.755초. 최초 분류3/3, 최초 존재후보94개 중 원문근거91개, native 후 현재 존재96개 중 원문근거93개(최초null 복구2개로 분모가 다름). 초기 core 일치11/확정불일치0/조치4. 최초 AI 원본·진단·현재 및 actual semantic response는 ignored private에 보존.
+- 원인A/C/D: collectionCoverage32가 native 셀의 분리된 헤더 No./of와 닫힌 합계 구역을 실제 행으로 셌다. HBL items/containers 실제1개를2개로 세어 complete=false → semantic whole=false → HS 입증 범위 보류. nativeTableLink에서 실제 같은-band 총합 라벨+anchor heading 없는 닫힘 구역을 구분하고 coverage에서 인정된 header블록만 제외했다. 실제 데이터의 첫줄·Total Packages 표제의 화물행은 유지한다. 처음 broad aggregate 조건이 Manifest 표를 막는 것은 무료재생으로 확인하여 anchor heading 보호를 추가했다.
+- 원인E/F: withSemanticReview는 성공한 compatible_incomplete도 provisional_match/attention으로 새primary에 추가했고 reviewIssues가 모두 조치 문제로 집계했다. 성공 언어 의견만 informational로 표시(확정 일치 승격 없음), 검증된 유일 전체품목의 집계 설명에 성공pair를 연결해 중복primary를 통합한다. 원본checks/실제AI decisions/prior 판정과 독립 수치오류는 유지한다. UI/보고서에는 같은 정보성 라벨만 최소 연결.
+- 같은 최초 실제 응답/실제 semantic 결정을 추가 호출 없이 현재 검증기로 재생: HBL coverage1/1 입증, core confirmed11→12(HS 포함), goods는AI 정보성1, 조치4→0, 확정오탐0. 이는 신규 API 재추출 성과가 아니다. 최초 AI의 추가필드/중복 참조3개는 현재 원문 미확인으로 남아 있으며 사용하지 않는다.
+- Root에만 검증된 품명이 있을 때도 기존 semantic 후보로 연결하되 whole=false, HS/전체 완전성 자동 추정 금지. 별도 물리PDF의 실제2번째품목 누락은 계속 incomplete, 일반 Total Packages 헤더행은 유지, 수량오류와 잘못된근거/수정/OCR 보호. 관련37개+물리/독립2페이지/예산13개 선택검사 및 타입·린트 통과.
+- 새PDF는 ReportLab2페이지·우측신원/좌측합계·2페이지역순열·선언가로/운송세로 형태2선적6개이며 합성이고 원본고객자료 아님. 기존17개발/holdout와 구별하여 실제평가한다. 정답/Set2값은 운영코드·AI입력에 추가하지 않았다.
+- 예산도구의 오래된10제안을 승인2로 축소하고 사용량은 보존했다. phase39 ledger3문서4요청/$0.0064682, 문서60/요청120 실행보호상한·자동재시도0. 현재실제시험 추가대상은 최종 동일SHA Set2 및 정상/오류/새양식이며 전체ship 후 실행한다. 원격evidence의 cap10 기록도 복원 시2로만 축소하며 측정/미확인 사용량은 버리지 않는다.
+- 단계B 최종 선택: 새 물리PDF/루트/정보성/중복/독립양식7회귀 + 예산7회귀 통과. 기존 의미31/독립PDF17/3.8·381 관련 회귀에서 발견한 이미 대체된 check와 새check를 동시에 covered 처리하는 결함은 covered된old를 집계 재처리하지 않게 수정했고 관련37개 재통과. 새 브라우저6개(기존5+정보성/조치분리) 및 타입·린트 통과. 이후 source freeze, 전체728단위·70브라우저 예상(확정 결과는 ship에서 기록).

@@ -18,6 +18,8 @@ export type ShippingRelationship = z.infer<
   evidence: ShippingCheck["fields"];
 };
 export interface ShippingCheck {
+  // A proved AI language opinion is information, not a confirmed numeric match.
+  disposition?: "informational";
   semantic?: { source: "openai"; relation: import("./semantic-schema").SemanticDecision["relation"]; validationCode: string; model?: string; claims: import("./semantic-schema").SemanticDecision["claims"]; nativeClaims?: import("./semantic-schema").SemanticDecision["claims"]; prior?: { assessment: ShippingAssessment; explanation: string; reasonCodes: FactReason[] } };
   // Produced only by deterministic, fully grounded declaration aggregation.
   declarationCoverage?: {
@@ -84,6 +86,7 @@ export interface ShippingReview {
   primaryChecks?: ShippingCheck[];
   outcomes?: {
     matches: number;
+    informational?: number;
     mismatches: number;
     review: number;
     requiredMissing: number;

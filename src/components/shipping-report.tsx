@@ -169,7 +169,7 @@ export function ShippingReport({
                   </td>
                 ))}
                 <td className="align-top">
-                  {labels[g.assessment]} · {g.checks.length}개 검사
+                  {g.checks.every(c=>c.disposition==="informational")?"AI 의미상 대응 (정보)":labels[g.assessment]} · {g.checks.length}개 검사
                 </td>
               </tr>
             ))}
@@ -180,7 +180,7 @@ export function ShippingReport({
           {review.checks.map((c) => (
             <li key={c.id} className="border-b border-slate-200 py-1">
               <strong>
-                {c.title ?? c.category} · {labels[c.assessment]}
+                {c.title ?? c.category} · {c.disposition==="informational"?"AI 의미상 대응 (정보)":labels[c.assessment]}
               </strong>{" "}
               — {c.comparison?.reasonCodes?.join(", ") || c.explanation}
               <br />

@@ -26,6 +26,8 @@ export interface TrialPolicy {
   reserveRecovery?: boolean;
   // Optional evaluation holdback; caps and ledger identity remain unchanged.
   reservedBalanceUsd?: number;
+  // Explicit correction of an older, unapproved cost proposal; usage is retained.
+  previousCostProposal?: number;
 }
 export interface TrialBudget extends TestBudget {
   requests: number;
@@ -56,6 +58,10 @@ export function reserveTrial(
   b.requests += requests;
   b.unresolvedCostUpperUsd += costs.reduce((a, n) => a + n, 0);
 }
+export function correctTrialCostProposal(policy:TrialPolicy,b:TrialBudget):TrialBudget {
+  return policy.previousCostProposal===b.maxCostUsd && policy.cost<b.maxCostUsd
+    ? {...b,maxCostUsd:policy.cost}:b;
+}
 export async function withTrialBudget<T>(
   policy: TrialPolicy,
   run: (budget: TrialBudget, save: () => Promise<void>) => Promise<T>,
@@ -73,6 +79,7 @@ export async function withTrialBudget<T>(
       maxCostUsd: policy.cost,
     };
     const recover = (b: TrialBudget) => {
+      b=correctTrialCostProposal(policy,b);
       if (
         b.documents > budget.documents ||
         b.requests > budget.requests ||

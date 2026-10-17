@@ -1,20 +1,20 @@
 {
   "phase": "3.9",
-  "approval": "NOT_APPROVED",
-  "providerRequests": 0,
+  "approval": "USER_FINAL_ENGINE_INSTRUCTION_USD2",
+  "providerRequests": 4,
   "automaticRetries": 0,
   "budget": {
-    "documents": 0,
-    "requests": 0,
-    "measuredCostUsd": 0,
+    "documents": 3,
+    "requests": 4,
+    "measuredCostUsd": 0.0064682,
     "unresolvedCostUpperUsd": 0,
     "maxDocuments": 60,
     "maxRequests": 120,
-    "maxCostUsd": 10
+    "maxCostUsd": 2
   },
-  "limitsAreProposalOnly": true,
+  "limitsAreProposalOnly": false,
   "plan": {
-    "status": "NOT_APPROVED",
+    "status": "APPROVED_USD2",
     "documents": 60,
     "providerRequestsAtMost": 80,
     "automaticRetries": 0,
@@ -22,11 +22,13 @@
     "reservedFinalDocuments": 6,
     "estimatedSourceRequestUpperUsd": 0.8235521249999999,
     "estimateScope": "Upper bounds for expected oracle-derived request shapes only; actual unknown AI shapes are individually reserved before every request; budget stops prevail",
-    "approvedCostUsd": null,
+    "approvedCostUsd": 2,
     "proposedCaps": {
-      "costUsd": 10,
+      "costUsd": 2,
       "documents": 60,
       "requests": 120
     }
-  }
+  },
+  "previousProposalUsd": 10,
+  "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678"
 }

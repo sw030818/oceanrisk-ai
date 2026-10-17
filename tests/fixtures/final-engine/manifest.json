@@ -1,0 +1,50 @@
+[
+  {
+    "case": "independent-normal",
+    "type": "house_bl",
+    "file": "independent-normal/01.pdf",
+    "sha256": "1b1fdb4f71cf41a18557f6d09476fbb046f848219b6335825227604fc8a8cb3e",
+    "pages": 2,
+    "synthetic": true
+  },
+  {
+    "case": "independent-normal",
+    "type": "export_declaration",
+    "file": "independent-normal/02.pdf",
+    "sha256": "ecac19666dee14bea08964e61091a33a0a16cce9c4033bd446e4a7f70ed43f3d",
+    "pages": 2,
+    "synthetic": true
+  },
+  {
+    "case": "independent-normal",
+    "type": "house_manifest",
+    "file": "independent-normal/03.pdf",
+    "sha256": "a53acb414a4bf9fded54c805ab3286468b2f90fff1875eafb5b7da892cc1ab02",
+    "pages": 2,
+    "synthetic": true
+  },
+  {
+    "case": "independent-model",
+    "type": "house_bl",
+    "file": "independent-model/01.pdf",
+    "sha256": "ebb3f9fb1cc6a3830d7ad9ac40a39bc1e9903a88be83fa0745d66c3cd82308a1",
+    "pages": 2,
+    "synthetic": true
+  },
+  {
+    "case": "independent-model",
+    "type": "export_declaration",
+    "file": "independent-model/02.pdf",
+    "sha256": "477f340d0315a0ef770e7b11165aa319b002cb6c37b76dff799834a29ca9db83",
+    "pages": 2,
+    "synthetic": true
+  },
+  {
+    "case": "independent-model",
+    "type": "house_manifest",
+    "file": "independent-model/03.pdf",
+    "sha256": "9b6492f7dc383415d9a2170b8412dcc2a39570c030db0a44745a86e141d21d71",
+    "pages": 2,
+    "synthetic": true
+  }
+]

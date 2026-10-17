@@ -5,13 +5,13 @@ import {semanticOpenAIRequest} from "../../src/modules/shipping/semantic-request
 import type {ShippingResult} from "../../src/modules/shipping/prepare";
 import type {SemanticReport} from "../../src/modules/shipping/semantic-schema";
 import type {Fixture32} from "./phase32-live";
-// PROPOSED ONLY. CLI flags do not constitute user approval. Never execute before
-// separate explicit PHASE39 consent; previous budgets are unrelated.
-export const policy39={directory:"test-results/live-phase39",archive:"docs/validation/phase39-live.json",evidenceRef:"refs/heads/validation/phase39-evidence",documents:60,requests:120,cost:10,phases:["3.8"],name:"PHASE39",reserveRecovery:false};
+// Current final-engine instruction authorizes cumulative PHASE39 USD2.
+// The old USD10 was a proposal only. Preserve all prior usage, including unknown cost.
+export const policy39={directory:"test-results/live-phase39",archive:"docs/validation/phase39-live.json",evidenceRef:"refs/heads/validation/phase39-evidence",documents:60,requests:120,cost:2,previousCostProposal:10,phases:["3.8"],name:"PHASE39",reserveRecovery:false};
 export function reserve39(b:TrialBudget,cost:number,documents:number,requests:number){
  if(!Number.isFinite(cost)||cost<0||!Number.isInteger(documents)||documents<0||!Number.isInteger(requests)||requests<1||requests<documents)throw Error("INVALID_RESERVATION");
- if(b.maxDocuments!==60||b.maxRequests!==120||b.maxCostUsd!==10)throw Error("PHASE39_LEDGER_MISMATCH");
- if(b.documents+documents>60||b.requests+requests>120||b.measuredCostUsd+b.unresolvedCostUpperUsd+cost>10)throw Error("PHASE39_BUDGET_STOP");
+ if(b.maxDocuments!==60||b.maxRequests!==120||b.maxCostUsd!==2)throw Error("PHASE39_LEDGER_MISMATCH");
+ if(b.documents+documents>60||b.requests+requests>120||b.measuredCostUsd+b.unresolvedCostUpperUsd+cost>2)throw Error("PHASE39_BUDGET_STOP");
  b.documents+=documents;b.requests+=requests;b.unresolvedCostUpperUsd+=cost;
 }
 export const paid39Extraction=(sha:string,stage:string,fixtures:Pick<Fixture32,"bytes"|"pdf"|"wire">[])=>paidTrial(policy39,sha,stage,fixtures);

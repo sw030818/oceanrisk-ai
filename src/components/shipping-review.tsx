@@ -122,8 +122,8 @@ export function ShippingReviewPanel({
           filter === "all" ||
           (filter === "not_applicable" && c.assessment === "not_applicable") ||
           (filter === "mismatch" && c.assessment.endsWith("mismatch")) ||
-          (filter === "match" && c.assessment === "confirmed_match") ||
-          (filter === "review" &&
+          (filter === "match" && (c.assessment === "confirmed_match"||c.disposition==="informational")) ||
+          (filter === "review" && c.disposition!=="informational" &&
             [
               "needs_review",
               "insufficient_information",
@@ -131,7 +131,7 @@ export function ShippingReviewPanel({
               "provisional_match",
               "provisional_mismatch",
             ].includes(c.assessment)) ||
-          (filter === "attention" &&
+          (filter === "attention" && c.disposition!=="informational" &&
             c.assessment !== "confirmed_match" &&
             c.assessment !== "not_applicable"),
       ),
@@ -273,7 +273,7 @@ export function ShippingReviewPanel({
             <option value="all">전체</option>
             <option value="mismatch">불일치</option>
             <option value="review">확인 필요 · 정보 부족</option>
-            <option value="match">확인된 일치</option>
+            <option value="match">일치·AI 의미 대응</option>
             <option value="not_applicable">대조 대상 없음</option>
           </select>
           {options.length > 1 && (
@@ -512,7 +512,7 @@ export function ShippingReviewPanel({
                   <span
                     className={`inline-block rounded px-2 py-1 text-[10px] font-semibold ${color(g.assessment)}`}
                   >
-                    {labels[g.assessment]}
+                    {g.checks.every(c=>c.disposition==="informational")?"AI 의미상 대응 (정보)":labels[g.assessment]}
                   </span>
                   <button
                     onClick={() => setSelected(g.id)}
@@ -590,7 +590,7 @@ export function ShippingReviewPanel({
                       data-scope={c.scope}
                       className="sr-only"
                     >
-                      {c.title} · {labels[c.assessment]}
+                      {c.title} · {c.disposition==="informational"?"AI 의미상 대응 (정보)":labels[c.assessment]}
                     </span>
                   ))}
                 </td>
@@ -683,7 +683,7 @@ export function ShippingReviewPanel({
               <span
                 className={`rounded px-2 py-1 text-xs ${color(active.assessment)}`}
               >
-                {labels[active.assessment]}
+                {active.checks.every(c=>c.disposition==="informational")?"AI 의미상 대응 (정보)":labels[active.assessment]}
               </span>
               {active.checks.map((c) => (
                 <div
@@ -691,7 +691,7 @@ export function ShippingReviewPanel({
                   className="mt-4 border-b border-slate-100 pb-4 text-xs leading-6"
                 >
                   <strong>
-                    {c.title} · {labels[c.assessment]}
+                    {c.title} · {c.disposition==="informational"?"AI 의미상 대응 (정보)":labels[c.assessment]}
                   </strong>
                   <p>{c.explanation}</p>
                   {!!c.uncertainties?.length && (

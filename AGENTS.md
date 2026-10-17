@@ -130,3 +130,9 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 서버의 키 기반 HMAC 확인 자료는 두 번째 요청의 변조 방지용이다. 로그인·접근 코드가 아니며 native 근거 검증을 대신하지 않는다. 최초 원문 확인/추출/복구와 AI 의미 의견·native 속성 검사를 분리하고 수정/배포SHA/키 변경 시 이전 의미 결과를 사용하지 않는다.
 - **신규 유료 검증은 아직 미승인.** $10/60문서/120요청은 제안이며 이전 예산 재사용 금지. 승인 전 실제0회. 승인 후에만 test:phase39:production -- --sha=<exactSHA> --case=<case> --approved-documents=60 --approved-requests=120 --approved-max-cost-usd=10.00 실행; 플래그 자체는 승인이 아니다. live-phase39/validation/phase39-evidence 별도 누적ledger, SHA 변경시 초기화 금지, 미확인 비용 유지, 요청 전 예약, 자동 재시도0회.
 - Set2 및 독립 ReportLab 한영·다품목·오류 PDF를 사용하되 oracle/native 무료·MOCK 의미·새 실제 E2E를 별도로 보고한다. Holdout 의미 정답은 개발 조정/프롬프트에 쓰지 않는다. 메인 ship/Actions/Production exactSHA와 별도 evidence 브랜치 정책 유지. UI 디자인/보고서 레이아웃 변경 없음.
+
+## 현재 핵심 엔진 최종 안정화 지시 (2026-10-18, 이전 예산 제안보다 우선)
+- PHASE3.9의 승인된 누적 비용은 USD2이다. 과거 USD10은 미승인 제안이며 사용 금지. live-phase39 및 validation/phase39-evidence의 실제 사용량·미확인 비용을 모두 복원한다. 이전 cap10 메타데이터를2로 정정해도 문서/요청/비용은 그대로 유지한다. 현재60문서/120요청은 실행 보호 상한, 자동 재시도0. 지출 상한2를 넘길 때만 새 승인을 요청한다.
+- 기존 엔진을 진단 후 최소 수정하며 새 PHASE/새 엔진/상품별 사전 확대/전면 UI 변경 금지. 실제 원문 존재·문서 기재값 비교·전체 화물 완전성은 다르다. 헤더/합계가 native 행으로 세어지는지 독립 PDF로 확인하고 진짜 누락/다른행/부분/중복/OCR/수정을 보호한다.
+- 성공한 AI 의미 대응은 정보성(disposition)으로 표시하며 assessment는 잠정 그대로 유지한다. 조치 문제에서 제외하는 것은 검증된 의미 성공에 한정하며, 실패·미확인 범위·수치/HS/참조/모델 오류는 보존한다. 원본 checks/AI 결정/수정·복원/보고서 근거를 유지한다.
+- 정상 Set2와 새 한영·다품목·낯선 상품·실제 숫자/모델 오류 PDF를 실제 OpenAI E2E로 평가한다. 정답은 평가 도구에만 두고 provider 입력에 넣지 않는다. 이전 응답 재생은 새로운 E2E와 구분한다. local key 부재 시 승인된 정확 Production SHA를 이용한다. 최종 ship/Actions/Production exactSHA 및 별도 증거 절차는 유지한다.

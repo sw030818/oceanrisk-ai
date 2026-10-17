@@ -200,6 +200,13 @@ export function nativeTableLink(
     (c) =>
       Math.abs(c.y - cell.y) < 0.4 && Math.abs(c.height - cell.height) < 0.4,
   );
+  // A closing aggregate band is not another item/container/cargo row. Read
+  // actual labels in aligned cells; no template coordinates or expected values.
+  if(!bands.some(c=>anchors.includes(cellHeading(page,c)?.role??"")) && bands.some(c=>{
+    const lines=physicalLines(page,body(page,c));
+    return lines.some((_,i)=>[1,2,3].some(n=>
+      shippingRole(spanText(lines.slice(i,i+n).flat()))?.startsWith("total")));
+  }))return null;
   // A genuine row needs its own anchor and numeric/identifier columns; a form
   // grid of unrelated standalone fields must not become a product table.
   const anchor = bands.find((c) =>

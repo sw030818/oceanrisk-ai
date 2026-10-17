@@ -1,3 +1,4 @@
+import { nativeCell,cellHeading } from "../layout/shipping-geometry";
 import { effectiveProof } from "./effective";
 import { shippingCell, type EntityScope } from "../layout/shipping-cells";
 import type { PdfDocument } from "../documents/schema";
@@ -15,6 +16,9 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
     const actual = new Set<string>();
     for (const p of pdf.pages)
       for (const b of p.blocks ?? []) {
+        const cell=nativeCell(p,b);
+        const heading=cell&&cellHeading(p,cell);
+        if(heading?.role && heading.blocks.includes(b))continue;
         const l = shippingCell(p, [b], scope);
         if (l && roles[scope].includes(l.role))
           actual.add(`${p.page}/${l.tableId}/${l.rowId}`);

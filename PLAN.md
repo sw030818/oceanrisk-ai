@@ -146,3 +146,8 @@ A 원본Set2 확보·실제원인재현·분할블록/헤더/발행문맥/독립
 3. 완료: 별도 ReportLab 54합성PDF/18선적(개발17·의미 미평가 Holdout1), native oracle/MOCK 평가, 서버 무결성·오류·모바일/원문모드 회귀 및 별도 신규예산 runner. 승인 전 실제0호출, 기존ledger 보존.
 4. 진행: frozen ship npmci/type/lint/전체 단위/Production build/PDF worker/69브라우저, main 일반Push/Actions/정확 Production SHA 및 실제 Set2 무료 prepare.
 5. 대기: 사용자 신규 $10/60문서/120요청 명시 승인. 계획60문서/최대80요청(자동재시도0, 최종6문서 확보), oracle request 형태의 예약 추정합 약$0.824이며 실제 요청마다 상한을 재예약한다. 승인 전 E2E 완료 주장 금지. 소스 SHA를 유지하고 validation/phase39-evidence에 최종 무료 성과·승인상태를 보존한다.
+
+## 핵심 엔진 최종 안정화 — 현재 체크포인트
+A 완료: main a57ffaf clean 복원, 로컬/원격 phase39 사용0확인, Set2 실제 baseline3문서4요청/$0.0064682. 최초 AI→native→semantic→판정 추적. 헤더/합계 phantom coverage, 성공 의미 의견을 조치로 세는 경계 입증.
+B 완료: native 실제 행/헤더/합계 구분, root-only 상품 후보 보존(whole 아님), 검증된 AI 의미 정보와 조치 분리/단일 상품 설명으로 파생 성공 통합, 원본검사/수치불일치 보존. 현재 실제 응답 무료 재검증은 일치11→12, 조치4→0, 확정오탐0. 관련37회귀+독립물리PDF/예산13검사 통과.
+C/D 진행: 새2페이지 역순열6합성PDF 추가, 전체 ship 후 정확SHA에서 Set2·필수 정상/오류·독립새양식 실제평가. 누적USD2/60문서/120요청, 자동재시도0. 기존 phase37 등예산 불변. 최종 evidence는 기존 validation/phase39-evidence에 누적한다.
