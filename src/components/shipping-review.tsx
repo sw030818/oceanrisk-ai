@@ -246,11 +246,12 @@ export function ShippingReviewPanel({
           review.outcomes?.evidenceUnverified ?? review.outcomes?.evidenceFailed
         ) && (
           <p
-            data-testid="review-incomplete"
+            data-testid={review.outcomes?.comparisonEvidenceUnverified===0?"review-unused-candidates":"review-incomplete"}
             className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-amber-900"
           >
-            검토 미완료 · 원문 근거를 확인하지 못한 필드가 남아 있습니다. 확정
-            불일치 0건은 모든 서류가 정상이라는 뜻이 아닙니다.
+            {review.outcomes?.comparisonEvidenceUnverified===0
+              ? "판정에 사용하지 않은 원문 미확인 추출 후보가 있습니다. 후보와 최초 진단은 상세에 보존하며, 해당 값은 비교 근거로 사용하지 않았습니다."
+              : "검토 미완료 · 원문 근거를 확인하지 못한 필드가 남아 있습니다. 확정 불일치 0건은 모든 서류가 정상이라는 뜻이 아닙니다."}
           </p>
         )}
         {review.outcomes && (

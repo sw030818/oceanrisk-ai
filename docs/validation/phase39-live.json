@@ -30,5 +30,14 @@
     }
   },
   "previousProposalUsd": 10,
-  "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678"
+  "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+  "currentCumulativeUsage": {
+    "documents": 12,
+    "requests": 16,
+    "measuredCostUsd": 0.021366555,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  }
 }

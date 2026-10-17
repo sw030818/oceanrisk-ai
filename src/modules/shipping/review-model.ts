@@ -95,6 +95,7 @@ export interface ShippingReview {
     /** Original AI diagnostics, including fields subsequently recovered. */
     evidenceFailed: number;
     evidenceUnverified?: number;
+    comparisonEvidenceUnverified?: number;
     evidenceRecovered?: number;
     checksExecuted: number;
     independentChecks: number;

@@ -25,7 +25,7 @@ import {
   key32,
   ref32,
   refKey32,
-  root32,
+  comparisonField32 as root32,
   scope32,
   text32,
   unit32,

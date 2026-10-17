@@ -58,6 +58,22 @@ export function root32(
   }
   return { documentId: doc.id, fieldName: name, field: all[0] };
 }
+// A misplaced document candidate is not another cargo fact. Prefer the exact
+// same native citation's unique proved item owner, retaining the root diagnostic.
+// No cross-document, same-number, edited, OCR or incomplete-row substitution.
+export function comparisonField32(doc:ShippingDocument,name:string):FieldRef|undefined {
+  const root=root32(doc,name);
+  if(name!=="goodsDescription"||!root||root.field.current.status!=="unverified"||doc.nativeScopeLimitation||doc.fields.shipmentScope?.current.status==="user_edited")return root;
+  const source=root.field.current.source;
+  if(!source||source.provenance==="ocr"||!source.segments?.length)return root;
+  const item=doc.items.length===1&&doc.factCoverage?.items.complete?doc.items[0]:undefined;
+  const cargo=!doc.items.length&&doc.cargoRecords.length===1&&doc.factCoverage?.cargoRecords.complete?doc.cargoRecords[0]:undefined;
+  const owner=item??cargo,field=owner?.fields.goodsDescription;
+  if(!owner||!field||!independentlyVerified(field)||field.current.value!==root.field.current.value)return root;
+  const proof=field.current.source;
+  if(proof?.fileId!==doc.id||source.fileId!==doc.id||proof.page!==source.page||!source.segments.every(s=>proof.segments?.some(p=>p.blockId===s.blockId)))return root;
+  return {documentId:doc.id,fieldName:name,field,...(item?{itemId:item.id}:{cargoId:cargo!.id})};
+}
 export const ref32 = (
   doc: ShippingDocument,
   name: string,

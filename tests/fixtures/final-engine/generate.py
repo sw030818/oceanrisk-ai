@@ -18,7 +18,7 @@ for name,goods,ko,hs in [('independent-normal','CERAMIC INSULATING BUSHING','세
   text(title,30,35,18);text('SYNTHETIC ONLY - TWO PAGE EVALUATION',30,55,9)
   # Identity is at the right, while totals are separate on the left.
   ref='SYN-FINAL-N' if name=='independent-normal' else 'SYN-FINAL-M'
-  for j,(label,v) in enumerate([('House B/L No.',ref),('Export Declaration No.',ref+'-D'),('Shipper','Synthetic Supply Laboratory'),('Consignee','Synthetic Receiver'),('Shipment Scope','full shipment')]):box(label,v,W-320,85+j*65,290)
+  for j,(label,v) in enumerate([('House B/L No.',ref),('Export Declaration No.',ref+'-D'),('Exporter' if kind=='export_declaration' else 'Shipper','Synthetic Supply Laboratory'),('Consignee','Synthetic Receiver'),('Shipment Scope','full shipment')]):box(label,v,W-320,85+j*65,290)
   for j,(label,v) in enumerate([('Total Packages','12 CARTONS'),('Total Quantity','360 EA'),('Gross Weight','144 KG'),('Port of Loading','BUSAN'),('Port of Discharge','ROTTERDAM')]):box(label,v,30,85+j*65,290)
   c.showPage();text(title,30,35,18);box('House B/L No.',ref,30,65,290)
   # A reversed goods table on a second page, not the development fixture grid.

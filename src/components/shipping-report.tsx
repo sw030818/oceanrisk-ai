@@ -78,8 +78,9 @@ export function ShippingReport({
           review.outcomes?.evidenceFailed ??
           0) > 0 && (
           <p className="my-2 font-bold">
-            검토 미완료 · 근거 미확인 항목이 남아 있습니다. 오류 0건을 전체
-            정상으로 해석하지 마세요.
+            {review.outcomes?.comparisonEvidenceUnverified===0
+              ? "판정에 사용하지 않은 원문 미확인 추출 후보가 있습니다. 원본 후보는 보존하며 해당 값은 비교 근거로 사용하지 않았습니다."
+              : "검토 미완료 · 근거 미확인 항목이 남아 있습니다. 오류 0건을 전체 정상으로 해석하지 마세요."}
           </p>
         )}
         <h2 className="mt-4 font-bold">분석 대상</h2>
