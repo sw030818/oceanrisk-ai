@@ -52,8 +52,8 @@
   "finalSourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
   "validationReport": "docs/validation/final-engine-2026-10-18/README.md",
   "checkpoint": {
-    "at": "2026-10-18T13:30:27.379Z",
-    "sourceSha": "91c081056b64e9d46f2e98c08b378c44fe53f723",
+    "at": "2026-10-18T13:55:25.923Z",
+    "sourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
     "status": "LIVE_EVALUATION_IN_PROGRESS_NOT_FINAL_SUCCESS"
   },
   "set3Fix": {
@@ -182,5 +182,128 @@
     "truthSha256": "d8de7b1db9de18fe42a089b680bc21c6022b0561fa77e765fbcd9f7c8ad2bd38",
     "manifestSha256": "871fadf1581a515751505e60c38608e28a65905f6dec822f930a4ba88a9613f2",
     "policy": "Freeze before baseline; no holdout extraction/validation until code is frozen. If used for tuning, retire and generate a new holdout."
+  },
+  "retiredHoldout": {
+    "cases": [
+      "universal-07",
+      "universal-08",
+      "universal-09",
+      "universal-10"
+    ],
+    "evaluationSha": "91c081056b64e9d46f2e98c08b378c44fe53f723",
+    "newPartition": "development",
+    "reason": "Native paired-field, nonlocal closed-cell port/unit guards and title-as-reference recovery failures; original frozen PDF/truth hashes and first actual results remain immutable.",
+    "replacement": "../universal-replacement/holdout-lock.json and ../universal-complex/lock.json",
+    "noBlindSuccessClaimForRetiredCases": true
+  },
+  "replacementHoldoutLock": {
+    "replacementFor": "retired universal-07 through universal-10",
+    "frozenBeforeFirstCall": true,
+    "truthSha256": "2d545d3b3eb24a79101e399e725a0310a879283d47c76da730ac3f933a0cec4c",
+    "pdfs": [
+      {
+        "case": "replacement-14",
+        "partition": "holdout",
+        "file": "replacement-14/01.pdf",
+        "type": "house_bl",
+        "layout": "property_matrix",
+        "sha256": "07bf1a4313350cfafc9d1673b733f56febbf729344fa532fd7d8b0b09a61f42a"
+      },
+      {
+        "case": "replacement-14",
+        "partition": "holdout",
+        "file": "replacement-14/02.pdf",
+        "type": "export_declaration",
+        "layout": "property_matrix",
+        "sha256": "61553ca8741be209e625670d35fe05dc376aa26f8d320b09ee3de2c650598604"
+      },
+      {
+        "case": "replacement-14",
+        "partition": "holdout",
+        "file": "replacement-14/03.pdf",
+        "type": "house_manifest",
+        "layout": "property_matrix",
+        "sha256": "e3bef5079ad69d69944e47d93a8e77f4e752c2a9f544c4cf55c161086b1cfe35"
+      },
+      {
+        "case": "replacement-15",
+        "partition": "holdout",
+        "file": "replacement-15/01.pdf",
+        "type": "house_bl",
+        "layout": "sidebar_footer",
+        "sha256": "cd2d59a7846cb1a06cf759107e24a861d7649a8664a3a83f4a191ce714c7b93d"
+      },
+      {
+        "case": "replacement-15",
+        "partition": "holdout",
+        "file": "replacement-15/02.pdf",
+        "type": "export_declaration",
+        "layout": "sidebar_footer",
+        "sha256": "665a00602b1af8786b2a0a5fd4a65c4958009fe2bdf215191da82057c28ad74f"
+      },
+      {
+        "case": "replacement-15",
+        "partition": "holdout",
+        "file": "replacement-15/03.pdf",
+        "type": "house_manifest",
+        "layout": "sidebar_footer",
+        "sha256": "a9ae71a46b38965773d0f8ab53e0af7497ca35fa7ff3ea810b1cb378db8f406d"
+      },
+      {
+        "case": "replacement-16",
+        "partition": "holdout",
+        "file": "replacement-16/01.pdf",
+        "type": "house_bl",
+        "layout": "parallel_label_columns",
+        "sha256": "43ab1ad842a6b9ffcc0d73571d1cb7d8741f728ed32bbed7c58090d5b6cb1894"
+      },
+      {
+        "case": "replacement-16",
+        "partition": "holdout",
+        "file": "replacement-16/02.pdf",
+        "type": "export_declaration",
+        "layout": "parallel_label_columns",
+        "sha256": "05944262cc737c9724fa82692f135794ffd9381bf0a6d78e1a3f5eb4a0a4ec5e"
+      },
+      {
+        "case": "replacement-16",
+        "partition": "holdout",
+        "file": "replacement-16/03.pdf",
+        "type": "house_manifest",
+        "layout": "parallel_label_columns",
+        "sha256": "e0cf824af74166770a3ab8e61aee4b3ec0606f8af11ebd2e82aa9eba3db936ea"
+      }
+    ],
+    "fourthCase": "universal-complex/lock.json (independently locked, previously uncalled)"
+  },
+  "replacementComplexLock": {
+    "manifestSha256": "2b04eb179b8a6882055d251ea4d05fb2162e636f9aec1a362be0dd644feb5bf0",
+    "truthSha256": "d5a00f08db1dafe994c9d996a298ac4d975f8ff39fe92f165310a80862c6ffca",
+    "pdfs": [
+      {
+        "case": "complex-13",
+        "file": "01.pdf",
+        "type": "house_bl",
+        "sha256": "a64652feeddd5b6bd8cbdbbcd62e1b8272f9b66ee733e6d3d52366d3d26f5ffa"
+      },
+      {
+        "case": "complex-13",
+        "file": "02.pdf",
+        "type": "export_declaration",
+        "sha256": "97e022c780d415ea010276db8601dacf9e2c7d3ac1552d20680c26ed03314dd9"
+      },
+      {
+        "case": "complex-13",
+        "file": "03.pdf",
+        "type": "export_declaration",
+        "sha256": "12c904ec77ea1eac10f271a00fb5deda64c501518ad12f36fc5ff5b3637a60ed"
+      },
+      {
+        "case": "complex-13",
+        "file": "04.pdf",
+        "type": "house_manifest",
+        "sha256": "97c528f87b5fbf090c85e54fc8b1f8bfe78f5ad72bb2010bfafb20866941b400"
+      }
+    ]
   }
 }
