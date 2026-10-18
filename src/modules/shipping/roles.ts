@@ -21,6 +21,10 @@ const labels: Record<string, RegExp> = {
     /^(?:trade description|commercial description|거래품명|거래 품명)$/i,
   hsCode:
     /^(?:hs code|hs|h\.?s\.? code|세번|세번부호|hs 부호|세번부호\s*\(HS\))$/i,
+  // Recognize boundaries even for monetary fields outside the extraction model;
+  // their closed cells must not inherit a distant quantity column heading.
+  monetaryAmount: /^(?:신고가격(?:\s*\(FOB\))?|신고금액|총금액|총 금액|declared value(?:\s*\(FOB\))?|total amount|total value|FOB value)$/i,
+  exchangeRate: /^(?:적용환율|환율|exchange rate)$/i,
   quantity:
     /^(?:qty\.?|quantity|declared quantity|신고수량|신고 수량|물품수량|수량(?:\s*\/\s*단위)?)$/i,
   quantityUnit: /^(?:uom|unit|quantity unit|단위|수량단위|수량 단위)$/i,
@@ -37,6 +41,7 @@ const labels: Record<string, RegExp> = {
     /^(?:container(?:\s*(?:no\.?|number|#))?|컨테이너번호|컨테이너 번호)$/i,
   sealNumber:
     /^(?:seal(?:\s*(?:no\.?|number|#|번호))?|봉인번호|봉인 번호|봉인번호\s*\(SEAL\))$/i,
+  destinationCountry: /^(?:destination country|country of destination|목적국|도착국)$/i,
   portOfLoading: /^(?:port of loading|pol|선적항|적재항)$/i,
   portOfDischarge: /^(?:port of discharge|pod|양하항|양륙항|하역항)$/i,
   shipmentScope: /^(?:shipment scope|선적 범위)$/i,

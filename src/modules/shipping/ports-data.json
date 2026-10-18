@@ -126,6 +126,27 @@
       "Name": "Ho Chi Minh City",
       "Function": "1-3456--",
       "Status": "AI"
+    },
+    {
+      "Country": "CA",
+      "Location": "VAN",
+      "Name": "Vancouver",
+      "Function": "1--45---",
+      "Status": "AS"
+    },
+    {
+      "Country": "US",
+      "Location": "VAN",
+      "Name": "Vancouver",
+      "Function": "1-3-----",
+      "Status": "RN"
+    },
+    {
+      "Country": "US",
+      "Location": "SEA",
+      "Name": "Seattle",
+      "Function": "1--45---",
+      "Status": "AI"
     }
   ],
   "countries": [
@@ -378,5 +399,14 @@
     "MF",
     "SX",
     "SS"
-  ]
+  ],
+  "supplementalSource": {
+    "retrieved": "2026-10-18",
+    "source": "https://raw.githubusercontent.com/datasets/un-locode/d41a6fc4a4c12db72a5762dd104e4942da3b6a1e/data/code-list.csv",
+    "sha256": "625748a1729b4864a907928e12f18506dbe1315f9b5a331e5ff194ba341b5ba5",
+    "license": "Underlying UNECE code-list licence unclear according to upstream attribution; PDDL covers tooling/layout only",
+    "version": "upstream pre-release at d41a6fc4a4c12db72a5762dd104e4942da3b6a1e",
+    "attribution": "https://github.com/datasets/un-locode/blob/d41a6fc4a4c12db72a5762dd104e4942da3b6a1e/ATTRIBUTION.txt"
+  },
+  "licenseScope": "PDDL applies to dataset maintainers’ tooling and layout, not necessarily the underlying UNECE location records; see supplemental attribution."
 }

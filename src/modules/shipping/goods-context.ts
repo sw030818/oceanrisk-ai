@@ -1,3 +1,4 @@
+import { countAtoms } from "./count-atoms";
 import type { PdfPage, PdfBlock } from "../documents/schema";
 import type { ShippingField } from "./schema";
 import { nativeCell, geometricRole } from "../layout/shipping-geometry";
@@ -65,7 +66,7 @@ export function nativeGoodsSpans(page: PdfPage) {
   for (const b of page.blocks ?? []) {
     const cell = nativeCell(page, b);
     if (!cell || geometricRole(page, b) !== "goodsDescription" ||
-      shippingRole(b.text) || /^\(?HS\b/i.test(b.text)) continue;
+      shippingRole(b.text) || countAtoms(b.text).length || /^\(?HS\b/i.test(b.text)) continue;
     const group = groups.get(cell) ?? [];
     group.push(b);
     groups.set(cell, group);

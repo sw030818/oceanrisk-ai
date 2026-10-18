@@ -42,6 +42,7 @@ export const shippingFieldLabels = {
   grossWeightUnit: "총중량 단위",
   declaredWeight: "신고 중량",
   declaredWeightUnit: "신고 중량 단위",
+  destinationCountry: "목적국",
   portOfLoading: "선적항 / POL",
   portOfDischarge: "양하항 / POD",
   shipmentScope: "선적 범위",
@@ -65,6 +66,7 @@ export const shippingFields = {
     "shipmentScope",
   ],
   export_declaration: [
+    "destinationCountry",
     "declarationNumber",
     "declarationDate",
     "declarant",

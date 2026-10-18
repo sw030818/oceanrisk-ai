@@ -3,7 +3,8 @@ const clean = (s: string) =>
   s.normalize("NFKC").toLowerCase().trim().replace(/\s+/g, " ");
 const countryNames: Record<string, string[]> = {
   KR: ["korea", "south korea", "대한민국"],
-  US: ["usa", "united states"],
+  US: ["usa", "united states", "미국"],
+  CA: ["canada", "캐나다"],
   NL: ["netherlands"],
   SG: ["singapore"],
   DE: ["germany"],
@@ -17,7 +18,14 @@ const countryNames: Record<string, string[]> = {
   HK: ["hong kong"],
   VN: ["vietnam"],
 };
-export function portMeaning(value: unknown) {
+// Country qualification is explicit, consistent text, never a city guess.
+export function countryCode(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const parts = clean(value).split(/[()/]/).map(s => s.trim()).filter(Boolean);
+  const codes = parts.map(part => Object.entries(countryNames).find(([code, names]) => part === code.toLowerCase() || names.includes(part))?.[0]);
+  return codes.length && codes.every(Boolean) && new Set(codes).size === 1 ? codes[0]! : null;
+}
+export function portMeaning(value: unknown, verifiedCountry?: string | null) {
   if (typeof value !== "string") return null;
   const raw = clean(value),
     code = raw.replace(/\s/g, "").toUpperCase();
@@ -40,18 +48,22 @@ export function portMeaning(value: unknown) {
       aliases.push(`${name}, ${country}`, `${name} ${country}`);
     return aliases.includes(raw);
   });
+  // An independently verified own-document destination country can resolve
+  // ambiguous names. It cannot rewrite an explicit conflicting name/code.
+  const qualified = verifiedCountry ? matches.filter(e => e.Country === verifiedCountry) : matches;
+  if (verifiedCountry && matches.length && !qualified.length) return null;
   if (
     matches.length === 0 &&
     value.trim() === value.trim().toUpperCase() &&
     data.countries.includes(code.slice(0, 2)) &&
     /^[A-Z]{2}[A-Z2-9]{3}$/.test(code)
   )
-    return { code, source: "literal_code" as const, version: null };
-  return matches.length === 1
+    return verifiedCountry && code.slice(0, 2) !== verifiedCountry ? null : { code, source: "literal_code" as const, version: null };
+  return qualified.length === 1
     ? {
-        code: matches[0].Country + matches[0].Location,
+        code: qualified[0].Country + qualified[0].Location,
         source: "unlocode_subset" as const,
-        version: data.version,
+        version: ["CAVAN", "USVAN", "USSEA"].includes(qualified[0].Country + qualified[0].Location) ? data.supplementalSource.version : data.version,
       }
     : null;
 }

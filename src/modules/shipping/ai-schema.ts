@@ -30,7 +30,7 @@ const fields = (keys: readonly string[]) =>
     Object.fromEntries(
       keys.map((key) => [
         key,
-        numericShippingFields.has(key as ShippingFieldKey) ? num : str,
+        key === "destinationCountry" ? str.default(() => ({value:null, evidence:null})) : numericShippingFields.has(key as ShippingFieldKey) ? num : str,
       ]),
     ),
   );

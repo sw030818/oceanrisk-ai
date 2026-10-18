@@ -27,7 +27,8 @@ import { resolveDeclarationScopes } from "./declaration-scope";
 import { directGoodsConflicts } from "./direct-goods-conflicts";
 import { withReviewIssues } from "./issues";
 import { compareGoods } from "./goods-semantics";
-import { portCode, hsSix, goodsCore } from "./equivalence";
+import { contextualPort } from "./port-context";
+import { hsSix, goodsCore } from "./equivalence";
 import { shippingValues } from "./fields";
 import { partyMatch32 } from "./parties";
 const subject = (c: ShippingCheck, meaning: string) =>
@@ -532,8 +533,7 @@ export function withFactReview(
           role === "sealNumber" || role === "hsCode"
             ? bound(f)
             : role.startsWith("portOf")
-              ? (portCode(f.field.current.value) ??
-                text32(f.field.current.value))
+              ? (() => { const code = contextualPort(f, group); if (!code) reasons.push("SCOPE_UNRESOLVED"); return code ?? text32(f.field.current.value); })()
               : role === "hsCode"
                 ? (hsSix(f.field.current.value) ??
                   text32(f.field.current.value))
@@ -550,6 +550,10 @@ export function withFactReview(
             .join("|"),
         );
         let same = ns.every((n) => n === ns[0]);
+        // Equal printed codes can agree without claiming gazetteer coverage.
+        // Different unresolved codes/names cannot prove a geographic conflict.
+        if (role.startsWith("portOf") && !same && valid.some(s =>
+          (s.verified.length ? s.verified : s.refs).some(f => !contextualPort(f, group, true)))) reasons.push("SCOPE_UNRESOLVED");
         let membership = false;
         if (role === "declarationNumber" && declarationSubset) {
           const expected = new Set(

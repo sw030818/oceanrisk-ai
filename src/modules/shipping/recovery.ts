@@ -11,9 +11,9 @@ import { shippingRole, unitParents, rootTotalRole } from "./roles";
 import { shippingLabelForValue as labelForValue } from "../layout/shipping-label";
 import { numericShippingFields } from "./catalog";
 import { physicalLines, spanText } from "../layout/physical-spans";
-import { portMeaning } from "./ports";
+import { countryCode, portMeaning } from "./ports";
 import { numericTokens } from "../evidence/numbers";
-import { countAtoms } from "./count-atoms";
+import { cargoCountAtoms } from "./cargo-description";
 import { verifyShippingField } from "./verify";
 import { independentlyVerified } from "./effective";
 import { nativeGoodsSpans } from "./goods-context";
@@ -31,6 +31,7 @@ export interface RecoveryTarget {
   >;
 }
 const eligible = new Set([
+  "destinationCountry",
   "houseBlNumber",
   "declarationNumber",
   "containerNumber",
@@ -251,7 +252,7 @@ export function nativeCandidates(
         shippingRole(b.text.split(":")[0]) ??
         labelForValue(p, [b], probe, shippingRole);
       const parents = unitParents[t.role] ?? [];
-      const atoms = countAtoms(b.text).filter(
+      const atoms = cargoCountAtoms(b.text).filter(
         (a) => a.role === t.role.replace(/Unit$/, ""),
       );
       if (
@@ -286,6 +287,7 @@ export function nativeCandidates(
           : [stripped];
       for (const value of vals)
         if (
+          (t.role !== "destinationCountry" || !!countryCode(value)) &&
           value !== "" &&
           (typeof value === "string"
             ? value.length <= 300

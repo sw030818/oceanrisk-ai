@@ -17,3 +17,10 @@ export function cargoDescription(text: string) {
     return { goods: text, annotations: [] };
   return { goods, annotations: suffix.flat() };
 }
+
+// Literal single/pair count atoms or the two explicit suffixes of a cargo
+// expression. Callers still have to prove its native cell, role and owner row.
+export function cargoCountAtoms(text: string) {
+  const atoms = countAtoms(text);
+  return atoms.length ? atoms : cargoDescription(text).annotations;
+}

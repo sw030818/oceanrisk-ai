@@ -1,3 +1,4 @@
+import { contextualPort } from "./port-context";
 import { withSemanticReview } from "./semantic-integration";
 import type { SemanticReport } from "./semantic-schema";
 import { withFactReview } from "./fact-review";
@@ -10,7 +11,6 @@ import type {
   ShippingRelationship,
 } from "./review-model";
 import {
-  portCode,
   goodsEquivalent,
   hsSix,
   contextualCarton,
@@ -567,9 +567,9 @@ export function reviewShipping(
         role.startsWith("portOf") &&
         left &&
         right &&
-        portCode(left.field.current.value) &&
-        portCode(left.field.current.value) ===
-          portCode(right.field.current.value);
+        contextualPort(left, documents) &&
+        contextualPort(left, documents) ===
+          contextualPort(right, documents);
       const similarGoods =
         role === "goodsDescription" &&
         left &&
@@ -589,7 +589,7 @@ export function reviewShipping(
             right.field.current.value,
           ) === "semantic"
         ) &&
-        (role === "goodsDescription" || role.startsWith("portOf"))
+        (role === "goodsDescription" || (role.startsWith("portOf") && !(left && right && contextualPort(left, documents, true) && contextualPort(right, documents, true))))
           ? [
               "언어·요약·항구명/코드 등 표기 차이일 수 있습니다. 문자열 차이를 물품 또는 항구의 확정 오류로 단정하지 않습니다.",
             ]

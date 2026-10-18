@@ -19,6 +19,10 @@ export async function shipping34Fixture(
   type: ShippingType,
   change: {
     wrappedGoods?: boolean;
+    goodsCountAnnotation?: string;
+    destinationCountry?: string;
+    declaredValue?: number;
+    pod?: string;
     volume?: number;
     localGoods?: string;
     goodsSize?: number;
@@ -99,7 +103,7 @@ export async function shipping34Fixture(
     290,
     145,
   );
-  root("portOfDischarge", "8. 양륙항", "LOS ANGELES, USA", 30, 200);
+  root("portOfDischarge", "8. 양륙항", change.pod ?? "LOS ANGELES, USA", 30, 200);
   root(
     "shipmentScope",
     "Shipment Scope",
@@ -107,6 +111,7 @@ export async function shipping34Fixture(
     290,
     200,
   );
+  if (change.destinationCountry) root("destinationCountry", "목적국", change.destinationCountry, 300, 255);
   if (type !== "house_bl")
     root("declarationNumber", "수출신고번호", "SYN-DECL-34-401", 30, 255);
   const unit = {
@@ -206,6 +211,7 @@ export async function shipping34Fixture(
         g = text(change.wrappedGoods ? goods.split(" ").slice(0, 2).join(" ") : goods, 401, 440, change.goodsSize ?? 9),
         pack = text(`${packages} CTN`, 596, 440),
         gw = text(`${weight}.000`, 706, 440);
+      if (change.goodsCountAnnotation) text(change.goodsCountAnnotation, 401, 480);
       const continuation = change.wrappedGoods
         ? text(goods.split(" ").slice(2).join(" "), 401, 453, change.goodsSize ?? 9) : null;
       text(`(HS ${hsCode})`, 401, change.wrappedGoods ? 469 : 456);
@@ -241,6 +247,7 @@ export async function shipping34Fixture(
       fields.quantityUnit = [qty];
     }
   }
+  if (change.declaredValue !== undefined) root("unusedValue", "Declared Value (FOB)", `USD ${change.declaredValue}`, 310, 580, 130);
   const bytes = unicodePdf([cells], {
     borders: [borders],
     sizes: [[type === "house_manifest" ? 842 : 700, 842]],
@@ -266,12 +273,13 @@ export async function shipping34Fixture(
       : []),
   ]);
   const val: Record<string, string | number> = {
+    ...(change.destinationCountry ? { destinationCountry: change.destinationCountry } : {}),
     houseBlNumber: hbl,
     shipper: "Synthetic Supplier Ltd",
     consignee: "Synthetic Buyer Ltd",
     portOfLoading:
       type === "export_declaration" ? "KR PUS / BUSAN" : "BUSAN, KOREA",
-    portOfDischarge: "LOS ANGELES, USA",
+    portOfDischarge: change.pod ?? "LOS ANGELES, USA",
     shipmentScope: change.partial ? "partial shipment" : "full shipment",
     declarationNumber: "SYN-DECL-34-401",
     packageCount: packages,

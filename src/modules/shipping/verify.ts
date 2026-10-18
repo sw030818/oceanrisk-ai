@@ -21,6 +21,7 @@ import {
 } from "../layout/shipping-geometry";
 import { shippingRole, rootTotalRole, unitParents } from "./roles";
 import { nativeGoodsContext } from "./goods-context";
+import { cargoCountAtoms } from "./cargo-description";
 import { atomRole, countAtoms } from "./count-atoms";
 import type { Candidate } from "./ai-schema";
 import type { ShippingField } from "./schema";
@@ -171,6 +172,10 @@ export function verifyShippingField(
     );
     return finish();
   }
+  if (role === "goodsDescription" && typeof g.value === "string" && countAtoms(g.value).length) {
+    g = fail(g, "role_mismatch", "수량·포장 주석만으로는 상품명을 입증하지 않습니다.");
+    return finish();
+  }
   const units = unitParents[role];
   const contextualAtom = (b: PdfBlock) => {
     const parent = geometricRole(page, b);
@@ -180,7 +185,16 @@ export function verifyShippingField(
       !packageGoodsContext(page, b)
     )
       return null;
-    return parent &&
+    // Explicit count annotation inside a native goods cell of this owner row.
+    // No document total, footer, neighbouring row, OCR, model or weight inference.
+    const annotation = parent === "goodsDescription" &&
+      (scope === "item" || scope === "cargo") && !!owner && !!nativeCell(page, b) &&
+      (() => { const row = shippingCell(page, [b], scope); return row?.tableId === owner.tableId && row.rowId === owner.rowId; })();
+    return annotation ? (() => {
+      const base = role === "packageUnit" ? "packageCount" : role.replace(/Unit$/, "");
+      const matching = cargoCountAtoms(b.text).filter(a => a.role === base && (typeof g.value === "number" ? a.value === g.value : a.unit.toLowerCase() === String(g.value).toLowerCase()));
+      return matching.length === 1 ? matching[0].role : null;
+    })() : parent &&
       [
         "quantity",
         "packageCount",
@@ -277,6 +291,7 @@ export function verifyShippingField(
       .map((b) => shippingRole(b.text.split(":")[0]))
       .filter((r): r is string => !!r);
     const actual =
+      values.map(b => contextualAtom(b)).find(Boolean) ??
       location?.role ??
       values
         .map(
