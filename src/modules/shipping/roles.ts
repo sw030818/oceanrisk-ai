@@ -66,6 +66,9 @@ export function shippingRole(text: string): string | null {
     .replace(/\s*[:=#-]\s*$/, "")
     .replace(/\s*\((?:[A-Za-z.]+|개|톤)\)\s*$/, "")
     .replace(/\s+/g, " ");
+  // A document TITLE is not an identifier field label. Otherwise the caption
+  // below a B/L title can be falsely recovered as a House B/L number.
+  if (/^(?:house bill of lading|export declaration(?: certificate)?|house manifest|수출신고필증)$/i.test(label)) return null;
   const direct = Object.entries(labels).find(([, pattern]) =>
     pattern.test(label),
   )?.[0];

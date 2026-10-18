@@ -1,0 +1,101 @@
+[
+  {
+    "id": "replacement-14",
+    "partition": "holdout",
+    "hbl": "FRESH-AX-14",
+    "declaration": "FRESH-DECL-14",
+    "shipper": "Synthetic New Origin 14 Ltd",
+    "consignee": "Synthetic New Destination 14 Ltd",
+    "pol": "BUSAN",
+    "pod": "ROTTERDAM",
+    "country": "NETHERLANDS",
+    "packages": 35,
+    "gross": 175,
+    "items": [
+      {
+        "en": "POLYCARBONATE OPTICAL LENS MODEL OL52 DIA 52MM",
+        "ko": "폴리카보네이트 광학 렌즈 MODEL OL52 직경52MM",
+        "hs": "9001.50",
+        "quantity": 350
+      }
+    ],
+    "containers": [
+      {
+        "container": "FHUU9200000",
+        "seal": "FRESH-SEAL-14-A",
+        "packages": 35,
+        "gross": 175
+      }
+    ]
+  },
+  {
+    "id": "replacement-15",
+    "partition": "holdout",
+    "hbl": "FRESH-AX-15",
+    "declaration": "FRESH-DECL-15",
+    "shipper": "Synthetic New Origin 15 Ltd",
+    "consignee": "Synthetic New Destination 15 Ltd",
+    "pol": "TOKYO",
+    "pod": "SINGAPORE",
+    "country": "SINGAPORE",
+    "packages": 24,
+    "gross": 360,
+    "items": [
+      {
+        "en": "BRUSHLESS SERVO MOTOR MODEL SV24 24V",
+        "ko": "브러시리스 서보 모터 MODEL SV24 24V",
+        "hs": "8501.31",
+        "quantity": 160
+      },
+      {
+        "en": "INSULATING CONNECTOR CAP MODEL CC7",
+        "ko": "절연 커넥터 캡 MODEL CC7",
+        "hs": "3926.90",
+        "quantity": 75
+      }
+    ],
+    "containers": [
+      {
+        "container": "FHUU9200010",
+        "seal": "FRESH-SEAL-15-A",
+        "packages": 16,
+        "gross": 320
+      },
+      {
+        "container": "FHUU9200011",
+        "seal": "FRESH-SEAL-15-B",
+        "packages": 8,
+        "gross": 40
+      }
+    ]
+  },
+  {
+    "id": "replacement-16",
+    "partition": "holdout",
+    "hbl": "FRESH-AX-16",
+    "declaration": "FRESH-DECL-16",
+    "shipper": "Synthetic New Origin 16 Ltd",
+    "consignee": "Synthetic New Destination 16 Ltd",
+    "pol": "HAMBURG",
+    "pod": "LOS ANGELES, USA",
+    "country": "USA",
+    "packages": 24,
+    "gross": 144,
+    "items": [
+      {
+        "en": "RECYCLABLE PAPER SPOOL MODEL PS9",
+        "ko": "재활용 종이 스풀 MODEL PS9",
+        "hs": "4822.90",
+        "quantity": 720
+      }
+    ],
+    "containers": [
+      {
+        "container": "FHUU9200020",
+        "seal": "FRESH-SEAL-16-A",
+        "packages": 24,
+        "gross": 144
+      }
+    ]
+  }
+]

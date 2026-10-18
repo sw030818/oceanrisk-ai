@@ -117,6 +117,31 @@ function computeCellHeading(page: PdfPage, cell: PdfCell, bs: PdfBlock[]) {
     cell,
   };
 }
+// A label-only closed cell and its immediately adjoining value cell form a
+// key/value pair. Full shared edges prove the association; proximity, titles,
+// data units and competing adjacent labels do not. No template coordinates.
+export function nativeKeyValue(page: PdfPage, b: PdfBlock) {
+  const cell=nativeCell(page,b);if(!cell || shippingRole(b.text))return null;
+  const pairs:{role:string;label:PdfCell;vertical:boolean}[]=[];
+  for(const label of page.cells??[]) {
+    const horizontal=Math.abs(label.y-cell.y)<.4 && Math.abs(label.height-cell.height)<.4 && Math.abs(label.x+label.width-cell.x)<.4;
+    const vertical=Math.abs(label.x-cell.x)<.4 && Math.abs(label.width-cell.width)<.4 && Math.abs(label.y+label.height-cell.y)<.4;
+    if(!horizontal&&!vertical)continue;
+    const bs=body(page,label),text=spanText(bs),role=shippingRole(text);
+    if(!role || !bs.length || bs.length>6 || text.length>120 || /^(?:CTNS?|CARTONS?|PKGS?|PCS|KGS?)$/i.test(text.trim()))continue;
+    pairs.push({role,label,vertical});
+  }
+  return pairs.length===1?pairs[0]:null;
+}
+function keyValueDocumentField(page:PdfPage,b:PdfBlock) {
+  const pair=nativeKeyValue(page,b);if(!pair)return false;
+  if(!pair.vertical)return true;
+  const peers=(page.cells??[]).filter(c=>Math.abs(c.y-pair.label.y)<.4&&Math.abs(c.height-pair.label.height)<.4);
+  const roles=peers.map(c=>shippingRole(spanText(body(page,c)))).filter(Boolean);
+  // Genuine item/container/cargo headers remain entity rows, not root totals.
+  return !roles.some(r=>["goodsDescription","tradeDescription","containerNumber"].includes(r!)) &&
+    !(roles.includes("houseBlNumber") && roles.some(r=>["quantity","packageCount","grossWeight","hsCode"].includes(r!)));
+}
 export function geometricRole(page: PdfPage, b: PdfBlock): string | null {
   const cell = nativeCell(page, b);
   if (!cell) return null;
@@ -151,6 +176,8 @@ export function geometricRole(page: PdfPage, b: PdfBlock): string | null {
       return "quantity";
     return heading.role;
   }
+  const paired=nativeKeyValue(page,b);
+  if(paired)return paired.role;
   // Separate header/data cells, whose REAL borders align (centered text allowed).
   const candidates = (page.cells ?? [])
     .filter(
@@ -300,8 +327,9 @@ export function nativeDocumentFieldAmbiguous(
   b: PdfBlock,
   role?: string,
 ) {
-  const c = nativeCell(page, b),
-    h = c && cellHeading(page, c);
+  const c = nativeCell(page, b), paired = nativeKeyValue(page,b),
+    direct = c && cellHeading(page, c),
+    h = direct?.role ? direct : paired ? {role:paired.role,blocks:[] as PdfBlock[],cell:paired.label} : null;
   if (!c || !h?.role) return false;
   const base = (r: string) =>
     r
@@ -331,6 +359,8 @@ export function nativeDocumentFieldAmbiguous(
   return count > 1;
 }
 export function nativeDocumentField(page: PdfPage, b: PdfBlock) {
+  if(nativeDocumentFieldAmbiguous(page,b))return false;
+  if(keyValueDocumentField(page,b))return true;
   const c = nativeCell(page, b),
     h = c && cellHeading(page, c);
   if (nativeDocumentFieldAmbiguous(page, b)) return false;

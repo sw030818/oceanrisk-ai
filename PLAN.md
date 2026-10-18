@@ -167,3 +167,5 @@ B 진행: 지역적폐쇄면PDF테두리복원, HBL+container다중역할행, na
 C 다음: 전체gate1회후main/Production배포→Development새실제E2E→오류8개→미사용Holdout4거래/Stress2거래. 새응답원인에따른추가개선은holdout전만가능, Holdout사용후수정시교체. 최종같은SHA의독립API/UI검증 예비문서6개 확보. evidence브랜치에최종성과·실패·누적예산저장.
 
 D 직전:177d758 실제Dev444/444·FP0·문제0, 물리오류6확정+1경고+1미탐 보존. 전체빈AI배열을 닫힌 native행만으로 복구하여 무료재생에서 모델차이 탐지. 타입/ESLint/104선택회귀 통과. 최종ship→새SHA Dev6재평가→모델오류PDF1→미사용Blind4/Stress2/복수신고보충4PDF/Set2·3UI. 현재103/148, 잔여문서47 이내. 최종결과는 기존evidence브랜치에 보존.
+
+E 재동결: 최초Blind4는100%추출에도245/300검증·잘못복구2로실패/retired. keyvalue 공통경계, local port/unit guards, title-vs-reference 수정; 무료재생300/300·잘못검증0. 원본Set2/3 무료12match/0issue 및Stress198/198(정답후보) 확인. 전체769단위/70브라우저/worker/ship→새고정Blind13실제→최종Set3UI3→evidence 보존. 현재134/190, 상한150/220/USD2 유지, 추가승인/재시도없음. 원본Stress/Set2 반복유료 대신 새Blind에 예산재배분. 최종같은SHA의 AI성공 전에는 완료주장금지.

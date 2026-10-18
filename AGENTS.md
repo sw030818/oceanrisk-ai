@@ -143,3 +143,9 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 최초실제Development18문서기록보존 후 공통구조원인만수정. 무료재생과새실제추출/Recovery/verifiedcoverage/확정·잠정탐지/TP·FP·FN/API실패를분리한다. 미검증값을분모에서제외하지않는다. 원본·OCR·사용자수정·다른HBL·부분/공동포장·미명시합계보호유지.
 - 실제실행 `tsx scripts/universal/live.ts --sha=<ProductionSHA> --stage=baseline|development|holdout|stress|error|final --case=<id> --approved-documents=150 --approved-requests=220 --approved-max-cost-usd=2.00`. Holdout은code-frozen=true추가. 자동재시도0, 실패후원인확인한수동실행만허용. 최종SHA새실증예산보존. ledger원격체크포인트는실행잠금해제후에만한다.
 - 기존754단위/70브라우저/Set2·3회귀보존. 최종ship/main/quality·production/실서비스동일SHA와validation/phase39-evidence누적저장 절차유지. 실제사용자PDF/raw응답/키공개금지. UI전면개편없음.
+
+## 독립 Holdout 실패 후 현재 실행 계획
+- universal-07–10의 실제 실패(300/300 최초정확이나245/300 검증·잘못복구2)는 immutable 보존하고 Development로 전환했다. 원래 lock/truth/PDF는 수정하지 않는다. retired-holdout.json이 전환 사실을 명시한다.
+- 새 Blind는 universal-replacement의14–16(9PDF)+기존에 호출하지 않은 universal-complex13(4PDF), 총4거래13문서다. 새 lock은 첫 호출 전에 고정한다. 이 결과로 수정하면 다시 retirement/fresh lock이 필요하다.
+- 한도는150문서/220요청/USD2 그대로다. 현재134/190 이후 새Blind13+최종Set3실제UI3만 유료 실행한다. 원본Stress11/12는 정답 후보를 제공한 무료 근거검사, Set2는 저장된 최초후보 무료재생+전체회귀로 구분한다. 새Blind 중 복수신고/다품목·다중컨테이너 층을 별도 보고하되 중복 거래로 계산하지 않는다.
+- `scripts/universal/live.ts --corpus=replacement --stage=holdout --code-frozen=true ...`와 `scripts/universal/complex.ts --code-frozen=true ...` 사용. 자동재시도0, 기존 ledger/미확인 비용 유지. 실제 모델오류 최종91c0810 검증 성공과 새SHA 검증을 섞어 같은 성공으로 주장하지 않는다.

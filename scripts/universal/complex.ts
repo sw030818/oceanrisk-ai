@@ -8,7 +8,7 @@ import{reviewShipping}from'../../src/modules/shipping/review';
 import type{ShippingType}from'../../src/modules/shipping/catalog';
 const arg=(k:string)=>process.argv.find(a=>a.startsWith('--'+k+'='))?.slice(k.length+3);
 const sha=arg('sha')??'';
-if(!/^[a-f0-9]{40}$/.test(sha)||arg('approved-documents')!=='150'||arg('approved-requests')!=='220'||arg('approved-max-cost-usd')!=='2.00')throw Error('Exact approved evaluation required');
+if(arg('code-frozen')!=='true'||!/^[a-f0-9]{40}$/.test(sha)||arg('approved-documents')!=='150'||arg('approved-requests')!=='220'||arg('approved-max-cost-usd')!=='2.00')throw Error('Exact approved evaluation required');
 const base='tests/fixtures/universal-complex/',dir='test-results/universal/private',path=dir+'/complex-13-'+sha+'.json';
 try{await readFile(path);throw Error('No implicit repeat');}catch(e){if((e as NodeJS.ErrnoException).code!=='ENOENT')throw e;}
 const manifest=JSON.parse(await readFile(base+'manifest.json','utf8'))as{file:string;sha256:string;type:ShippingType}[],fixtures=[];

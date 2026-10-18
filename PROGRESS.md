@@ -677,3 +677,12 @@
 - 구조수정: classified native 닫힌 셀의 독립 검증된 품명행이 있고 items/cargoRecords 전체가 비었을 때만 누락items 복구. OCR/애매후보/사용자수정/기존행 보호, container행/번역/총량 생성 금지. original null/current·recovery 분리. 같은 실패응답 무료재생에서 실제NG95를 복구해 모델충돌 확정. 신규4+기존36/37 포함104검사 및 타입/ESLint 통과. 실제 새SHA 평가는 아직 미실시.
 - 평가도구 camelCase case ID가 transport 안전ID 규칙에 거절된1건은 예약/공급자 호출 전 중단. transport ID만 소문자화하고 PDF case/증거명 유지. 자동재시도0. 누적103문서148요청/확인추정0.15867876+기존미확인0.01262635 유지.
 - 보충Stress 별도합성4PDF(HBL+2신고+Manifest, 독립2페이지, 모델10000/PCS·CARTONS 주석/한쪽750mL/목적국 있는 VANCOUVER/전체·개별합계) 생성·해시고정. 기존Blind07–10/정답 불변. 최종예산: 새Dev18+모델1+Blind12+기존Stress6+보충4+Set2/3 UI6=47문서, 누적150 이내. 모델/프롬프트 설정 불변, 최초실패를 후속성공으로 삭제하지 않는다.
+
+## Blind 실패 후 구조 수정 체크포인트
+- main91c0810은765단위/70브라우저 및Actions/Vercel/공개동일SHA 통과. 새Development 실제18문서444/444 최초·검증, FP0/문제0. 실제모델오류1PDF 재분석은 모델차이를 확정 탐지했으나 같은원인3검사·5문제 중복이 남았다. 평가adapter가 comparison 없는 의미검사2건을 FP로 잘못 집계해, 실제FieldRef의 유일 fieldName으로 역할을 구분하도록 수정했다. 기존원집계(FP2)를 별도보존하며 판정/화면은 변경하지 않았다. 실제잘못된경고가 제거됐다고 주장하지 않는다.
+- 최초Blind4거래12PDF: 분류12/12·최초300/300, current298/300·검증245/300·잘못검증2·관계TP8/FN4/FP0·확정오탐0. 조치문제55개(15/16/5/19). 목표미달을 보존하고4거래 전체를Development로 전환. 최초응답/평가JSON/원lock 불변.
+- 원인: (1) pure label-cell/value-cell 공통경계 연결 부재, (2) 페이지 다른곳의닫힌표만있어도 무테항구/단위를거절하는global guard, (3) House Bill of Lading 제목을번호라벨로보아 아래안내문을HBL로복구. 회사명/좌표/정답문구 예외처리 없이 실제공통경계·라벨역할·원문수치/단위 소속으로 수정. 문서제목은번호필드라벨이 아니며 explicit No. 라벨을 유지한다. 실제품목표 숫자는 root합계로 승격하지 않는다.
+- 같은 실패후보 무료 재생:300/300 current·검증, 잘못검증0, 관계12/12. 남은cached semantic 미완료는 새AI의미분석전 보류. 신규keyvalue4+기존Set3/PHASE37/38오류 포함99선택회귀, 타입/ESLint 통과. 최초Focused에 잘못된set3.test.ts 필터를 넣어 해당파일은 미실행했으며 실제 set3-extraction.test.ts로 정정해99개 검사에 포함했다. 테스트 helper의 string|number 타입오류1건은 제품코드 배포전 수정했다.
+- Set2/Set3 비공개 최초후보를 새PDF파서로 무료재생:각일치12·FP0·문제0. 원본Stress11/12 6PDF는 정답후보를 제공한 무료원문검사198/198·잘못검증0이며 실제AI추출성능이 아니다.
+- 새Blind4거래13PDF 고정: 새독립 렌더러3개(property matrix / sidebar+footer+2pageallocation / parallel label-columns) 9PDF +미호출보충복합4PDF. 원래Blind 및정답해시변경없음. 새자료로 무료정답검사를 하거나 튜닝하지 않았다. 새코드 전체ship 후 첫실제평가.
+- API예산재배분(상한증액/초기화없음): 누적134문서190요청/확인추정0.20134722+미확인0.01262635. 잔여16문서로 새Blind13+최종Set3UI3. 기존Stress6/반복Set2UI3/기존계획의보충4 호출을 새13문서로 대체. 최종누적150/약211요청 계획. 추가유료재시도없음. Holdout 통과 여부는 아직 미검증이다.

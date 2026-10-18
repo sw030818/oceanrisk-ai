@@ -8,8 +8,10 @@ import{semanticContext}from'../../src/modules/shipping/semantic-context';
 import type{Candidate}from'../../src/modules/shipping/ai-schema';
 import type{ShippingField}from'../../src/modules/shipping/schema';
 import type{ShippingResult}from'../../src/modules/shipping/prepare';
+const from=process.argv[3]??'baseline';if(!['baseline','holdout'].includes(from))throw Error('Select immutable saved stage');
+const prefix=from==='baseline'?'replay':'replayretired';
 const sha=process.argv[2]??'',dir='test-results/universal',manifest=JSON.parse(await readFile('tests/fixtures/universal/manifest.json','utf8'));
-const names=(await readdir(dir+'/private')).filter(n=>n.startsWith('baseline-')&&n.endsWith(sha+'.json'));
+const names=(await readdir(dir+'/private')).filter(n=>n.startsWith(from+'-')&&n.endsWith(sha+'.json'));
 const candidate=(f?:ShippingField):Candidate=>({value:f?.original.value??null,evidence:f?.original.source?.segments?.length?{page:f.original.source.page,blockIds:f.original.source.segments.map(s=>s.blockId)}:null});
 type ReplayWire={type:string;typeEvidence:Candidate['evidence'];fields:Record<string,Candidate>;items:{fields:Record<string,Candidate>}[];cargoRecords:{fields:Record<string,Candidate>}[];containers:{containerNumber:Candidate;sealNumber:Candidate;sealNumbers:Candidate[];packageCount:Candidate;packageUnit:Candidate;grossWeight:Candidate;weightUnit:Candidate}[];references:{kind:string;number:Candidate}[]};
 await mkdir(dir+'/replay',{recursive:true,mode:0o700});
@@ -25,5 +27,5 @@ for(const name of names){const saved=JSON.parse(await readFile(dir+'/private/'+n
  results.push({...r,pdf,document:recoverNative(groundShipping(w,pdf,r.uploadSlot),pdf)});
  }
  const documents=results.flatMap(r=>r.document?[r.document]:[]),context=semanticContext(documents),semantic=saved.semantic?{...saved.semantic,inputKey:context.key}:undefined,review=reviewShipping(documents,{semantic});
- const out={...saved,stage:'replay',kind:'FREE original candidate re-grounding + cached semantic opinion, NOT new extraction',initial:{...saved.initial,results},semantic,review};await writeFile(dir+'/replay/'+name.replace('baseline-','replay-'),JSON.stringify(out),{mode:0o600});console.log(JSON.stringify({case:saved.case,before:saved.review.outcomes,after:review.outcomes,beforeIssues:saved.review.issues?.length,afterIssues:review.issues?.length}));
+ const out={...saved,stage:prefix,kind:'FREE original candidate re-grounding + cached semantic opinion, NOT new extraction',initial:{...saved.initial,results},semantic,review};await writeFile(dir+'/replay/'+name.replace(from+'-',prefix+'-'),JSON.stringify(out),{mode:0o600});console.log(JSON.stringify({case:saved.case,before:saved.review.outcomes,after:review.outcomes,beforeIssues:saved.review.issues?.length,afterIssues:review.issues?.length}));
 }

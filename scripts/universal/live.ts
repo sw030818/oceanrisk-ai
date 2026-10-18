@@ -9,7 +9,7 @@ import {reviewShipping} from '../../src/modules/shipping/review';
 import type {ShippingType} from '../../src/modules/shipping/catalog';
 const arg=(key:string)=>process.argv.find(a=>a.startsWith('--'+key+'='))?.slice(key.length+3);
 if(arg('approved-documents')!=='150'||arg('approved-requests')!=='220'||arg('approved-max-cost-usd')!=='2.00')throw Error('Explicit current user approval required; flags alone are not approval');
-const sha=arg('sha')??'',stage=arg('stage')??'',id=arg('case')??'',dir='test-results/universal',base='tests/fixtures/universal/';
+const sha=arg('sha')??'',stage=arg('stage')??'',id=arg('case')??'',dir='test-results/universal',base=arg('corpus')==='replacement'?'tests/fixtures/universal-replacement/':'tests/fixtures/universal/';
 if(!/^[a-f0-9]{40}$/.test(sha)||!['baseline','development','holdout','stress','error','final'].includes(stage)||!/^[-a-zA-Z0-9]+$/.test(id))throw Error('Exact source and safe stage/case required');
 const manifest=JSON.parse(await readFile(base+'manifest.json','utf8')) as {case:string;partition:string;file:string;sha256:string;type:ShippingType;parent?:string}[];
 const selected=manifest.filter(m=>m.case===id);if(!selected.length)throw Error('Unknown case');

@@ -152,7 +152,8 @@ export function verifyShippingField(
     page.cells?.length &&
     blocks.every(
       (b) =>
-        !nativeDocumentField(page, b) && inlineRole(b.text, g.value!) !== role,
+        !nativeDocumentField(page, b) && inlineRole(b.text, g.value!) !== role &&
+        (nativeCell(page,b) || labelForValue(page,[b],g.value!,shippingRole)!==role),
     )
   ) {
     g = fail(
@@ -321,7 +322,7 @@ export function verifyShippingField(
     const allowed =
       !values.some(
         (b) =>
-          page.cells?.length && countAtoms(b.text).length && !contextualAtom(b),
+          nativeCell(page,b) && countAtoms(b.text).length && !contextualAtom(b),
       ) &&
       unitValueRoles.every((r) => r === role || parents.includes(r ?? "")) &&
       (actual === role ||
