@@ -19,7 +19,7 @@ await mkdir(dir+'/private',{recursive:true,mode:0o700});const tag=stage+'-'+id+'
 try{await readFile(dir+'/private/'+tag+'.json');throw Error('Case already executed; no implicit retry or overwrite');}catch(e){if((e as NodeJS.ErrnoException).code!=='ENOENT')throw e;}
 const fixtures=[];
 for(const m of selected){const bytes=new Uint8Array(await readFile(base+m.file));if(createHash('sha256').update(bytes).digest('hex')!==m.sha256)throw Error('Frozen PDF hash changed');fixtures.push({bytes,pdf:{id:randomUUID(),fileName:'evaluation.pdf',pages:await extractPdfText(bytes,undefined,false,true)},wire:emptyShippingWire(m.type)});}
-const start=performance.now(),initial=await paid39Extraction(sha,'universal-'+stage+'-'+id,fixtures);
+const start=performance.now(),initial=await paid39Extraction(sha,('universal-'+stage+'-'+id).toLowerCase(),fixtures);
 await writeFile(dir+'/private/'+tag+'-initial.json',JSON.stringify(initial),{mode:0o600});
 let results=initial.results;
 if(stage==='error'){

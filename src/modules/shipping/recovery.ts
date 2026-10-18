@@ -18,6 +18,8 @@ import { verifyShippingField } from "./verify";
 import { independentlyVerified } from "./effective";
 import { nativeGoodsSpans } from "./goods-context";
 import { collectionCoverage32, nativeFactCoverage } from "./coverage";
+import { itemFieldKeys } from "./ai-schema";
+import { shippingValues } from "./fields";
 import type { Candidate } from "./ai-schema";
 export type FailureCode = NonNullable<ShippingField["recovery"]>["failureCode"];
 export interface RecoveryTarget {
@@ -370,12 +372,39 @@ export function refreshRecoveryCoverage(
   doc.collectionCoverage = collectionCoverage32(doc, pdf);
   doc.factCoverage = nativeFactCoverage(doc, pdf);
 }
+// Recover an entirely omitted goods collection only from independently proven
+// closed native rows. This never invents an initial AI candidate, translation,
+// container row or source total, and never repopulates a user-edited snapshot.
+function seedOmittedNativeItems(doc: ShippingDocument, pdf: PdfDocument) {
+  if (doc.classificationStatus !== "classified" || doc.items.length ||
+      doc.cargoRecords.length || shippingValues(doc).some(f=>f.current.status === "user_edited")) return 0;
+  const target: RecoveryTarget={id:"item/native-missing/goodsDescription",role:"goodsDescription",scope:"item",entityId:"native-missing",field:emptyShippingField()};
+  const rows=new Map<string,Candidate[]>();
+  for(const c of nativeCandidates(pdf,target)) {
+    const f=verifyShippingField(c,pdf,"goodsDescription","item"),s=f.current.source;
+    const page=pdf.pages.find(p=>p.page===s?.page);
+    if(f.current.status!=="verified" || s?.provenance!=="pdf_text" || !s.layout || !page ||
+       !s.segments?.length || s.segments.some(segment=>{const b=page.blocks?.find(b=>b.id===segment.blockId);return !b||!nativeCell(page,b);}))continue;
+    const key=JSON.stringify([s.page,s.layout.tableId,s.layout.rowId]),xs=rows.get(key)??[];
+    if(!xs.some(v=>JSON.stringify(v)===JSON.stringify(c)))xs.push(c);rows.set(key,xs);
+  }
+  if(rows.size>100)return 0;
+  let applied=0;
+  for(const candidates of rows.values()) {
+    if(candidates.length!==1)continue; // competing source spans are not a first-match decision
+    const id=`native-item-${doc.items.length+1}`,fields=Object.fromEntries(itemFieldKeys.map(k=>[k,emptyShippingField()]));
+    const t={...target,id:`item/${id}/goodsDescription`,entityId:id,field:fields.goodsDescription};
+    if(mergeRecovery(pdf,t,candidates[0],"native")){doc.items.push({id,fields});applied++;}
+  }
+  return applied;
+}
 export function recoverNative(
   input: ShippingDocument,
   pdf: PdfDocument,
 ): ShippingDocument {
   const start = performance.now(),
     doc = structuredClone(input),
+    seeded = seedOmittedNativeItems(doc, pdf),
     targets = recoveryTargets(doc);
   if (
     doc.classificationStatus !== "classified" &&
@@ -426,7 +455,7 @@ export function recoverNative(
       }
     }
   const failures: Record<string, number> = {};
-  let applied = 0;
+  let applied = seeded;
   const attempted = new Set<ShippingField>();
   // Recompute owners after anchor recovery, then inspect newly eligible fields.
   // Two bounded passes; no repeated processing of a failed target.
@@ -478,10 +507,10 @@ export function recoverNative(
   }
   refreshRecoveryCoverage(doc, pdf);
   doc.recoverySummary = {
-    targets: attempted.size,
+    targets: attempted.size + seeded,
     nativeApplied: applied,
     aiApplied: 0,
-    unresolved: attempted.size - applied,
+    unresolved: attempted.size + seeded - applied,
     nativeDurationMs: Math.round(performance.now() - start),
     failures,
     extraRequests: 0,

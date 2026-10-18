@@ -1,0 +1,90 @@
+[
+  {
+    "file": "01.pdf",
+    "type": "house_bl",
+    "hbl": "SYN-CX-13",
+    "declarations": [
+      "SYN-CX-13-A",
+      "SYN-CX-13-B"
+    ],
+    "items": [
+      {
+        "description": "CERAMIC MEMBRANE MODULE MODEL 10000",
+        "quantity": 600,
+        "hs": "8421.99"
+      },
+      {
+        "description": "REUSABLE SILICONE SEAL RING MODEL SR7",
+        "quantity": 400,
+        "hs": "4016.93"
+      }
+    ],
+    "quantity": 1000,
+    "packages": 50,
+    "gross": 500,
+    "podCountry": "CANADA"
+  },
+  {
+    "file": "02.pdf",
+    "type": "export_declaration",
+    "hbl": "SYN-CX-13",
+    "declarations": [
+      "SYN-CX-13-A"
+    ],
+    "items": [
+      {
+        "description": "세라믹 멤브레인 모듈 MODEL 10000 (750mL)",
+        "quantity": 600,
+        "hs": "8421.99"
+      }
+    ],
+    "quantity": 600,
+    "packages": 30,
+    "gross": 300,
+    "podCountry": "CANADA"
+  },
+  {
+    "file": "03.pdf",
+    "type": "export_declaration",
+    "hbl": "SYN-CX-13",
+    "declarations": [
+      "SYN-CX-13-B"
+    ],
+    "items": [
+      {
+        "description": "재사용 실리콘 씰 링 MODEL SR7",
+        "quantity": 400,
+        "hs": "4016.93"
+      }
+    ],
+    "quantity": 400,
+    "packages": 20,
+    "gross": 200,
+    "podCountry": "CANADA"
+  },
+  {
+    "file": "04.pdf",
+    "type": "house_manifest",
+    "hbl": "SYN-CX-13",
+    "declarations": [
+      "SYN-CX-13-A",
+      "SYN-CX-13-B"
+    ],
+    "items": [
+      {
+        "description": "CERAMIC MEMBRANE MODULE MODEL 10000 / 600 PCS / 30 CARTONS",
+        "quantity": 600,
+        "hs": "8421.99"
+      },
+      {
+        "description": "REUSABLE SILICONE SEAL RING MODEL SR7 / 400 PCS / 20 CARTONS",
+        "quantity": 400,
+        "hs": "4016.93"
+      }
+    ],
+    "quantity": 1000,
+    "packages": 50,
+    "gross": 500,
+    "podCountry": "CANADA"
+  }
+]

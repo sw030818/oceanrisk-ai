@@ -165,3 +165,5 @@ C/D 진행: 새2페이지 역순열6합성PDF 추가, 전체 ship 후 정확SHA�
 A 완료: 기준7884bb3 clean복원, 누적59/86보존 및사용자150/220/USD2 승인확대, 독립합성12거래/36정상PDF+8오류PDF/7구성함수, Holdout07–10 PDF/정답해시고정. 최초Development6거래18PDF 실제추출/의미분석완료; 18/18분류, 436/444 최초정확, 374/444 원문검증, 확정FP0/조치64. 비공개원본응답과누적77/108 보존.
 B 진행: 지역적폐쇄면PDF테두리복원, HBL+container다중역할행, nativeDescriptionCard 소유관계, 같은native행의독립container/cargo coverage, 상품표와container할당표 분리. 무료원본후보재생438/444 검증/잘못승인0. 관련회귀/타입/린트 확인중.
 C 다음: 전체gate1회후main/Production배포→Development새실제E2E→오류8개→미사용Holdout4거래/Stress2거래. 새응답원인에따른추가개선은holdout전만가능, Holdout사용후수정시교체. 최종같은SHA의독립API/UI검증 예비문서6개 확보. evidence브랜치에최종성과·실패·누적예산저장.
+
+D 직전:177d758 실제Dev444/444·FP0·문제0, 물리오류6확정+1경고+1미탐 보존. 전체빈AI배열을 닫힌 native행만으로 복구하여 무료재생에서 모델차이 탐지. 타입/ESLint/104선택회귀 통과. 최종ship→새SHA Dev6재평가→모델오류PDF1→미사용Blind4/Stress2/복수신고보충4PDF/Set2·3UI. 현재103/148, 잔여문서47 이내. 최종결과는 기존evidence브랜치에 보존.
