@@ -1,15 +1,15 @@
 {
   "phase": "3.9",
   "approval": "USER_FINAL_ENGINE_INSTRUCTION_USD2",
-  "providerRequests": 86,
+  "providerRequests": 90,
   "automaticRetries": 0,
   "budget": {
-    "documents": 59,
-    "requests": 86,
-    "measuredCostUsd": 0.09610239499999998,
+    "documents": 62,
+    "requests": 90,
+    "measuredCostUsd": 0.10042068499999998,
     "unresolvedCostUpperUsd": 0.012626350000000003,
-    "maxDocuments": 60,
-    "maxRequests": 120,
+    "maxDocuments": 150,
+    "maxRequests": 220,
     "maxCostUsd": 2
   },
   "limitsAreProposalOnly": false,
@@ -32,12 +32,12 @@
   "previousProposalUsd": 10,
   "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
   "currentCumulativeUsage": {
-    "documents": 59,
-    "requests": 86,
-    "measuredCostUsd": 0.09610239499999998,
+    "documents": 62,
+    "requests": 90,
+    "measuredCostUsd": 0.10042068499999998,
     "unresolvedCostUpperUsd": 0.012626350000000003,
-    "maxDocuments": 60,
-    "maxRequests": 120,
+    "maxDocuments": 150,
+    "maxRequests": 220,
     "maxCostUsd": 2
   },
   "baselineUsage": {
@@ -52,14 +52,135 @@
   "finalSourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
   "validationReport": "docs/validation/final-engine-2026-10-18/README.md",
   "checkpoint": {
-    "at": "2026-10-18T04:54:31.986Z",
+    "at": "2026-10-18T12:14:20.634Z",
     "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
-    "status": "SET3_FINAL_EXACT_SHA_EVALUATED"
+    "status": "LIVE_EVALUATION_IN_PROGRESS_NOT_FINAL_SUCCESS"
   },
   "set3Fix": {
     "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
     "evidenceDirectory": "docs/validation/set3-fix",
     "status": "FINAL_EXACT_SHA_EVALUATED",
     "report": "docs/validation/set3-fix/release.json"
+  },
+  "approvedCaps": {
+    "documents": 150,
+    "requests": 220,
+    "costUsd": 2,
+    "source": "User universal engine final validation instruction"
+  },
+  "universalCorpusLock": {
+    "documents": [
+      {
+        "case": "universal-07",
+        "partition": "holdout",
+        "type": "house_bl",
+        "layout": "landscape",
+        "file": "pdf/universal-07/01.pdf",
+        "sha256": "4817f97a8bfb56b0e133993b324c8d218d73ffc79501f15b4dbd1494a3248155",
+        "synthetic": true
+      },
+      {
+        "case": "universal-07",
+        "partition": "holdout",
+        "type": "export_declaration",
+        "layout": "stacked",
+        "file": "pdf/universal-07/02.pdf",
+        "sha256": "2731d4e1fd7a34c96de5fe436692ffd5b9cda273225e3f7fe03cb5aae8247dcd",
+        "synthetic": true
+      },
+      {
+        "case": "universal-07",
+        "partition": "holdout",
+        "type": "house_manifest",
+        "layout": "landscape",
+        "file": "pdf/universal-07/03.pdf",
+        "sha256": "01e6f59bb281270842ea4d80076c63c33d7739d8eac83063771e8e55e386ecff",
+        "synthetic": true
+      },
+      {
+        "case": "universal-08",
+        "partition": "holdout",
+        "type": "house_bl",
+        "layout": "stacked",
+        "file": "pdf/universal-08/01.pdf",
+        "sha256": "8fbe2044dd6923116d72e36f436488a42cf44a1681e61162535b0056389e6744",
+        "synthetic": true
+      },
+      {
+        "case": "universal-08",
+        "partition": "holdout",
+        "type": "export_declaration",
+        "layout": "continuation",
+        "file": "pdf/universal-08/02.pdf",
+        "sha256": "d794fe58f4162ca1e42db6e41d5aa0c5476c1c465df2e1bd1e5020eba4ea2317",
+        "synthetic": true
+      },
+      {
+        "case": "universal-08",
+        "partition": "holdout",
+        "type": "house_manifest",
+        "layout": "stacked",
+        "file": "pdf/universal-08/03.pdf",
+        "sha256": "4a37b2dab0766aa306e80137ecc16a51dc4d9fcd3364061ea3d45e344ad7d3a0",
+        "synthetic": true
+      },
+      {
+        "case": "universal-09",
+        "partition": "holdout",
+        "type": "house_bl",
+        "layout": "continuation",
+        "file": "pdf/universal-09/01.pdf",
+        "sha256": "c3fd30f2eba583537752a6978a6470c3ab818448aefa349869c25374ee0257c4",
+        "synthetic": true
+      },
+      {
+        "case": "universal-09",
+        "partition": "holdout",
+        "type": "export_declaration",
+        "layout": "landscape",
+        "file": "pdf/universal-09/02.pdf",
+        "sha256": "3f53eb3e5b6e258d89b328e6d90b1f25b8744359f692a36f86ae0ec1ec78481c",
+        "synthetic": true
+      },
+      {
+        "case": "universal-09",
+        "partition": "holdout",
+        "type": "house_manifest",
+        "layout": "continuation",
+        "file": "pdf/universal-09/03.pdf",
+        "sha256": "4d0e073f19c16a0f2f90e7ee7aa3f05ce162c4eca6e5531af482b2065817f3bb",
+        "synthetic": true
+      },
+      {
+        "case": "universal-10",
+        "partition": "holdout",
+        "type": "house_bl",
+        "layout": "stacked",
+        "file": "pdf/universal-10/01.pdf",
+        "sha256": "cb95c7732b396dae79a19b824fbe627e164696eae6f40b1a630e970385c83980",
+        "synthetic": true
+      },
+      {
+        "case": "universal-10",
+        "partition": "holdout",
+        "type": "export_declaration",
+        "layout": "landscape",
+        "file": "pdf/universal-10/02.pdf",
+        "sha256": "e6369da9881e26ff8e6cdd6cba421b4598b2c88b97c9d5a7eb441f5eac1a9b0a",
+        "synthetic": true
+      },
+      {
+        "case": "universal-10",
+        "partition": "holdout",
+        "type": "house_manifest",
+        "layout": "stacked",
+        "file": "pdf/universal-10/03.pdf",
+        "sha256": "20356b6607969f64a018a85130745ec36320412ea32558dc54477e45385f0e05",
+        "synthetic": true
+      }
+    ],
+    "truthSha256": "d8de7b1db9de18fe42a089b680bc21c6022b0561fa77e765fbcd9f7c8ad2bd38",
+    "manifestSha256": "871fadf1581a515751505e60c38608e28a65905f6dec822f930a4ba88a9613f2",
+    "policy": "Freeze before baseline; no holdout extraction/validation until code is frozen. If used for tuning, retire and generate a new holdout."
   }
 }
