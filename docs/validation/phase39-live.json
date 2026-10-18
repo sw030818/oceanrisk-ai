@@ -1,12 +1,12 @@
 {
   "phase": "3.9",
   "approval": "USER_FINAL_ENGINE_INSTRUCTION_USD2",
-  "providerRequests": 182,
+  "providerRequests": 186,
   "automaticRetries": 0,
   "budget": {
-    "documents": 128,
-    "requests": 182,
-    "measuredCostUsd": 0.19095405000000004,
+    "documents": 131,
+    "requests": 186,
+    "measuredCostUsd": 0.19781251000000002,
     "unresolvedCostUpperUsd": 0.01262634999999997,
     "maxDocuments": 150,
     "maxRequests": 220,
@@ -32,9 +32,9 @@
   "previousProposalUsd": 10,
   "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
   "currentCumulativeUsage": {
-    "documents": 128,
-    "requests": 182,
-    "measuredCostUsd": 0.19095405000000004,
+    "documents": 131,
+    "requests": 186,
+    "measuredCostUsd": 0.19781251000000002,
     "unresolvedCostUpperUsd": 0.01262634999999997,
     "maxDocuments": 150,
     "maxRequests": 220,
@@ -52,7 +52,7 @@
   "finalSourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
   "validationReport": "docs/validation/final-engine-2026-10-18/README.md",
   "checkpoint": {
-    "at": "2026-10-18T13:28:16.658Z",
+    "at": "2026-10-18T13:29:39.779Z",
     "sourceSha": "91c081056b64e9d46f2e98c08b378c44fe53f723",
     "status": "LIVE_EVALUATION_IN_PROGRESS_NOT_FINAL_SUCCESS"
   },
