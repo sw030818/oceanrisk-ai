@@ -1,0 +1,171 @@
+{
+  "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+  "unitTests": 754,
+  "browserTests": 70,
+  "ci": {
+    "sha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+    "checkedAt": "2026-10-18T04:54:10.012Z",
+    "actions": [
+      {
+        "id": 39098288681,
+        "status": "completed",
+        "conclusion": "success",
+        "sha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/39098288681"
+      }
+    ],
+    "checks": [
+      {
+        "name": "production",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/39098288681/job/117589607364"
+      },
+      {
+        "name": "quality",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/39098288681/job/117589157453"
+      }
+    ],
+    "status": {
+      "state": "success",
+      "contexts": [
+        {
+          "context": "Vercel",
+          "state": "success",
+          "target_url": "https://vercel.com/pack-mate/oceanrisk-ai/4BcrJrQ9wvCHer8SbsKZKaKdPZAJ"
+        }
+      ]
+    },
+    "deployments": [
+      {
+        "id": 7150092367,
+        "sha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+        "environment": "Production",
+        "statuses": [
+          {
+            "state": "success",
+            "environment_url": "https://oceanrisk-gbc4ajl7s-pack-mate.vercel.app",
+            "target_url": "https://oceanrisk-gbc4ajl7s-pack-mate.vercel.app"
+          }
+        ]
+      }
+    ]
+  },
+  "npmCi": true,
+  "typecheck": true,
+  "lint": true,
+  "productionBuild": true,
+  "pdfWorkers": [
+    "analyze",
+    "recover"
+  ],
+  "newApiCases": [
+    {
+      "case": "set3",
+      "documents": 3,
+      "paidDocuments": 3,
+      "outcomes": {
+        "matches": 12,
+        "mismatches": 0,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 8,
+        "evidenceUnverified": 3,
+        "evidenceRecovered": 11,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      }
+    },
+    {
+      "case": "actual-package",
+      "documents": 3,
+      "paidDocuments": 1,
+      "outcomes": {
+        "matches": 11,
+        "mismatches": 1,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 5,
+        "evidenceUnverified": 3,
+        "evidenceRecovered": 8,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "missed": false,
+      "confirmedUnexpectedMeanings": []
+    },
+    {
+      "case": "actual-port",
+      "documents": 3,
+      "paidDocuments": 1,
+      "outcomes": {
+        "matches": 11,
+        "mismatches": 1,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 7,
+        "evidenceUnverified": 2,
+        "evidenceRecovered": 8,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "missed": false,
+      "confirmedUnexpectedMeanings": []
+    },
+    {
+      "case": "actual-quantity",
+      "documents": 3,
+      "paidDocuments": 1,
+      "outcomes": {
+        "matches": 11,
+        "mismatches": 1,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 7,
+        "evidenceUnverified": 2,
+        "evidenceRecovered": 11,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "missed": false,
+      "confirmedUnexpectedMeanings": []
+    }
+  ],
+  "cumulativeBudget": {
+    "documents": 59,
+    "requests": 86,
+    "measuredCostUsd": 0.09610239499999998,
+    "unresolvedCostUpperUsd": 0.012626350000000003,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "automaticRetries": 0,
+  "vercelManagementReadyQueried": false,
+  "sourceAndPublicProductionShaMatch": true,
+  "notes": [
+    "Set3 new first extraction + semantic stage + actual desktop/mobile UI. Each modified Manifest reuses two unchanged same-SHA parent responses.",
+    "Set2 is FREE saved-response regression, not a new paid Set2 extraction.",
+    "Historical baseline 4 review checks correspond to 3 independent business issues; do not conflate those counts.",
+    "Original unverified fields, provisional semantic opinions and raw checks remain preserved. Synthetic mutations are not independent real-customer generalization.",
+    "Private PDFs, complete responses and screenshots are not committed."
+  ]
+}

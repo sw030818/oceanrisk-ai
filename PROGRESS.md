@@ -649,3 +649,7 @@
 - 누적phase39 50문서72요청, 확인추정USD0.07539797+미확인400상한USD0.01262635=보수합USD0.08802432. 잔여USD1.91197568/10문서48요청. 모든이전비용/실패/체크포인트예약대조증거 보존. PHASE37 ledger해시불변. 유료호출종료.
 - 제한: 400원인미확인, 과거251최초응답부재, 일부미검증요약/추가후보유지. 새모델오류Manifest화물행HBL은행직접근거없어row_mismatch유지하며문서HBL과구분한다. 참조충돌/혼합선적의추가잠정검토를무조건없애지않았다. 고객자료범용100%를보장하지않는다.
 - 상세 결과/최초실패/재검증/무료재생/품질/배포/비용은 docs/validation/final-engine-2026-10-18. 이 증거브랜치 커밋은 Production 소스SHA와 구분한다.
+
+
+## Set3 final exact-SHA evidence
+Source 7884bb3c62976c129f0006ce5b6f140791c5720c. npm ci/type/lint/754 unit/70 browser/build/two PDF workers passed. Public Production exact SHA verified. New paid normal Set3 and physical Manifest quantity/port/package controls are in docs/validation/set3-fix. Baseline independent action issues3 (review-check count4) → final normal 0; original source/diagnostics preserved. Set2 is free saved-response regression. Cumulative 59docs/86requests/estimated USD0.09610239499999998+unresolved upper0.012626350000000003, capUSD2/60/120/automatic retry0. Read release.json for remaining limitations and CI/deployment status. Vercel management Ready not directly queried.

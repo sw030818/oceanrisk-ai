@@ -52,8 +52,14 @@
   "finalSourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
   "validationReport": "docs/validation/final-engine-2026-10-18/README.md",
   "checkpoint": {
-    "at": "2026-10-18T04:54:30.473Z",
+    "at": "2026-10-18T04:54:31.986Z",
     "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
-    "status": "LIVE_EVALUATION_IN_PROGRESS_NOT_FINAL_SUCCESS"
+    "status": "SET3_FINAL_EXACT_SHA_EVALUATED"
+  },
+  "set3Fix": {
+    "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+    "evidenceDirectory": "docs/validation/set3-fix",
+    "status": "FINAL_EXACT_SHA_EVALUATED",
+    "report": "docs/validation/set3-fix/release.json"
   }
 }

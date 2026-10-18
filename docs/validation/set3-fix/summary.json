@@ -1,0 +1,764 @@
+{
+  "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+  "checkedAt": "2026-10-18T04:54:10.263Z",
+  "scope": "New Set3 first OpenAI extraction and semantic calls at the exact Production SHA. Three physical Manifest mutations reuse only SAME SHA parents. Not an independent generalization benchmark.",
+  "ledger": {
+    "documents": 59,
+    "requests": 86,
+    "measuredCostUsd": 0.09610239499999998,
+    "unresolvedCostUpperUsd": 0.012626350000000003,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "ledgerSha256": "3da821258874edf34215863610605b30ff2b86c28d58b1943b56a6dbab12cf84",
+  "rows": [
+    {
+      "case": "set3",
+      "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+      "kind": "NEW actual first extraction + semantic API + real Production user UI",
+      "documentsCompared": 3,
+      "successfulExtractedDocuments": 3,
+      "apiErrors": [],
+      "paidDocuments": 3,
+      "initialCorrectClassifications": 3,
+      "correctClassifications": 3,
+      "evidence": {
+        "originalPresent": 97,
+        "originalVerified": 89,
+        "currentPresent": 103,
+        "currentVerified": 100
+      },
+      "score": null,
+      "outcomes": {
+        "matches": 12,
+        "mismatches": 0,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 8,
+        "evidenceUnverified": 3,
+        "evidenceRecovered": 11,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "actionIssues": 0,
+      "semanticStatus": "complete",
+      "durationMs": 65249,
+      "delta": {
+        "documents": 3,
+        "requests": 4,
+        "costUsd": 0.007405915000000013
+      },
+      "desktop": true,
+      "mobile": true,
+      "quantityProof": true,
+      "podMatch": true,
+      "quantityMatch": true,
+      "checks": [
+        {
+          "meaning": "packageCount",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "consignee",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "containerNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "assessment": "provisional_match",
+          "disposition": "informational",
+          "reasons": [],
+          "semanticCode": "AI_SEMANTIC_EQUIVALENCE"
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "hsCode",
+          "assessment": "confirmed_match",
+          "reasons": [],
+          "semanticCode": "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "shipper",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "weight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "actual-package",
+      "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+      "kind": "NEW physically modified PDF extraction + actual semantic request; unchanged parent responses reused at the SAME SHA (not new parent extraction)",
+      "documentsCompared": 3,
+      "successfulExtractedDocuments": 3,
+      "apiErrors": [],
+      "paidDocuments": 1,
+      "initialCorrectClassifications": 3,
+      "correctClassifications": 3,
+      "evidence": {
+        "originalPresent": 97,
+        "originalVerified": 92,
+        "currentPresent": 103,
+        "currentVerified": 100
+      },
+      "score": null,
+      "expectedMeaning": "packageCount",
+      "confirmedTP": 1,
+      "provisionalDetection": false,
+      "referenceWarning": false,
+      "missed": false,
+      "confirmedUnexpectedMeanings": [],
+      "outcomes": {
+        "matches": 11,
+        "mismatches": 1,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 5,
+        "evidenceUnverified": 3,
+        "evidenceRecovered": 8,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "actionIssues": 1,
+      "semanticStatus": "complete",
+      "durationMs": 21890,
+      "delta": {
+        "documents": 1,
+        "requests": 2,
+        "costUsd": 0.0021933950000000008
+      },
+      "checks": [
+        {
+          "meaning": "packageCount",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "consignee",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "containerNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "assessment": "provisional_match",
+          "disposition": "informational",
+          "reasons": [],
+          "semanticCode": "AI_SEMANTIC_EQUIVALENCE"
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "hsCode",
+          "assessment": "confirmed_match",
+          "reasons": [],
+          "semanticCode": "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "confirmed_mismatch",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "shipper",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "weight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "actual-port",
+      "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+      "kind": "NEW physically modified PDF extraction + actual semantic request; unchanged parent responses reused at the SAME SHA (not new parent extraction)",
+      "documentsCompared": 3,
+      "successfulExtractedDocuments": 3,
+      "apiErrors": [],
+      "paidDocuments": 1,
+      "initialCorrectClassifications": 3,
+      "correctClassifications": 3,
+      "evidence": {
+        "originalPresent": 100,
+        "originalVerified": 93,
+        "currentPresent": 103,
+        "currentVerified": 101
+      },
+      "score": null,
+      "expectedMeaning": "portOfDischarge",
+      "confirmedTP": 1,
+      "provisionalDetection": false,
+      "referenceWarning": false,
+      "missed": false,
+      "confirmedUnexpectedMeanings": [],
+      "outcomes": {
+        "matches": 11,
+        "mismatches": 1,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 7,
+        "evidenceUnverified": 2,
+        "evidenceRecovered": 8,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "actionIssues": 1,
+      "semanticStatus": "complete",
+      "durationMs": 21796,
+      "delta": {
+        "documents": 1,
+        "requests": 2,
+        "costUsd": 0.002251519999999993
+      },
+      "checks": [
+        {
+          "meaning": "packageCount",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "consignee",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "containerNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "assessment": "provisional_match",
+          "disposition": "informational",
+          "reasons": [],
+          "semanticCode": "AI_SEMANTIC_EQUIVALENCE"
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "hsCode",
+          "assessment": "confirmed_match",
+          "reasons": [],
+          "semanticCode": "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "assessment": "confirmed_mismatch",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "shipper",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "weight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "actual-quantity",
+      "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+      "kind": "NEW physically modified PDF extraction + actual semantic request; unchanged parent responses reused at the SAME SHA (not new parent extraction)",
+      "documentsCompared": 3,
+      "successfulExtractedDocuments": 3,
+      "apiErrors": [],
+      "paidDocuments": 1,
+      "initialCorrectClassifications": 3,
+      "correctClassifications": 3,
+      "evidence": {
+        "originalPresent": 97,
+        "originalVerified": 90,
+        "currentPresent": 103,
+        "currentVerified": 101
+      },
+      "score": null,
+      "expectedMeaning": "quantity",
+      "confirmedTP": 1,
+      "provisionalDetection": false,
+      "referenceWarning": false,
+      "missed": false,
+      "confirmedUnexpectedMeanings": [],
+      "outcomes": {
+        "matches": 11,
+        "mismatches": 1,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 7,
+        "evidenceUnverified": 2,
+        "evidenceRecovered": 11,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "actionIssues": 1,
+      "semanticStatus": "complete",
+      "durationMs": 23431,
+      "delta": {
+        "documents": 1,
+        "requests": 2,
+        "costUsd": 0.0021860200000000107
+      },
+      "checks": [
+        {
+          "meaning": "packageCount",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "consignee",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "containerNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "assessment": "provisional_match",
+          "disposition": "informational",
+          "reasons": [],
+          "semanticCode": "AI_SEMANTIC_EQUIVALENCE"
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "hsCode",
+          "assessment": "confirmed_match",
+          "reasons": [],
+          "semanticCode": "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "quantity",
+          "assessment": "confirmed_mismatch",
+          "reasons": []
+        },
+        {
+          "meaning": "sealNumber",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "shipper",
+          "assessment": "confirmed_match",
+          "reasons": []
+        },
+        {
+          "meaning": "packageCount",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "netWeight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "weight",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "reference",
+          "assessment": "not_applicable",
+          "reasons": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        }
+      ]
+    }
+  ]
+}

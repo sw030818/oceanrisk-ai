@@ -1,0 +1,22 @@
+{
+  "kind": "FREE saved actual response re-grounding and cached semantic opinion, not new extraction",
+  "savedSourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "testedSourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+  "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 11,
+    "notComparable": 0,
+    "evidenceFailed": 7,
+    "evidenceUnverified": 5,
+    "evidenceRecovered": 6,
+    "checksExecuted": 61,
+    "independentChecks": 24,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+  },
+  "independentActionIssues": 0,
+  "providerCalls": 0
+}

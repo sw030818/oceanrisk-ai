@@ -1,0 +1,29 @@
+{
+  "kind": "Native text changes in private original PDF, no oracle candidates and no provider calls",
+  "rows": [
+    {
+      "case": "package",
+      "expectedMeaning": "packageCount",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 3,
+      "nativeChangeVerified": true,
+      "sha256": "f8e22f853242cb35268455bdeac7a831e5c4c049ce055a86ac4360eb788935b4"
+    },
+    {
+      "case": "quantity",
+      "expectedMeaning": "quantity",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 3,
+      "nativeChangeVerified": true,
+      "sha256": "2206113e1fe88bf1e0d32301c3d53498283cad77d9453f363b2ed355244e4748"
+    },
+    {
+      "case": "port",
+      "expectedMeaning": "portOfDischarge",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 1,
+      "nativeChangeVerified": true,
+      "sha256": "b95ea659d20430b64d6ccf04971b8950bc508cf062b5284f0e530f6745583d5f"
+    }
+  ]
+}

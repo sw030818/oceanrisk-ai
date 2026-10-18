@@ -1,0 +1,24 @@
+{
+  "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+  "remainingUnverifiedFields": [
+    {
+      "type": "export_declaration",
+      "scope": "document",
+      "role": "goodsDescription",
+      "code": "row_mismatch"
+    },
+    {
+      "type": "export_declaration",
+      "scope": "document",
+      "role": "hsCode",
+      "code": "row_mismatch"
+    },
+    {
+      "type": "house_manifest",
+      "scope": "reference",
+      "role": "number",
+      "code": "role_mismatch"
+    }
+  ],
+  "valuesExcluded": true
+}

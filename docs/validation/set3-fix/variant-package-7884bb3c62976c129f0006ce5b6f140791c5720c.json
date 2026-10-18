@@ -1,0 +1,184 @@
+{
+  "kind": "NEW physically modified PDF extraction + actual semantic request; unchanged parent responses reused at the SAME SHA (not new parent extraction)",
+  "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+  "case": "actual-package",
+  "paidDocuments": 1,
+  "reusedParentDocuments": 2,
+  "correctClassification": true,
+  "expectedMeaning": "packageCount",
+  "confirmedTP": 1,
+  "provisionalDetection": false,
+  "referenceWarning": false,
+  "missed": false,
+  "confirmedUnexpectedMeanings": [],
+  "outcomes": {
+    "matches": 11,
+    "mismatches": 1,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 10,
+    "notComparable": 0,
+    "evidenceFailed": 5,
+    "evidenceUnverified": 3,
+    "evidenceRecovered": 8,
+    "checksExecuted": 61,
+    "independentChecks": 23,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+  },
+  "semanticStatus": "complete",
+  "delta": {
+    "documents": 1,
+    "requests": 2,
+    "costUsd": 0.0021933950000000008
+  },
+  "budget": {
+    "documents": 59,
+    "requests": 86,
+    "measuredCostUsd": 0.09610239499999998,
+    "unresolvedCostUpperUsd": 0.012626350000000003,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "durationMs": 21890,
+  "errors": [],
+  "checks": [
+    {
+      "meaning": "packageCount",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "consignee",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "containerNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "goodsDescription",
+      "assessment": "provisional_match",
+      "disposition": "informational",
+      "reasons": []
+    },
+    {
+      "meaning": "grossWeight",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "houseBlNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "hsCode",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "netWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "assessment": "confirmed_mismatch",
+      "reasons": []
+    },
+    {
+      "meaning": "portOfDischarge",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "quantity",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "sealNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "shipper",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "packageCount",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "netWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "weight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    }
+  ]
+}
