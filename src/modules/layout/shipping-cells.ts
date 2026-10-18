@@ -1,3 +1,4 @@
+import { nativeDetailGroup } from "./shipping-detail-group";
 import type { PdfPage, PdfBlock } from "../documents/schema";
 import { columnContains, type TableLink } from "./relations";
 import { nativeTableLink, nativeCell } from "./shipping-geometry";
@@ -24,6 +25,8 @@ export function shippingCell(
 ): TableLink | null {
   if (scope === "document" || !selected.length) return null;
   if (page.cells?.length) {
+    const detail = scope === "item" && selected.map(b=>nativeDetailGroup(page,b));
+    if (detail && detail.length && detail.every(l=>l && l.tableId===detail[0]!.tableId && l.rowId===detail[0]!.rowId && l.role===detail[0]!.role)) return detail[0];
     const native = nativeTableLink(page, selected, scope);
     if (native) return native;
     const cell = nativeCell(page, selected[0]);
@@ -58,7 +61,8 @@ export function shippingCell(
       continue;
     if (
       headers.some((h) => shippingRole(h.text) === "houseBlNumber") &&
-      scope !== "cargo"
+      scope !== "cargo" &&
+      (scope !== "container" || !headers.some(h => shippingRole(h.text) === "containerNumber"))
     )
       continue;
     if (

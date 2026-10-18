@@ -74,11 +74,15 @@ function whole32(d: ShippingDocument) {
       .filter(verified32)
       .map((f) => text32(f.field.current.value)),
   );
+  const cargo=d.factCoverage?.cargoRecords, containers=d.factCoverage?.containers;
+  const sameNativeRows = !!cargo?.nativeRows?.length && !!cargo.nativeHbls?.length &&
+    cargo.nativeHbls.every(h=>bl.has(text32(h))) && bl.size===1 &&
+    !!containers?.complete && JSON.stringify(cargo.nativeRows)===JSON.stringify(containers.rows);
   return (
     bl.size <= 1 &&
     !(
       d.collectionCoverage?.cargoRecords.rowCount &&
-      !d.collectionCoverage.cargoRecords.complete
+      !d.collectionCoverage.cargoRecords.complete && !sameNativeRows
     )
   );
 }
@@ -365,6 +369,16 @@ export function reviewShipping(
     );
   }
   function rows(d: ShippingDocument) {
+    // A manifest may print a complete goods table plus a separate HBL/container
+    // allocation table with no goods column. These are different entity types.
+    // Native completeness proves no unextracted goods rows are being dropped.
+    const cargoOnly = d.detectedType === "house_manifest" && d.items.length > 0 &&
+      d.factCoverage?.items.complete && d.items.every(i=>verified32(ref32(d,"goodsDescription",i.fields.goodsDescription,{itemId:i.id}))) &&
+      d.cargoRecords.length > 0 && d.cargoRecords.every(c=>
+        !has32(c.fields.goodsDescription) && !has32(c.fields.tradeDescription) &&
+        verified32(ref32(d,"houseBlNumber",c.fields.houseBlNumber,{cargoId:c.id}))) &&
+      new Set(identifiers32(d,"houseBlNumber").filter(verified32).map(f=>text32(f.field.current.value))).size === 1;
+    if (cargoOnly) return d.items.map(i=>({id:i.id,kind:"item" as const,fields:i.fields}));
     if (d.detectedType === "house_manifest" && d.cargoRecords.length)
       return d.cargoRecords.map((c) => ({
         id: c.id,

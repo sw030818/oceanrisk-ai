@@ -28,6 +28,7 @@ export interface TrialPolicy {
   reservedBalanceUsd?: number;
   // Explicit correction of an older, unapproved cost proposal; usage is retained.
   previousCostProposal?: number;
+  previousApprovedCaps?: { documents: number; requests: number }[];
 }
 export interface TrialBudget extends TestBudget {
   requests: number;
@@ -62,6 +63,14 @@ export function correctTrialCostProposal(policy:TrialPolicy,b:TrialBudget):Trial
   return policy.previousCostProposal===b.maxCostUsd && policy.cost<b.maxCostUsd
     ? {...b,maxCostUsd:policy.cost}:b;
 }
+export function migrateApprovedTrialCaps(policy: TrialPolicy, b: TrialBudget): TrialBudget {
+  // Only explicit, phase-specific approved predecessor caps can be expanded.
+  // Every count and every confirmed/unknown charge is retained unchanged.
+  return b.maxCostUsd === policy.cost && policy.previousApprovedCaps?.some(p =>
+    p.documents === b.maxDocuments && p.requests === b.maxRequests &&
+    p.documents <= policy.documents && p.requests <= policy.requests)
+    ? { ...b, maxDocuments: policy.documents, maxRequests: policy.requests } : b;
+}
 export async function withTrialBudget<T>(
   policy: TrialPolicy,
   run: (budget: TrialBudget, save: () => Promise<void>) => Promise<T>,
@@ -79,7 +88,7 @@ export async function withTrialBudget<T>(
       maxCostUsd: policy.cost,
     };
     const recover = (b: TrialBudget) => {
-      b=correctTrialCostProposal(policy,b);
+      b=migrateApprovedTrialCaps(policy,correctTrialCostProposal(policy,b));
       if (
         b.documents > budget.documents ||
         b.requests > budget.requests ||

@@ -1,3 +1,4 @@
+import { verifyShippingField } from "./verify";
 import { nativeCell,cellHeading } from "../layout/shipping-geometry";
 import { effectiveProof } from "./effective";
 import { shippingCell, type EntityScope } from "../layout/shipping-cells";
@@ -14,14 +15,22 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
     fields: ShippingField[],
   ) => {
     const actual = new Set<string>();
+    const containerViews = new Map<string,Map<string,Set<string>>>();
+    const identity=(v:unknown)=>String(v??"").normalize("NFKC").toLowerCase().replace(/\s+/g," ").trim();
     for (const p of pdf.pages)
       for (const b of p.blocks ?? []) {
         const cell=nativeCell(p,b);
         const heading=cell&&cellHeading(p,cell);
         if(heading?.role && heading.blocks.includes(b))continue;
         const l = shippingCell(p, [b], scope);
-        if (l && roles[scope].includes(l.role))
-          actual.add(`${p.page}/${l.tableId}/${l.rowId}`);
+        if (l && roles[scope].includes(l.role)) {
+          const key=`${p.page}/${l.tableId}/${l.rowId}`;
+          actual.add(key);
+          if(scope === "container") {
+            const id=identity(b.text),table=`${p.page}/${l.tableId}`,views=containerViews.get(id)??new Map<string,Set<string>>();
+            const rows=views.get(table)??new Set<string>();rows.add(key);views.set(table,rows);containerViews.set(id,views);
+          }
+        }
       }
     const extracted = fields.map((f) => {
       const s = effectiveProof(f).source;
@@ -29,6 +38,22 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
         ? `${s.page}/${s.layout.tableId}/${s.layout.rowId}`
         : null;
     });
+    if(scope === "container") {
+      // Repeated identities in DIFFERENT independently located tables can be
+      // alternate views. Repeated rows WITHIN one table are never collapsed.
+      const required=[...containerViews.values()].reduce((n,views)=>n+Math.max(...[...views.values()].map(rows=>rows.size)),0);
+      const grouped=new Map<string,{key:string|null;verified:boolean}[]>();
+      for(const [i,f]of fields.entries()) {
+        const proof=effectiveProof(f),id=identity(proof.value),rows=grouped.get(id)??[];
+        rows.push({key:extracted[i],verified:proof.status === "verified"});grouped.set(id,rows);
+      }
+      const complete=required>0&&fields.length===required&&new Set(extracted).size===extracted.length&&
+        [...containerViews].every(([id,views])=>{
+          const rows=grouped.get(id)??[],all=new Set([...views.values()].flatMap(s=>[...s]));
+          return rows.length===Math.max(...[...views.values()].map(s=>s.size))&&rows.every(r=>r.verified&&r.key!==null&&all.has(r.key));
+        });
+      return {complete,rowCount:required};
+    }
     return {
       complete:
         actual.size > 0 &&
@@ -71,6 +96,18 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
 }
 
 export function nativeFactCoverage(doc: ShippingDocument, pdf: PdfDocument) {
+  const nativeCargoRows = new Map<string,string>();
+  let allCargoAnchorsVerified = !pdf.pages.some(p=>p.textSource === "ocr");
+  for (const p of pdf.pages) for (const b of p.blocks ?? []) {
+    const link=shippingCell(p,[b],"cargo");
+    if (!link || link.role!=="houseBlNumber") continue;
+    const tested=verifyShippingField({value:b.text,evidence:{page:p.page,blockIds:[b.id]}},pdf,"houseBlNumber","cargo");
+    const key=`${p.page}/${link.tableId}/${link.rowId}`;
+    if(tested.current.status!=="verified") { allCargoAnchorsVerified=false;continue; }
+    const old=nativeCargoRows.get(key);
+    if(old && old!==b.text)allCargoAnchorsVerified=false;
+    nativeCargoRows.set(key,b.text);
+  }
   const build = (
     kind: "items" | "containers" | "cargoRecords",
     fields: ShippingField[],
@@ -96,6 +133,9 @@ export function nativeFactCoverage(doc: ShippingDocument, pdf: PdfDocument) {
         new Set(rows).size === rows.length &&
         rows.length > 0,
       rows,
+      ...(kind === "cargoRecords" && allCargoAnchorsVerified && nativeCargoRows.size>0 && nativeCargoRows.size<=100 && nativeCargoRows.size===doc.collectionCoverage?.cargoRecords.rowCount ? {
+        nativeRows:[...nativeCargoRows.keys()].sort(),nativeHbls:[...new Set(nativeCargoRows.values())].sort(),
+      } : {}),
     };
   };
   const limitations: (

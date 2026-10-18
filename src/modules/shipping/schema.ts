@@ -269,6 +269,8 @@ const common = {
       cargoRecords: z.object({
         complete: z.boolean(),
         rows: z.array(z.string()).max(100),
+        nativeRows: z.array(z.string()).max(100).optional(),
+        nativeHbls: z.array(z.string().max(300)).max(100).optional(),
       }),
       limitations: z
         .array(

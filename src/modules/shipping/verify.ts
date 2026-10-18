@@ -1,3 +1,4 @@
+import { nativeDetailGroup } from "../layout/shipping-detail-group";
 import type {
   GroundedField,
   PdfDocument,
@@ -176,6 +177,13 @@ export function verifyShippingField(
     g = fail(g, "role_mismatch", "수량·포장 주석만으로는 상품명을 입증하지 않습니다.");
     return finish();
   }
+  if (scope === "document" && valuesInDetail()) {
+    g=fail(g,"row_mismatch","명시적 품목 카드에 속한 값을 문서 전체 합계로 승격하지 않습니다.");
+    return finish();
+  }
+  function valuesInDetail() {
+    return blocks!.some(b=>!!nativeDetailGroup(page!,b));
+  }
   const units = unitParents[role];
   const contextualAtom = (b: PdfBlock) => {
     const parent = geometricRole(page, b);
@@ -344,7 +352,7 @@ export function verifyShippingField(
     const rowOkay =
       !owner ||
       ((owner.tableId.startsWith(`p${page.page}:t`) ||
-        owner.tableId.startsWith(`p${page.page}:box`)) &&
+        owner.tableId.startsWith(`p${page.page}:box`) || owner.tableId.startsWith(`p${page.page}:detail`)) &&
         blocks.every((b) => {
           const linked = shippingCell(page, [b], scope);
           if (linked?.tableId === owner.tableId && linked.rowId === owner.rowId)

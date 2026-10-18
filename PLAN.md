@@ -160,3 +160,8 @@ C/D 진행: 새2페이지 역순열6합성PDF 추가, 전체 ship 후 정확SHA�
 - 완료: 실제 첨부 확보, 기존 main 실제 최초 후보/근거 오류 재현(누적53/76), 같은 행 count annotation·상품명 경계·금액 경계·목적국 기반 항구 정규화, 무료 저장 응답 재계산.
 - 진행: 신규20+기존734 단위회귀, ship 동결 전체 검사/70브라우저/worker/main Push/Actions/정확 Production SHA.
 - 다음: 같은 최종 SHA 실제 Set3 UI3문서, 원문이 실제 변경된 수량·항구·포장 PDF 각1문서(부모2문서는 같은SHA 응답 재사용), 누적60문서 이내. 메타데이터/ledger는 validation/phase39-evidence에 보존하고 원문/응답/실제PDF는 비공개 유지.
+
+## 신규 범용 실증 — 2026-10-18
+A 완료: 기준7884bb3 clean복원, 누적59/86보존 및사용자150/220/USD2 승인확대, 독립합성12거래/36정상PDF+8오류PDF/7구성함수, Holdout07–10 PDF/정답해시고정. 최초Development6거래18PDF 실제추출/의미분석완료; 18/18분류, 436/444 최초정확, 374/444 원문검증, 확정FP0/조치64. 비공개원본응답과누적77/108 보존.
+B 진행: 지역적폐쇄면PDF테두리복원, HBL+container다중역할행, nativeDescriptionCard 소유관계, 같은native행의독립container/cargo coverage, 상품표와container할당표 분리. 무료원본후보재생438/444 검증/잘못승인0. 관련회귀/타입/린트 확인중.
+C 다음: 전체gate1회후main/Production배포→Development새실제E2E→오류8개→미사용Holdout4거래/Stress2거래. 새응답원인에따른추가개선은holdout전만가능, Holdout사용후수정시교체. 최종같은SHA의독립API/UI검증 예비문서6개 확보. evidence브랜치에최종성과·실패·누적예산저장.

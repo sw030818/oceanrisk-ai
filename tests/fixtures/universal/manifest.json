@@ -1,0 +1,414 @@
+[
+  {
+    "case": "universal-01",
+    "partition": "development",
+    "type": "house_bl",
+    "layout": "boxed",
+    "file": "pdf/universal-01/01.pdf",
+    "sha256": "2fe6bf90e1992f00418958bc8ecc47efffd7c3dd3ba101427197ada4977b1507",
+    "synthetic": true
+  },
+  {
+    "case": "universal-01",
+    "partition": "development",
+    "type": "export_declaration",
+    "layout": "form",
+    "file": "pdf/universal-01/02.pdf",
+    "sha256": "e693f72a19ae6ac7eaff9485db26726474b3f245c6dfe23770a1de1515a49c6d",
+    "synthetic": true
+  },
+  {
+    "case": "universal-01",
+    "partition": "development",
+    "type": "house_manifest",
+    "layout": "ledger",
+    "file": "pdf/universal-01/03.pdf",
+    "sha256": "d7fa3e68542e54cacb139b722447eea3828d43fbe54e86bb98d8ac4e8064a92b",
+    "synthetic": true
+  },
+  {
+    "case": "universal-02",
+    "partition": "development",
+    "type": "house_bl",
+    "layout": "ledger",
+    "file": "pdf/universal-02/01.pdf",
+    "sha256": "24501f92b5fb1bed14d8b651c5c113956c8287716888bf27b9b0a7ff6caa69d8",
+    "synthetic": true
+  },
+  {
+    "case": "universal-02",
+    "partition": "development",
+    "type": "export_declaration",
+    "layout": "split",
+    "file": "pdf/universal-02/02.pdf",
+    "sha256": "14c474b79e25f59c38f628d942394e1605c8917b6133b9b432c281aa08b8a32a",
+    "synthetic": true
+  },
+  {
+    "case": "universal-02",
+    "partition": "development",
+    "type": "house_manifest",
+    "layout": "boxed",
+    "file": "pdf/universal-02/03.pdf",
+    "sha256": "cc0ba85fc14aa6fb190d0e67f72deba13a48e8197524fdacff1b7a8036cc68d8",
+    "synthetic": true
+  },
+  {
+    "case": "universal-03",
+    "partition": "development",
+    "type": "house_bl",
+    "layout": "split",
+    "file": "pdf/universal-03/01.pdf",
+    "sha256": "f1f972bd280bcb8d9c602a353582f01df3ea8680fc4e3d9051a4f19626d57e2c",
+    "synthetic": true
+  },
+  {
+    "case": "universal-03",
+    "partition": "development",
+    "type": "export_declaration",
+    "layout": "form",
+    "file": "pdf/universal-03/02.pdf",
+    "sha256": "50507365154dc8ab034cc1b745a802764be0d762bf5cd4c79c8961633c3ddd30",
+    "synthetic": true
+  },
+  {
+    "case": "universal-03",
+    "partition": "development",
+    "type": "house_manifest",
+    "layout": "ledger",
+    "file": "pdf/universal-03/03.pdf",
+    "sha256": "f1c177b24c582ae36c1fe7e9bd62cd895556e4e0776944e0008d049033a543f4",
+    "synthetic": true
+  },
+  {
+    "case": "universal-04",
+    "partition": "development",
+    "type": "house_bl",
+    "layout": "boxed",
+    "file": "pdf/universal-04/01.pdf",
+    "sha256": "d89f36360e868ff16cd4c7f3a0de5881f98f91a1ddf17af697123501e7d0fd92",
+    "synthetic": true
+  },
+  {
+    "case": "universal-04",
+    "partition": "development",
+    "type": "export_declaration",
+    "layout": "ledger",
+    "file": "pdf/universal-04/02.pdf",
+    "sha256": "69a6b57cf1a808a11f89bc6da0535ba5cdf4b76e2dd640935ba9b301372d2a99",
+    "synthetic": true
+  },
+  {
+    "case": "universal-04",
+    "partition": "development",
+    "type": "house_manifest",
+    "layout": "split",
+    "file": "pdf/universal-04/03.pdf",
+    "sha256": "a61ea71b774ef68fa17205080517d32b493db8be3db8e62f4a053535e2687f70",
+    "synthetic": true
+  },
+  {
+    "case": "universal-05",
+    "partition": "development",
+    "type": "house_bl",
+    "layout": "form",
+    "file": "pdf/universal-05/01.pdf",
+    "sha256": "7d082d1dbe267e5e8423b07b4f4411cd316fbd0b9c71368c91781b7e570ec430",
+    "synthetic": true
+  },
+  {
+    "case": "universal-05",
+    "partition": "development",
+    "type": "export_declaration",
+    "layout": "split",
+    "file": "pdf/universal-05/02.pdf",
+    "sha256": "c759a3b41672fc63ca0211e87d2e3019a2eeddc23f6d7ed8a150c6c152c7c6e2",
+    "synthetic": true
+  },
+  {
+    "case": "universal-05",
+    "partition": "development",
+    "type": "house_manifest",
+    "layout": "boxed",
+    "file": "pdf/universal-05/03.pdf",
+    "sha256": "72deaf3dc50ac95d54f72d32d047778bde1c903cf94419e85976719140b2a228",
+    "synthetic": true
+  },
+  {
+    "case": "universal-06",
+    "partition": "development",
+    "type": "house_bl",
+    "layout": "ledger",
+    "file": "pdf/universal-06/01.pdf",
+    "sha256": "2a42509364604277af7dfe952c6734f5ea9a17fa74509474856b80f7e48ac9fe",
+    "synthetic": true
+  },
+  {
+    "case": "universal-06",
+    "partition": "development",
+    "type": "export_declaration",
+    "layout": "form",
+    "file": "pdf/universal-06/02.pdf",
+    "sha256": "36310837de36707a32ed5790959375a1d1611b297fdb19c4a612f0264d75ae9e",
+    "synthetic": true
+  },
+  {
+    "case": "universal-06",
+    "partition": "development",
+    "type": "house_manifest",
+    "layout": "split",
+    "file": "pdf/universal-06/03.pdf",
+    "sha256": "6ce8498a1962f4a68952e79cbca98223f78c1a84988fe3504f74baa1dfba16ed",
+    "synthetic": true
+  },
+  {
+    "case": "universal-07",
+    "partition": "holdout",
+    "type": "house_bl",
+    "layout": "landscape",
+    "file": "pdf/universal-07/01.pdf",
+    "sha256": "4817f97a8bfb56b0e133993b324c8d218d73ffc79501f15b4dbd1494a3248155",
+    "synthetic": true
+  },
+  {
+    "case": "universal-07",
+    "partition": "holdout",
+    "type": "export_declaration",
+    "layout": "stacked",
+    "file": "pdf/universal-07/02.pdf",
+    "sha256": "2731d4e1fd7a34c96de5fe436692ffd5b9cda273225e3f7fe03cb5aae8247dcd",
+    "synthetic": true
+  },
+  {
+    "case": "universal-07",
+    "partition": "holdout",
+    "type": "house_manifest",
+    "layout": "landscape",
+    "file": "pdf/universal-07/03.pdf",
+    "sha256": "01e6f59bb281270842ea4d80076c63c33d7739d8eac83063771e8e55e386ecff",
+    "synthetic": true
+  },
+  {
+    "case": "universal-08",
+    "partition": "holdout",
+    "type": "house_bl",
+    "layout": "stacked",
+    "file": "pdf/universal-08/01.pdf",
+    "sha256": "8fbe2044dd6923116d72e36f436488a42cf44a1681e61162535b0056389e6744",
+    "synthetic": true
+  },
+  {
+    "case": "universal-08",
+    "partition": "holdout",
+    "type": "export_declaration",
+    "layout": "continuation",
+    "file": "pdf/universal-08/02.pdf",
+    "sha256": "d794fe58f4162ca1e42db6e41d5aa0c5476c1c465df2e1bd1e5020eba4ea2317",
+    "synthetic": true
+  },
+  {
+    "case": "universal-08",
+    "partition": "holdout",
+    "type": "house_manifest",
+    "layout": "stacked",
+    "file": "pdf/universal-08/03.pdf",
+    "sha256": "4a37b2dab0766aa306e80137ecc16a51dc4d9fcd3364061ea3d45e344ad7d3a0",
+    "synthetic": true
+  },
+  {
+    "case": "universal-09",
+    "partition": "holdout",
+    "type": "house_bl",
+    "layout": "continuation",
+    "file": "pdf/universal-09/01.pdf",
+    "sha256": "c3fd30f2eba583537752a6978a6470c3ab818448aefa349869c25374ee0257c4",
+    "synthetic": true
+  },
+  {
+    "case": "universal-09",
+    "partition": "holdout",
+    "type": "export_declaration",
+    "layout": "landscape",
+    "file": "pdf/universal-09/02.pdf",
+    "sha256": "3f53eb3e5b6e258d89b328e6d90b1f25b8744359f692a36f86ae0ec1ec78481c",
+    "synthetic": true
+  },
+  {
+    "case": "universal-09",
+    "partition": "holdout",
+    "type": "house_manifest",
+    "layout": "continuation",
+    "file": "pdf/universal-09/03.pdf",
+    "sha256": "4d0e073f19c16a0f2f90e7ee7aa3f05ce162c4eca6e5531af482b2065817f3bb",
+    "synthetic": true
+  },
+  {
+    "case": "universal-10",
+    "partition": "holdout",
+    "type": "house_bl",
+    "layout": "stacked",
+    "file": "pdf/universal-10/01.pdf",
+    "sha256": "cb95c7732b396dae79a19b824fbe627e164696eae6f40b1a630e970385c83980",
+    "synthetic": true
+  },
+  {
+    "case": "universal-10",
+    "partition": "holdout",
+    "type": "export_declaration",
+    "layout": "landscape",
+    "file": "pdf/universal-10/02.pdf",
+    "sha256": "e6369da9881e26ff8e6cdd6cba421b4598b2c88b97c9d5a7eb441f5eac1a9b0a",
+    "synthetic": true
+  },
+  {
+    "case": "universal-10",
+    "partition": "holdout",
+    "type": "house_manifest",
+    "layout": "stacked",
+    "file": "pdf/universal-10/03.pdf",
+    "sha256": "20356b6607969f64a018a85130745ec36320412ea32558dc54477e45385f0e05",
+    "synthetic": true
+  },
+  {
+    "case": "universal-11",
+    "partition": "stress",
+    "type": "house_bl",
+    "layout": "continuation",
+    "file": "pdf/universal-11/01.pdf",
+    "sha256": "b0580839e1a5716f03e569bb95f26d577c6da82290aa5c7cedf8749624489203",
+    "synthetic": true
+  },
+  {
+    "case": "universal-11",
+    "partition": "stress",
+    "type": "export_declaration",
+    "layout": "continuation",
+    "file": "pdf/universal-11/02.pdf",
+    "sha256": "2abd75b008ed06702409dc11cb48d574fde3305e020a5cb67fd70d9805b996b7",
+    "synthetic": true
+  },
+  {
+    "case": "universal-11",
+    "partition": "stress",
+    "type": "house_manifest",
+    "layout": "continuation",
+    "file": "pdf/universal-11/03.pdf",
+    "sha256": "1a385f4297edc5a14c2c3a79a06596e757ab7c2b69cda2cd635b01771a63ea62",
+    "synthetic": true
+  },
+  {
+    "case": "universal-12",
+    "partition": "stress",
+    "type": "house_bl",
+    "layout": "ledger",
+    "file": "pdf/universal-12/01.pdf",
+    "sha256": "2c1d99ee59add31f2a1d75b5ab95b4c7a8932af5079d63982e488a188ae1b360",
+    "synthetic": true
+  },
+  {
+    "case": "universal-12",
+    "partition": "stress",
+    "type": "export_declaration",
+    "layout": "continuation",
+    "file": "pdf/universal-12/02.pdf",
+    "sha256": "c36e30fb949ff5da6e43c952f7c5e28ea3a415a65fb98847852172a86ba94e14",
+    "synthetic": true
+  },
+  {
+    "case": "universal-12",
+    "partition": "stress",
+    "type": "house_manifest",
+    "layout": "split",
+    "file": "pdf/universal-12/03.pdf",
+    "sha256": "6d83e9cf2bd5944a0f560f506ab54ce9e82f01549fb3ac6c36b914b769b7fefe",
+    "synthetic": true
+  },
+  {
+    "case": "fault-quantity",
+    "partition": "error",
+    "type": "house_manifest",
+    "layout": "ledger",
+    "parent": "universal-01",
+    "fault": "quantity",
+    "file": "pdf/fault-quantity/03.pdf",
+    "sha256": "a59f8497868a5721d21d88270e4e41f1e66e1912e12cfb85c174231d6c202baa",
+    "synthetic": true
+  },
+  {
+    "case": "fault-packageCount",
+    "partition": "error",
+    "type": "house_manifest",
+    "layout": "boxed",
+    "parent": "universal-02",
+    "fault": "packageCount",
+    "file": "pdf/fault-packageCount/03.pdf",
+    "sha256": "cc9dd5729dcbea50aeaeb54d137172ce689bddf14d3a89757ee174d02b220798",
+    "synthetic": true
+  },
+  {
+    "case": "fault-grossWeight",
+    "partition": "error",
+    "type": "house_manifest",
+    "layout": "ledger",
+    "parent": "universal-03",
+    "fault": "grossWeight",
+    "file": "pdf/fault-grossWeight/03.pdf",
+    "sha256": "92c02e65e7ef19e6fbe737897d8cfa4a5e4597322707fc7f744237c31aa348c6",
+    "synthetic": true
+  },
+  {
+    "case": "fault-containerNumber",
+    "partition": "error",
+    "type": "house_manifest",
+    "layout": "split",
+    "parent": "universal-04",
+    "fault": "containerNumber",
+    "file": "pdf/fault-containerNumber/03.pdf",
+    "sha256": "7340c7960e02159ba29e48df4e2bc5fb90a595b7918174f61d729f26d2304ec9",
+    "synthetic": true
+  },
+  {
+    "case": "fault-sealNumber",
+    "partition": "error",
+    "type": "house_manifest",
+    "layout": "boxed",
+    "parent": "universal-05",
+    "fault": "sealNumber",
+    "file": "pdf/fault-sealNumber/03.pdf",
+    "sha256": "15b41102e55ec7ccbc2c8dff87dfbe70feec3dd9a81a1be382253b7210f885ba",
+    "synthetic": true
+  },
+  {
+    "case": "fault-houseBlNumber",
+    "partition": "error",
+    "type": "house_manifest",
+    "layout": "split",
+    "parent": "universal-06",
+    "fault": "houseBlNumber",
+    "file": "pdf/fault-houseBlNumber/03.pdf",
+    "sha256": "d442cc401e244657184ec88aa3bfe82aa45cdd5694a0055894979b5edfeac41a",
+    "synthetic": true
+  },
+  {
+    "case": "fault-hsCode",
+    "partition": "error",
+    "type": "house_manifest",
+    "layout": "ledger",
+    "parent": "universal-01",
+    "fault": "hsCode",
+    "file": "pdf/fault-hsCode/03.pdf",
+    "sha256": "e59f703072c2dd7018b20c1dde40731a94ff4a73a481ece9fa49fbb48c0ae5d0",
+    "synthetic": true
+  },
+  {
+    "case": "fault-model",
+    "partition": "error",
+    "type": "house_manifest",
+    "layout": "boxed",
+    "parent": "universal-02",
+    "fault": "model",
+    "file": "pdf/fault-model/03.pdf",
+    "sha256": "ccfaf2238c274c460338eb0ebe64a56e5d1b1478fc87dbc3f0638dee2aafe7e1",
+    "synthetic": true
+  }
+]

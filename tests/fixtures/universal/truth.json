@@ -1,0 +1,648 @@
+[
+  {
+    "id": "universal-01",
+    "partition": "development",
+    "hbl": "SYN-UNIV-001",
+    "declaration": "SYN-DECL-001",
+    "shipper": "Synthetic Origin 1 Ltd",
+    "consignee": "Synthetic Destination 1 Ltd",
+    "pol": "BUSAN",
+    "pod": "ROTTERDAM",
+    "packages": 12,
+    "gross": 120,
+    "items": [
+      {
+        "en": "WOVEN COTTON APRON MODEL A17",
+        "ko": "면직물 앞치마 MODEL A17",
+        "hs": "6211.42",
+        "quantity": 420,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000000",
+        "seal": "EVAL-SEAL-01-1",
+        "packages": 12.0,
+        "gross": 120.0
+      }
+    ]
+  },
+  {
+    "id": "universal-02",
+    "partition": "development",
+    "hbl": "SYN-UNIV-002",
+    "declaration": "SYN-DECL-002",
+    "shipper": "Synthetic Origin 2 Ltd",
+    "consignee": "Synthetic Destination 2 Ltd",
+    "pol": "HAMBURG",
+    "pod": "SINGAPORE",
+    "packages": 14,
+    "gross": 150,
+    "items": [
+      {
+        "en": "NETWORK GATEWAY MODEL NG84 RAM 8GB STORAGE 128GB",
+        "ko": "네트워크 게이트웨이 MODEL NG84 RAM 8GB STORAGE 128GB",
+        "hs": "8517.62",
+        "quantity": 84,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000010",
+        "seal": "EVAL-SEAL-02-1",
+        "packages": 14.0,
+        "gross": 150.0
+      }
+    ]
+  },
+  {
+    "id": "universal-03",
+    "partition": "development",
+    "hbl": "SYN-UNIV-003",
+    "declaration": "SYN-DECL-003",
+    "shipper": "Synthetic Origin 3 Ltd",
+    "consignee": "Synthetic Destination 3 Ltd",
+    "pol": "TOKYO",
+    "pod": "LOS ANGELES, USA",
+    "packages": 16,
+    "gross": 180,
+    "items": [
+      {
+        "en": "PRECISION PLANETARY GEAR REDUCER SERIES GR42 RATIO 40:1",
+        "ko": "정밀 유성 감속기 SERIES GR42 RATIO 40:1",
+        "hs": "8483.40",
+        "quantity": 36,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000020",
+        "seal": "EVAL-SEAL-03-1",
+        "packages": 16.0,
+        "gross": 180.0
+      }
+    ]
+  },
+  {
+    "id": "universal-04",
+    "partition": "development",
+    "hbl": "SYN-UNIV-004",
+    "declaration": "SYN-DECL-004",
+    "shipper": "Synthetic Origin 4 Ltd",
+    "consignee": "Synthetic Destination 4 Ltd",
+    "pol": "BUSAN",
+    "pod": "ROTTERDAM",
+    "packages": 18,
+    "gross": 210,
+    "items": [
+      {
+        "en": "REUSABLE POLYPROPYLENE CRATE MODEL RC12",
+        "ko": "재사용 폴리프로필렌 상자 MODEL RC12",
+        "hs": "3923.10",
+        "quantity": 240,
+        "unit": "PCS"
+      },
+      {
+        "en": "NONWOVEN PROTECTIVE COVER MODEL CV4",
+        "ko": "부직포 보호 커버 MODEL CV4",
+        "hs": "6307.90",
+        "quantity": 65,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000030",
+        "seal": "EVAL-SEAL-04-1",
+        "packages": 18.0,
+        "gross": 210.0
+      }
+    ]
+  },
+  {
+    "id": "universal-05",
+    "partition": "development",
+    "hbl": "SYN-UNIV-005",
+    "declaration": "SYN-DECL-005",
+    "shipper": "Synthetic Origin 5 Ltd",
+    "consignee": "Synthetic Destination 5 Ltd",
+    "pol": "HAMBURG",
+    "pod": "SINGAPORE",
+    "packages": 20,
+    "gross": 240,
+    "items": [
+      {
+        "en": "PNEUMATIC QUICK COUPLING MODEL QC9",
+        "ko": "공압 퀵 커플링 MODEL QC9",
+        "hs": "7307.99",
+        "quantity": 640,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000040",
+        "seal": "EVAL-SEAL-05-1",
+        "packages": 10.0,
+        "gross": 120.0
+      },
+      {
+        "container": "EVLU1000041",
+        "seal": "EVAL-SEAL-05-2",
+        "packages": 10.0,
+        "gross": 120.0
+      }
+    ]
+  },
+  {
+    "id": "universal-06",
+    "partition": "development",
+    "hbl": "SYN-UNIV-006",
+    "declaration": "SYN-DECL-006",
+    "shipper": "Synthetic Origin 6 Ltd",
+    "consignee": "Synthetic Destination 6 Ltd",
+    "pol": "TOKYO",
+    "pod": "LOS ANGELES, USA",
+    "packages": 22,
+    "gross": 270,
+    "items": [
+      {
+        "en": "HANDHELD OPTICAL REFRACTOMETER MODEL RF3",
+        "ko": "휴대용 광학 굴절계 MODEL RF3",
+        "hs": "9027.50",
+        "quantity": 125,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000050",
+        "seal": "EVAL-SEAL-06-1",
+        "packages": 22.0,
+        "gross": 270.0
+      }
+    ]
+  },
+  {
+    "id": "universal-07",
+    "partition": "holdout",
+    "hbl": "SYN-UNIV-007",
+    "declaration": "SYN-DECL-007",
+    "shipper": "Synthetic Origin 7 Ltd",
+    "consignee": "Synthetic Destination 7 Ltd",
+    "pol": "BUSAN",
+    "pod": "ROTTERDAM",
+    "packages": 24,
+    "gross": 300,
+    "items": [
+      {
+        "en": "BOROSILICATE REAGENT BOTTLE 250ML",
+        "ko": "붕규산 시약병 250ML",
+        "hs": "7010.90",
+        "quantity": 330,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000060",
+        "seal": "EVAL-SEAL-07-1",
+        "packages": 24.0,
+        "gross": 300.0
+      }
+    ]
+  },
+  {
+    "id": "universal-08",
+    "partition": "holdout",
+    "hbl": "SYN-UNIV-008",
+    "declaration": "SYN-DECL-008",
+    "shipper": "Synthetic Origin 8 Ltd",
+    "consignee": "Synthetic Destination 8 Ltd",
+    "pol": "HAMBURG",
+    "pod": "SINGAPORE",
+    "packages": 26,
+    "gross": 330,
+    "items": [
+      {
+        "en": "ANODIZED ALUMINIUM BRACKET MODEL AB6",
+        "ko": "양극산화 알루미늄 브래킷 MODEL AB6",
+        "hs": "7616.99",
+        "quantity": 175,
+        "unit": "PCS"
+      },
+      {
+        "en": "NONWOVEN PROTECTIVE COVER MODEL CV4",
+        "ko": "부직포 보호 커버 MODEL CV4",
+        "hs": "6307.90",
+        "quantity": 69,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000070",
+        "seal": "EVAL-SEAL-08-1",
+        "packages": 26.0,
+        "gross": 330.0
+      }
+    ]
+  },
+  {
+    "id": "universal-09",
+    "partition": "holdout",
+    "hbl": "SYN-UNIV-009",
+    "declaration": "SYN-DECL-009",
+    "shipper": "Synthetic Origin 9 Ltd",
+    "consignee": "Synthetic Destination 9 Ltd",
+    "pol": "TOKYO",
+    "pod": "LOS ANGELES, USA",
+    "packages": 28,
+    "gross": 360,
+    "items": [
+      {
+        "en": "RECYCLED POLYESTER YARN 150D",
+        "ko": "재생 폴리에스터 원사 150D",
+        "hs": "5402.47",
+        "quantity": 780,
+        "unit": "PCS"
+      },
+      {
+        "en": "NONWOVEN PROTECTIVE COVER MODEL CV4",
+        "ko": "부직포 보호 커버 MODEL CV4",
+        "hs": "6307.90",
+        "quantity": 70,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000080",
+        "seal": "EVAL-SEAL-09-1",
+        "packages": 28.0,
+        "gross": 360.0
+      }
+    ]
+  },
+  {
+    "id": "universal-10",
+    "partition": "holdout",
+    "hbl": "SYN-UNIV-010",
+    "declaration": "SYN-DECL-010",
+    "shipper": "Synthetic Origin 10 Ltd",
+    "consignee": "Synthetic Destination 10 Ltd",
+    "pol": "BUSAN",
+    "pod": "ROTTERDAM",
+    "packages": 30,
+    "gross": 390,
+    "items": [
+      {
+        "en": "EMPTY COSMETIC DISPENSER MODEL DP2 30ML",
+        "ko": "빈 화장품 디스펜서 MODEL DP2 30ML",
+        "hs": "3923.30",
+        "quantity": 900,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000090",
+        "seal": "EVAL-SEAL-10-1",
+        "packages": 30.0,
+        "gross": 390.0
+      }
+    ]
+  },
+  {
+    "id": "universal-11",
+    "partition": "stress",
+    "hbl": "SYN-UNIV-011",
+    "declaration": "SYN-DECL-011",
+    "shipper": "Synthetic Origin 11 Ltd",
+    "consignee": "Synthetic Destination 11 Ltd",
+    "pol": "HAMBURG",
+    "pod": "SINGAPORE",
+    "packages": 32,
+    "gross": 420,
+    "items": [
+      {
+        "en": "CERAMIC SENSOR SLEEVE MODEL 10000",
+        "ko": "세라믹 센서 슬리브 MODEL 10000",
+        "hs": "8547.10",
+        "quantity": 96,
+        "unit": "PCS"
+      },
+      {
+        "en": "NONWOVEN PROTECTIVE COVER MODEL CV4",
+        "ko": "부직포 보호 커버 MODEL CV4",
+        "hs": "6307.90",
+        "quantity": 72,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000100",
+        "seal": "EVAL-SEAL-11-1",
+        "packages": 16.0,
+        "gross": 210.0
+      },
+      {
+        "container": "EVLU1000101",
+        "seal": "EVAL-SEAL-11-2",
+        "packages": 16.0,
+        "gross": 210.0
+      }
+    ]
+  },
+  {
+    "id": "universal-12",
+    "partition": "stress",
+    "hbl": "SYN-UNIV-012",
+    "declaration": "SYN-DECL-012",
+    "shipper": "Synthetic Origin 12 Ltd",
+    "consignee": "Synthetic Destination 12 Ltd",
+    "pol": "TOKYO",
+    "pod": "LOS ANGELES, USA",
+    "packages": 34,
+    "gross": 450,
+    "items": [
+      {
+        "en": "STAINLESS STEEL FILTER HOUSING MODEL FH8",
+        "ko": "스테인리스 필터 하우징 MODEL FH8",
+        "hs": "8421.99",
+        "quantity": 54,
+        "unit": "PCS"
+      },
+      {
+        "en": "NONWOVEN PROTECTIVE COVER MODEL CV4",
+        "ko": "부직포 보호 커버 MODEL CV4",
+        "hs": "6307.90",
+        "quantity": 73,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000110",
+        "seal": "EVAL-SEAL-12-1",
+        "packages": 17.0,
+        "gross": 225.0
+      },
+      {
+        "container": "EVLU1000111",
+        "seal": "EVAL-SEAL-12-2",
+        "packages": 17.0,
+        "gross": 225.0
+      }
+    ]
+  },
+  {
+    "id": "fault-quantity",
+    "partition": "development",
+    "hbl": "SYN-UNIV-001",
+    "declaration": "SYN-DECL-001",
+    "shipper": "Synthetic Origin 1 Ltd",
+    "consignee": "Synthetic Destination 1 Ltd",
+    "pol": "BUSAN",
+    "pod": "ROTTERDAM",
+    "packages": 12,
+    "gross": 120,
+    "items": [
+      {
+        "en": "WOVEN COTTON APRON MODEL A17",
+        "ko": "면직물 앞치마 MODEL A17",
+        "hs": "6211.42",
+        "quantity": 437,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000000",
+        "seal": "EVAL-SEAL-01-1",
+        "packages": 12.0,
+        "gross": 120.0
+      }
+    ]
+  },
+  {
+    "id": "fault-packageCount",
+    "partition": "development",
+    "hbl": "SYN-UNIV-002",
+    "declaration": "SYN-DECL-002",
+    "shipper": "Synthetic Origin 2 Ltd",
+    "consignee": "Synthetic Destination 2 Ltd",
+    "pol": "HAMBURG",
+    "pod": "SINGAPORE",
+    "packages": 17,
+    "gross": 150,
+    "items": [
+      {
+        "en": "NETWORK GATEWAY MODEL NG84 RAM 8GB STORAGE 128GB",
+        "ko": "네트워크 게이트웨이 MODEL NG84 RAM 8GB STORAGE 128GB",
+        "hs": "8517.62",
+        "quantity": 84,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000010",
+        "seal": "EVAL-SEAL-02-1",
+        "packages": 17.0,
+        "gross": 150.0
+      }
+    ]
+  },
+  {
+    "id": "fault-grossWeight",
+    "partition": "development",
+    "hbl": "SYN-UNIV-003",
+    "declaration": "SYN-DECL-003",
+    "shipper": "Synthetic Origin 3 Ltd",
+    "consignee": "Synthetic Destination 3 Ltd",
+    "pol": "TOKYO",
+    "pod": "LOS ANGELES, USA",
+    "packages": 16,
+    "gross": 191,
+    "items": [
+      {
+        "en": "PRECISION PLANETARY GEAR REDUCER SERIES GR42 RATIO 40:1",
+        "ko": "정밀 유성 감속기 SERIES GR42 RATIO 40:1",
+        "hs": "8483.40",
+        "quantity": 36,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000020",
+        "seal": "EVAL-SEAL-03-1",
+        "packages": 16.0,
+        "gross": 191.0
+      }
+    ]
+  },
+  {
+    "id": "fault-containerNumber",
+    "partition": "development",
+    "hbl": "SYN-UNIV-004",
+    "declaration": "SYN-DECL-004",
+    "shipper": "Synthetic Origin 4 Ltd",
+    "consignee": "Synthetic Destination 4 Ltd",
+    "pol": "BUSAN",
+    "pod": "ROTTERDAM",
+    "packages": 18,
+    "gross": 210,
+    "items": [
+      {
+        "en": "REUSABLE POLYPROPYLENE CRATE MODEL RC12",
+        "ko": "재사용 폴리프로필렌 상자 MODEL RC12",
+        "hs": "3923.10",
+        "quantity": 240,
+        "unit": "PCS"
+      },
+      {
+        "en": "NONWOVEN PROTECTIVE COVER MODEL CV4",
+        "ko": "부직포 보호 커버 MODEL CV4",
+        "hs": "6307.90",
+        "quantity": 65,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU9999999",
+        "seal": "EVAL-SEAL-04-1",
+        "packages": 18.0,
+        "gross": 210.0
+      }
+    ]
+  },
+  {
+    "id": "fault-sealNumber",
+    "partition": "development",
+    "hbl": "SYN-UNIV-005",
+    "declaration": "SYN-DECL-005",
+    "shipper": "Synthetic Origin 5 Ltd",
+    "consignee": "Synthetic Destination 5 Ltd",
+    "pol": "HAMBURG",
+    "pod": "SINGAPORE",
+    "packages": 20,
+    "gross": 240,
+    "items": [
+      {
+        "en": "PNEUMATIC QUICK COUPLING MODEL QC9",
+        "ko": "공압 퀵 커플링 MODEL QC9",
+        "hs": "7307.99",
+        "quantity": 640,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000040",
+        "seal": "EVAL-DIFFERENT-SEAL",
+        "packages": 10.0,
+        "gross": 120.0
+      },
+      {
+        "container": "EVLU1000041",
+        "seal": "EVAL-SEAL-05-2",
+        "packages": 10.0,
+        "gross": 120.0
+      }
+    ]
+  },
+  {
+    "id": "fault-houseBlNumber",
+    "partition": "development",
+    "hbl": "SYN-UNIV-UNRELATED",
+    "declaration": "SYN-DECL-006",
+    "shipper": "Synthetic Origin 6 Ltd",
+    "consignee": "Synthetic Destination 6 Ltd",
+    "pol": "TOKYO",
+    "pod": "LOS ANGELES, USA",
+    "packages": 22,
+    "gross": 270,
+    "items": [
+      {
+        "en": "HANDHELD OPTICAL REFRACTOMETER MODEL RF3",
+        "ko": "휴대용 광학 굴절계 MODEL RF3",
+        "hs": "9027.50",
+        "quantity": 125,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000050",
+        "seal": "EVAL-SEAL-06-1",
+        "packages": 22.0,
+        "gross": 270.0
+      }
+    ]
+  },
+  {
+    "id": "fault-hsCode",
+    "partition": "development",
+    "hbl": "SYN-UNIV-001",
+    "declaration": "SYN-DECL-001",
+    "shipper": "Synthetic Origin 1 Ltd",
+    "consignee": "Synthetic Destination 1 Ltd",
+    "pol": "BUSAN",
+    "pod": "ROTTERDAM",
+    "packages": 12,
+    "gross": 120,
+    "items": [
+      {
+        "en": "WOVEN COTTON APRON MODEL A17",
+        "ko": "면직물 앞치마 MODEL A17",
+        "hs": "8501.10",
+        "quantity": 420,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000000",
+        "seal": "EVAL-SEAL-01-1",
+        "packages": 12.0,
+        "gross": 120.0
+      }
+    ]
+  },
+  {
+    "id": "fault-model",
+    "partition": "development",
+    "hbl": "SYN-UNIV-002",
+    "declaration": "SYN-DECL-002",
+    "shipper": "Synthetic Origin 2 Ltd",
+    "consignee": "Synthetic Destination 2 Ltd",
+    "pol": "HAMBURG",
+    "pod": "SINGAPORE",
+    "packages": 14,
+    "gross": 150,
+    "items": [
+      {
+        "en": "NETWORK GATEWAY MODEL NG95 RAM 8GB STORAGE 128GB",
+        "ko": "네트워크 게이트웨이 MODEL NG84 RAM 8GB STORAGE 128GB",
+        "hs": "8517.62",
+        "quantity": 84,
+        "unit": "PCS"
+      }
+    ],
+    "containers": [
+      {
+        "container": "EVLU1000010",
+        "seal": "EVAL-SEAL-02-1",
+        "packages": 14.0,
+        "gross": 150.0
+      }
+    ]
+  }
+]

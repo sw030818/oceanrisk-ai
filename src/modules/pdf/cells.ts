@@ -80,28 +80,25 @@ export function nativePdfCells(
     for (const l of spans) if (l.x1 <= end + 0.3 && l.x2 >= end) end = l.x2;
     return end >= right - 0.3;
   };
+  // Page-global adjacent Y coordinates are not cell boundaries: an unrelated
+  // sidebar can introduce a Y between the top/bottom of a genuine closed cell.
+  // Enumerate locally closed faces, requiring real strokes on all four sides.
+  // Interior strokes split a face; never manufacture a containing table total.
+  let work = 0;
   for (let i = 0; i < ys.length - 1; i++) {
-    const top = ys[i],
-      bottom = ys[i + 1];
-    if (bottom - top < 6) continue;
-    const xs = unique(
-      vert
-        .filter((l) => l.y1 <= top + 0.3 && l.y2 >= bottom - 0.3)
-        .map((l) => l.x1),
-    );
-    for (let j = 0; j < xs.length - 1; j++)
-      if (
-        xs[j + 1] - xs[j] >= 8 &&
-        covers(top, xs[j], xs[j + 1]) &&
-        covers(bottom, xs[j], xs[j + 1])
-      )
-        cells.push({
-          x: xs[j],
-          y: top,
-          width: xs[j + 1] - xs[j],
-          height: bottom - top,
-        });
-    if (cells.length > 2000) return [];
+    const top = ys[i];
+    for (const bottom of ys.slice(i + 1)) {
+      if (bottom - top < 6) continue;
+      const xs = unique(vert.filter(l => l.y1 <= top + 0.3 && l.y2 >= bottom - 0.3).map(l => l.x1));
+      for (let j = 0; j < xs.length - 1; j++) {
+        if (++work > 500000) return []; // bounded conservative failure
+        const left=xs[j], right=xs[j+1];
+        if (right-left<8 || !covers(top,left,right) || !covers(bottom,left,right)) continue;
+        const divided = horiz.some(l => l.y1 > top+0.3 && l.y1 < bottom-0.3 && Math.min(l.x2,right)-Math.max(l.x1,left)>0.3);
+        if (!divided) cells.push({x:left,y:top,width:right-left,height:bottom-top});
+        if (cells.length > 2000) return [];
+      }
+    }
   }
   return cells;
 }

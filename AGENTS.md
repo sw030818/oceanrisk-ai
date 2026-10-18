@@ -136,3 +136,10 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 기존 엔진을 진단 후 최소 수정하며 새 PHASE/새 엔진/상품별 사전 확대/전면 UI 변경 금지. 실제 원문 존재·문서 기재값 비교·전체 화물 완전성은 다르다. 헤더/합계가 native 행으로 세어지는지 독립 PDF로 확인하고 진짜 누락/다른행/부분/중복/OCR/수정을 보호한다.
 - 성공한 AI 의미 대응은 정보성(disposition)으로 표시하며 assessment는 잠정 그대로 유지한다. 조치 문제에서 제외하는 것은 검증된 의미 성공에 한정하며, 실패·미확인 범위·수치/HS/참조/모델 오류는 보존한다. 원본 checks/AI 결정/수정·복원/보고서 근거를 유지한다.
 - 정상 Set2와 새 한영·다품목·낯선 상품·실제 숫자/모델 오류 PDF를 실제 OpenAI E2E로 평가한다. 정답은 평가 도구에만 두고 provider 입력에 넣지 않는다. 이전 응답 재생은 새로운 E2E와 구분한다. local key 부재 시 승인된 정확 Production SHA를 이용한다. 최종 ship/Actions/Production exactSHA 및 별도 증거 절차는 유지한다.
+
+## 신규 범용 실증 — 현재 사용자 승인 (2026-10-18)
+- 기존 PHASE39 ledger를 그대로 승계한다. 확인59문서/86요청/추정USD0.096102395/미확인상한0.01262635를 유지하고, 이번 명시 지시로 누적150문서/220요청으로 확대한다. 비용상한USD2는 유지한다. 기존60/120 한도만 명시적 predecessor migration하며 다른 단계/임의한도/사용량초기화 금지.
+- 신규 독립합성12거래36PDF+8오류PDF. Development01–06, frozen Blind Holdout07–10, Stress11–12. Holdout 해시/정답은 첫실증전에고정하며 Holdout결과로조정하면 새Holdout교체. 평가정답은scorer만읽고AI요청은PDF+일반지시+빈스키마만사용한다.
+- 최초실제Development18문서기록보존 후 공통구조원인만수정. 무료재생과새실제추출/Recovery/verifiedcoverage/확정·잠정탐지/TP·FP·FN/API실패를분리한다. 미검증값을분모에서제외하지않는다. 원본·OCR·사용자수정·다른HBL·부분/공동포장·미명시합계보호유지.
+- 실제실행 `tsx scripts/universal/live.ts --sha=<ProductionSHA> --stage=baseline|development|holdout|stress|error|final --case=<id> --approved-documents=150 --approved-requests=220 --approved-max-cost-usd=2.00`. Holdout은code-frozen=true추가. 자동재시도0, 실패후원인확인한수동실행만허용. 최종SHA새실증예산보존. ledger원격체크포인트는실행잠금해제후에만한다.
+- 기존754단위/70브라우저/Set2·3회귀보존. 최종ship/main/quality·production/실서비스동일SHA와validation/phase39-evidence누적저장 절차유지. 실제사용자PDF/raw응답/키공개금지. UI전면개편없음.
