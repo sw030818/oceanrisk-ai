@@ -1,0 +1,2359 @@
+{
+  "kind": "Previously parsed actual OpenAI PHASE37 responses; deterministic review replay only; no new extraction or API calls",
+  "extractionSha": "231de96b6b6ff8e7a6ad6a17568aa55a7c3d42b5",
+  "evaluation": "PHASE39 deterministic review, no new AI extraction",
+  "evaluationSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "summary": {
+    "scenarios": 14,
+    "documents": 44,
+    "classified": 44,
+    "fieldPresent": 1090,
+    "fieldVerified": 1082,
+    "fieldVerificationRate": 0.9926605504587156,
+    "errorScenarios": 4,
+    "flaggedFaults": 4,
+    "confirmedTP": 4,
+    "confirmedFP": 0,
+    "confirmedFN": 0,
+    "confirmedPrecision": 1,
+    "confirmedRecall": 1,
+    "relationshipTP": 44,
+    "relationshipFP": 0,
+    "relationshipExpected": 46,
+    "normalScenarios": 6,
+    "normalWithHolds": 0,
+    "unresolvedCoreComparisons": 20
+  },
+  "rows": [
+    {
+      "id": "dev37-11",
+      "partition": "development",
+      "kind": "error",
+      "layout": "continued",
+      "language": "ko",
+      "variant": null,
+      "expectedFault": "quantity",
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 72,
+      "fieldVerified": 72,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [
+        "quantity"
+      ],
+      "confirmedFalsePositives": [],
+      "faultDetected": true,
+      "confirmedFaultDetected": true,
+      "provisional": 0,
+      "independentIssues": 1,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_mismatch",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "dev37-11-1792036919874.json"
+    },
+    {
+      "id": "dev37-2",
+      "partition": "development",
+      "kind": "normal",
+      "layout": "ledger",
+      "language": "ko",
+      "variant": null,
+      "expectedFault": null,
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 72,
+      "fieldVerified": 72,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 0,
+      "independentIssues": 0,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "dev37-2-1792036850087.json"
+    },
+    {
+      "id": "dev37-2",
+      "partition": "development",
+      "kind": "normal",
+      "layout": "ledger",
+      "language": "ko",
+      "variant": null,
+      "expectedFault": null,
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 72,
+      "fieldVerified": 72,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 0,
+      "independentIssues": 0,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "dev37-2-1792037702405.json"
+    },
+    {
+      "id": "dev37-21",
+      "partition": "development",
+      "kind": "complex",
+      "layout": "reversed",
+      "language": "mixed",
+      "variant": "multi-declaration",
+      "expectedFault": null,
+      "expectedDocuments": 4,
+      "documents": 4,
+      "classified": 4,
+      "fieldPresent": 109,
+      "fieldVerified": 109,
+      "expectedPairCount": 5,
+      "relationshipTP": 5,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "declarationNumber",
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "declarationNumber",
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 8,
+      "independentIssues": 1,
+      "requiredMissing": 0,
+      "aggregation": [
+        {
+          "assessment": "confirmed_match",
+          "derived": 2
+        }
+      ],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "dev37-21-1792037012530.json"
+    },
+    {
+      "id": "dev37-26",
+      "partition": "development",
+      "kind": "uncertain",
+      "layout": "ledger",
+      "language": "ko",
+      "variant": "partial",
+      "expectedFault": null,
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 71,
+      "fieldVerified": 71,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 3,
+      "independentIssues": 9,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "PARTIAL_SHIPMENT"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "PARTIAL_SHIPMENT"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "provisional_mismatch",
+          "codes": [
+            "PARTIAL_SHIPMENT"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "dev37-26-1792037078365.json"
+    },
+    {
+      "id": "dev37-27",
+      "partition": "development",
+      "kind": "uncertain",
+      "layout": "reversed",
+      "language": "mixed",
+      "variant": "missing-reference",
+      "expectedFault": null,
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 71,
+      "fieldVerified": 71,
+      "expectedPairCount": 3,
+      "relationshipTP": 1,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "proposed",
+          "sharedRoles": [],
+          "conflictRoles": []
+        },
+        {
+          "status": "proposed",
+          "sharedRoles": [],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 0,
+      "independentIssues": 29,
+      "requiredMissing": 2,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "dev37-27-1792037125269.json"
+    },
+    {
+      "id": "hold37-1",
+      "partition": "holdout",
+      "kind": "normal",
+      "layout": "reversed",
+      "language": "ko",
+      "variant": null,
+      "expectedFault": null,
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 72,
+      "fieldVerified": 72,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 0,
+      "independentIssues": 0,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "hold37-1-1792037273406.json"
+    },
+    {
+      "id": "hold37-2",
+      "partition": "holdout",
+      "kind": "normal",
+      "layout": "ledger",
+      "language": "mixed",
+      "variant": null,
+      "expectedFault": null,
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 72,
+      "fieldVerified": 72,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 0,
+      "independentIssues": 0,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "hold37-2-1792037313705.json"
+    },
+    {
+      "id": "hold37-3",
+      "partition": "holdout",
+      "kind": "normal",
+      "layout": "continued",
+      "language": "en",
+      "variant": null,
+      "expectedFault": null,
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 72,
+      "fieldVerified": 72,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 0,
+      "independentIssues": 0,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "hold37-3-1792037364376.json"
+    },
+    {
+      "id": "hold37-4",
+      "partition": "holdout",
+      "kind": "normal",
+      "layout": "header-units",
+      "language": "ko",
+      "variant": null,
+      "expectedFault": null,
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 72,
+      "fieldVerified": 72,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 0,
+      "independentIssues": 0,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "hold37-4-1792037420845.json"
+    },
+    {
+      "id": "hold37-5",
+      "partition": "holdout",
+      "kind": "error",
+      "layout": "cards",
+      "language": "en",
+      "variant": null,
+      "expectedFault": "quantity",
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 75,
+      "fieldVerified": 73,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [
+        "quantity"
+      ],
+      "confirmedFalsePositives": [],
+      "faultDetected": true,
+      "confirmedFaultDetected": true,
+      "provisional": 0,
+      "independentIssues": 1,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_mismatch",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "hold37-5-1792037476095.json"
+    },
+    {
+      "id": "hold37-6",
+      "partition": "holdout",
+      "kind": "error",
+      "layout": "bilingual",
+      "language": "mixed",
+      "variant": null,
+      "expectedFault": "sealNumber",
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 75,
+      "fieldVerified": 73,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [
+        "sealNumber"
+      ],
+      "confirmedFalsePositives": [],
+      "faultDetected": true,
+      "confirmedFaultDetected": true,
+      "provisional": 0,
+      "independentIssues": 1,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_mismatch",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "hold37-6-1792037542784.json"
+    },
+    {
+      "id": "hold37-7",
+      "partition": "holdout",
+      "kind": "error",
+      "layout": "reversed",
+      "language": "ko",
+      "variant": null,
+      "expectedFault": "goodsDescription",
+      "expectedDocuments": 3,
+      "documents": 3,
+      "classified": 3,
+      "fieldPresent": 75,
+      "fieldVerified": 72,
+      "expectedPairCount": 3,
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [
+        "goodsDescription"
+      ],
+      "confirmedFalsePositives": [],
+      "faultDetected": true,
+      "confirmedFaultDetected": true,
+      "provisional": 1,
+      "independentIssues": 3,
+      "requiredMissing": 0,
+      "aggregation": [],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_mismatch",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "provisional_match",
+          "codes": [
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "hold37-7-1792037588752.json"
+    },
+    {
+      "id": "hold37-8",
+      "partition": "holdout",
+      "kind": "complex",
+      "layout": "continued",
+      "language": "mixed",
+      "variant": "multi-declaration",
+      "expectedFault": null,
+      "expectedDocuments": 4,
+      "documents": 4,
+      "classified": 4,
+      "fieldPresent": 110,
+      "fieldVerified": 109,
+      "expectedPairCount": 5,
+      "relationshipTP": 5,
+      "relationshipFP": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "declarationNumber",
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "declarationNumber",
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        },
+        {
+          "status": "evidence_confirmed",
+          "sharedRoles": [
+            "houseBlNumber"
+          ],
+          "conflictRoles": []
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedFalsePositives": [],
+      "faultDetected": false,
+      "confirmedFaultDetected": null,
+      "provisional": 8,
+      "independentIssues": 1,
+      "requiredMissing": 0,
+      "aggregation": [
+        {
+          "assessment": "confirmed_match",
+          "derived": 2
+        }
+      ],
+      "primary": [
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED",
+            "SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "packageCount",
+          "status": "provisional_match",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "not_applicable",
+          "codes": [
+            "DECLARATION_SCOPE_UNRESOLVED"
+          ]
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "consignee",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "containerNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "declarationNumber",
+          "status": "not_applicable",
+          "codes": [
+            "FIELD_NOT_APPLICABLE"
+          ]
+        },
+        {
+          "meaning": "goodsDescription",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "grossWeight",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "houseBlNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "hsCode",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "packageCount",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfDischarge",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "portOfLoading",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "quantity",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "sealNumber",
+          "status": "confirmed_match",
+          "codes": []
+        },
+        {
+          "meaning": "shipper",
+          "status": "confirmed_match",
+          "codes": []
+        }
+      ],
+      "artifact": "hold37-8-1792037657135.json"
+    }
+  ]
+}

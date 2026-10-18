@@ -1,12 +1,12 @@
 {
   "phase": "3.9",
   "approval": "USER_FINAL_ENGINE_INSTRUCTION_USD2",
-  "providerRequests": 70,
+  "providerRequests": 72,
   "automaticRetries": 0,
   "budget": {
-    "documents": 49,
-    "requests": 70,
-    "measuredCostUsd": 0.07398891499999997,
+    "documents": 50,
+    "requests": 72,
+    "measuredCostUsd": 0.07539796999999997,
     "unresolvedCostUpperUsd": 0.012626350000000001,
     "maxDocuments": 60,
     "maxRequests": 120,
@@ -14,13 +14,13 @@
   },
   "limitsAreProposalOnly": false,
   "plan": {
-    "status": "APPROVED_USD2",
+    "status": "EVALUATED_WITH_RECORDED_PROVIDER_FAILURE_AND_LIMITATIONS",
     "documents": 60,
     "providerRequestsAtMost": 80,
     "automaticRetries": 0,
-    "composition": "Set2 initial3 + 17 development triplets51 + final same-SHA Set2 repeat3 and blind holdout3",
+    "composition": "Final same-SHA Set2 original UI, physically changed faults, bilingual/unfamiliar/multi-item and fresh two-page synthetic layouts; prior failures and costs retained.",
     "reservedFinalDocuments": 6,
-    "estimatedSourceRequestUpperUsd": 0.8238320749999999,
+    "estimatedSourceRequestUpperUsd": 0.8235521249999999,
     "estimateScope": "Upper bounds for expected oracle-derived request shapes only; actual unknown AI shapes are individually reserved before every request; budget stops prevail",
     "approvedCostUsd": 2,
     "proposedCaps": {
@@ -29,20 +29,26 @@
       "requests": 120
     }
   },
-  "sourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+  "previousProposalUsd": 10,
+  "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
   "currentCumulativeUsage": {
-    "documents": 49,
-    "requests": 70,
-    "measuredCostUsd": 0.07398891499999997,
+    "documents": 50,
+    "requests": 72,
+    "measuredCostUsd": 0.07539796999999997,
     "unresolvedCostUpperUsd": 0.012626350000000001,
     "maxDocuments": 60,
     "maxRequests": 120,
     "maxCostUsd": 2
   },
-  "previousProposalUsd": 10,
-  "checkpoint": {
-    "at": "2026-10-18T00:15:43.076Z",
-    "sourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
-    "status": "LIVE_EVALUATION_IN_PROGRESS_NOT_FINAL_SUCCESS"
-  }
+  "baselineUsage": {
+    "documents": 3,
+    "requests": 4,
+    "measuredCostUsd": 0.0064682,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "finalSourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "validationReport": "docs/validation/final-engine-2026-10-18/README.md"
 }

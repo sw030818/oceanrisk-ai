@@ -1,0 +1,36 @@
+{
+  "kind": "Unchanged real extracted documents and actual semantic response; free review replay, not new AI extraction",
+  "extractionSha": "a4bdcdf8ff7b15a09024f38c0dd6bcb488072af7",
+  "before": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 2,
+    "requiredMissing": 0,
+    "notApplicable": 11,
+    "notComparable": 0,
+    "evidenceFailed": 15,
+    "evidenceUnverified": 12,
+    "evidenceRecovered": 5,
+    "checksExecuted": 61,
+    "independentChecks": 26,
+    "comparisonEvidenceUnverified": 1,
+    "informational": 1
+  },
+  "after": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 11,
+    "notComparable": 0,
+    "evidenceFailed": 15,
+    "evidenceUnverified": 12,
+    "evidenceRecovered": 5,
+    "checksExecuted": 61,
+    "independentChecks": 24,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+  },
+  "actionIssues": 0,
+  "originalDiagnosticsPreserved": true
+}

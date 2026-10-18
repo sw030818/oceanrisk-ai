@@ -1,0 +1,394 @@
+{
+  "sourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "roles": [
+    {
+      "role": "houseBlNumber",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 2,
+      "currentCorrectVerified": 3
+    },
+    {
+      "role": "containerNumber",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 3,
+      "currentCorrectVerified": 3
+    },
+    {
+      "role": "sealNumber",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 3,
+      "currentCorrectVerified": 3
+    },
+    {
+      "role": "packageCount",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 3,
+      "currentCorrectVerified": 3
+    },
+    {
+      "role": "quantity",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 3,
+      "currentCorrectVerified": 3
+    },
+    {
+      "role": "grossWeight",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 2,
+      "currentCorrectVerified": 3
+    },
+    {
+      "role": "hsCode",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 3,
+      "currentCorrectVerified": 3
+    },
+    {
+      "role": "portOfLoading",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 3,
+      "currentCorrectVerified": 3
+    },
+    {
+      "role": "portOfDischarge",
+      "documentsWithPrimary": 3,
+      "originalCorrect": 3,
+      "currentCorrectVerified": 3
+    }
+  ],
+  "rolesWithTwoVerifiedCorrectDocuments": 9,
+  "scope": "Evaluation-only user-supplied Set2 truth, no truth enters production/model requests. Per-role uniquely valued native-verified fields across document/item/container owners; ambiguity is not resolved by expected truth. Missing is not an incorrect observed value.",
+  "rows": [
+    {
+      "documentType": "house_bl",
+      "role": "houseBlNumber",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_bl",
+      "role": "containerNumber",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_bl",
+      "role": "sealNumber",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_bl",
+      "role": "packageCount",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": false,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_bl",
+      "role": "quantity",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_bl",
+      "role": "grossWeight",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": false,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": false,
+      "originalPresent": false
+    },
+    {
+      "documentType": "house_bl",
+      "role": "hsCode",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_bl",
+      "role": "portOfLoading",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_bl",
+      "role": "portOfDischarge",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "houseBlNumber",
+      "originalAnyOwnerCorrect": false,
+      "originalAnyOwnerVerifiedCorrect": false,
+      "primaryPresent": true,
+      "originalCorrect": false,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": false,
+      "originalPresent": false
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "containerNumber",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "sealNumber",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "packageCount",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "quantity",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "grossWeight",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "hsCode",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "portOfLoading",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "export_declaration",
+      "role": "portOfDischarge",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "houseBlNumber",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "containerNumber",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "sealNumber",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "packageCount",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "quantity",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "grossWeight",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "hsCode",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "portOfLoading",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    },
+    {
+      "documentType": "house_manifest",
+      "role": "portOfDischarge",
+      "originalAnyOwnerCorrect": true,
+      "originalAnyOwnerVerifiedCorrect": true,
+      "primaryPresent": true,
+      "originalCorrect": true,
+      "currentCorrect": true,
+      "currentVerified": true,
+      "originalVerified": true,
+      "originalPresent": true
+    }
+  ],
+  "originalAnyOwnerCorrect": 26,
+  "originalAnyOwnerVerifiedCorrect": 26,
+  "selectedCurrentFieldOriginallyCorrect": 25,
+  "currentCorrect": 27,
+  "currentCorrectVerified": 27,
+  "present": 27,
+  "total": 27
+}

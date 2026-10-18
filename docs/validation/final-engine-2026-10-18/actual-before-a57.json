@@ -1,0 +1,287 @@
+{
+  "kind": "New OpenAI first extraction and separate semantic request; not oracle replay",
+  "sourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
+  "case": "set2",
+  "sourceShaStable": true,
+  "score": {
+    "evaluationUnit": "one independent fault meaning per shipment; other confirmed meanings count as false positives",
+    "expectedMeaning": null,
+    "confirmedMeanings": [],
+    "provisionalMeanings": [],
+    "TP": 0,
+    "FP": 0,
+    "FN": 0,
+    "provisionalDetection": false
+  },
+  "inputHashes": [
+    "58b3cff55e991a2fbb44d65aec40e8e7efb5a9022d3138b0463ac92bdec09373",
+    "903b3e33aa023e6ca31e9ee357c5dc096aa407b29369a1ecafd86819be3eabd8",
+    "45f4bcc17098d6801cab2395465a8f406e347fe57105a53a2ec1b77d7812e84b"
+  ],
+  "documents": 3,
+  "classified": 3,
+  "initial": [
+    {
+      "present": 31,
+      "verified": 30,
+      "currentVerified": 30,
+      "recovery": {
+        "targets": 3,
+        "nativeApplied": 0,
+        "aiApplied": 0,
+        "unresolved": 3,
+        "nativeDurationMs": 3687,
+        "failures": {
+          "WRONG_ENTITY_ASSIGNMENT": 1,
+          "SOURCE_NOT_PRESENT": 2
+        },
+        "extraRequests": 0,
+        "deferred": false
+      }
+    },
+    {
+      "present": 24,
+      "verified": 23,
+      "currentVerified": 24,
+      "recovery": {
+        "targets": 13,
+        "nativeApplied": 1,
+        "aiApplied": 0,
+        "unresolved": 12,
+        "nativeDurationMs": 802,
+        "failures": {
+          "SOURCE_NOT_PRESENT": 10,
+          "MISSING_EXTRACTION": 2
+        },
+        "extraRequests": 0,
+        "deferred": false
+      }
+    },
+    {
+      "present": 39,
+      "verified": 38,
+      "currentVerified": 39,
+      "recovery": {
+        "targets": 11,
+        "nativeApplied": 1,
+        "aiApplied": 0,
+        "unresolved": 10,
+        "nativeDurationMs": 471,
+        "failures": {
+          "SOURCE_NOT_PRESENT": 10
+        },
+        "extraRequests": 0,
+        "deferred": false
+      }
+    }
+  ],
+  "outcomes": {
+    "matches": 11,
+    "mismatches": 0,
+    "review": 4,
+    "requiredMissing": 0,
+    "notApplicable": 11,
+    "notComparable": 0,
+    "evidenceFailed": 3,
+    "evidenceUnverified": 3,
+    "evidenceRecovered": 2,
+    "checksExecuted": 61,
+    "independentChecks": 26
+  },
+  "semantic": {
+    "status": "complete",
+    "requestedPairs": 2,
+    "usage": {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "requestCount": 1,
+      "retryCount": 0,
+      "durationMs": 5530,
+      "inputTokens": 1797,
+      "outputTokens": 809,
+      "cachedInputTokens": 0,
+      "cacheWriteTokens": 1794,
+      "reasoningTokens": 0,
+      "estimatedCostUsd": 0.0006290499999999999,
+      "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    "validationCodes": [
+      "AI_INCOMPLETE_ATTRIBUTES",
+      "AI_INCOMPLETE_ATTRIBUTES"
+    ]
+  },
+  "errors": [],
+  "budget": {
+    "documents": 3,
+    "requests": 4,
+    "measuredCostUsd": 0.0064682,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "durationMs": 54755,
+  "automaticRetries": 0,
+  "checks": [
+    {
+      "meaning": "packageCount",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "consignee",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "containerNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "goodsDescription",
+      "assessment": "provisional_match",
+      "reasons": [
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "houseBlNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "hsCode",
+      "assessment": "provisional_match",
+      "reasons": [
+        "SCOPE_UNRESOLVED"
+      ]
+    },
+    {
+      "meaning": "netWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "portOfDischarge",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "quantity",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "sealNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "shipper",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "packageCount",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "netWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "quantity",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "weight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goods",
+      "assessment": "provisional_match",
+      "reasons": [
+        "AI_INCOMPLETE_ATTRIBUTES"
+      ]
+    },
+    {
+      "meaning": "goods",
+      "assessment": "provisional_match",
+      "reasons": [
+        "AI_INCOMPLETE_ATTRIBUTES"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "sourceSha": "a4bdcdf8ff7b15a09024f38c0dd6bcb488072af7",
+  "beforeCumulative": {
+    "documents": 12,
+    "requests": 16,
+    "measuredCostUsd": 0.021366555
+  },
+  "documentAttempts": 3,
+  "providerRequests": 4,
+  "confirmedUsage": [
+    {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "requestCount": 1,
+      "retryCount": 0,
+      "durationMs": 12138,
+      "inputTokens": 17974,
+      "outputTokens": 1588,
+      "cachedInputTokens": 17971,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 0,
+      "estimatedCostUsd": 0.00097401,
+      "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "requestCount": 1,
+      "retryCount": 0,
+      "durationMs": 8350,
+      "inputTokens": 11768,
+      "outputTokens": 1241,
+      "cachedInputTokens": 11765,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 0,
+      "estimatedCostUsd": 0.0007384500000000001,
+      "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "requestCount": 1,
+      "retryCount": 0,
+      "durationMs": 10189,
+      "inputTokens": 11161,
+      "outputTokens": 1779,
+      "cachedInputTokens": 11158,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 0,
+      "estimatedCostUsd": 0.00100138,
+      "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "requestCount": 1,
+      "retryCount": 0,
+      "durationMs": 5444,
+      "inputTokens": 1792,
+      "outputTokens": 808,
+      "cachedInputTokens": 0,
+      "cacheWriteTokens": 1789,
+      "reasoningTokens": 0,
+      "estimatedCostUsd": 0.000627925,
+      "pricingSource": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    }
+  ],
+  "previousConservativeLedger": {
+    "documents": 15,
+    "requests": 20,
+    "measuredCostUsd": 0.02299586,
+    "unresolvedCostUpperUsd": 0.028107337500000003,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "resolvedCumulative": {
+    "documents": 15,
+    "requests": 20,
+    "measuredCostUsd": 0.02470832,
+    "unresolvedCostUpperUsd": 0,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "reason": "A checkpoint captured requests in flight. Aggregate restore retained the larger stale reservation after responses had reconciled locally. All four actual request usage receipts exist. Resolve these known receipts only; retain counts and all prior cost.",
+  "actualResponseSha256": "35fc65fcdb9b3f05c3396352c14555676350a9b1f8d55ac5db9158345a16ce53",
+  "evidenceSha": "00e17178bc390e96d20ad217317a1af58e0be531"
+}

@@ -1,0 +1,110 @@
+{
+  "kind": "Source data correction only: previous synthetic declaration had Shipper but no required Exporter. No application aliases or inferred role changes. Before/after source hashes differ; do not attribute source-missing alert removal to engine improvement.",
+  "rows": [
+    {
+      "case": "chair-normal",
+      "type": "house_bl",
+      "exporterLabelAdded": false,
+      "originalHash": "c0d9d4411d4013054529744a8933a5f980b2ec4fc99cc67e2f66d340a8a62a7b",
+      "evaluationHash": "c0d9d4411d4013054529744a8933a5f980b2ec4fc99cc67e2f66d340a8a62a7b"
+    },
+    {
+      "case": "chair-normal",
+      "type": "export_declaration",
+      "exporterLabelAdded": true,
+      "originalHash": "5c6f14bf977528ee21007dd7d68f4193359d668f9f7cd4f69805bc9811e915da",
+      "evaluationHash": "704a8618a52f4d7af5b2e92484528601f6dbe300b3a1b2fc104aea8efe948ada"
+    },
+    {
+      "case": "chair-normal",
+      "type": "house_manifest",
+      "exporterLabelAdded": false,
+      "originalHash": "2e9363b65431ed5f987689854b2ad2b70a0d5664522f13cb712c98b82d492b98",
+      "evaluationHash": "2e9363b65431ed5f987689854b2ad2b70a0d5664522f13cb712c98b82d492b98"
+    },
+    {
+      "case": "unfamiliar-normal",
+      "type": "house_bl",
+      "exporterLabelAdded": false,
+      "originalHash": "18e405189039c3460b27955d5cac9bca69df0bb15090beec7ec1236bb597ce6b",
+      "evaluationHash": "18e405189039c3460b27955d5cac9bca69df0bb15090beec7ec1236bb597ce6b"
+    },
+    {
+      "case": "unfamiliar-normal",
+      "type": "export_declaration",
+      "exporterLabelAdded": true,
+      "originalHash": "c2dbfa04389267998f74731f988b4f2c4d6b836fcdbaf00bd38ef9ad83a19408",
+      "evaluationHash": "485819e7b2d28cbfd6b316577da1f0be1826dde70a2a7f5e9a252dc4bc9a5441"
+    },
+    {
+      "case": "unfamiliar-normal",
+      "type": "house_manifest",
+      "exporterLabelAdded": false,
+      "originalHash": "73120d8dd9186168dc8a42e8d1a3cc2b59b59e4f5eaa3f7f3116a09de24fe4cf",
+      "evaluationHash": "73120d8dd9186168dc8a42e8d1a3cc2b59b59e4f5eaa3f7f3116a09de24fe4cf"
+    },
+    {
+      "case": "multi-normal",
+      "type": "house_bl",
+      "exporterLabelAdded": false,
+      "originalHash": "e731bfcf35ff275e8e25336bc7cb49180e9430df4be4fccfea03defb9600e404",
+      "evaluationHash": "e731bfcf35ff275e8e25336bc7cb49180e9430df4be4fccfea03defb9600e404"
+    },
+    {
+      "case": "multi-normal",
+      "type": "export_declaration",
+      "exporterLabelAdded": true,
+      "originalHash": "ba968bb69127ced857d5523a1b37edcd605491803100c700e403aa46b1e25792",
+      "evaluationHash": "dcea5353457aa334a95fe4bf931b3926b9bbd70c73e08745dd61deec8ff4596c"
+    },
+    {
+      "case": "multi-normal",
+      "type": "house_manifest",
+      "exporterLabelAdded": false,
+      "originalHash": "143bb53f5d76c25a384e10edfaa72cf3b01198d4c01b473a7f3d7b71050774fa",
+      "evaluationHash": "143bb53f5d76c25a384e10edfaa72cf3b01198d4c01b473a7f3d7b71050774fa"
+    },
+    {
+      "case": "laptop-ram",
+      "type": "house_bl",
+      "exporterLabelAdded": false,
+      "originalHash": "8d258156f839d1b26bfac7c89ab91c9d25d9722f09cb79d26278d8faa0bb8be8",
+      "evaluationHash": "8d258156f839d1b26bfac7c89ab91c9d25d9722f09cb79d26278d8faa0bb8be8"
+    },
+    {
+      "case": "laptop-ram",
+      "type": "export_declaration",
+      "exporterLabelAdded": true,
+      "originalHash": "291c7433c322b32f83cc2f13fd8d8972869ed2a0d85842c656722568aba7e783",
+      "evaluationHash": "579afee58c9c3f87fcf2811a8fd3a1d4d377b8c1a9d2123dcda433983cd10a35"
+    },
+    {
+      "case": "laptop-ram",
+      "type": "house_manifest",
+      "exporterLabelAdded": false,
+      "originalHash": "6ade3803e9c8d605c8c02e53a7167a7f97d5b1f996114c10f7d1a409208d39de",
+      "evaluationHash": "6ade3803e9c8d605c8c02e53a7167a7f97d5b1f996114c10f7d1a409208d39de"
+    },
+    {
+      "case": "machine-model",
+      "type": "house_bl",
+      "exporterLabelAdded": false,
+      "originalHash": "80177eb13e3eca34b7dc51567d3a327e6302a210a5cec728790aafca104da7c9",
+      "evaluationHash": "80177eb13e3eca34b7dc51567d3a327e6302a210a5cec728790aafca104da7c9"
+    },
+    {
+      "case": "machine-model",
+      "type": "export_declaration",
+      "exporterLabelAdded": true,
+      "originalHash": "c8fcc4a7be42074bd8514e4ffc9a7fdc28ce2530de91be64959e13bc50d791c9",
+      "evaluationHash": "a0d7ee950b1a2a4794f49e5bee6ed648feaf78d4544a773c9631daf3353fc567"
+    },
+    {
+      "case": "machine-model",
+      "type": "house_manifest",
+      "exporterLabelAdded": false,
+      "originalHash": "19815909d50db3bc95adca01224714b45c7ebc6cf2038537d5f47357e18fd4ae",
+      "evaluationHash": "19815909d50db3bc95adca01224714b45c7ebc6cf2038537d5f47357e18fd4ae"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "FREE preflight; no provider request",
+  "sourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "rows": [
+    {
+      "case": "seal",
+      "pages": 1,
+      "blocks": 67,
+      "requestBytes": 58036,
+      "configurationSha256": "ef6c0c5f2a558ef0e41d3a2ea902d2eb1bca3f3465dc46f167b39dae402e596f"
+    },
+    {
+      "case": "container",
+      "pages": 1,
+      "blocks": 67,
+      "requestBytes": 58036,
+      "configurationSha256": "ef6c0c5f2a558ef0e41d3a2ea902d2eb1bca3f3465dc46f167b39dae402e596f"
+    },
+    {
+      "case": "hbl",
+      "pages": 1,
+      "blocks": 67,
+      "requestBytes": 58036,
+      "configurationSha256": "ef6c0c5f2a558ef0e41d3a2ea902d2eb1bca3f3465dc46f167b39dae402e596f"
+    }
+  ],
+  "sameConfiguration": true,
+  "diagnosis": "One HTTP400 had no allowlisted provider reason or parameter. Identical model, schema and settings succeeded on other physically modified inputs. No root cause asserted; later one explicit diagnostic retry can test reproducibility."
+}

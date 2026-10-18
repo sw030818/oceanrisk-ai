@@ -150,3 +150,6 @@ A 원본Set2 확보·실제원인재현·분할블록/헤더/발행문맥/독립
 ### PHASE 3.9 최종 체크포인트
 - 구현/무료독립평가/720단위/69브라우저/빌드·worker/main Push/Actions quality·production/공식 동일SHA/Set2 무료UI 완료. 소스 a57ffaf10e836f74e2e2cffb1d551d632cc4e678, 증거 validation/phase39-evidence.
 - 실제 신규 first extraction 및 semantic E2E는 승인 대기, 실제0/$0. 제안 $10·60문서·120요청, 계획 최대80요청/최종6문서 확보/자동재시도0. 이전 ledger 초기화·재사용 금지. 승인 없이 남은 유료실증을 실행하지 않는다.
+
+## 핵심 엔진 최종 실증 체크포인트
+완료: source85bc3af·734단위/70브라우저·worker·Actions quality/production·공식동일SHA, 실제정상5/오류10/혼합선적1 및 컨테이너거부 수동진단1. 누적50문서72요청/보수합USD0.08802432, 자동재시도0, 추가유료호출종료. 메타데이터/원문미공개증거와복원가능한ledger를기존validation/phase39-evidence에누적보존한다. 400상세원인·일부행근거미확인·복잡참조잠정검토는제한으로기록한다.

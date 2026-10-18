@@ -1,0 +1,63 @@
+{
+  "sourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "kind": "Evaluation-only exact changed-value check on actual new extraction/grounding. Expected values never provider inputs. No business identifiers disclosed.",
+  "rows": [
+    {
+      "case": "package",
+      "role": "packageCount",
+      "verifiedOwners": 4,
+      "changedSourceValueVerified": true,
+      "verifiedConflictingCandidateCount": 0,
+      "originalCorrectInAnyOwner": true
+    },
+    {
+      "case": "quantity",
+      "role": "quantity",
+      "verifiedOwners": 1,
+      "changedSourceValueVerified": true,
+      "verifiedConflictingCandidateCount": 0,
+      "originalCorrectInAnyOwner": true
+    },
+    {
+      "case": "weight",
+      "role": "grossWeight",
+      "verifiedOwners": 4,
+      "changedSourceValueVerified": true,
+      "verifiedConflictingCandidateCount": 0,
+      "originalCorrectInAnyOwner": true
+    },
+    {
+      "case": "seal",
+      "role": "sealNumber",
+      "verifiedOwners": 3,
+      "changedSourceValueVerified": true,
+      "verifiedConflictingCandidateCount": 0,
+      "originalCorrectInAnyOwner": true
+    },
+    {
+      "case": "container",
+      "role": "containerNumber",
+      "verifiedOwners": 2,
+      "changedSourceValueVerified": true,
+      "verifiedConflictingCandidateCount": 0,
+      "originalCorrectInAnyOwner": true
+    },
+    {
+      "case": "hbl",
+      "role": "houseBlNumber",
+      "verifiedOwners": 2,
+      "changedSourceValueVerified": true,
+      "verifiedConflictingCandidateCount": 0,
+      "originalCorrectInAnyOwner": true
+    },
+    {
+      "case": "hs",
+      "role": "hsCode",
+      "verifiedOwners": 2,
+      "changedSourceValueVerified": true,
+      "verifiedConflictingCandidateCount": 0,
+      "originalCorrectInAnyOwner": true
+    }
+  ],
+  "pass": true
+}

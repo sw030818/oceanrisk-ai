@@ -1,0 +1,9 @@
+{
+  "documents": 50,
+  "requests": 72,
+  "measuredCostUsd": 0.07539796999999997,
+  "unresolvedCostUpperUsd": 0.012626350000000001,
+  "maxDocuments": 60,
+  "maxRequests": 120,
+  "maxCostUsd": 2
+}

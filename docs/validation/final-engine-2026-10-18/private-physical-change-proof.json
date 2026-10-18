@@ -1,0 +1,61 @@
+{
+  "kind": "Native text changes in private original PDF, no oracle candidates and no provider calls",
+  "rows": [
+    {
+      "case": "package",
+      "expectedMeaning": "packageCount",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 3,
+      "nativeChangeVerified": true,
+      "sha256": "54723aec61e5fb6b95aeb667eee1b4bd35750912bcc73de6ec80cbb1e5696a42"
+    },
+    {
+      "case": "quantity",
+      "expectedMeaning": "quantity",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 2,
+      "nativeChangeVerified": true,
+      "sha256": "6903903cfa9a06e6254227507e5b13c5937d9f4b60198e289f5a30da18cab11c"
+    },
+    {
+      "case": "weight",
+      "expectedMeaning": "grossWeight",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 2,
+      "nativeChangeVerified": true,
+      "sha256": "a19434d188fcc195aa5dfbd4829ee4049a7b9c0dcae4b9c13a18f9ab25a179f2"
+    },
+    {
+      "case": "seal",
+      "expectedMeaning": "sealNumber",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 1,
+      "nativeChangeVerified": true,
+      "sha256": "03750cbde4cf988076081edc14024e79a7542768369e366cdb325b045f83341f"
+    },
+    {
+      "case": "container",
+      "expectedMeaning": "containerNumber",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 1,
+      "nativeChangeVerified": true,
+      "sha256": "6b53bb34dcacff11e7c064d4b46162b68715a6ff9d99f18e9be581e681e36b60"
+    },
+    {
+      "case": "hbl",
+      "expectedMeaning": "houseBlNumber",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 2,
+      "nativeChangeVerified": true,
+      "sha256": "6cfa865a5544d8fa7ee0b36e986ae43c479c87a3fca6c14e310808ed63ef3b01"
+    },
+    {
+      "case": "hs",
+      "expectedMeaning": "hsCode",
+      "syntheticMutationOfPrivateOriginal": true,
+      "sourceTextReplacements": 1,
+      "nativeChangeVerified": true,
+      "sha256": "b79a5c372d7a92bf963fe8de5681ebe8baf4fc87bba45bf5d4521a6935414b31"
+    }
+  ]
+}

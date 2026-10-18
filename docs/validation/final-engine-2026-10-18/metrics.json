@@ -1,0 +1,65 @@
+{
+  "sourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "scope": "Final exact-SHA new actual OpenAI document attempts; parent snapshots reused in fault cases are excluded from paid document metrics. Original failed provider attempt is included. Candidate evidence rate is not field truth accuracy.",
+  "casesAfterOneExplicitDiagnosticRetry": {
+    "normalCases": 5,
+    "normalConfirmedFalsePositives": 0,
+    "normalActionIssues": 0,
+    "faultCases": 10,
+    "confirmedTP": 10,
+    "confirmedFP": 0,
+    "confirmedFN": 0,
+    "mixedShipmentWarning": true,
+    "mixedUnrelatedConfirmedErrors": 0,
+    "firstAttemptFaultCases": {
+      "TP": 9,
+      "APIUnavailable": 1,
+      "E2EMissedDueToAPI": 1
+    },
+    "automaticRetries": 0,
+    "explicitDiagnosticRetriedDocuments": 1
+  },
+  "paidDocumentAttempts": 35,
+  "successfulExtractions": 34,
+  "providerDocumentErrors": [
+    "API_REQUEST_REJECTED"
+  ],
+  "documentExtractionAvailability": 0.9714285714285714,
+  "initialTypeCorrect": 34,
+  "currentTypeCorrect": 34,
+  "typeAccuracyDenominator": 34,
+  "candidateEvidence": {
+    "originalPresent": 1072,
+    "originalVerified": 1026,
+    "originalRate": 0.957089552238806,
+    "currentPresent": 1168,
+    "currentVerified": 1135,
+    "currentRate": 0.9717465753424658
+  },
+  "durationMs": {
+    "scope": "One evaluation case, not pure model latency; cached-parent cases exclude their original upload duration",
+    "min": 16144,
+    "median": 34969,
+    "max": 73279
+  },
+  "budget": {
+    "documents": 50,
+    "requests": 72,
+    "measuredCostUsd": 0.07539796999999997,
+    "unresolvedCostUpperUsd": 0.012626350000000001,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "conservativeCostUsd": 0.08802431999999996,
+  "remainingConservativeCostUsd": 1.91197568,
+  "remainingDocuments": 10,
+  "remainingRequests": 48,
+  "semanticRequests": {
+    "scope": "Final-SHA provider responses, including the parent-only semantic call following the initial rejected extraction",
+    "responseStatusCounts": {
+      "complete": 16,
+      "partial": 1
+    }
+  }
+}

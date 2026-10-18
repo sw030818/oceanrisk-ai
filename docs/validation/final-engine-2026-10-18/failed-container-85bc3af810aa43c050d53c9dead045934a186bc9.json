@@ -1,0 +1,152 @@
+{
+  "kind": "NEW physically modified PDF extraction + actual semantic request; unchanged parent responses reused at the SAME SHA (not new parent extraction)",
+  "sourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "case": "actual-container-initial-rejected",
+  "paidDocuments": 1,
+  "reusedParentDocuments": 2,
+  "correctClassification": false,
+  "expectedMeaning": "containerNumber",
+  "confirmedTP": 0,
+  "provisionalDetection": false,
+  "referenceWarning": false,
+  "missed": true,
+  "confirmedUnexpectedMeanings": [],
+  "outcomes": {
+    "matches": 9,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 7,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 4,
+    "evidenceRecovered": 5,
+    "checksExecuted": 17,
+    "independentChecks": 17,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+  },
+  "semanticStatus": "complete",
+  "delta": {
+    "documents": 1,
+    "requests": 2,
+    "costUsd": 0.0005488000000000021
+  },
+  "budget": {
+    "documents": 25,
+    "requests": 36,
+    "measuredCostUsd": 0.04180412,
+    "unresolvedCostUpperUsd": 0.012626350000000001,
+    "maxDocuments": 60,
+    "maxRequests": 120,
+    "maxCostUsd": 2
+  },
+  "durationMs": 10830,
+  "errors": [
+    "API_REQUEST_REJECTED"
+  ],
+  "checks": [
+    {
+      "meaning": "consignee",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "containerNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "houseBlNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "hsCode",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "netWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "portOfDischarge",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "quantity",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "sealNumber",
+      "assessment": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "shipper",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "assessment": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "goodsDescription",
+      "assessment": "provisional_match",
+      "disposition": "informational",
+      "reasons": []
+    }
+  ],
+  "attempt": "first_request_rejected",
+  "evaluationDisposition": "API_FAILURE_NOT_ENGINE_SUCCESS"
+}
