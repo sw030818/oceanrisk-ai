@@ -1,13 +1,13 @@
 {
   "phase": "3.9",
   "approval": "USER_FINAL_ENGINE_INSTRUCTION_USD2",
-  "providerRequests": 20,
+  "providerRequests": 70,
   "automaticRetries": 0,
   "budget": {
-    "documents": 15,
-    "requests": 20,
-    "measuredCostUsd": 0.02470832,
-    "unresolvedCostUpperUsd": 0,
+    "documents": 49,
+    "requests": 70,
+    "measuredCostUsd": 0.07398891499999997,
+    "unresolvedCostUpperUsd": 0.012626350000000001,
     "maxDocuments": 60,
     "maxRequests": 120,
     "maxCostUsd": 2
@@ -31,19 +31,18 @@
   },
   "sourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
   "currentCumulativeUsage": {
-    "documents": 15,
-    "requests": 20,
-    "measuredCostUsd": 0.02470832,
-    "unresolvedCostUpperUsd": 0,
+    "documents": 49,
+    "requests": 70,
+    "measuredCostUsd": 0.07398891499999997,
+    "unresolvedCostUpperUsd": 0.012626350000000001,
     "maxDocuments": 60,
     "maxRequests": 120,
     "maxCostUsd": 2
   },
   "previousProposalUsd": 10,
   "checkpoint": {
-    "sourceSha": "a4bdcdf8ff7b15a09024f38c0dd6bcb488072af7",
-    "at": "2026-10-17T23:52:10.387Z",
-    "status": "PAUSED_AFTER_SET2_NEW_DIAGNOSTIC",
-    "reconciliation": "All four Set2 request usages confirmed; stale in-flight checkpoint reservation reconciled, no retry or reset."
+    "at": "2026-10-18T00:15:43.076Z",
+    "sourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+    "status": "LIVE_EVALUATION_IN_PROGRESS_NOT_FINAL_SUCCESS"
   }
 }
