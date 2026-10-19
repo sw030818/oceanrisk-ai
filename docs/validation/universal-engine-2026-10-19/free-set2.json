@@ -1,0 +1,21 @@
+{
+  "case": "set2",
+  "kind": "FREE saved first-candidate replay and cached unchanged semantic opinions, NOT new AI",
+  "originalSourceSha": "85bc3af810aa43c050d53c9dead045934a186bc9",
+  "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 11,
+    "notComparable": 0,
+    "evidenceFailed": 7,
+    "evidenceUnverified": 5,
+    "evidenceRecovered": 6,
+    "checksExecuted": 61,
+    "independentChecks": 24,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+  },
+  "actionIssues": 0
+}

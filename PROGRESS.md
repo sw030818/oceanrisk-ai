@@ -653,3 +653,13 @@
 
 ## Set3 final exact-SHA evidence
 Source 7884bb3c62976c129f0006ce5b6f140791c5720c. npm ci/type/lint/754 unit/70 browser/build/two PDF workers passed. Public Production exact SHA verified. New paid normal Set3 and physical Manifest quantity/port/package controls are in docs/validation/set3-fix. Baseline independent action issues3 (review-check count4) → final normal 0; original source/diagnostics preserved. Set2 is free saved-response regression. Cumulative 59docs/86requests/estimated USD0.09610239499999998+unresolved upper0.012626350000000003, capUSD2/60/120/automatic retry0. Read release.json for remaining limitations and CI/deployment status. Vercel management Ready not directly queried.
+
+
+## 2026-10-19 범용 엔진 최종 증거 체크포인트
+- main/Production 소스: 62bdcb91e728a51bef5c411f15a7627141557014. 지역 닫힌 셀·라벨/값·품목 소속·빈 상품 복구·제목/문서번호 구분 수정. UI 디자인 유지.
+- npm ci/typecheck/lint/769단위/70브라우저/build/PDF worker 및 Actions quality·production 통과. 공식 서비스 동일 SHA 확인.
+- 수정 전 실제 Development 검증374/444 → 개발 재실증444/444. 최초 Blind 실패245/300·잘못 승인2건을 보존하고 폐기/교체. 최종 새 Blind13PDF 핵심299/299·확정 오탐0. 단, 복수 신고 관계1/5·조치 문제34로 범용 목표 미달.
+- 최종 Set3 실제 UI: 수출신고 API_UNAVAILABLE, 2/3 성공·의미 요청 미실시·확인필요4. Manifest10,000PCS/500CTN 검증. UI assertion 실패 및 모바일 미도달을 성공으로 보고하지 않음.
+- 누적150문서/210요청/확인비용$0.2262348/미확인상한$0.0254659625. 한도150/220/$2 중 문서 한도 도달, 추가 유료 호출 중단. 과거 기록 유지·자동 재시도0.
+- 다음 작업: 참조 목록의 근거 보존형 구성원 매핑, 복수 신고 범위 집계, 동일 모델 원인의 문제 중복. 이번 Blind를 수정에 사용하면 새 독립 자료 필요. 새 유료 호출은 문서 추가 승인 없이는 금지.
+- 보고서 및 수치/실패 증거: docs/validation/universal-engine-2026-10-19/REPORT.md. 원본 업무 PDF/raw/키는 비공개. 이 기록은 별도 evidence 브랜치에만 저장하며 검증된 main SHA를 변경하지 않음.

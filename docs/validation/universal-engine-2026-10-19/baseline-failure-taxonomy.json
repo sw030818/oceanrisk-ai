@@ -1,0 +1,49 @@
+{
+  "baselineSourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
+  "corpus": "Independent synthetic; development only. Holdout not run or inspected.",
+  "documents": 18,
+  "expectedCoreFields": 444,
+  "firstCorrect": 436,
+  "verifiedCorrect": 374,
+  "firstMissing": 8,
+  "verifiedWrong": 0,
+  "confirmedFalsePositive": 0,
+  "candidateVerificationCodes": {
+    "row_mismatch": 46,
+    "role_mismatch": 30,
+    "value_mismatch": 2
+  },
+  "independentActionIssues": 64,
+  "taxonomy": [
+    {
+      "category": "AI initial extraction",
+      "unit": "expected core fields",
+      "failures": 8,
+      "missing": 8
+    },
+    {
+      "category": "PDF structure/layout",
+      "evidence": "Disjoint native form cells vanish under page-global adjacent Y partition; traced source operator/closed border vs absent page.cells."
+    },
+    {
+      "category": "Citation validation",
+      "unit": "expected core candidate citations",
+      "failures": 0
+    },
+    {
+      "category": "Field/item/cargo ownership",
+      "unit": "all current unverified candidate diagnostic occurrences",
+      "rowMismatch": 46,
+      "roleMismatch": 30
+    },
+    {
+      "category": "Shipment/item relationships",
+      "evidence": "Complete goods table was ignored when a separate HBL/container allocation table existed."
+    },
+    {
+      "category": "Judgment/issue consolidation",
+      "evidence": "The empty goods field of a container allocation row created duplicate per-pair product matching warnings."
+    }
+  ],
+  "caution": "Diagnostic occurrences and expected-field errors are different denominators; causal categories overlap and are not summed as an error rate."
+}

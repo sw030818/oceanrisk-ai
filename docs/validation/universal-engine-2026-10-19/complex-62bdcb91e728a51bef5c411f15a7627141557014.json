@@ -1,0 +1,614 @@
+{
+  "kind": "Actual synthetic complex evaluation; selected 8 root roles, each explicit declaration reference and 4 item roles; containers scored in main corpus only",
+  "sourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
+  "documents": [
+    {
+      "index": 0,
+      "type": "house_bl",
+      "classified": true,
+      "apiFailed": false,
+      "expected": 18,
+      "first": 18,
+      "current": 18,
+      "verified": 18,
+      "verifiedWrong": 0,
+      "fields": [
+        {
+          "role": "houseBlNumber",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "packageCount",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "packageUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "grossWeight",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "grossWeightUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "destinationCountry",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "declarationReference",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "declarationReference",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "goodsDescription",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "hsCode",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "goodsDescription",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "hsCode",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "type": "export_declaration",
+      "classified": true,
+      "apiFailed": false,
+      "expected": 13,
+      "first": 13,
+      "current": 13,
+      "verified": 13,
+      "verifiedWrong": 0,
+      "fields": [
+        {
+          "role": "houseBlNumber",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "packageCount",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "packageUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "grossWeight",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "grossWeightUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "destinationCountry",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "declarationReference",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "goodsDescription",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "hsCode",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "type": "export_declaration",
+      "classified": true,
+      "apiFailed": false,
+      "expected": 13,
+      "first": 13,
+      "current": 13,
+      "verified": 13,
+      "verifiedWrong": 0,
+      "fields": [
+        {
+          "role": "houseBlNumber",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "packageCount",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "packageUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "grossWeight",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "grossWeightUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "destinationCountry",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "declarationReference",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "goodsDescription",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "hsCode",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "type": "house_manifest",
+      "classified": true,
+      "apiFailed": false,
+      "expected": 18,
+      "first": 18,
+      "current": 18,
+      "verified": 18,
+      "verifiedWrong": 0,
+      "fields": [
+        {
+          "role": "houseBlNumber",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "packageCount",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "packageUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "grossWeight",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "grossWeightUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "destinationCountry",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "declarationReference",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "declarationReference",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "goodsDescription",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "hsCode",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "goodsDescription",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "hsCode",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantity",
+          "first": true,
+          "current": true,
+          "verified": true
+        },
+        {
+          "role": "quantityUnit",
+          "first": true,
+          "current": true,
+          "verified": true
+        }
+      ]
+    }
+  ],
+  "expectedCoreFields": 62,
+  "firstCorrect": 62,
+  "currentCorrect": 62,
+  "verifiedCorrect": 62,
+  "verifiedWrong": 0,
+  "confirmedFP": 0,
+  "outcomes": {
+    "matches": 19,
+    "mismatches": 0,
+    "review": 58,
+    "requiredMissing": 0,
+    "notApplicable": 26,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 4,
+    "evidenceRecovered": 5,
+    "checksExecuted": 103,
+    "independentChecks": 105,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 2
+  },
+  "issues": [
+    {
+      "severity": "attention",
+      "title": "서류 간 참조 연결 확인"
+    },
+    {
+      "severity": "attention",
+      "title": "서류 간 참조 연결 확인"
+    },
+    {
+      "severity": "attention",
+      "title": "서류 간 참조 연결 확인"
+    },
+    {
+      "severity": "attention",
+      "title": "서류 간 참조 연결 확인"
+    },
+    {
+      "severity": "attention",
+      "title": "컨테이너 목록"
+    },
+    {
+      "severity": "attention",
+      "title": "컨테이너 목록"
+    },
+    {
+      "severity": "attention",
+      "title": "컨테이너 목록"
+    },
+    {
+      "severity": "attention",
+      "title": "컨테이너 목록"
+    },
+    {
+      "severity": "attention",
+      "title": "화물 품명 의미"
+    },
+    {
+      "severity": "attention",
+      "title": "화물 품명 의미"
+    },
+    {
+      "severity": "attention",
+      "title": "화물 품명 의미"
+    },
+    {
+      "severity": "attention",
+      "title": "화물 품명 의미"
+    },
+    {
+      "severity": "attention",
+      "title": "문서 전체 총중량"
+    },
+    {
+      "severity": "attention",
+      "title": "문서 전체 총중량"
+    },
+    {
+      "severity": "attention",
+      "title": "문서 전체 총중량"
+    },
+    {
+      "severity": "attention",
+      "title": "문서 전체 총중량"
+    },
+    {
+      "severity": "attention",
+      "title": "HS 공통 6단위 (전체 세번과 구분)"
+    },
+    {
+      "severity": "attention",
+      "title": "HS 공통 6단위 (전체 세번과 구분)"
+    },
+    {
+      "severity": "attention",
+      "title": "HS 공통 6단위 (전체 세번과 구분)"
+    },
+    {
+      "severity": "attention",
+      "title": "HS 공통 6단위 (전체 세번과 구분)"
+    },
+    {
+      "severity": "attention",
+      "title": "문서 전체 포장 개수"
+    },
+    {
+      "severity": "attention",
+      "title": "문서 전체 포장 개수"
+    },
+    {
+      "severity": "attention",
+      "title": "문서 전체 포장 개수"
+    },
+    {
+      "severity": "attention",
+      "title": "문서 전체 포장 개수"
+    },
+    {
+      "severity": "attention",
+      "title": "기재 물품 수량 (합계/단일품목 범위)"
+    },
+    {
+      "severity": "attention",
+      "title": "기재 물품 수량 (합계/단일품목 범위)"
+    },
+    {
+      "severity": "attention",
+      "title": "기재 물품 수량 (합계/단일품목 범위)"
+    },
+    {
+      "severity": "attention",
+      "title": "기재 물품 수량 (합계/단일품목 범위)"
+    },
+    {
+      "severity": "attention",
+      "title": "Seal 번호"
+    },
+    {
+      "severity": "attention",
+      "title": "Seal 번호"
+    },
+    {
+      "severity": "attention",
+      "title": "Seal 번호"
+    },
+    {
+      "severity": "attention",
+      "title": "Seal 번호"
+    },
+    {
+      "severity": "attention",
+      "title": "품목 CERAMIC MEMBRANE MODULE MODEL 10000 물품 수량"
+    },
+    {
+      "severity": "attention",
+      "title": "품목 REUSABLE SILICONE SEAL RING MODEL SR7 물품 수량"
+    }
+  ],
+  "relationships": [
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    }
+  ],
+  "durationMs": 76379,
+  "sourceShaStable": true,
+  "semanticStatus": "complete"
+}

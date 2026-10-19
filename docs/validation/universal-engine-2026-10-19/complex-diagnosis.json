@@ -1,0 +1,14 @@
+{
+  "sourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
+  "kind": "Read-only diagnosis after frozen blind evaluation; no tuning performed",
+  "observed": "HBL and Manifest each return a verified comma-separated declaration list in one reference value; individual declarations return one identifier each.",
+  "cause": "relationships.ts compares normalized whole reference strings in sets; list A,B has no exact intersection with A or B. It emits DECLARATION_MEMBERSHIP_UNRESOLVED for four otherwise related pairs.",
+  "consequence": {
+    "confirmedRelationships": 1,
+    "expectedRelationships": 5,
+    "actionIssues": 34,
+    "reviewChecks": 58
+  },
+  "safety": "No false confirmed mismatch; four valid connections and their aggregation remain unconfirmed. Core reference-membership scorer splits delimiters for coverage, whereas application relationship engine does not. Field coverage must not be equated with relationship success.",
+  "nextWork": "Implement evidence-preserving identifier-list membership, test duplicate/partial/conflicting refs, retire this holdout if used for tuning, and evaluate a fresh unseen multi-declaration corpus under a new explicit paid-document allowance."
+}

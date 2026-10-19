@@ -1,0 +1,71 @@
+{
+  "kind": "Actual Production UI attempt failed; FREE postmortem of captured response, not a retry",
+  "sourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
+  "passed": false,
+  "documentsAttempted": 3,
+  "results": [
+    {
+      "slot": "house_bl",
+      "classified": true,
+      "detectedType": "house_bl",
+      "errorCode": null
+    },
+    {
+      "slot": "export_declaration",
+      "classified": false,
+      "detectedType": null,
+      "errorCode": "API_UNAVAILABLE"
+    },
+    {
+      "slot": "house_manifest",
+      "classified": true,
+      "detectedType": "house_manifest",
+      "errorCode": null
+    }
+  ],
+  "semanticStatus": "not_requested",
+  "outcomes": {
+    "matches": 10,
+    "mismatches": 0,
+    "review": 4,
+    "requiredMissing": 0,
+    "notApplicable": 4,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 4,
+    "evidenceRecovered": 4,
+    "checksExecuted": 18,
+    "independentChecks": 18
+  },
+  "actionIssues": 4,
+  "proofs": [
+    {
+      "type": "house_bl",
+      "quantity": false,
+      "packages": false
+    },
+    {
+      "type": null,
+      "quantity": false,
+      "packages": false
+    },
+    {
+      "type": "house_manifest",
+      "quantity": true,
+      "packages": true
+    }
+  ],
+  "failure": "Export declaration API_UNAVAILABLE; only two documents analyzed, no semantic request. Expected UI informational semantic text absent; assertion aborted before screenshots/mobile checks.",
+  "desktopAnalysisRendered": true,
+  "mobileChecked": false,
+  "paidRetry": false,
+  "budget": {
+    "documents": 150,
+    "requests": 210,
+    "measuredCostUsd": 0.22623480000000007,
+    "unresolvedCostUpperUsd": 0.025465962499999974,
+    "maxDocuments": 150,
+    "maxRequests": 220,
+    "maxCostUsd": 2
+  }
+}
