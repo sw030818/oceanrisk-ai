@@ -9,6 +9,7 @@ import {
   text32,
   unit32,
   verified32,
+  containerViews32,
 } from "./review-evidence";
 
 // Resolve full-document vs individual-declaration scope, never numerical truth.
@@ -121,6 +122,38 @@ export function resolveDeclarationScopes(
         continue;
       const meaning = c.comparison?.meaning;
       const subset = ids.some((id) => declarations.has(id));
+      if (subset && ["containerNumber", "sealNumber"].includes(meaning ?? "")) {
+        // Whole carrier lists and an individual declaration are different sets.
+        // A proven complete declaration group permits membership, not equality.
+        // Seal membership additionally requires the very same native container.
+        const signature = (f: typeof c.fields[number]) => {
+          if (f.fieldName !== meaning) return null;
+          if (meaning === "containerNumber") return text32(f.field.current.value);
+          const d = documents.find((d) => d.id === f.documentId);
+          const owner = d && containerViews32(d).find((v) =>
+            v.id === (f.containerId ?? f.cargoId));
+          if (!owner || !owner.containerNumber ||
+            !verified32(ref32(d!, "containerNumber", owner.containerNumber,
+              owner.kind === "cargo" ? { cargoId: owner.id } : { containerId: owner.id })))
+            return null;
+          return JSON.stringify([text32(owner.containerNumber.current.value), text32(f.field.current.value)]);
+        };
+        const carrierSets = ids.filter((id) => carriers.has(id)).map((id) =>
+          c.fields.filter((f) => f.documentId === id).map(signature));
+        const own = c.fields.filter((f) => declarations.has(f.documentId)).map(signature);
+        if (carrierSets.length && own.length && carrierSets.every((keys) =>
+          keys.length && keys.every(Boolean) &&
+          own.every((key) => !!key && keys.includes(key)))) {
+          c.assessment = "confirmed_match";
+          c.importance = "info";
+          c.scopeResolution = { groupCheckId: proof.id, kind: "container_membership" };
+          c.comparison!.reasonCodes = [];
+          c.comparison!.relatedCheckIds = [...new Set([...c.comparison!.relatedCheckIds, proof.id])];
+          c.uncertainties = [];
+          c.explanation = "전체 신고 목록과 품목 범위가 검증된 그룹에서 해당 신고의 컨테이너 포함 관계를 확인했습니다. Seal은 같은 원문 컨테이너 번호 안에서만 대조합니다.";
+        }
+        continue;
+      }
       if (
         subset &&
         ["quantity", "goodsDescription", "hsCode"].includes(meaning ?? "") &&

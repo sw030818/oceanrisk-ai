@@ -1,0 +1,7 @@
+{
+  "retiredAt": "2026-10-20",
+  "sourceEvaluationSha": "62bdcb91e728a51bef5c411f15a7627141557014",
+  "reason": "Actual multi-declaration membership failure is now used to tune reference-list and subset comparison logic. Original PDF, truth, hashes and actual results remain unchanged.",
+  "partition": "development",
+  "newPaidValidation": "Requires explicitly expanded cumulative document allowance; current 150 attempts exhausted."
+}

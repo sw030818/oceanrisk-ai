@@ -10,6 +10,7 @@ import {
   root32,
   ref32,
   refKey32,
+  declarationAgreement32,
 } from "./review-evidence";
 export function relateShipping(
   docs: ShippingDocument[],
@@ -34,13 +35,15 @@ export function relateShipping(
           l = new Set(left.map((f) => text32(f.field.current.value))),
           r = new Set(right.map((f) => text32(f.field.current.value)));
         const matches = [...l].filter((v) => r.has(v));
-        if (matches.length) {
+        const declaration = role === "declarationNumber"
+          ? declarationAgreement32(a, b) : undefined;
+        if (declaration ? declaration.same : matches.length) {
           shared.push(role);
           evidence.push(
-            ...left.filter((f) =>
+            ...left.filter((f) => declaration?.same ||
               matches.includes(text32(f.field.current.value)),
             ),
-            ...right.filter((f) =>
+            ...right.filter((f) => declaration?.same ||
               matches.includes(text32(f.field.current.value)),
             ),
           );

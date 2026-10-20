@@ -15,6 +15,7 @@ import {
 } from "./facts";
 import {
   identifiers32,
+  identifierValues32,
   root32,
   ref32,
   refKey32,
@@ -294,7 +295,7 @@ export function withFactReview(
               new Set(
                 identifiers32(d, "declarationNumber")
                   .filter(verified32)
-                  .map((f) => text32(f.field.current.value)),
+                  .flatMap(identifierValues32),
               ).size > 1,
           ));
       const linked = clique(group),
@@ -428,6 +429,9 @@ export function withFactReview(
           verified: s.refs.filter(verified32),
         }));
         const reasons = [...base];
+        if (role === "declarationNumber" && valid.some((s) =>
+          s.verified.some((f) => !identifierValues32(f).length)))
+          reasons.push("EVIDENCE_UNVERIFIED");
         if (valid.some((s) => !s.verified.length))
           reasons.push(
             refs.some((f) => f.field.current.status === "user_edited")
@@ -545,7 +549,8 @@ export function withFactReview(
                     })()
                   : text32(f.field.current.value);
         const ns = valid.map((s) =>
-          [...new Set((s.verified.length ? s.verified : s.refs).map(normalize))]
+          [...new Set((s.verified.length ? s.verified : s.refs).flatMap((f) =>
+            role === "declarationNumber" ? identifierValues32(f) : [normalize(f)]))]
             .sort()
             .join("|"),
         );
@@ -560,13 +565,13 @@ export function withFactReview(
             valid
               .filter((s) => s.doc.detectedType !== "export_declaration")
               .flatMap((s) =>
-                s.verified.map((f) => text32(f.field.current.value)),
+                s.verified.flatMap(identifierValues32),
               ),
           );
           const actual = valid
             .filter((s) => s.doc.detectedType === "export_declaration")
             .flatMap((s) =>
-              s.verified.map((f) => text32(f.field.current.value)),
+              s.verified.flatMap(identifierValues32),
             );
           membership =
             expected.size > 1 &&
@@ -576,7 +581,7 @@ export function withFactReview(
         }
         if (
           declarationSubset &&
-          (role === "goodsDescription" || role === "hsCode")
+          ["goodsDescription", "hsCode", "containerNumber", "sealNumber"].includes(role)
         )
           reasons.push("DECLARATION_SCOPE_UNRESOLVED");
         if (role === "hsCode") {

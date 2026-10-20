@@ -20,6 +20,7 @@ import { relateShipping } from "./relationships";
 import {
   has32,
   identifiers32,
+  declarationAgreement32,
   containerViews32,
   containerEntry32,
   key32,
@@ -477,6 +478,18 @@ export function reviewShipping(
       "declarationNumber",
       "shipmentReference",
     ]) {
+      if (role === "declarationNumber") {
+        const agreement = declarationAgreement32(a, b);
+        const refs = [...identifiers32(a, role), ...identifiers32(b, role)];
+        if (agreement.same && refs.every(verified32)) {
+          const confirmed = r.status === "evidence_confirmed";
+          add(scope, r.id + "/" + role, "reference", refs,
+            confirmed ? "confirmed_match" : "provisional_match", label(role),
+            "검증된 신고번호의 명시적 목록과 개별 신고의 포함 관계를 대조했습니다. 원본 목록·인용과 선적 범위는 별도로 보존합니다.",
+            confirmed ? [] : base, links);
+          continue;
+        }
+      }
       const l = identifiers32(a, role),
         rr = identifiers32(b, role),
         shared = l.find((x) =>

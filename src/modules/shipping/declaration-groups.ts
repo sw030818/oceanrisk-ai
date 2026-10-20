@@ -11,6 +11,7 @@ import {
   text32,
   unit32,
   verified32,
+  identifierValues32,
 } from "./review-evidence";
 export function declarationGroupChecks(
   docs: ShippingDocument[],
@@ -36,7 +37,7 @@ export function declarationGroupChecks(
     const expected = new Set(
       identifiers32(bl, "declarationNumber")
         .filter(verified32)
-        .map((f) => text32(f.field.current.value)),
+        .flatMap(identifierValues32),
     );
     const numbers = own.map((f) =>
       f && verified32(f) ? text32(f.field.current.value) : null,
@@ -61,11 +62,15 @@ export function declarationGroupChecks(
       unit: ref32(bl, "quantityUnit", i.fields.quantityUnit, { itemId: i.id }),
     }));
     const fields = [
+      ...identifiers32(bl, "declarationNumber"),
       ...own.filter((f): f is NonNullable<typeof f> => !!f),
       ...refs.flatMap((r) => Object.values(r)),
       ...target.flatMap((r) => Object.values(r)),
     ];
     const blockers: string[] = [];
+    if (identifiers32(bl, "declarationNumber").some((f) =>
+      !verified32(f) || !identifierValues32(f).length))
+      blockers.push("신고 참조 목록의 근거 또는 구성원 구분이 미확인입니다.");
     const blNumbers = new Set(
       identifiers32(bl, "houseBlNumber")
         .filter(verified32)

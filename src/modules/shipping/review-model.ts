@@ -28,7 +28,7 @@ export interface ShippingCheck {
   };
   scopeResolution?: {
     groupCheckId: string;
-    kind: "subset" | "allocation" | "aligned_carriers";
+    kind: "subset" | "allocation" | "aligned_carriers" | "container_membership";
   };
   documentIds?: string[];
   comparison?: {

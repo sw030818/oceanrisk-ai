@@ -109,6 +109,47 @@ export function identifiers32(doc: ShippingDocument, role: string): FieldRef[] {
     .filter((f) => !isPlaceholder32(f.field.current.value))
     .sort((a, b) => refKey32(a).localeCompare(refKey32(b)));
 }
+// A verified reference may contain an explicit list. Keep its original field,
+// quote and provenance intact; these are comparison keys, never new PDF values.
+// Spaces/hyphens/slashes are valid identifier characters, not list delimiters.
+export function identifierValues32(ref: FieldRef): string[] {
+  const literal = text32(ref.field.current.value);
+  if (ref.fieldName !== "declarationNumber" || !verified32(ref))
+    return literal ? [literal] : [];
+  const raw = String(ref.field.current.value ?? "").normalize("NFKC");
+  if (!/[,;\n]/.test(raw)) return literal ? [literal] : [];
+  const parts = raw.split(/[,;\n]/).map((s) => s.trim());
+  if (parts.length > 100 || parts.some((s) =>
+    !s || !/\d/.test(s) || !/^[a-z\d][a-z\d /.-]*$/i.test(s) ||
+    /\b(?:and|or|to|through|except)\b/i.test(s)
+  )) return [];
+  return [...new Set(parts.map(text32))];
+}
+export function declarationAgreement32(a: ShippingDocument, b: ShippingDocument) {
+  const left = identifiers32(a, "declarationNumber").filter(verified32),
+    right = identifiers32(b, "declarationNumber").filter(verified32);
+  const l = new Set(left.flatMap(identifierValues32)),
+    r = new Set(right.flatMap(identifierValues32));
+  const valid = left.every((f) => identifierValues32(f).length > 0) &&
+    right.every((f) => identifierValues32(f).length > 0);
+  const multiHbl = [a, b].some((d) => new Set(
+    identifiers32(d, "houseBlNumber").filter(verified32)
+      .map((f) => text32(f.field.current.value)),
+  ).size > 1);
+  // An individual declaration must have one identity. A transport document's
+  // list may contain it; two single-HBL transport lists must describe the same
+  // set. A multi-HBL Manifest retains its existing shared-reference candidate
+  // behavior; cargo ownership and aggregation coverage remain separate guards.
+  const same = valid && l.size > 0 && r.size > 0 &&
+    (a.detectedType === "export_declaration"
+      ? l.size === 1 && [...l].every((v) => r.has(v))
+      : b.detectedType === "export_declaration"
+        ? r.size === 1 && [...r].every((v) => l.has(v))
+        : multiHbl
+          ? [...l].some((v) => r.has(v))
+          : l.size === r.size && [...l].every((v) => r.has(v)));
+  return { same, left, right, leftValues: l, rightValues: r };
+}
 export function scope32(doc: ShippingDocument) {
   if (doc.nativeScopeLimitation) return doc.nativeScopeLimitation;
   const f = root32(doc, "shipmentScope");

@@ -169,3 +169,9 @@ C 다음: 전체gate1회후main/Production배포→Development새실제E2E→오
 D 직전:177d758 실제Dev444/444·FP0·문제0, 물리오류6확정+1경고+1미탐 보존. 전체빈AI배열을 닫힌 native행만으로 복구하여 무료재생에서 모델차이 탐지. 타입/ESLint/104선택회귀 통과. 최종ship→새SHA Dev6재평가→모델오류PDF1→미사용Blind4/Stress2/복수신고보충4PDF/Set2·3UI. 현재103/148, 잔여문서47 이내. 최종결과는 기존evidence브랜치에 보존.
 
 E 재동결: 최초Blind4는100%추출에도245/300검증·잘못복구2로실패/retired. keyvalue 공통경계, local port/unit guards, title-vs-reference 수정; 무료재생300/300·잘못검증0. 원본Set2/3 무료12match/0issue 및Stress198/198(정답후보) 확인. 전체769단위/70브라우저/worker/ship→새고정Blind13실제→최종Set3UI3→evidence 보존. 현재134/190, 상한150/220/USD2 유지, 추가승인/재시도없음. 원본Stress/Set2 반복유료 대신 새Blind에 예산재배분. 최종같은SHA의 AI성공 전에는 완료주장금지.
+
+## 2026-10-20 이어서 수행
+- 완료: 기존 코드/증거/ledger 복원, 신고 목록 비교와 전체/개별 컨테이너 범위의 결정적 검증 수정, 선택 회귀.
+- 진행: 최종 전체 ship 품질 검사와 exact SHA Production 확인. 실패 시 배포 중단.
+- 조건부: 누적150문서 한도 소진. 추가 문서 승인 전 새 paid E2E 금지. 복합13은 수정에 사용해 retirement했으므로 새 Holdout 평가를 대체하지 못함.
+- 최종 기록은 validation/phase39-evidence에 소스SHA와 분리하여 원본 최초 결과/실패/미검증 범위를 보존.
