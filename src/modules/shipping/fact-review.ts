@@ -1,3 +1,6 @@
+import { linkDeclarationDependencies } from "./dependency-causes";
+import { directHsConflicts } from "./direct-hs-conflicts";
+import type { SemanticReport } from "./semantic-schema";
 import { goodsComparisonValue } from "./goods-context";
 import type { ShippingDocument } from "./schema";
 import type {
@@ -106,6 +109,7 @@ const roots = (d: ShippingDocument, role: string, hbl: string): FieldRef[] => {
 export function withFactReview(
   review: ShippingReview,
   documents: ShippingDocument[],
+  semantic?: SemanticReport,
 ): ShippingReview {
   if (
     !documents.some((d) => d.factCoverage) ||
@@ -909,8 +913,9 @@ export function withFactReview(
           },
     );
   }
-  resolveDeclarationScopes(primary, review.checks, documents, relations);
+  resolveDeclarationScopes(primary, review.checks, documents, relations, semantic);
   directGoodsConflicts(documents, review, primary);
+  directHsConflicts(documents, relations, primary);
   primary.sort((a, b) => a.id.localeCompare(b.id));
   for (const d of documents) {
     if (
@@ -969,6 +974,7 @@ export function withFactReview(
     checksExecuted: review.checks.length,
     independentChecks: primary.length,
   };
+  linkDeclarationDependencies(primary,review.checks,documents);
   return withReviewIssues(
     { ...review, primaryChecks: primary, outcomes },
     documents,

@@ -149,3 +149,9 @@ PHASE 2.3부터 선택한 Invoice/PL은 비교 의도로 수락하고 거래동�
 - 새 Blind는 universal-replacement의14–16(9PDF)+기존에 호출하지 않은 universal-complex13(4PDF), 총4거래13문서다. 새 lock은 첫 호출 전에 고정한다. 이 결과로 수정하면 다시 retirement/fresh lock이 필요하다.
 - 한도는150문서/220요청/USD2 그대로다. 현재134/190 이후 새Blind13+최종Set3실제UI3만 유료 실행한다. 원본Stress11/12는 정답 후보를 제공한 무료 근거검사, Set2는 저장된 최초후보 무료재생+전체회귀로 구분한다. 새Blind 중 복수신고/다품목·다중컨테이너 층을 별도 보고하되 중복 거래로 계산하지 않는다.
 - `scripts/universal/live.ts --corpus=replacement --stage=holdout --code-frozen=true ...`와 `scripts/universal/complex.ts --code-frozen=true ...` 사용. 자동재시도0, 기존 ledger/미확인 비용 유지. 실제 모델오류 최종91c0810 검증 성공과 새SHA 검증을 섞어 같은 성공으로 주장하지 않는다.
+
+## 2026-10-20 범용 정합성 엔진 집중 실행 — 최신 승인
+- 기존 live-phase39 원장 승계: 최소150문서/210요청/확인USD0.2262348/미확인상한USD0.0254659625 보존. 누적 문서1000·공급자요청1500·USD2로 명시 확대 승인. 이전150/220 상한은 승인된 predecessor migration으로만 변경. 초기화·새 원장·과거 비용 삭제 금지.
+- 승인 범위 안에서는 추가 건수 질문 없이 실제 추출/2차 의미/오류/독립/Blind 및 최종 Production 실증을 반복한다. 자동재시도0, 실패 후 진단한 수동 재실행만. 비용 선예약/실제 사용량 정산/미확인 비용 예약 유지. $2 상한은 별도 승인 없이는 초과 금지.
+- 한영 품목 대응을 유일한 native 행·명시 모델/속성·HS·전체 신고 포함·범위 증거와 결합해 신고별/전체 수량·Manifest에 연결한다. AI 언어 의견만으로 확정하거나 동일 HS/숫자만으로 품목을 매칭하지 않는다. original/current/recovery·수정/OCR/부분/공동포장/다른HBL 보호 유지.
+- 정상 복수신고51개 보류의 실제 원인·파생 검사 그래프를 보존/재계산하고 같은 원인만 문제로 통합한다. 실제 독립 충돌·필수정보·원문 검사를 숨기지 않는다. 단위783+신규/브라우저70, VITEST_MAX_WORKERS=1 로컬 지원 설정, ship/main/Actions/Production exactSHA/해당SHA 실제AI/UI 확인. 증거는 validation/phase39-evidence에 공개 가능한 수치/합성자료/비공개 입력 해시만 저장.

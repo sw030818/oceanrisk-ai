@@ -1,3 +1,6 @@
+import { linkDeclarationDependencies } from "./dependency-causes";
+import { matchProductRows } from "./product-matching";
+import { ref32 } from "./review-evidence";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck, ShippingReview } from "./review-model";
 import { semanticContext } from "./semantic-context";
@@ -11,7 +14,22 @@ export function withSemanticReview(base: ShippingReview, documents: ShippingDocu
   const context=semanticContext(documents), primary=(base.primaryChecks??base.checks).map(check=>({...check})), wire=semanticWireSchema.safeParse(report.decisions);
   const fresh=report.inputKey===context.key, ds=fresh&&wire.success&&report.status!=="failed"?wire.data.pairs:[];
   const covered=new Set<string>();
+  // A complete native/AI-validated declaration assignment identifies intended
+  // counterparts. Cartesian pairs belonging to other items are not faults.
+  const canonical=new Map<string,string>();
+  for(const proof of base.checks.filter(c=>c.declarationCoverage?.itemMappings)){
+    const group=proof.declarationCoverage!,bl=documents.find(d=>d.id===group.hblDocumentId)!;
+    for(const i of bl.items)canonical.set(refKey32(ref32(bl,"goodsDescription",i.fields.goodsDescription,{itemId:i.id})),bl.id+"/"+i.id);
+    for(const m of group.itemMappings!)canonical.set(refKey32({documentId:m.documentId,fieldName:"goodsDescription",itemId:m.itemId,field:bl.items[0].fields.goodsDescription}),bl.id+"/"+m.targetItemId);
+    for(const d of documents.filter(d=>d.detectedType==="house_manifest"&&d.classificationStatus==="classified"&&d.collectionCoverage?.items.complete)){
+      const mapped=matchProductRows(d.items.map(i=>ref32(d,"goodsDescription",i.fields.goodsDescription,{itemId:i.id})),bl.items.map(i=>ref32(bl,"goodsDescription",i.fields.goodsDescription,{itemId:i.id})),documents,report);
+      if(mapped.strong)for(const m of mapped.matches)canonical.set(refKey32(m.left),bl.id+"/"+m.right.itemId);
+    }
+  }
+  const disjoint=(left:string,right:string)=>canonical.has(left)&&canonical.has(right)&&canonical.get(left)!==canonical.get(right);
+
   for(const pair of context.pairs) {
+    if(disjoint(pair.left.id,pair.right.id))continue;
     const decisions=ds.filter(d=>d.leftId===pair.left.id&&d.rightId===pair.right.id), d=decisions[0];
     const mapped=(id:string,otherDoc:string,excludedOtherId:string)=>ds.some(other=>{
       if(!["same_product","compatible_incomplete"].includes(other.relation)||[other.leftId,other.rightId].includes(excludedOtherId))return false;
@@ -21,7 +39,7 @@ export function withSemanticReview(base: ShippingReview, documents: ShippingDocu
     if((!d||["different_product","explicit_conflict"].includes(d.relation))&&mapped(pair.left.id,pair.right.ref.documentId,pair.right.id)&&mapped(pair.right.id,pair.left.ref.documentId,pair.left.id))continue;
     let tested=d?validateSemanticDecision(d,pair):{assessment:"needs_review" as const,code:fresh?"SEMANTIC_NOT_COMPLETED":"SEMANTIC_STALE",reason:fresh?(report.status==="failed"&&report.error?"상품 의미 분석 실패: "+report.error.message+" 기존 수치·참조 검사는 보존합니다.":"상품 의미 분석이 완료되지 않았습니다. 기존 수치·참조 검사는 보존합니다."):"문서/사용자 수정으로 이전 AI 의미 근거가 달라져 해당 결과를 사용하지 않습니다. 재분석 전까지 기존 검사를 유지합니다."};
     const rejectedCross=(other:typeof ds[number])=>{const p=context.pairs.find(p=>p.left.id===other.leftId&&p.right.id===other.rightId);return other.relation==="explicit_conflict"&&!!p&&mapped(p.left.id,p.right.ref.documentId,p.right.id)&&mapped(p.right.id,p.left.ref.documentId,p.left.id);};
-    const ambiguous=ds.some(other=>other!==d&&!rejectedCross(other)&&!["unknown","different_product"].includes(other.relation)&&((other.leftId===pair.left.id&&other.rightId!==pair.right.id&&context.products.find(p=>p.id===other.rightId)?.ref.documentId===pair.right.ref.documentId)||(other.rightId===pair.right.id&&other.leftId!==pair.left.id&&context.products.find(p=>p.id===other.leftId)?.ref.documentId===pair.left.ref.documentId)));
+    const ambiguous=ds.some(other=>other!==d&&!disjoint(other.leftId,other.rightId)&&!rejectedCross(other)&&!["unknown","different_product"].includes(other.relation)&&((other.leftId===pair.left.id&&other.rightId!==pair.right.id&&context.products.find(p=>p.id===other.rightId)?.ref.documentId===pair.right.ref.documentId)||(other.rightId===pair.right.id&&other.leftId!==pair.left.id&&context.products.find(p=>p.id===other.leftId)?.ref.documentId===pair.left.ref.documentId)));
     if(decisions.length>1||ambiguous)tested={assessment:"needs_review",code:"AMBIGUOUS_SEMANTIC_MAPPING",reason:"AI 응답에 중복/다대일 품목 대응이 있어 일대일 관계를 확정하지 않습니다."};
     const id="semantic/"+pair.left.id+"/"+pair.right.id;
     const c:ShippingCheck={id,scope:pair.left.documentType==="export_declaration"||pair.right.documentType==="export_declaration"?(pair.left.documentType==="house_manifest"||pair.right.documentType==="house_manifest"?"declaration_manifest":"house_bl_declaration"):"house_bl_manifest",category:"goods",title:"AI 상품 의미 · 규격 비교",assessment:tested.assessment,importance:tested.assessment==="confirmed_mismatch"?"high":"attention",
@@ -79,6 +97,7 @@ export function withSemanticReview(base: ShippingReview, documents: ShippingDocu
     old.explanation=old.comparison.meaning==="hsCode"?"같은 선적의 실제 전체 품목행과 일대일 대응을 확인한 뒤, 각 대응 품목의 검증된 HS 공통 6자리를 코드로 비교했습니다. 전체 국가별 세번 동일성이나 상품 분류의 적법성을 뜻하지 않습니다.":"AI 의미 대응: 한영·상이한 상품 설명을 검토했습니다. 같은 선적·전체 원문 행과 일대일 품목 대응은 별도로 검증했으며, 언어적 동일성은 잠정으로 구분합니다. "+resolvedPairs.map(c=>c.explanation).join(" ");
   }
   const checks=primary.filter(c=>!covered.has(c.id));
+  linkDeclarationDependencies(checks,base.checks,documents);
   const outcomes=base.outcomes?{...base.outcomes,matches:checks.filter(c=>c.assessment==="confirmed_match").length,mismatches:checks.filter(c=>c.assessment==="confirmed_mismatch").length,review:checks.filter(c=>c.disposition!=="informational"&&(c.assessment.startsWith("provisional")||c.assessment==="needs_review")).length,comparisonEvidenceUnverified:new Set(checks.flatMap(c=>c.fields.filter(f=>f.field.current.value!==null&&!verified32(f)).map(refKey32))).size,informational:checks.filter(c=>c.disposition==="informational").length,independentChecks:checks.length}:undefined;
   return withReviewIssues({...base,status:checks.some(c=>c.disposition!=="informational"&&c.assessment!=="confirmed_match"&&c.assessment!=="not_applicable")?"needs_review":"complete",primaryChecks:checks,outcomes,semantic:report},documents);
 }

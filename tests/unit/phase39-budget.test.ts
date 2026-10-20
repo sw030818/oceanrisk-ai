@@ -1,9 +1,9 @@
 import{it,expect}from"vitest";
 import{policy39,reserve39,semanticBudgetStopped39}from"../../scripts/lib/phase39-live";
 import{reconcileTestBudget}from"../../scripts/lib/openai-budget";
-const fresh=()=>({documents:0,requests:0,measuredCostUsd:0,unresolvedCostUpperUsd:0,maxDocuments:150,maxRequests:220,maxCostUsd:2});
+const fresh=()=>({documents:0,requests:0,measuredCostUsd:0,unresolvedCostUpperUsd:0,maxDocuments:1000,maxRequests:1500,maxCostUsd:2});
 it("keeps a new proposed ledger and reserves semantic requests without inventing document attempts",()=>{expect(policy39.directory).toBe("test-results/live-phase39");const b=fresh();reserve39(b,.01,3,3);reserve39(b,.02,0,1);expect(b.documents).toBe(3);expect(b.requests).toBe(4);expect(b.unresolvedCostUpperUsd).toBeCloseTo(.03);});
-it.each(["documents","requests","cost"])("stops before exhausted %s with no partial mutation",mode=>{const b=fresh();if(mode==="documents")b.documents=150;if(mode==="requests")b.requests=220;if(mode==="cost")b.measuredCostUsd=1.99;const before=structuredClone(b);expect(()=>reserve39(b,.02,1,1)).toThrow();expect(b).toEqual(before);});
+it.each(["documents","requests","cost"])("stops before exhausted %s with no partial mutation",mode=>{const b=fresh();if(mode==="documents")b.documents=1000;if(mode==="requests")b.requests=1500;if(mode==="cost")b.measuredCostUsd=1.99;const before=structuredClone(b);expect(()=>reserve39(b,.02,1,1)).toThrow();expect(b).toEqual(before);});
 it("preserves unknown timeout charges and earlier SHA usage",()=>{const b=fresh();reserve39(b,1.8,2,2);reconcileTestBudget(b,1.8,null);expect(()=>reserve39(b,.3,0,1)).toThrow();expect(b.documents).toBe(2);expect(b.requests).toBe(2);reconcileTestBudget(b,1.8,.01);reserve39(b,.3,0,1);expect(b.documents).toBe(2);expect(b.requests).toBe(3);});
 
 it("does not spend a second request after an extraction quota/auth stop",()=>{for(const code of ["API_AUTH_OR_CONFIG","API_RATE_LIMIT","INVALID_MODEL","API_NOT_CONFIGURED","BATCH_STOPPED"])expect(semanticBudgetStopped39([{error:{code}}] as never)).toBe(true);expect(semanticBudgetStopped39([{error:{code:"PDF_UNREADABLE"}}] as never)).toBe(false);});
@@ -12,7 +12,9 @@ it("corrects the obsolete ten-dollar proposal without resetting paid or unknown 
 it("migrates only explicitly approved old caps without clearing a single attempt or charge",async()=>{
  const {migrateApprovedTrialCaps}=await import("../../scripts/lib/trial-live");
  const old={...fresh(),maxDocuments:60,maxRequests:120,documents:59,requests:86,measuredCostUsd:.096102395,unresolvedCostUpperUsd:.01262635};
- expect(migrateApprovedTrialCaps(policy39,old)).toEqual({...old,maxDocuments:150,maxRequests:220});
+ expect(migrateApprovedTrialCaps(policy39,old)).toEqual({...old,maxDocuments:1000,maxRequests:1500});
  expect(migrateApprovedTrialCaps({...policy39,previousApprovedCaps:undefined},old)).toEqual(old);
  expect(migrateApprovedTrialCaps(policy39,{...old,maxCostUsd:10}).maxCostUsd).toBe(10);
 });
+
+it("preserves all cumulative charges when expanding the approved 150/220 predecessor",async()=>{const{migrateApprovedTrialCaps}=await import("../../scripts/lib/trial-live");const old={...fresh(),maxDocuments:150,maxRequests:220,documents:150,requests:210,measuredCostUsd:.2262348,unresolvedCostUpperUsd:.0254659625};expect(migrateApprovedTrialCaps(policy39,old)).toEqual({...old,maxDocuments:1000,maxRequests:1500});});

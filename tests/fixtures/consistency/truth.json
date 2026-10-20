@@ -1,0 +1,1827 @@
+[
+  {
+    "case": "development-b",
+    "fault": null,
+    "documents": [
+      {
+        "file": "development-b/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "development-b/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "development-b/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "development-b/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "development-b/05.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": false
+  },
+  {
+    "case": "holdout-d",
+    "fault": null,
+    "documents": [
+      {
+        "file": "holdout-d/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-D-41",
+        "declarations": [
+          "SYN-CI-D-41-1",
+          "SYN-CI-D-41-2"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "ULTRASONIC TRANSDUCER MODEL UTX14",
+            "quantity": 320,
+            "hs": "8543.70"
+          },
+          {
+            "description": "MAGNETIC ENCODER MODEL MGE63",
+            "quantity": 680,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "HDLU4000100",
+            "seal": "D-SEAL-1",
+            "packages": 16,
+            "gross": 160
+          },
+          {
+            "number": "HDLU4000101",
+            "seal": "D-SEAL-2",
+            "packages": 34,
+            "gross": 340
+          }
+        ]
+      },
+      {
+        "file": "holdout-d/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-D-41",
+        "declarations": [
+          "SYN-CI-D-41-1"
+        ],
+        "quantity": 320,
+        "packages": 16,
+        "gross": 160,
+        "items": [
+          {
+            "description": "초음파 변환기 MODEL UTX14",
+            "quantity": 320,
+            "hs": "8543.70"
+          }
+        ],
+        "containers": [
+          {
+            "number": "HDLU4000100",
+            "seal": "D-SEAL-1",
+            "packages": 16,
+            "gross": 160
+          }
+        ]
+      },
+      {
+        "file": "holdout-d/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-D-41",
+        "declarations": [
+          "SYN-CI-D-41-2"
+        ],
+        "quantity": 680,
+        "packages": 34,
+        "gross": 340,
+        "items": [
+          {
+            "description": "자기식 엔코더 MODEL MGE63",
+            "quantity": 680,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "HDLU4000101",
+            "seal": "D-SEAL-2",
+            "packages": 34,
+            "gross": 340
+          }
+        ]
+      },
+      {
+        "file": "holdout-d/04.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-D-41",
+        "declarations": [
+          "SYN-CI-D-41-1",
+          "SYN-CI-D-41-2"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "ULTRASONIC TRANSDUCER MODEL UTX14 / 320 PCS / 16 CTNS",
+            "quantity": 320,
+            "hs": "8543.70"
+          },
+          {
+            "description": "MAGNETIC ENCODER MODEL MGE63 / 680 PCS / 34 CTNS",
+            "quantity": 680,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "HDLU4000100",
+            "seal": "D-SEAL-1",
+            "packages": 16,
+            "gross": 160
+          },
+          {
+            "number": "HDLU4000101",
+            "seal": "D-SEAL-2",
+            "packages": 34,
+            "gross": 340
+          }
+        ]
+      }
+    ],
+    "expectedIssue": false
+  },
+  {
+    "case": "fault-quantity",
+    "fault": "quantity",
+    "documents": [
+      {
+        "file": "fault-quantity/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-quantity/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 220,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 220,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-quantity/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "fault-quantity/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-quantity/05.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": true
+  },
+  {
+    "case": "fault-model",
+    "fault": "model",
+    "documents": [
+      {
+        "file": "fault-model/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-model/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS73",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-model/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "fault-model/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-model/05.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": true
+  },
+  {
+    "case": "fault-hs",
+    "fault": "hs",
+    "documents": [
+      {
+        "file": "fault-hs/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-hs/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-hs/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "fault-hs/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-hs/05.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "8504.40"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": true
+  },
+  {
+    "case": "fault-seal",
+    "fault": "seal",
+    "documents": [
+      {
+        "file": "fault-seal/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-seal/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-seal/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "fault-seal/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-seal/05.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "WRONG-SEAL-99",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": true
+  },
+  {
+    "case": "fault-missing-declaration",
+    "fault": "missing-declaration",
+    "documents": [
+      {
+        "file": "fault-missing-declaration/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-missing-declaration/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-missing-declaration/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "fault-missing-declaration/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-missing-declaration/05.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": true
+  },
+  {
+    "case": "fault-duplicate",
+    "fault": "duplicate",
+    "documents": [
+      {
+        "file": "fault-duplicate/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-duplicate/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-duplicate/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "fault-duplicate/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-duplicate/05.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-duplicate/06.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": true
+  },
+  {
+    "case": "fault-total",
+    "fault": "total",
+    "documents": [
+      {
+        "file": "fault-total/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-total/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-total/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "fault-total/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-total/05.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1075,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": true
+  },
+  {
+    "case": "fault-foreign-hbl",
+    "fault": "foreign-hbl",
+    "documents": [
+      {
+        "file": "fault-foreign-hbl/01.pdf",
+        "type": "house_bl",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-foreign-hbl/02.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-OTHER-SHIPMENT",
+        "declarations": [
+          "SYN-CI-B-27-1"
+        ],
+        "quantity": 240,
+        "packages": 12,
+        "gross": 120,
+        "items": [
+          {
+            "description": "광섬유 브래그 센서 MODEL FBS72",
+            "quantity": 240,
+            "hs": "9031.80"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          }
+        ]
+      },
+      {
+        "file": "fault-foreign-hbl/03.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-2"
+        ],
+        "quantity": 360,
+        "packages": 18,
+        "gross": 180,
+        "items": [
+          {
+            "description": "공압 회전 액추에이터 MODEL PRA80",
+            "quantity": 360,
+            "hs": "8412.39"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          }
+        ]
+      },
+      {
+        "file": "fault-foreign-hbl/04.pdf",
+        "type": "export_declaration",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 400,
+        "packages": 20,
+        "gross": 200,
+        "items": [
+          {
+            "description": "폴리머 정량 주입 헤드 MODEL PDH19",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      },
+      {
+        "file": "fault-foreign-hbl/05.pdf",
+        "type": "house_manifest",
+        "hbl": "SYN-CI-B-27",
+        "declarations": [
+          "SYN-CI-B-27-1",
+          "SYN-CI-B-27-2",
+          "SYN-CI-B-27-3"
+        ],
+        "quantity": 1000,
+        "packages": 50,
+        "gross": 500,
+        "items": [
+          {
+            "description": "FIBER BRAGG SENSOR MODEL FBS72 / 240 PCS / 12 CTNS",
+            "quantity": 240,
+            "hs": "9031.80"
+          },
+          {
+            "description": "PNEUMATIC ROTARY ACTUATOR MODEL PRA80 / 360 PCS / 18 CTNS",
+            "quantity": 360,
+            "hs": "8412.39"
+          },
+          {
+            "description": "POLYMER DOSING HEAD MODEL PDH19 / 400 PCS / 20 CTNS",
+            "quantity": 400,
+            "hs": "8413.91"
+          }
+        ],
+        "containers": [
+          {
+            "number": "TSTU4000100",
+            "seal": "B-SEAL-1",
+            "packages": 12,
+            "gross": 120
+          },
+          {
+            "number": "TSTU4000101",
+            "seal": "B-SEAL-2",
+            "packages": 18,
+            "gross": 180
+          },
+          {
+            "number": "TSTU4000102",
+            "seal": "B-SEAL-3",
+            "packages": 20,
+            "gross": 200
+          }
+        ]
+      }
+    ],
+    "expectedIssue": true
+  }
+]

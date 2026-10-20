@@ -48,6 +48,7 @@ export function scoreDocument(result:ShippingResult|undefined,t:Truth,type:strin
 }
 const arg=(k:string)=>process.argv.find(a=>a.startsWith('--'+k+'='))?.slice(k.length+3);
 if(process.argv[1]?.endsWith('/score.ts')){
+ if(arg('consistency-input')){await(await import('./consistency-score')).scoreConsistency(arg('consistency-input')!,arg('out')??'test-results/consistency/scored.json');process.exit(0);}
  const stage=arg('stage'),sha=arg('sha');if(!stage||!sha)throw Error('Select stage/source');
  const corpus=arg('corpus')==='replacement'?'tests/fixtures/universal-replacement/':'tests/fixtures/universal/';
  const truth=JSON.parse(await readFile(corpus+'truth.json','utf8')) as Truth[],manifest=JSON.parse(await readFile(corpus+'manifest.json','utf8')) as {case:string;type:string;fault?:string;parent?:string}[];

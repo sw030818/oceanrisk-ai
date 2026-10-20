@@ -7,7 +7,7 @@ import type {SemanticReport} from "../../src/modules/shipping/semantic-schema";
 import type {Fixture32} from "./phase32-live";
 // Current final-engine instruction authorizes cumulative PHASE39 USD2.
 // The old USD10 was a proposal only. Preserve all prior usage, including unknown cost.
-export const policy39={directory:"test-results/live-phase39",archive:"docs/validation/phase39-live.json",evidenceRef:"refs/heads/validation/phase39-evidence",documents:150,requests:220,previousApprovedCaps:[{documents:60,requests:120}],cost:2,previousCostProposal:10,phases:["3.8"],name:"PHASE39",reserveRecovery:false};
+export const policy39={directory:"test-results/live-phase39",archive:"docs/validation/phase39-live.json",evidenceRef:"refs/heads/validation/phase39-evidence",documents:1000,requests:1500,previousApprovedCaps:[{documents:150,requests:220},{documents:60,requests:120}],cost:2,previousCostProposal:10,phases:["3.8"],name:"PHASE39",reserveRecovery:false};
 export function reserve39(b:TrialBudget,cost:number,documents:number,requests:number){
  if(!Number.isFinite(cost)||cost<0||!Number.isInteger(documents)||documents<0||!Number.isInteger(requests)||requests<1||requests<documents)throw Error("INVALID_RESERVATION");
  if(b.maxDocuments!==policy39.documents||b.maxRequests!==policy39.requests||b.maxCostUsd!==2)throw Error("PHASE39_LEDGER_MISMATCH");

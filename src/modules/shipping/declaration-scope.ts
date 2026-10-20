@@ -1,3 +1,5 @@
+import { matchProductRows } from "./product-matching";
+import type { SemanticReport } from "./semantic-schema";
 import { goodsComparisonValue } from "./goods-context";
 import type { ShippingCheck, ShippingRelationship } from "./review-model";
 import type { ShippingDocument } from "./schema";
@@ -21,6 +23,7 @@ export function resolveDeclarationScopes(
   original: ShippingCheck[],
   documents: ShippingDocument[],
   relations: ShippingRelationship[],
+  semantic?: SemanticReport,
 ) {
   const rows = (d: ShippingDocument) => {
     if (!d.collectionCoverage?.items.complete || !d.items.length) return null;
@@ -44,9 +47,10 @@ export function resolveDeclarationScopes(
       ? null
       : keys.sort().join("|");
   };
-  for (const proof of original.filter((c) => c.declarationCoverage)) {
-    const coverage = proof.declarationCoverage!;
-    if (!proof.computedValues?.length || !proof.fields.every(verified32))
+  for (const proof of original.filter((c) => c.declarationCoverage||c.declarationMembership)) {
+    const productProven=!!proof.declarationCoverage;
+    const coverage = (proof.declarationCoverage??proof.declarationMembership)!;
+    if (productProven&&!proof.computedValues?.length || !proof.fields.every(verified32))
       continue;
     const bl = documents.find((d) => d.id === coverage.hblDocumentId);
     if (!bl || bl.classificationStatus !== "classified") continue;
@@ -89,7 +93,7 @@ export function resolveDeclarationScopes(
         linked &&
         ids.length === 1 &&
         ids[0] === hbl[0] &&
-        rows(d) === baseRows
+        (rows(d) === baseRows || [bl,d].every(doc=>doc.collectionCoverage?.containers.complete)&&(()=>{const sets=[bl,d].map(doc=>containerViews32(doc).map(c=>ref32(doc,"containerNumber",c.containerNumber,c.kind==="cargo"?{cargoId:c.id}:{containerId:c.id})));return sets.every(fs=>fs.length>0&&fs.every(verified32))&&JSON.stringify(sets[0].map(f=>text32(f.field.current.value)).sort())===JSON.stringify(sets[1].map(f=>text32(f.field.current.value)).sort());})())
       )
         carriers.add(d.id);
     }
@@ -122,6 +126,32 @@ export function resolveDeclarationScopes(
         continue;
       const meaning = c.comparison?.meaning;
       const subset = ids.some((id) => declarations.has(id));
+      if (["packageCount","grossWeight","netWeight"].includes(meaning ?? "")) {
+        const nums=c.fields.filter(f=>f.fieldName===meaning);
+        const anchored=nums.map(f=>{
+          const d=documents.find(d=>d.id===f.documentId)!;
+          const cargo=f.cargoId&&d.cargoRecords.find(r=>r.id===f.cargoId);
+          const container=f.containerId&&d.containers.find(r=>r.id===f.containerId);
+          const field=cargo?cargo.fields.containerNumber:container?container.containerNumber:undefined;
+          return field&&verified32(ref32(d,"containerNumber",field,cargo?{cargoId:cargo.id}:{containerId:container ? container.id : ""}))?text32(field.current.value):null;
+        });
+        if(c.assessment==="provisional_match"&&nums.length>=2&&anchored.every(Boolean)&&new Set(anchored).size===1){
+          c.assessment="confirmed_match";c.importance="info";c.scopeResolution={groupCheckId:proof.id,kind:"container_allocation"};c.comparison!.reasonCodes=[];c.uncertainties=[];c.explanation="동일한 검증 컨테이너의 실제 포장/중량 기재값과 호환 단위를 대조했습니다. 다른 컨테이너나 전체 선적 값으로 대체하지 않았습니다.";continue;
+        }
+        const allocated=original.find(a=>a.allocationCoverage?.groupCheckId===proof.id&&a.allocationCoverage.meaning===meaning&&a.assessment==="confirmed_match");
+        if(allocated&&ids.every(id=>allocated.allocationCoverage!.documentIds.includes(id))&&c.assessment.startsWith("provisional")){
+          c.assessment=subset?"not_applicable":"confirmed_match";c.importance="info";c.scopeResolution={groupCheckId:allocated.id,kind:subset?"subset":"aligned_carriers"};c.comparison!.reasonCodes=[];c.comparison!.relatedCheckIds=[...new Set([...c.comparison!.relatedCheckIds,allocated.id])];c.uncertainties=[];c.explanation=subset?"개별 신고와 전체 운송서류는 같은 합계 범위가 아닙니다. 명시된 전체 신고의 서로 다른 실제 컨테이너 할당 합계 검사에서 대조했습니다.":"전체 운송서류의 기재 합계와 검증된 신고별 컨테이너 할당 합계가 일치합니다.";continue;
+        }
+      }
+
+
+      if(!subset&&meaning==="quantity"&&c.assessment==="provisional_match"){
+        const nums=c.fields.filter(f=>f.fieldName==="quantity");
+        const ds=ids.map(id=>documents.find(d=>d.id===id)!);
+        const mappings=ds.slice(1).map(d=>matchProductRows(ds[0].items.map(i=>ref32(ds[0],"goodsDescription",i.fields.goodsDescription,{itemId:i.id})),d.items.map(i=>ref32(d,"goodsDescription",i.fields.goodsDescription,{itemId:i.id})),documents,semantic));
+        const connected=nums.length>=2&&nums.every(f=>!!f.itemId)&&mappings.length>0&&mappings.every(m=>m.strong&&m.matches.some(pair=>nums.some(f=>f.documentId===pair.left.documentId&&f.itemId===pair.left.itemId)&&nums.some(f=>f.documentId===pair.right.documentId&&f.itemId===pair.right.itemId)));
+        if(connected){c.assessment="confirmed_match";c.importance="info";c.scopeResolution={groupCheckId:proof.id,kind:"aligned_carriers"};c.comparison!.reasonCodes=[];c.uncertainties=[];c.explanation="검증된 전체 품목 집합의 유일한 행 대응과 동일 단위를 확인한 뒤 해당 품목의 원문 수량을 비교했습니다.";continue;}
+      }
       if (subset && ["containerNumber", "sealNumber"].includes(meaning ?? "")) {
         // Whole carrier lists and an individual declaration are different sets.
         // A proven complete declaration group permits membership, not equality.
@@ -130,8 +160,8 @@ export function resolveDeclarationScopes(
           if (f.fieldName !== meaning) return null;
           if (meaning === "containerNumber") return text32(f.field.current.value);
           const d = documents.find((d) => d.id === f.documentId);
-          const owner = d && containerViews32(d).find((v) =>
-            v.id === (f.containerId ?? f.cargoId));
+          const cargo = f.cargoId && d?.cargoRecords.find(v=>v.id===f.cargoId);
+          const owner = cargo ? {id:cargo.id,kind:"cargo" as const,containerNumber:cargo.fields.containerNumber} : d && containerViews32(d).find((v) => v.id === f.containerId);
           if (!owner || !owner.containerNumber ||
             !verified32(ref32(d!, "containerNumber", owner.containerNumber,
               owner.kind === "cargo" ? { cargoId: owner.id } : { containerId: owner.id })))
@@ -155,7 +185,7 @@ export function resolveDeclarationScopes(
         continue;
       }
       if (
-        subset &&
+        productProven && subset &&
         ["quantity", "goodsDescription", "hsCode"].includes(meaning ?? "") &&
         c.assessment.startsWith("provisional")
       ) {
@@ -170,7 +200,7 @@ export function resolveDeclarationScopes(
         c.followUp =
           "복수 신고 대응 품목 수량 및 합계 검사의 실제 값·근거·판정을 확인해 주세요.";
       } else if (
-        !subset &&
+        (productProven||ids.every(id=>rows(documents.find(d=>d.id===id)!)===baseRows)) && !subset &&
         ids.every((id) => carriers.has(id)) &&
         meaning === "hsCode" &&
         c.assessment === "provisional_match"

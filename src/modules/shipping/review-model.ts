@@ -25,10 +25,14 @@ export interface ShippingCheck {
   declarationCoverage?: {
     hblDocumentId: string;
     declarationDocumentIds: string[];
+    itemMappings?: { documentId: string; itemId: string; targetItemId: string; proof: string }[];
   };
+  declarationMembership?: { hblDocumentId: string; declarationDocumentIds: string[] };
+  rootCauseIds?: string[];
+  allocationCoverage?: { groupCheckId: string; meaning: string; documentIds: string[] };
   scopeResolution?: {
     groupCheckId: string;
-    kind: "subset" | "allocation" | "aligned_carriers" | "container_membership";
+    kind: "subset" | "allocation" | "aligned_carriers" | "container_membership" | "container_allocation";
   };
   documentIds?: string[];
   comparison?: {

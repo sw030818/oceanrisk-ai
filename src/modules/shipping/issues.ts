@@ -35,6 +35,7 @@ export function reviewIssues(
     if (c.disposition === "informational" || c.assessment === "confirmed_match" || c.assessment === "not_applicable")
       continue;
     const causal = evidenceCauses(c, documents);
+    if(!causal.length&&c.rootCauseIds?.length&&c.assessment!=="confirmed_mismatch")causal.push(...c.rootCauseIds.map(key=>({key,kind:"scope" as const,fields:c.fields})));
     if (!causal.length) causal.push(...semanticCauses(c, documents));
     if (causal.length) {
       for (const root of causal) {

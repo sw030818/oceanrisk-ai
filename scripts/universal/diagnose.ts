@@ -1,0 +1,15 @@
+// Derived diagnostics only. No PDF text, full response, keys or private quotes.
+import{readFile,writeFile,mkdir}from'node:fs/promises';import{createHash}from'node:crypto';
+import type{ShippingReview}from'../../src/modules/shipping/review-model';
+import type{ShippingDocument}from'../../src/modules/shipping/schema';
+const arg=(k:string)=>process.argv.find(a=>a.startsWith('--'+k+'='))?.slice(k.length+3);
+const response=arg('response'),savedReview=arg('review'),out=arg('out');if(!response||!out)throw Error('response and safe output required');
+const bytes=await readFile(response),x=JSON.parse(bytes.toString()),docs=x.initial.results.flatMap((r:{document?:ShippingDocument})=>r.document?[r.document]:[])as ShippingDocument[],review=(savedReview?JSON.parse(await readFile(savedReview,'utf8')):x.review)as ShippingReview;
+const checks=review.primaryChecks??review.checks,byId=new Map([...review.checks,...checks].map(c=>[c.id,c]));
+const graph=(review.issues??[]).map(issue=>{
+ const cs=issue.relatedCheckIds.flatMap(id=>byId.has(id)?[byId.get(id)!]:[]);
+ const roles=[...new Set(cs.flatMap(c=>c.fields.map(f=>f.fieldName)))];
+ const parent=cs.some(c=>c.semantic)?'product_mapping':roles.some(r=>['packageCount','grossWeight'].includes(r))?'container_allocation':roles.includes('sealNumber')||roles.includes('containerNumber')?'container_scope':'product_mapping';
+ return{issueId:issue.id,assessment:issue.assessment,rootCauseId:issue.rootCauseIds?.[0]??parent,checkIds:issue.relatedCheckIds,derivedChecks:cs.map(c=>({id:c.id,documentIds:c.documentIds??[...new Set(c.fields.map(f=>f.documentId))],meaning:c.comparison?.meaning??c.category,scope:c.comparison?.scope??c.scope,assessment:c.assessment,reasonCodes:c.comparison?.reasonCodes??c.uncertainties??[],upstream:c.scopeResolution?.groupCheckId??null,originalCheckIds:c.comparison?.relatedCheckIds??[],relationshipIds:c.relationshipIds,fields:c.fields.map(f=>({documentId:f.documentId,role:f.fieldName,itemId:f.itemId,containerId:f.containerId,cargoId:f.cargoId,status:f.field.current.status,page:f.field.current.source?.page,blockIds:f.field.current.source?.segments?.map(s=>s.blockId)}))}))};
+});
+const safe={kind:'Derived cause graph for authorized SYNTHETIC corpus; no raw document text',responseSha256:createHash('sha256').update(bytes).digest('hex'),sourceSha:x.sourceSha,documents:docs.map(d=>({id:d.id,type:d.detectedType,hbl:d.fields.houseBlNumber?.current.value,declaration:d.fields.declarationNumber?.current.value,references:d.references.map(r=>({kind:r.kind,value:r.number.current.value,status:r.number.current.status})),classification:d.classificationStatus})),relationships:review.relationships?.map(r=>({id:r.id,documentIds:r.documentIds,status:r.status,conflictRoles:r.conflictRoles})),issues:graph.length,rootCounts:Object.fromEntries([...new Set(graph.map(g=>g.rootCauseId))].map(root=>[root,graph.filter(g=>g.rootCauseId===root).length])),graph};await mkdir(out.slice(0,out.lastIndexOf('/')),{recursive:true});await writeFile(out,JSON.stringify(safe,null,2));console.log(JSON.stringify({issues:safe.issues,rootCounts:safe.rootCounts}));

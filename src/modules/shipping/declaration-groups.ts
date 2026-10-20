@@ -1,5 +1,7 @@
-import { goodsComparisonValue } from "./goods-context";
 import { goodsCore } from "./equivalence";
+import { goodsComparisonValue } from "./goods-context";
+import { matchProductRows } from './product-matching';
+import type { SemanticReport } from './semantic-schema';
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck, ShippingRelationship } from "./review-model";
 import {
@@ -16,6 +18,7 @@ import {
 export function declarationGroupChecks(
   docs: ShippingDocument[],
   relations: ShippingRelationship[],
+  semantic?: SemanticReport,
 ): ShippingCheck[] {
   const checks: ShippingCheck[] = [];
   for (const bl of docs.filter((d) => d.detectedType === "house_bl")) {
@@ -129,20 +132,12 @@ export function declarationGroupChecks(
       )
     )
       blockers.push("품명·HS·수량·단위 중 일부 근거가 미확인입니다.");
-    const identity = (r: (typeof refs)[number]) =>
-      goodsCore(goodsComparisonValue(r.description.field)) +
-      "/" +
-      text32(r.hs.field.current.value);
-    const keys = refs.map(identity),
-      tk = target.map(identity);
-    if (new Set(keys).size !== keys.length || new Set(tk).size !== tk.length)
-      blockers.push(
-        "복수 신고 또는 HBL에 중복 품목이 있어 명시적 배분 없이 합산하지 않습니다.",
-      );
-    if (keys.length !== tk.length || keys.some((k) => !tk.includes(k)))
-      blockers.push(
-        "HBL 전체 품목 집합과 신고 품목 집합이 정확히 대응하지 않습니다.",
-      );
+    const literalKeys=(rs:typeof refs)=>rs.map(r=>goodsCore(goodsComparisonValue(r.description.field))+"/"+text32(r.hs.field.current.value));
+    if([literalKeys(refs),literalKeys(target)].some(keys=>new Set(keys).size!==keys.length))blockers.push("복수 신고 또는 HBL에 중복 품목이 있어 명시적 배분 없이 합산하지 않습니다.");
+    const structuralBlockerCount=blockers.length;
+    const mapping = matchProductRows(refs.map(r=>r.description),target.map(r=>r.description),docs,semantic);
+    if (!mapping.complete) blockers.push("HBL 전체 품목 집합과 신고 품목 집합이 정확히 대응하지 않습니다.");
+    else if (!mapping.strong) blockers.push("AI 언어 대응은 있으나 유일한 원문 품목 식별자 근거가 부족합니다.");
     const units = [...refs, ...target].map((r) =>
       unit32(r.unit.field.current.value, "quantity"),
     );
@@ -176,14 +171,15 @@ export function declarationGroupChecks(
       Math.max(1e-9, Math.max(left, right) * Number.EPSILON * refs.length);
     if (!blockers.length)
       for (const [i, row] of refs.entries()) {
-        const index = target.findIndex((r) => identity(r) === identity(row)),
+        const mapped = mapping.matches.find(m=>m.left===row.description),
+          index = target.findIndex((r) => r.description===mapped?.right),
           matched = target[index];
         const equal =
           Number(row.quantity.field.current.value) * units[i]!.factor ===
           Number(matched.quantity.field.current.value) *
             units[refs.length + index]!.factor;
         checks.push({
-          id: key32(bl.id, "check", "declaration-group-item-" + identity(row)),
+          id: key32(bl.id, "check", "declaration-group-item-" + row.description.documentId + "/" + row.description.itemId),
           scope: "document",
           category: "quantity",
           title: "복수 신고 대응 품목 수량",
@@ -224,6 +220,7 @@ export function declarationGroupChecks(
         )
         .map((r) => r.id),
       fields,
+      ...(!structuralBlockerCount?{declarationMembership:{hblDocumentId:bl.id,declarationDocumentIds:linked.map(d=>d.id)},...(!mapping.strong?{rootCauseIds:["declaration-product-map/"+bl.id]}:{})}:{}),
       explanation: blockers.length
         ? "신고 합산의 포함·중복·행 근거 조건을 충족하지 못했습니다."
         : "명시된 전체 신고 목록과 서로 다른 검증된 품목 집합의 물품 수량을 합산했습니다. 포장/중량을 물품 수량에 포함하지 않았습니다.",
@@ -235,6 +232,7 @@ export function declarationGroupChecks(
             declarationCoverage: {
               hblDocumentId: bl.id,
               declarationDocumentIds: linked.map((d) => d.id),
+              itemMappings: mapping.matches.map(m=>({documentId:m.left.documentId,itemId:m.left.itemId!,targetItemId:m.right.itemId!,proof:m.proof})),
             },
             computedValues: [
               {

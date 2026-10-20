@@ -1,3 +1,4 @@
+import { declarationAllocations } from "./declaration-allocation";
 import { contextualPort } from "./port-context";
 import { withSemanticReview } from "./semantic-integration";
 import type { SemanticReport } from "./semantic-schema";
@@ -1322,7 +1323,8 @@ export function reviewShipping(
       }
   for (const r of relationships)
     r.entityLinks?.sort((a, b) => a.id.localeCompare(b.id));
-  checks.push(...declarationGroupChecks(documents, relationships));
+  checks.push(...declarationGroupChecks(documents, relationships, options.semantic));
+  checks.push(...declarationAllocations(documents, checks));
   checks.sort((a, b) => a.id.localeCompare(b.id));
   const summary = {
     matches: checks.filter((c) => c.assessment === "confirmed_match").length,
@@ -1372,6 +1374,6 @@ export function reviewShipping(
               ? "2종 양자대조를 실행합니다. 삼각대조 대상 3종은 부족합니다."
               : "3종 문서가 있지만 공통 HBL과 모든 양자 연결의 근거를 확정하지 못해 삼각대조를 보류했습니다.",
     },
-    documents,
+    documents, options.semantic,
   ), documents, options.semantic);
 }

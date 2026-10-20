@@ -1,0 +1,352 @@
+[
+  {
+    "case": "development-b",
+    "file": "development-b/01.pdf",
+    "type": "house_bl",
+    "partition": "development",
+    "sha256": "bd784cf7e284aeaac2d723f504dfde2dc7437b04413d88957b8115fe78cb5d61"
+  },
+  {
+    "case": "development-b",
+    "file": "development-b/02.pdf",
+    "type": "export_declaration",
+    "partition": "development",
+    "sha256": "5887a35813ec39da77b0b5e7cc9c6be299a5c3cdf1958141acf26d0aac5cdb87"
+  },
+  {
+    "case": "development-b",
+    "file": "development-b/03.pdf",
+    "type": "export_declaration",
+    "partition": "development",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "development-b",
+    "file": "development-b/04.pdf",
+    "type": "export_declaration",
+    "partition": "development",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "development-b",
+    "file": "development-b/05.pdf",
+    "type": "house_manifest",
+    "partition": "development",
+    "sha256": "7ee46f1de9964ca25a4b889eff663faf5672d81562154c11fafdfefcbf0392bd"
+  },
+  {
+    "case": "holdout-d",
+    "file": "holdout-d/01.pdf",
+    "type": "house_bl",
+    "partition": "holdout",
+    "sha256": "716db6fef7a49f2d67a45cbeef35e29703502d6baf96132e855833469ea6fa5a"
+  },
+  {
+    "case": "holdout-d",
+    "file": "holdout-d/02.pdf",
+    "type": "export_declaration",
+    "partition": "holdout",
+    "sha256": "a3179e75b1645c1d459c51bb4eaed2318ba4c8c4f7ccab9c4165d8d73d48e840"
+  },
+  {
+    "case": "holdout-d",
+    "file": "holdout-d/03.pdf",
+    "type": "export_declaration",
+    "partition": "holdout",
+    "sha256": "78dbb2972210400a8605e0e2361f001a67942379bb251864df0a4c6f983b253e"
+  },
+  {
+    "case": "holdout-d",
+    "file": "holdout-d/04.pdf",
+    "type": "house_manifest",
+    "partition": "holdout",
+    "sha256": "53d430ebbd079564320eb265f9ec01ef4b91494996e39f55a20d3dce9984ec78"
+  },
+  {
+    "case": "fault-quantity",
+    "file": "fault-quantity/01.pdf",
+    "type": "house_bl",
+    "partition": "error",
+    "sha256": "bd784cf7e284aeaac2d723f504dfde2dc7437b04413d88957b8115fe78cb5d61"
+  },
+  {
+    "case": "fault-quantity",
+    "file": "fault-quantity/02.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "1c86eca1313eb48b161dad17ee9469581ea2d19b47f170357aced66b137f58e3"
+  },
+  {
+    "case": "fault-quantity",
+    "file": "fault-quantity/03.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "fault-quantity",
+    "file": "fault-quantity/04.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "fault-quantity",
+    "file": "fault-quantity/05.pdf",
+    "type": "house_manifest",
+    "partition": "error",
+    "sha256": "7ee46f1de9964ca25a4b889eff663faf5672d81562154c11fafdfefcbf0392bd"
+  },
+  {
+    "case": "fault-model",
+    "file": "fault-model/01.pdf",
+    "type": "house_bl",
+    "partition": "error",
+    "sha256": "bd784cf7e284aeaac2d723f504dfde2dc7437b04413d88957b8115fe78cb5d61"
+  },
+  {
+    "case": "fault-model",
+    "file": "fault-model/02.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "07b0c18c461b8d72cbf8647748c77c059018498028c3573c211463761097877d"
+  },
+  {
+    "case": "fault-model",
+    "file": "fault-model/03.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "fault-model",
+    "file": "fault-model/04.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "fault-model",
+    "file": "fault-model/05.pdf",
+    "type": "house_manifest",
+    "partition": "error",
+    "sha256": "7ee46f1de9964ca25a4b889eff663faf5672d81562154c11fafdfefcbf0392bd"
+  },
+  {
+    "case": "fault-hs",
+    "file": "fault-hs/01.pdf",
+    "type": "house_bl",
+    "partition": "error",
+    "sha256": "bd784cf7e284aeaac2d723f504dfde2dc7437b04413d88957b8115fe78cb5d61"
+  },
+  {
+    "case": "fault-hs",
+    "file": "fault-hs/02.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "5887a35813ec39da77b0b5e7cc9c6be299a5c3cdf1958141acf26d0aac5cdb87"
+  },
+  {
+    "case": "fault-hs",
+    "file": "fault-hs/03.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "fault-hs",
+    "file": "fault-hs/04.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "fault-hs",
+    "file": "fault-hs/05.pdf",
+    "type": "house_manifest",
+    "partition": "error",
+    "sha256": "9348ecf92dd298f2e6a77904ab683222be4e2e06a1a1b798ae274c94a252e973"
+  },
+  {
+    "case": "fault-seal",
+    "file": "fault-seal/01.pdf",
+    "type": "house_bl",
+    "partition": "error",
+    "sha256": "bd784cf7e284aeaac2d723f504dfde2dc7437b04413d88957b8115fe78cb5d61"
+  },
+  {
+    "case": "fault-seal",
+    "file": "fault-seal/02.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "5887a35813ec39da77b0b5e7cc9c6be299a5c3cdf1958141acf26d0aac5cdb87"
+  },
+  {
+    "case": "fault-seal",
+    "file": "fault-seal/03.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "fault-seal",
+    "file": "fault-seal/04.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "fault-seal",
+    "file": "fault-seal/05.pdf",
+    "type": "house_manifest",
+    "partition": "error",
+    "sha256": "78216df4ca03cb4cdca57aa467c15853d2d586143281a75f9126b63e16b042a4"
+  },
+  {
+    "case": "fault-missing-declaration",
+    "file": "fault-missing-declaration/01.pdf",
+    "type": "house_bl",
+    "partition": "error",
+    "sha256": "ea6c5c25f9784bef2e7337253f2819715a4b99bd7f5d1285f2c10669f0ff4314"
+  },
+  {
+    "case": "fault-missing-declaration",
+    "file": "fault-missing-declaration/02.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "5887a35813ec39da77b0b5e7cc9c6be299a5c3cdf1958141acf26d0aac5cdb87"
+  },
+  {
+    "case": "fault-missing-declaration",
+    "file": "fault-missing-declaration/03.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "fault-missing-declaration",
+    "file": "fault-missing-declaration/04.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "fault-missing-declaration",
+    "file": "fault-missing-declaration/05.pdf",
+    "type": "house_manifest",
+    "partition": "error",
+    "sha256": "7ee46f1de9964ca25a4b889eff663faf5672d81562154c11fafdfefcbf0392bd"
+  },
+  {
+    "case": "fault-duplicate",
+    "file": "fault-duplicate/01.pdf",
+    "type": "house_bl",
+    "partition": "error",
+    "sha256": "bd784cf7e284aeaac2d723f504dfde2dc7437b04413d88957b8115fe78cb5d61"
+  },
+  {
+    "case": "fault-duplicate",
+    "file": "fault-duplicate/02.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "5887a35813ec39da77b0b5e7cc9c6be299a5c3cdf1958141acf26d0aac5cdb87"
+  },
+  {
+    "case": "fault-duplicate",
+    "file": "fault-duplicate/03.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "fault-duplicate",
+    "file": "fault-duplicate/04.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "fault-duplicate",
+    "file": "fault-duplicate/05.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "5887a35813ec39da77b0b5e7cc9c6be299a5c3cdf1958141acf26d0aac5cdb87"
+  },
+  {
+    "case": "fault-duplicate",
+    "file": "fault-duplicate/06.pdf",
+    "type": "house_manifest",
+    "partition": "error",
+    "sha256": "7ee46f1de9964ca25a4b889eff663faf5672d81562154c11fafdfefcbf0392bd"
+  },
+  {
+    "case": "fault-total",
+    "file": "fault-total/01.pdf",
+    "type": "house_bl",
+    "partition": "error",
+    "sha256": "bd784cf7e284aeaac2d723f504dfde2dc7437b04413d88957b8115fe78cb5d61"
+  },
+  {
+    "case": "fault-total",
+    "file": "fault-total/02.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "5887a35813ec39da77b0b5e7cc9c6be299a5c3cdf1958141acf26d0aac5cdb87"
+  },
+  {
+    "case": "fault-total",
+    "file": "fault-total/03.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "fault-total",
+    "file": "fault-total/04.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "fault-total",
+    "file": "fault-total/05.pdf",
+    "type": "house_manifest",
+    "partition": "error",
+    "sha256": "63ccd79cf4b510c025288cbb2ecf9f99608a6c3b88922f0d082616a0a08e0533"
+  },
+  {
+    "case": "fault-foreign-hbl",
+    "file": "fault-foreign-hbl/01.pdf",
+    "type": "house_bl",
+    "partition": "error",
+    "sha256": "bd784cf7e284aeaac2d723f504dfde2dc7437b04413d88957b8115fe78cb5d61"
+  },
+  {
+    "case": "fault-foreign-hbl",
+    "file": "fault-foreign-hbl/02.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "c9212fbc0f32410536b1f21dd3e4ccc0f691f3cd80b44d1f710356523d9d7355"
+  },
+  {
+    "case": "fault-foreign-hbl",
+    "file": "fault-foreign-hbl/03.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "6b1707deda200d5238fcd8903461513adb6a01ce53cff54956a2f32ad86cd1b2"
+  },
+  {
+    "case": "fault-foreign-hbl",
+    "file": "fault-foreign-hbl/04.pdf",
+    "type": "export_declaration",
+    "partition": "error",
+    "sha256": "7820af8042e111060b2c36dba42c77440f1352fa32036970f040b5d7f0a36cc1"
+  },
+  {
+    "case": "fault-foreign-hbl",
+    "file": "fault-foreign-hbl/05.pdf",
+    "type": "house_manifest",
+    "partition": "error",
+    "sha256": "7ee46f1de9964ca25a4b889eff663faf5672d81562154c11fafdfefcbf0392bd"
+  }
+]

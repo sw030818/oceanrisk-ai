@@ -1,3 +1,4 @@
+import { nativeProductIdentifiers } from "./product-identifiers";
 import type { ShippingDocument, ShippingField } from "./schema";
 import { independentlyVerified } from "./effective";
 import { factHbl } from "./facts";
@@ -57,5 +58,21 @@ export function semanticContext(documents: ShippingDocument[]) {
     if(exactOwner(left,right.ref.documentId)||exactOwner(right,left.ref.documentId))continue;
     all.push({left,right,relationshipId:relationship.id});
   }
-  return { key: semanticInputKey(documents), products, pairs: all.slice(0, SEMANTIC_MAX_PAIRS), omittedPairs: Math.max(0, all.length - SEMANTIC_MAX_PAIRS) };
+  // Preserve the complete small candidate set (including negative alternatives)
+  // and its diagnostics. Reduce only a large Cartesian set that risks saturating
+  // the fixed provider output budget; never infer final identity here.
+  const selected=all.length<=SEMANTIC_MAX_PAIRS/2?all:all.filter(({left,right})=>{
+    // An explicit, uniquely grounded model/SKU on another row supplies a
+    // candidate owner, not a translation or a final product verdict. Do not
+    // spend semantic output on Cartesian pairs with an already identified other
+    // owner. A changed/missing/duplicate identifier retains all candidates.
+    const nativeOwner=(p:SemanticProduct,otherDoc:string)=>{
+      const ids=nativeProductIdentifiers(p);if(ids.length!==1)return undefined;
+      const same=products.filter(q=>q.ref.documentId===otherDoc&&nativeProductIdentifiers(q).length===1&&nativeProductIdentifiers(q)[0]===ids[0]);
+      return same.length===1&&products.filter(q=>q.ref.documentId===p.ref.documentId&&nativeProductIdentifiers(q).includes(ids[0])).length===1?same[0]:undefined;
+    };
+    const lo=nativeOwner(left,right.ref.documentId),ro=nativeOwner(right,left.ref.documentId);
+    return !(lo&&lo.id!==right.id||ro&&ro.id!==left.id);
+  });
+  return { key: semanticInputKey(documents), products, pairs: selected.slice(0, SEMANTIC_MAX_PAIRS), omittedPairs: Math.max(0, selected.length - SEMANTIC_MAX_PAIRS) };
 }
