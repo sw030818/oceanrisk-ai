@@ -52,9 +52,9 @@
   "finalSourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
   "validationReport": "docs/validation/final-engine-2026-10-18/README.md",
   "checkpoint": {
-    "at": "2026-10-20T08:33:56.276Z",
+    "at": "2026-10-20T08:36:34.399Z",
     "sourceSha": "7f1c08a0d1944f3c9acde52125a6a53fd5cef4d1",
-    "status": "LIVE_EVALUATION_IN_PROGRESS_NOT_FINAL_SUCCESS"
+    "status": "INCOMPLETE_WITH_EVIDENCE"
   },
   "set3Fix": {
     "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
@@ -353,5 +353,18 @@
       "sourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
       "status": "FINAL_EVALUATION_COMPLETED_WITH_UNRESOLVED_FAILURES"
     }
-  ]
+  ],
+  "finalEngineEvidence": {
+    "sourceSha": "7f1c08a0d1944f3c9acde52125a6a53fd5cef4d1",
+    "path": "docs/validation/consistency-20261020/REPORT.md",
+    "budget": {
+      "documents": 184,
+      "requests": 251,
+      "measuredCostUsd": 0.2838282900000001,
+      "unresolvedCostUpperUsd": 0.037932399999999984,
+      "maxDocuments": 1000,
+      "maxRequests": 1500,
+      "maxCostUsd": 2
+    }
+  }
 }

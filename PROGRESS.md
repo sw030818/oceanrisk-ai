@@ -674,3 +674,9 @@ Source 7884bb3c62976c129f0006ce5b6f140791c5720c. npm ci/type/lint/754 unit/70 br
 - 누적150문서/210요청/확인USD0.2262348/미확인상한0.0254659625 불변. 이번추가유료0. 첨부지시의150/220/USD2 한도는 재사용/초기화하지 않음. 추가8문서/최대10요청/예약USD0.30 제안은 미승인; 이전12문서 제안 철회.
 - 다음: 추가 승인 후 새 source 독립실증. 이미 수정에 사용한 complex13은 새Blind가 아님. 한영 복수신고 품목대응·합계, 모델 오류 업무 문제 중복은 미해결. 최종새SHA 실제추출/새Blind 미실행이므로 범용완성 선언 금지.
 - 보고서/안전한 수치/헬퍼스냅샷/비공개입력해시: docs/validation/declaration-scope-2026-10-20/REPORT.md. 실제업무PDF/raw/키 공개 없음.
+
+
+## 2026-10-20 범용 정합성 실제 평가 최종 기록
+- Source: 7f1c08a0d1944f3c9acde52125a6a53fd5cef4d1; 상세 결과: docs/validation/consistency-20261020/REPORT.md
+- 누적 사용량: {"documents":184,"requests":251,"measuredCostUsd":0.2838282900000001,"unresolvedCostUpperUsd":0.037932399999999984,"maxDocuments":1000,"maxRequests":1500,"maxCostUsd":2}
+- 완료 상태: false (실패 이력/미검증 범위는 위 증거에 별도 보존)

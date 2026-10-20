@@ -1,0 +1,910 @@
+{
+  "kind": "Per-issue physical document hash + field meaning + page + native table/row owner audit; no raw source quotes",
+  "sourceSha": "7f1c08a0d1944f3c9acde52125a6a53fd5cef4d1",
+  "oldIssues": 51,
+  "newIndependentIssues": 0,
+  "rows": [
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+b1eeeb91-9462-404b-92c2-cac94850b4d9+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"grossWeight\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/grossWeight\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/grossWeightUnit\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/grossWeight\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/grossWeightUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeight\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cb1eeeb91-9462-404b-92c2-cac94850b4d9%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgrossWeight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 6,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/grossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+b1eeeb91-9462-404b-92c2-cac94850b4d9+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"packageCount\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/packageCount\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/packageUnit\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/packageCount\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/packageUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageCount\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cb1eeeb91-9462-404b-92c2-cac94850b4d9%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FpackageCount"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 6,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/packageCount",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+bf97997a-3e7c-44bf-91c8-8ac35953b339+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"grossWeight\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/grossWeight\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/grossWeightUnit\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/grossWeight\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/grossWeightUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeight\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cbf97997a-3e7c-44bf-91c8-8ac35953b339%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgrossWeight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 6,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/grossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+bf97997a-3e7c-44bf-91c8-8ac35953b339+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"packageCount\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/packageCount\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/packageUnit\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/packageCount\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/packageUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageCount\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cbf97997a-3e7c-44bf-91c8-8ac35953b339%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FpackageCount"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 6,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/packageCount",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"containerNumber\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-1/containerNumber\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-2/containerNumber\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/containerNumber\"]]",
+      "rootCause": "container_scope",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|b1eeeb91-9462-404b-92c2-cac94850b4d9/containerNumber",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fcontainers"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/containerNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/containerNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"containerNumber\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-1/containerNumber\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-2/containerNumber\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/containerNumber\"]]",
+      "rootCause": "container_scope",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|bf97997a-3e7c-44bf-91c8-8ac35953b339/containerNumber",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fcontainers"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/containerNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/containerNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"containerNumber\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/containerNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/cargo/cargo-1/containerNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/cargo/cargo-2/containerNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-1/containerNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-2/containerNumber\"]]",
+      "rootCause": "container_scope",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/b1eeeb91-9462-404b-92c2-cac94850b4d9|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/containerNumber",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainers"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/containerNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"containerNumber\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/containerNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/cargo/cargo-1/containerNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/cargo/cargo-2/containerNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-1/containerNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-2/containerNumber\"]]",
+      "rootCause": "container_scope",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/bf97997a-3e7c-44bf-91c8-8ac35953b339|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/containerNumber",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainers"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/containerNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/containerNumber",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"goodsDescription\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/goodsDescription\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/goodsDescription\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|b1eeeb91-9462-404b-92c2-cac94850b4d9/goodsDescription",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fgoods%2Fitem-1",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fgoods%2Fitem-2",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2FgoodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"goodsDescription\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/goodsDescription\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/goodsDescription\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|bf97997a-3e7c-44bf-91c8-8ac35953b339/goodsDescription",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fgoods%2Fitem-1",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fgoods%2Fitem-2",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2FgoodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"goodsDescription\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/goodsDescription\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/b1eeeb91-9462-404b-92c2-cac94850b4d9|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/goodsDescription",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fgoods%2Fitem-1",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgoodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"goodsDescription\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/goodsDescription\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/bf97997a-3e7c-44bf-91c8-8ac35953b339|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/goodsDescription",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fgoods%2Fitem-1",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgoodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"grossWeight\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/grossWeight\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/grossWeightUnit\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/grossWeight\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/grossWeightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|b1eeeb91-9462-404b-92c2-cac94850b4d9/grossWeight",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2FgrossWeight",
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cb1eeeb91-9462-404b-92c2-cac94850b4d9%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgrossWeight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 10,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/grossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "declaration_manifest/check/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fweight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"grossWeight\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/grossWeight\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/grossWeightUnit\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/grossWeight\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/grossWeightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|bf97997a-3e7c-44bf-91c8-8ac35953b339/grossWeight",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2FgrossWeight",
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cbf97997a-3e7c-44bf-91c8-8ac35953b339%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgrossWeight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 10,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/grossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F2603a093-942d-454a-9352-2f58c7b50195%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "declaration_manifest/check/2603a093-942d-454a-9352-2f58c7b50195%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fweight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"grossWeight\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/grossWeight\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/grossWeightUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeight\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/b1eeeb91-9462-404b-92c2-cac94850b4d9|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeight",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgrossWeight",
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cb1eeeb91-9462-404b-92c2-cac94850b4d9%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgrossWeight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 10,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/grossWeight",
+        "declaration_manifest/check/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fweight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"grossWeight\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/grossWeight\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/grossWeightUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeight\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/bf97997a-3e7c-44bf-91c8-8ac35953b339|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/grossWeight",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgrossWeight",
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cbf97997a-3e7c-44bf-91c8-8ac35953b339%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FgrossWeight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 10,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/grossWeight",
+        "declaration_manifest/check/2603a093-942d-454a-9352-2f58c7b50195%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F2603a093-942d-454a-9352-2f58c7b50195%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fweight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"hsCode\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/hsCode\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/hsCode\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/hsCode\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|b1eeeb91-9462-404b-92c2-cac94850b4d9/hsCode"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/hsCode",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"hsCode\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/hsCode\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/hsCode\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/hsCode\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|bf97997a-3e7c-44bf-91c8-8ac35953b339/hsCode"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/hsCode",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"hsCode\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/hsCode\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/hsCode\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/hsCode\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/b1eeeb91-9462-404b-92c2-cac94850b4d9|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/hsCode"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/hsCode"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"hsCode\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/hsCode\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/hsCode\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/hsCode\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/bf97997a-3e7c-44bf-91c8-8ac35953b339|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/hsCode"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/hsCode"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"packageCount\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/packageCount\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/packageUnit\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/packageCount\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|b1eeeb91-9462-404b-92c2-cac94850b4d9/packageCount",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2FpackageCount",
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cb1eeeb91-9462-404b-92c2-cac94850b4d9%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FpackageCount"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 10,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/packageCount",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "declaration_manifest/check/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fpackages"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"packageCount\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/packageCount\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/packageUnit\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/packageCount\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|bf97997a-3e7c-44bf-91c8-8ac35953b339/packageCount",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2FpackageCount",
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cbf97997a-3e7c-44bf-91c8-8ac35953b339%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FpackageCount"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 10,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/packageCount",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F2603a093-942d-454a-9352-2f58c7b50195%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "declaration_manifest/check/2603a093-942d-454a-9352-2f58c7b50195%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fpackages"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"packageCount\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/packageCount\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/packageUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageCount\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/b1eeeb91-9462-404b-92c2-cac94850b4d9|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageCount",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FpackageCount",
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cb1eeeb91-9462-404b-92c2-cac94850b4d9%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FpackageCount"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 10,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/packageCount",
+        "declaration_manifest/check/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fpackages"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"packageCount\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/packageCount\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/packageUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageCount\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/bf97997a-3e7c-44bf-91c8-8ac35953b339|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/packageCount",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FpackageCount",
+        "triangle/check/1662b856-8f2e-445a-857d-e106f3d12bf3%7Cbf97997a-3e7c-44bf-91c8-8ac35953b339%7Cfda8fca1-d6f2-429f-98da-3cf586b4ef8a%2FpackageCount"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 10,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/packageCount",
+        "declaration_manifest/check/2603a093-942d-454a-9352-2f58c7b50195%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F2603a093-942d-454a-9352-2f58c7b50195%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fpackages"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"quantity\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/quantity\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/quantityUnit\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/quantity\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/quantityUnit\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|b1eeeb91-9462-404b-92c2-cac94850b4d9/quantity",
+        "1662b856-8f2e-445a-857d-e106f3d12bf3/check/declaration-group-quantity",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fquantity"
+      ],
+      "status": "RESOLVED_BY_EXPLICIT_SCOPE_PROOF",
+      "nativeOwnerFields": 23,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/quantity",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/declarationNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/declarationNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/hsCode",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fgoods%2Fceramic%20membrane%20module%20model%2010000%2Fquantity",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fgoods%2Freusable%20silicone%20seal%20ring%20model%20sr7%2Fquantity"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"quantity\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/quantity\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/quantityUnit\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/quantity\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/quantityUnit\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|bf97997a-3e7c-44bf-91c8-8ac35953b339/quantity",
+        "1662b856-8f2e-445a-857d-e106f3d12bf3/check/declaration-group-quantity",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fquantity"
+      ],
+      "status": "RESOLVED_BY_EXPLICIT_SCOPE_PROOF",
+      "nativeOwnerFields": 23,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/quantity",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/declarationNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/declarationNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/hsCode",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fgoods%2Fceramic%20membrane%20module%20model%2010000%2Fquantity",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fgoods%2Freusable%20silicone%20seal%20ring%20model%20sr7%2Fquantity"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"quantity\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/quantity\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/quantityUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/quantity\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/quantityUnit\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/b1eeeb91-9462-404b-92c2-cac94850b4d9|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/quantity",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fquantity"
+      ],
+      "status": "RESOLVED_BY_EXPLICIT_SCOPE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/quantity",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/quantity"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"quantity\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/quantity\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/quantityUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/quantity\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/document/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/quantityUnit\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/bf97997a-3e7c-44bf-91c8-8ac35953b339|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/quantity",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fquantity"
+      ],
+      "status": "RESOLVED_BY_EXPLICIT_SCOPE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/quantity",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/quantity"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"sealNumber\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-1/sealNumber\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-2/sealNumber\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/sealNumber\"]]",
+      "rootCause": "container_scope",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|b1eeeb91-9462-404b-92c2-cac94850b4d9/sealNumber",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fcontainer%2Fcxuu9000011%2Fseal"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/sealNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/sealNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"sealNumber\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-1/sealNumber\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-2/sealNumber\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/sealNumber\"]]",
+      "rootCause": "container_scope",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/1662b856-8f2e-445a-857d-e106f3d12bf3|bf97997a-3e7c-44bf-91c8-8ac35953b339/sealNumber",
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fcontainer%2Fcxuu9000010%2Fseal"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/sealNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/sealNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"sealNumber\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/sealNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/cargo/cargo-1/sealNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/cargo/cargo-2/sealNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-1/sealNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-2/sealNumber\"]]",
+      "rootCause": "container_scope",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/b1eeeb91-9462-404b-92c2-cac94850b4d9|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/sealNumber",
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000011%2Fseal"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/sealNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"syn-cx-13\",\"sealNumber\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/sealNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/cargo/cargo-1/sealNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/cargo/cargo-2/sealNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-1/sealNumber\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-2/sealNumber\"]]",
+      "rootCause": "container_scope",
+      "originalCheckIds": [
+        "fact35/syn-cx-13/bf97997a-3e7c-44bf-91c8-8ac35953b339|fda8fca1-d6f2-429f-98da-3cf586b4ef8a/sealNumber",
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000010%2Fseal"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 3,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/sealNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/sealNumber"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+b1eeeb91-9462-404b-92c2-cac94850b4d9\",\"goods\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/goodsDescription\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "semantic/1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/goodsDescription/b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 2,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+b1eeeb91-9462-404b-92c2-cac94850b4d9\",\"goods\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/goodsDescription\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "semantic/1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/goodsDescription/b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 2,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+b1eeeb91-9462-404b-92c2-cac94850b4d9\",\"grossWeight\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-2/grossWeight\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-2/weightUnit\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/grossWeight\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/weightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fcontainer%2Fcxuu9000011%2Fweight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "declaration_manifest/check/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fweight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+b1eeeb91-9462-404b-92c2-cac94850b4d9\",\"packageCount\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-2/packageCount\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-2/packageUnit\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/packageCount\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fb1eeeb91-9462-404b-92c2-cac94850b4d9%2Fcontainer%2Fcxuu9000011%2Fpackages"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "declaration_manifest/check/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fpackages"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+b1eeeb91-9462-404b-92c2-cac94850b4d9+bf97997a-3e7c-44bf-91c8-8ac35953b339\",\"declarationNumber\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/document/1662b856-8f2e-445a-857d-e106f3d12bf3/declarationNumber\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/goodsDescription\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/hsCode\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/quantity\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/quantityUnit\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/goodsDescription\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/hsCode\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/quantity\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/quantityUnit\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/reference/reference-1/declarationNumber\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/reference/reference-2/declarationNumber\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/document/b1eeeb91-9462-404b-92c2-cac94850b4d9/declarationNumber\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/hsCode\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/quantity\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/quantityUnit\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/document/bf97997a-3e7c-44bf-91c8-8ac35953b339/declarationNumber\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/hsCode\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/quantity\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/quantityUnit\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "1662b856-8f2e-445a-857d-e106f3d12bf3/check/declaration-group-quantity"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 19,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|2603a093-942d-454a-9352-2f58c7b50195/declarationNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|77713f3d-abc9-4e91-ac1b-9bfd75cf75e3/declarationNumber",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "fact35/syn-cx-13/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "fact35/syn-cx-13/2603a093-942d-454a-9352-2f58c7b50195|f1341cc2-6533-44c7-a312-8284bda8499e/declarationNumber",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/hsCode",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fgoods%2Fceramic%20membrane%20module%20model%2010000%2Fquantity",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fgoods%2Freusable%20silicone%20seal%20ring%20model%20sr7%2Fquantity"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+bf97997a-3e7c-44bf-91c8-8ac35953b339\",\"goods\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/goodsDescription\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "semantic/1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/goodsDescription/bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 2,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+bf97997a-3e7c-44bf-91c8-8ac35953b339\",\"goods\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/goodsDescription\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "semantic/1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/goodsDescription/bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 2,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+bf97997a-3e7c-44bf-91c8-8ac35953b339\",\"grossWeight\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-1/grossWeight\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-1/weightUnit\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/grossWeight\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/weightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fcontainer%2Fcxuu9000010%2Fweight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F2603a093-942d-454a-9352-2f58c7b50195%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "declaration_manifest/check/2603a093-942d-454a-9352-2f58c7b50195%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fweight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+bf97997a-3e7c-44bf-91c8-8ac35953b339\",\"packageCount\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-1/packageCount\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/container/container-1/packageUnit\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/packageCount\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "house_bl_declaration/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Fbf97997a-3e7c-44bf-91c8-8ac35953b339%2Fcontainer%2Fcxuu9000010%2Fpackages"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F2603a093-942d-454a-9352-2f58c7b50195%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "declaration_manifest/check/2603a093-942d-454a-9352-2f58c7b50195%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fpackages"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"quantity\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/quantity\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-1/quantityUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/quantity\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/quantityUnit\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "house_bl_manifest/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fgoods%2Fceramic%20membrane%20module%20model%2010000%2Fquantity"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fgoods%2Fceramic%20membrane%20module%20model%2010000%2Fquantity"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"1662b856-8f2e-445a-857d-e106f3d12bf3+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"quantity\",[\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/quantity\",\"1662b856-8f2e-445a-857d-e106f3d12bf3/item/item-2/quantityUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/quantity\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/quantityUnit\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "house_bl_manifest/check/1662b856-8f2e-445a-857d-e106f3d12bf3%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fgoods%2Freusable%20silicone%20seal%20ring%20model%20sr7%2Fquantity"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fgoods%2Freusable%20silicone%20seal%20ring%20model%20sr7%2Fquantity"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"goods\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "semantic/b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/goodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 2,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"goods\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "semantic/b1eeeb91-9462-404b-92c2-cac94850b4d9/item/item-1/goodsDescription/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/goodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 2,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"grossWeight\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/grossWeight\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/weightUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-2/grossWeight\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-2/weightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000011%2Fweight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "declaration_manifest/check/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fcontainer%2Fcxuu9000011%2Fweight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fweight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"packageCount\",[\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/packageCount\",\"b1eeeb91-9462-404b-92c2-cac94850b4d9/container/container-1/packageUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-2/packageCount\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-2/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "declaration_manifest/check/b1eeeb91-9462-404b-92c2-cac94850b4d9%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000011%2Fpackages"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "declaration_manifest/check/77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F77713f3d-abc9-4e91-ac1b-9bfd75cf75e3%2Fcontainer%2Fcxuu9000011%2Fpackages",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000011%2Fpackages"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"goods\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "semantic/bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-1/goodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 2,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"goods\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/goodsDescription\"]]",
+      "rootCause": "product_mapping",
+      "originalCheckIds": [
+        "semantic/bf97997a-3e7c-44bf-91c8-8ac35953b339/item/item-1/goodsDescription/fda8fca1-d6f2-429f-98da-3cf586b4ef8a/item/item-2/goodsDescription"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 2,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-item-2603a093-942d-454a-9352-2f58c7b50195%2Fitem-1",
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity",
+        "fact35/syn-cx-13/19d532fd-19cc-4a18-a58f-3155521ae39a|f1341cc2-6533-44c7-a312-8284bda8499e/goodsDescription"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"grossWeight\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/grossWeight\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/weightUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-1/grossWeight\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-1/weightUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000010%2Fweight"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/grossWeight",
+        "declaration_manifest/check/2603a093-942d-454a-9352-2f58c7b50195%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F2603a093-942d-454a-9352-2f58c7b50195%2Fcontainer%2Fcxuu9000010%2Fweight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FgrossWeight",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fweight"
+      ]
+    },
+    {
+      "originalIssueId": "issue:[\"scope\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339+fda8fca1-d6f2-429f-98da-3cf586b4ef8a\",\"packageCount\",[\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/packageCount\",\"bf97997a-3e7c-44bf-91c8-8ac35953b339/container/container-1/packageUnit\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-1/packageCount\",\"fda8fca1-d6f2-429f-98da-3cf586b4ef8a/container/container-1/packageUnit\"]]",
+      "rootCause": "container_allocation",
+      "originalCheckIds": [
+        "declaration_manifest/check/bf97997a-3e7c-44bf-91c8-8ac35953b339%2Frelationship%2Ffda8fca1-d6f2-429f-98da-3cf586b4ef8a%2Fcontainer%2Fcxuu9000010%2Fpackages"
+      ],
+      "status": "RESOLVED_BY_NATIVE_PROOF",
+      "nativeOwnerFields": 4,
+      "missingOwnerKeys": [],
+      "newProofIds": [
+        "19d532fd-19cc-4a18-a58f-3155521ae39a/check/declaration-group-quantity/allocation/packageCount",
+        "declaration_manifest/check/2603a093-942d-454a-9352-2f58c7b50195%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "house_bl_declaration/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2F2603a093-942d-454a-9352-2f58c7b50195%2Fcontainer%2Fcxuu9000010%2Fpackages",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Faggregate%2FpackageCount",
+        "house_bl_manifest/check/19d532fd-19cc-4a18-a58f-3155521ae39a%2Frelationship%2Ff1341cc2-6533-44c7-a312-8284bda8499e%2Fcontainer%2Fcxuu9000010%2Fpackages"
+      ]
+    }
+  ],
+  "resolved": 51,
+  "nativeProof": 47,
+  "explicitScopeProof": 4,
+  "requiresAudit": 0
+}

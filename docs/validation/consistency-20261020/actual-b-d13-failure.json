@@ -1,0 +1,129 @@
+{
+  "kind": "ACTUAL OpenAI analysis of synthetic PDFs; evaluator truth never sent to provider",
+  "case": "development-b",
+  "fault": null,
+  "sourceSha": "d13edf6ac523e6dcae49c78b12184028b8e283ae",
+  "sourceShaStable": true,
+  "semantic": "complete",
+  "documents": [
+    {
+      "file": "development-b/01.pdf",
+      "type": "house_bl",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "development-b/02.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": false,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "development-b/03.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": false,
+      "total": 11,
+      "first": 10,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "development-b/04.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": false,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "development-b/05.pdf",
+      "type": "house_manifest",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    }
+  ],
+  "successfulDocuments": 5,
+  "failedDocuments": 0,
+  "firstCorrect": 82,
+  "currentCorrect": 83,
+  "verifiedCorrect": 83,
+  "expectedFields": 83,
+  "verifiedWrong": 0,
+  "actionIssues": 90,
+  "confirmedErrors": [],
+  "confirmedFP": 0,
+  "confirmedTargetDetected": false,
+  "warningTargetDetected": false,
+  "declarationTotals": [],
+  "relationships": [
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    }
+  ],
+  "outcomes": {
+    "matches": 21,
+    "mismatches": 0,
+    "review": 90,
+    "requiredMissing": 0,
+    "notApplicable": 37,
+    "notComparable": 0,
+    "evidenceFailed": 13,
+    "evidenceUnverified": 6,
+    "evidenceRecovered": 13,
+    "checksExecuted": 150,
+    "independentChecks": 151,
+    "comparisonEvidenceUnverified": 3,
+    "informational": 3
+  },
+  "durationMs": 119471
+}

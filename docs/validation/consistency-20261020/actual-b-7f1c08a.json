@@ -1,0 +1,193 @@
+{
+  "kind": "ACTUAL OpenAI analysis of synthetic PDFs; evaluator truth never sent to provider",
+  "case": "development-b",
+  "fault": null,
+  "sourceSha": "7f1c08a0d1944f3c9acde52125a6a53fd5cef4d1",
+  "sourceShaStable": true,
+  "semantic": "complete",
+  "documents": [
+    {
+      "file": "development-b/01.pdf",
+      "type": "house_bl",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "development-b/02.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "development-b/03.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "development-b/04.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "development-b/05.pdf",
+      "type": "house_manifest",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    }
+  ],
+  "successfulDocuments": 5,
+  "failedDocuments": 0,
+  "firstCorrect": 83,
+  "currentCorrect": 83,
+  "verifiedCorrect": 83,
+  "expectedFields": 83,
+  "verifiedWrong": 0,
+  "actionIssues": 0,
+  "confirmedErrors": [],
+  "confirmedFP": 0,
+  "confirmedTargetDetected": false,
+  "warningTargetDetected": false,
+  "declarationTotals": [
+    {
+      "title": "복수 신고 물품 수량 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "f2d5e828-0726-42a3-9780-1a311bbd9ba7",
+          "value": 1000,
+          "unit": "PCS",
+          "formula": "sum",
+          "componentKeys": [
+            "f2d5e828-0726-42a3-9780-1a311bbd9ba7/item/item-1",
+            "f2d5e828-0726-42a3-9780-1a311bbd9ba7/item/item-2",
+            "f2d5e828-0726-42a3-9780-1a311bbd9ba7/item/item-3"
+          ]
+        },
+        {
+          "documentId": "6c1d1fd5-cfe6-4850-9023-c42ebaa9a47b+946fa82f-0161-44a4-bf91-d5ab6a2032cb+c2fd512e-10ca-485e-ae1d-f7ffa409411e",
+          "value": 1000,
+          "unit": "EA",
+          "formula": "sum",
+          "componentKeys": [
+            "6c1d1fd5-cfe6-4850-9023-c42ebaa9a47b/item/item-1",
+            "946fa82f-0161-44a4-bf91-d5ab6a2032cb/item/item-1",
+            "c2fd512e-10ca-485e-ae1d-f7ffa409411e/item/item-1"
+          ]
+        }
+      ],
+      "itemMappings": 3
+    },
+    {
+      "title": "복수 신고 총중량 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "6c1d1fd5-cfe6-4850-9023-c42ebaa9a47b+946fa82f-0161-44a4-bf91-d5ab6a2032cb+c2fd512e-10ca-485e-ae1d-f7ffa409411e",
+          "value": 500,
+          "unit": "KG",
+          "formula": "sum",
+          "componentKeys": [
+            "6c1d1fd5-cfe6-4850-9023-c42ebaa9a47b",
+            "946fa82f-0161-44a4-bf91-d5ab6a2032cb",
+            "c2fd512e-10ca-485e-ae1d-f7ffa409411e"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "복수 신고 포장 개수 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "6c1d1fd5-cfe6-4850-9023-c42ebaa9a47b+946fa82f-0161-44a4-bf91-d5ab6a2032cb+c2fd512e-10ca-485e-ae1d-f7ffa409411e",
+          "value": 50,
+          "unit": "CTNS",
+          "formula": "sum",
+          "componentKeys": [
+            "6c1d1fd5-cfe6-4850-9023-c42ebaa9a47b",
+            "946fa82f-0161-44a4-bf91-d5ab6a2032cb",
+            "c2fd512e-10ca-485e-ae1d-f7ffa409411e"
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    }
+  ],
+  "outcomes": {
+    "matches": 87,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 73,
+    "notComparable": 0,
+    "evidenceFailed": 7,
+    "evidenceUnverified": 3,
+    "evidenceRecovered": 8,
+    "checksExecuted": 161,
+    "independentChecks": 169,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 9
+  },
+  "durationMs": 117990
+}

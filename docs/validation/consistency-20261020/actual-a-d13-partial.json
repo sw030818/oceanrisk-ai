@@ -1,0 +1,118 @@
+{
+  "case": "complex-13",
+  "sourceSha": "d13edf6ac523e6dcae49c78b12184028b8e283ae",
+  "kind": "ACTUAL synthetic corpus; development/holdout partition recorded separately",
+  "sourceShaStable": true,
+  "documents": 4,
+  "successfulDocuments": 4,
+  "classified": 4,
+  "semantic": "partial",
+  "coreExpected": 34,
+  "firstCorrect": 34,
+  "currentCorrect": 34,
+  "verifiedCorrect": 34,
+  "verifiedWrong": 0,
+  "actionIssues": 1,
+  "outcomes": {
+    "matches": 64,
+    "mismatches": 0,
+    "review": 1,
+    "requiredMissing": 0,
+    "notApplicable": 50,
+    "notComparable": 0,
+    "evidenceFailed": 3,
+    "evidenceUnverified": 1,
+    "evidenceRecovered": 5,
+    "checksExecuted": 116,
+    "independentChecks": 120,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 5
+  },
+  "confirmedFP": 0,
+  "relationships": [
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed"
+  ],
+  "groups": [
+    {
+      "title": "복수 신고 대응 품목 수량",
+      "assessment": "confirmed_match"
+    },
+    {
+      "title": "복수 신고 대응 품목 수량",
+      "assessment": "confirmed_match"
+    },
+    {
+      "title": "복수 신고 물품 수량 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "124f9f0a-4e02-4211-a689-a921be6b66da",
+          "value": 1000,
+          "unit": "PCS",
+          "formula": "sum",
+          "componentKeys": [
+            "124f9f0a-4e02-4211-a689-a921be6b66da/item/item-1",
+            "124f9f0a-4e02-4211-a689-a921be6b66da/item/item-2"
+          ]
+        },
+        {
+          "documentId": "55871110-b8f0-4adf-b76c-9257e8caa4f6+91e94892-683e-49db-8159-1e35880b24c5",
+          "value": 1000,
+          "unit": "PCS",
+          "formula": "sum",
+          "componentKeys": [
+            "55871110-b8f0-4adf-b76c-9257e8caa4f6/item/item-1",
+            "91e94892-683e-49db-8159-1e35880b24c5/item/item-1"
+          ]
+        }
+      ],
+      "mappings": 2
+    },
+    {
+      "title": "복수 신고 총중량 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "55871110-b8f0-4adf-b76c-9257e8caa4f6+91e94892-683e-49db-8159-1e35880b24c5",
+          "value": 500,
+          "unit": "KG",
+          "formula": "sum",
+          "componentKeys": [
+            "55871110-b8f0-4adf-b76c-9257e8caa4f6",
+            "91e94892-683e-49db-8159-1e35880b24c5"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "복수 신고 포장 개수 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "55871110-b8f0-4adf-b76c-9257e8caa4f6+91e94892-683e-49db-8159-1e35880b24c5",
+          "value": 50,
+          "unit": "CTNS",
+          "formula": "sum",
+          "componentKeys": [
+            "55871110-b8f0-4adf-b76c-9257e8caa4f6",
+            "91e94892-683e-49db-8159-1e35880b24c5"
+          ]
+        }
+      ]
+    }
+  ],
+  "durationMs": 109366,
+  "budget": {
+    "documents": 158,
+    "requests": 220,
+    "measuredCostUsd": 0.24411682000000007,
+    "unresolvedCostUpperUsd": 0.025465962499999967,
+    "maxDocuments": 1000,
+    "maxRequests": 1500,
+    "maxCostUsd": 2
+  }
+}
