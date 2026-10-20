@@ -41,6 +41,9 @@ const subject = (c: ShippingCheck, meaning: string) =>
       ? /seal/i.test(c.title ?? "")
       : meaning === "containerNumber" && !/seal/i.test(c.title ?? "")
     : c.fields.some((f) => f.fieldName === meaning);
+// Aggregate quantity checks carry reference and goods fields as prerequisites;
+// their subject is still quantity, not the first prerequisite in the array.
+const originalMeaning=(c:ShippingCheck)=>c.category==='quantity'&&c.fields.some(f=>f.fieldName==='quantity')?'quantity':c.fields.find(f=>!f.fieldName.endsWith('Unit'))?.fieldName??c.category;
 const titles: Record<string, string> = {
   houseBlNumber: "검증된 공통 HBL 참조",
   declarationNumber: "수출신고 참조",
@@ -879,9 +882,7 @@ export function withFactReview(
             assessment: "not_applicable",
             importance: "info",
             comparison: {
-              meaning:
-                c.fields.find((f) => !f.fieldName.endsWith("Unit"))
-                  ?.fieldName ?? c.category,
+              meaning: originalMeaning(c),
               hbl: null,
               scope: "original_check",
               reasonCodes: ["FIELD_NOT_APPLICABLE"],
@@ -893,9 +894,7 @@ export function withFactReview(
         : {
             ...c,
             comparison: {
-              meaning:
-                c.fields.find((f) => !f.fieldName.endsWith("Unit"))
-                  ?.fieldName ?? c.category,
+              meaning: originalMeaning(c),
               hbl: null,
               scope: "original_check",
               reasonCodes: c.fields.some(

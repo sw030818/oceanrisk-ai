@@ -4,6 +4,7 @@ import type {ShippingResult} from '../../src/modules/shipping/prepare';
 import type {ShippingReview,ShippingCheck} from '../../src/modules/shipping/review-model';
 import {goodsComparisonValue} from '../../src/modules/shipping/goods-context';
 import {goodsCore,hsSix} from '../../src/modules/shipping/equivalence';
+import type {ShippingField} from '../../src/modules/shipping/schema';
 type Expected={file:string;type:string;hbl:string;quantity:number;packages:number;gross:number;items:{description:string;quantity:number;hs:string}[];containers:{number:string;seal:string;packages:number;gross:number}[]};
 const norm=(x:unknown)=>String(x??'').normalize('NFKC').toLowerCase().replace(/[\s,.-]/g,'');
 export async function scoreConsistency(input:string,out:string){
@@ -12,11 +13,12 @@ export async function scoreConsistency(input:string,out:string){
  const t=truth.find(t=>t.case===x.case);if(!t)throw Error('Unknown evaluation case');
  const docs=t.documents.map((expected,index)=>{
   const r=x.initial.results[index],d=r?.document;let first=0,current=0,verified=0,verifiedWrong=0,total=0;
-  const count=(f:typeof d extends undefined?never:import('../../src/modules/shipping/schema').ShippingField|undefined,value:unknown,role='')=>{
+  const count=(candidate:ShippingField|ShippingField[]|undefined,value:unknown,role='')=>{
+   const fs=Array.isArray(candidate)?candidate:candidate?[candidate]:[];
    total++;const eq=(v:unknown)=>role==='hs'?hsSix(v)===hsSix(value):role==='goods'?goodsCore(v)===goodsCore(value):norm(v)===norm(value);
-   first+=Number(!!f&&eq(f.original.value));current+=Number(!!f&&eq(f.current.value));verified+=Number(!!f&&eq(f.current.value)&&f.current.status==='verified');verifiedWrong+=Number(!!f&&f.current.status==='verified'&&!eq(f.current.value));
+   first+=Number(fs.some(f=>eq(f.original.value)));current+=Number(fs.some(f=>eq(f.current.value)));verified+=Number(fs.some(f=>eq(f.current.value)&&f.current.status==='verified'));verifiedWrong+=Number(fs.some(f=>f.current.status==='verified'&&!eq(f.current.value)));
   };
-  for(const [role,value]of Object.entries({houseBlNumber:expected.hbl,quantity:expected.quantity,packageCount:expected.packages,grossWeight:expected.gross}))count(d?.fields[role],value);
+  for(const [role,value]of Object.entries({houseBlNumber:expected.hbl,quantity:expected.quantity,packageCount:expected.packages,grossWeight:expected.gross}))count(d?[...(d.fields[role]?[d.fields[role]]:[]),...d.additionalFields.filter(f=>f.meaning===role).map(f=>f.field)]:[],value);
   for(const item of expected.items){
    const candidates=d?.items.filter(row=>goodsCore(goodsComparisonValue(row.fields.goodsDescription))===goodsCore(item.description))??[];
    const row=candidates.length===1?candidates[0]:undefined;
@@ -25,7 +27,7 @@ export async function scoreConsistency(input:string,out:string){
   for(const c of expected.containers){const rows=d?.containers.filter(row=>norm(row.containerNumber.current.value)===norm(c.number))??[],row=rows.length===1?rows[0]:undefined;
    count(row?.containerNumber,c.number);count(row?.sealNumber,c.seal);count(row?.packageCount,c.packages);count(row?.grossWeight,c.gross);
   }
-  return{file:expected.file,type:expected.type,apiSuccess:!!d&&!r.error,classified:d?.classificationStatus==='classified'&&d.detectedType===expected.type,total,first,current,verified,verifiedWrong};
+  return{file:expected.file,type:expected.type,apiSuccess:!!d&&!r.error,initialClassification:d?.classification?.original.value===expected.type,classified:d?.classificationStatus==='classified'&&d.detectedType===expected.type,total,first,current,verified,verifiedWrong};
  });
  const checks=x.review.primaryChecks??x.review.checks,role=(c:ShippingCheck)=>c.comparison?.meaning??(new Set(c.fields.map(f=>f.fieldName)).size===1?c.fields[0]?.fieldName:undefined),bad=checks.filter(c=>c.assessment==='confirmed_mismatch');
  const targetRoles:Record<string,string[]>={quantity:['quantity'],model:['goodsDescription'],hs:['hsCode'],seal:['sealNumber'],total:['quantity'],'foreign-hbl':['houseBlNumber'],'missing-declaration':['declarationNumber'],duplicate:['declarationNumber']};

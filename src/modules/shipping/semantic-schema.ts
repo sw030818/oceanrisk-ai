@@ -33,6 +33,8 @@ export interface SemanticReport {
   model?: string;
   usage?: AIUsage;
   error?: ReturnType<typeof safeError>;
+  /** Exact provider IDs before deterministic transport expansion; never logged. */
+  providerTransport?: { version: 'short-id-v1'; aliases: Record<string,string>; decisions: SemanticWire };
 }
 // Canonicalization is shared with the browser for exact cache invalidation and
 // with the server HMAC. This string is never logged or sent to the AI provider.

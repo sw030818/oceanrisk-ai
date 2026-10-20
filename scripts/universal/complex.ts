@@ -20,4 +20,4 @@ await writeFile(path.replace('.json','-initial.json'),JSON.stringify(initial),{m
 const second=await paid39Semantic(sha,initial.results),review=reviewShipping(initial.results.flatMap(r=>r.document&&!r.error?[r.document]:[]),{semantic:second.semantic});
 const output={sourceSha:sha,case:id,corpus,attempt,kind:'ACTUAL synthetic corpus; development/holdout partition recorded separately',initial,semantic:second.semantic,review,budget:second.budget,durationMs:Math.round(performance.now()-start),sourceShaStable:initial.sourceShaStable&&second.sourceShaStable!==false};
 await writeFile(path,JSON.stringify(output),{mode:0o600});console.log(JSON.stringify({...output,initial:undefined,semantic:second.semantic?.status,review:review.outcomes}));
-if(initial.results.some(r=>r.error)||!output.sourceShaStable)process.exitCode=1;
+if(initial.results.length!==fixtures.length||initial.results.some(r=>r.error)||!output.sourceShaStable)process.exitCode=1;

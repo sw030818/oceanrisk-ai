@@ -14,6 +14,7 @@ export async function analyzeSemantics(documents: ShippingDocument[], options: O
   try {
     report.decisions = semanticWireSchema.parse(await (options.ai ?? (c=>requestSemantic(c,{
       ...options,onModelUsed:model=>{report.model=model;options.onModelUsed?.(model);},
+      onProviderDecisions:(decisions,aliases)=>{report.providerTransport={version:'short-id-v1',aliases,decisions};},
       onUsage:usage=>{report.usage=usage;options.onUsage?.(usage);},
     })))(context));
     const coverage=new Set<string>();

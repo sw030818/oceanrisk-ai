@@ -518,7 +518,7 @@ export function verifyShippingField(
   }
   return finish();
 }
-function titleType(text: string) {
+function titleType(text: string): 'house_bl'|'export_declaration'|'house_manifest'|null {
   const t = normalizeText(text)
     .replace(/\s*\((?:synthetic|합성)\)\s*$/, "")
     .replace(/^(?:\(\d{1,3}\)|\d{1,3}[.)])\s*(?=[A-Za-z가-힣])/, "")
@@ -542,7 +542,19 @@ function titleType(text: string) {
     )
   )
     return "house_manifest" as const;
+  // Bilingual headings are two independently recognized titles of the SAME
+  // type. An arbitrary suffix, mixed document types, or body mention is not a
+  // title. Spaced separators avoid splitting the B/L abbreviation itself.
+  const parts=korean.split(/\s+[\/|]\s+/);
+  if(parts.length>1){const types=parts.map(titleType);if(types.every(type=>!!type&&type===types[0]))return types[0];}
   return null;
+}
+function titleSignals(text:string){
+  const type=titleType(text);if(type)return[type];
+  return text.split(/\s+[\/|]\s+/).flatMap(part=>{const found=titleType(part);return found?[found]:[];});
+}
+function masterTitleSignal(text:string){
+  return text.split(/\s+[\/|]\s+/).some(part=>/^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(part.trim()));
 }
 function titleCandidates(page: PdfPage) {
   const bs = (page.blocks ?? []).filter(
@@ -607,10 +619,8 @@ export function verifyClassification(
       text: g.map((b) => b.text).join(" "),
     })),
   );
-  const masterTitle = titles.some((t) =>
-    /^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(t.text.trim()),
-  );
-  const known = new Set(titles.map((t) => titleType(t.text)).filter(Boolean));
+  const masterTitle = titles.some(t=>masterTitleSignal(t.text));
+  const known = new Set(titles.flatMap(t=>titleSignals(t.text)));
   const cited = (t: { g: PdfBlock[] }) =>
     t.g.every((b) => blocks?.some((c) => c.id === b.id));
   let valid =
@@ -653,9 +663,7 @@ export function verifyClassification(
             );
           })
         : undefined;
-    const master = titles.some((t) =>
-      /^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(t.text.trim()),
-    );
+    const master = titles.some(t=>masterTitleSignal(t.text));
     valid =
       valid &&
       !!title &&
@@ -732,12 +740,10 @@ export function recoverCitedClassification(
       text: g.map((b) => b.text).join(" "),
     })),
   );
-  const known = new Set(all.map((t) => titleType(t.text)).filter(Boolean));
+  const known = new Set(all.flatMap(t=>titleSignals(t.text)));
   if (
     known.size !== 1 ||
-    all.some((t) =>
-      /^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(t.text.trim()),
-    )
+    all.some(t=>masterTitleSignal(t.text))
   )
     return input;
   const title = all.find(
