@@ -1,15 +1,15 @@
 {
   "phase": "3.9",
   "approval": "USER_FINAL_ENGINE_INSTRUCTION_USD2",
-  "providerRequests": 210,
+  "providerRequests": 215,
   "automaticRetries": 0,
   "budget": {
-    "documents": 150,
-    "requests": 210,
-    "measuredCostUsd": 0.22623480000000007,
-    "unresolvedCostUpperUsd": 0.025465962499999974,
-    "maxDocuments": 150,
-    "maxRequests": 220,
+    "documents": 154,
+    "requests": 215,
+    "measuredCostUsd": 0.2352258100000001,
+    "unresolvedCostUpperUsd": 0.025465962499999967,
+    "maxDocuments": 1000,
+    "maxRequests": 1500,
     "maxCostUsd": 2
   },
   "limitsAreProposalOnly": false,
@@ -32,12 +32,12 @@
   "previousProposalUsd": 10,
   "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
   "currentCumulativeUsage": {
-    "documents": 150,
-    "requests": 210,
-    "measuredCostUsd": 0.22623480000000007,
-    "unresolvedCostUpperUsd": 0.025465962499999974,
-    "maxDocuments": 150,
-    "maxRequests": 220,
+    "documents": 154,
+    "requests": 215,
+    "measuredCostUsd": 0.2352258100000001,
+    "unresolvedCostUpperUsd": 0.025465962499999967,
+    "maxDocuments": 1000,
+    "maxRequests": 1500,
     "maxCostUsd": 2
   },
   "baselineUsage": {
@@ -52,9 +52,9 @@
   "finalSourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
   "validationReport": "docs/validation/final-engine-2026-10-18/README.md",
   "checkpoint": {
-    "date": "2026-10-20",
+    "at": "2026-10-20T06:39:02.278Z",
     "sourceSha": "46e8f2708e8a4eb966f34b093568489171946d5e",
-    "status": "FOLLOW_UP_DEPLOYED_WITHOUT_NEW_PAID_VALIDATION"
+    "status": "LIVE_EVALUATION_IN_PROGRESS_NOT_FINAL_SUCCESS"
   },
   "set3Fix": {
     "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
@@ -63,10 +63,10 @@
     "report": "docs/validation/set3-fix/release.json"
   },
   "approvedCaps": {
-    "documents": 150,
-    "requests": 220,
+    "documents": 1000,
+    "requests": 1500,
     "costUsd": 2,
-    "source": "User universal engine final validation instruction"
+    "source": "User 2026-10-20 consistency engine 1000-document/1500-request explicit approval"
   },
   "universalCorpusLock": {
     "documents": [
