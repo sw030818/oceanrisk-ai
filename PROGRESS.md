@@ -716,3 +716,16 @@
 - 유형 제목은 각 언어의 전체 제목이 같은 유형일 때만 병기로 승인. 다른 유형/임의 suffix/본문 언급/Master 및 다른 페이지의 유형 충돌은 차단. 전역 문자열 부분 일치로 완화하지 않음. quantity 집계의 의미 메타데이터가 선행 신고번호 필드로 표시되던 오류도 수정.
 - 평가 adapter는 root numeric additionalFields를 빠뜨린 분모 오류를 정정(이전 B 최초/현재78/83 로그 보존, 정정 최초82/83·현재83/83). 이는 AI 정확도 변경이 아닌 평가 도구 수정임. 현재 ledger163문서/226요청/확인USD0.25341072/미확인상한USD0.0254659625, 원격증거 f38b4477d7b366ce127427a570ed64046b79d6cb. 새 코드 전체검사/실제 A·B 재검증/8오류/미사용Holdout/UI 아직 미완료.
 - 두 번째 수정 선택회귀: 짧은ID/원본보존/없는ID차단/대체소유경로/동일유형 병기·다른페이지 혼합·Master·본문 오인 반례와 기존 PHASE37 포함83검사 통과. 타입/ESLint 통과. 기존 PHASE39/final-engine/consistency 65개도 통과했고, 새 transport mock의 developer 메시지를 user payload로 읽던 테스트 helper 오류1개는 실제 user role을 선택하도록 수정 후 통과. 새 실제 호출 전 최종 전체 gate 재실행.
+
+## caebf7c 배포 실패 조사 — 검증 기준 유지
+- caebf7cce366b4f815b25523d3e7db03a8e06ba6 로컬808단위/70브라우저/빌드/worker 및 Actions quality 성공. Vercel dpl_85msTF63NJ42nB7uWtEGJybirXya는 GitHub 통합에서 failure로 보고돼 공식사이트는 이전 d13edf6을 유지. 이 실패를 배포 성공으로 보고하지 않음.
+- 이 환경은 Vercel 인증 정보가 없어 CLI가 build logs에 접근하지 못함(로그인 진행하지 않음). 사용자에게 민감정보 제외 마지막 build error 텍스트를 비동기로 요청. 실제 Vercel 오류 원인은 현재 미확정. VERCEL=1/VERCEL_ENV=production/같은SHA/비밀키 비운 조건의 2-worker 선택55검사는 통과함.
+- 앞선 실제 로컬 PDF timeout을 근거로 verify/verified-build의 기본 VITEST_MAX_WORKERS를1로 통일하는 제한적 자원 완화 실험. 명시 환경설정은 유지, 직접 npm test/Actions의 기존2-worker 검사는 계속 유지. 테스트 수/판정/assertion/timeout/유료 API0회/전체 release gate는 변경 없음. 새 전체 gate와 Vercel 재배포가 통과해야 효과를 인정함.
+- 새 유료 호출 없음: 누적163/226/확인0.25341072+미확인0.0254659625 그대로. 기존 실제 실패와 원장 보존. 새 Production 확인 전 A/B·오류·Holdout 유료 평가를 실행하지 않음.
+
+## PDF 시간 초과의 실제 CPU 조사 및 동등한 최적화
+- worker1 기본을 적용한 새 gate는807/808통과, 기존 PHASE37 실제 Manifest 수량 오류 보존 검사가5427ms timeout으로 실패해 커밋/Push하지 않음. 테스트/제한시간/기준 변경 없음. 같은6검사 단독 재실행15.21초 모두 통과. 따라서 worker 수만으로 원인이 해소됐다고 주장하지 않음.
+- 실제 해당 시나리오 시간 측정: fixture2049ms / native recovery1427ms / review123ms. CPU profile에서 shippingRole·역할 callback·GC·cellHeading가 주된 비용임을 확인. 상품 대응 계산은 주 병목이 아니어서 근거 없는 캐시를 추가하지 않음.
+- 고정 라벨 regexp의 Object.entries 배열 생성/동일 전체 라벨 재검색 제거, 기존 순서·앵커·i flag를 보존한 단일 compiled named-alternative matcher 사용. PDF 텍스트를 전역 캐시에 저장하지 않으며 original/current/근거 승인 로직은 변경하지 않음.
+- 이전 committed shippingRole과 2190개의 실제 합성원문/대소문자·번호·병기 변형에서 판정 차이0. 20반복 CPU microbench565ms→129ms(실제API 처리시간 지표 아님). 해당 전체 시나리오3598ms→2904ms, NativeRecovery1427ms→841ms의 단회 측정이며 반복 안정성/실제API 속도 개선으로 과장하지 않음. 새36선택검사 통과.
+- Vercel 원본 build error는 인증/사용자 로그 없이 여전히 미확정이며 local timeout과 같은 원인이라고 단정하지 않음. 기본worker1+동등한 라벨 성능 수정으로 전체 ship 및 Vercel 검증을 새로 수행. 기존163/226 예산 유지, 추가 유료 호출0.

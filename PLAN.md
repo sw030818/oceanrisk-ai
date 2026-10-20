@@ -181,3 +181,5 @@ E 재동결: 최초Blind4는100%추출에도245/300검증·잘못복구2로실�
 - 진행: 선택 안전성 회귀 후 전체 npm ci/타입/린트/단위/빌드/worker/70브라우저 ship. 기존783개 삭제/완화 없음. 현재 누적154/215, 비용 확인0.23522581+미확인0.0254659625 유지.
 - 다음: exactSHA Production에서 기존 실패4PDF 실제 재분석→독립 B 정상5PDF→실제 물리 오류8종→실패 수정/회귀/실제 재검증→최종 미사용Holdout D4PDF→Production 실제UI/Set2·3. 최종 sourceSHA 변경 없이 원장·수치·실패 원인을 validation/phase39-evidence에 저장. 무료 재생0문제를 실제 새SHA 성공으로 대체하지 않음.
 - d13edf6 실제 실패를 반영한 두 번째 루프: A의 정상 합계 성공 후 긴 ID 오기1건, 독립 B의 한영 병기 제목 검증 실패(90개 파생 보류)를 확인. 짧은 enum ID/원본 ID 보존/검증된 대체 소유 경로/동일 유형 병기 제목을 공통 계층에서 수정. 현재163/226. 선택회귀→전체 ship→새SHA 실제A/B→8물리오류→Holdout D→Production 실제UI/원본 Set2·3 순서를 유지하며 실패한 d13 결과는 원본으로 보존.
+- caebf7c는 Actions quality 성공이지만 Vercel 배포 실패. 로그 접근 인증 부재/원인 미확정. Vercel 환경 선택55검사 통과. verify 기본worker1로 자원 사용을 통일한 뒤 전체 ship/동일SHA 배포 재확인. 실제 검증예산163/226 그대로 보존하며 새 Production에서만 유료 재검증을 계속한다.
+- worker1 단독 gate는807/808(기존PDF검사5.4초timeout)로중단. CPU계측으로 matcher보다라벨배열/반복regexp/GC 비용이큰것확인, 기존라벨과2190입력0차이의compiled-regexp최적화+36회귀통과. 다음전체gate는같은808/70/worker와검사기준/5초제한을유지. Vercel실패원인미확정, 실제새SHA실증은배포확인후계속.

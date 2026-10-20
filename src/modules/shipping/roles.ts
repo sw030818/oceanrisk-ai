@@ -58,6 +58,17 @@ const labels: Record<string, RegExp> = {
   totalNetWeight:
     /^(?:total net weight|net weight total|순중량 합계|총\s*순중량)$/i,
 };
+// Static label patterns are immutable and contain no uploaded document data.
+// Rebuilding this array for every native cell/field caused large short-lived
+// allocations during parsing and recovery.
+const labelPatterns = Object.entries(labels);
+// One compiled alternative matcher preserves the ordered, anchored patterns
+// while avoiding dozens of separate RegExp calls for every non-label value.
+const combinedLabels=new RegExp(labelPatterns.map(([role,re])=>`(?<${role}>${re.source})`).join('|'),'i');
+function directRole(label:string){
+  const match=combinedLabels.exec(label);if(!match?.groups)return null;
+  return labelPatterns.find(([role])=>match.groups![role]!==undefined)?.[0]??null;
+}
 export function shippingRole(text: string): string | null {
   const label = text
     .normalize("NFKC")
@@ -69,16 +80,14 @@ export function shippingRole(text: string): string | null {
   // A document TITLE is not an identifier field label. Otherwise the caption
   // below a B/L title can be falsely recovered as a House B/L number.
   if (/^(?:house bill of lading|export declaration(?: certificate)?|house manifest|수출신고필증)$/i.test(label)) return null;
-  const direct = Object.entries(labels).find(([, pattern]) =>
-    pattern.test(label),
-  )?.[0];
+  const direct = directRole(label);
   if (direct) return direct;
   // Every bilingual fragment must identify the same role; QTY / Packages is ambiguous.
   const parts = label.split(/\s+\/\s+/);
   if (parts.length > 1) {
     const roles = parts.map(
       (part) =>
-        Object.entries(labels).find(([, pattern]) => pattern.test(part))?.[0],
+        directRole(part),
     );
     if (roles.every(Boolean)) {
       if (new Set(roles).size === 1) return roles[0]!;
@@ -86,10 +95,9 @@ export function shippingRole(text: string): string | null {
       if (new Set(totals).size === 1) return totals[0]!;
     }
   }
-  return (
-    Object.entries(labels).find(([, pattern]) => pattern.test(label))?.[0] ??
-    null
-  );
+  // The identical whole label already failed the direct scan above. Patterns
+  // have no global/sticky flags, so repeating it cannot yield another result.
+  return null;
 }
 export const unitParents: Record<string, string[]> = {
   quantityUnit: ["quantity", "totalQuantity"],
