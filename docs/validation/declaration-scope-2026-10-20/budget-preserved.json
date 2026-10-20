@@ -1,0 +1,16 @@
+{
+  "kind": "No new paid calls in 2026-10-20 continuation",
+  "sha256": "5d52616e1ef0c8a03ef89a6332b26cc187a62a93b67df91043b2f0ae30ed4108",
+  "budget": {
+    "documents": 150,
+    "requests": 210,
+    "measuredCostUsd": 0.22623480000000007,
+    "unresolvedCostUpperUsd": 0.025465962499999974,
+    "maxDocuments": 150,
+    "maxRequests": 220,
+    "maxCostUsd": 2
+  },
+  "newDocuments": 0,
+  "newRequests": 0,
+  "additionalApproval": "Pending; prior 12-document request withdrawn, proposed 8-document allowance not applied"
+}

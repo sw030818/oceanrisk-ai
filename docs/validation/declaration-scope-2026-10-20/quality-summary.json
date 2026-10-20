@@ -1,0 +1,59 @@
+{
+  "sourceSha": "46e8f2708e8a4eb966f34b093568489171946d5e",
+  "previousSha": "62bdcb91e728a51bef5c411f15a7627141557014",
+  "localRelease": {
+    "npmCi": true,
+    "typecheck": true,
+    "eslint": true,
+    "unitTests": 783,
+    "unitFiles": 50,
+    "unitDurationSeconds": 321.25,
+    "vitestMaxWorkers": 1,
+    "browserTests": 70,
+    "productionBuild": true,
+    "pdfWorkers": true,
+    "releaseLogSha256": "ba00b6d33c1f8dde5cf93a41778c1a156166042545c68984d3c0b9548dfaf0b0"
+  },
+  "priorGateFailure": {
+    "unitPassed": 778,
+    "unitTimeouts": 5,
+    "assertionFailures": 0,
+    "diagnosticSingleWorkerTests": 44,
+    "diagnosticAllPassed": true,
+    "testsTimeoutsOrAssertionsRelaxed": false
+  },
+  "paidValidation": {
+    "newCalls": 0,
+    "newDocuments": 0,
+    "status": "NOT_RUN_DOCUMENT_CAP_REACHED"
+  },
+  "budget": {
+    "documents": 150,
+    "requests": 210,
+    "measuredCostUsd": 0.22623480000000007,
+    "unresolvedCostUpperUsd": 0.025465962499999974,
+    "maxDocuments": 150,
+    "maxRequests": 220,
+    "maxCostUsd": 2
+  },
+  "environmentDraft": {
+    "saved": true,
+    "variable": "VITEST_MAX_WORKERS",
+    "suggestedValue": "1",
+    "appliedOrPublished": false
+  },
+  "newBlindEvaluation": false,
+  "fullUniversalGoalComplete": false,
+  "githubActions": {
+    "runId": 39372651964,
+    "quality": "success",
+    "production": "success",
+    "url": "https://github.com/sw030818/oceanrisk-ai/actions/runs/39372651964"
+  },
+  "production": {
+    "verifiedSha": "46e8f2708e8a4eb966f34b093568489171946d5e",
+    "githubVercelState": "success",
+    "deploymentId": "dpl_CYUQuwrUnPTJXqxww7d5idJoSHd3",
+    "controlPlaneReadyQueried": false
+  }
+}

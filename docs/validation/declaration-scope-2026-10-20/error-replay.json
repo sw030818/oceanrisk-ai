@@ -1,0 +1,118 @@
+{
+  "kind": "FREE existing actual-response replay; no extraction/provider/usage changes; cached semantic key is NOT reset",
+  "sourceSha": "46e8f2708e8a4eb966f34b093568489171946d5e",
+  "cases": [
+    {
+      "case": "fault-containerNumber",
+      "role": "containerNumber",
+      "originalActualSha": "177d758028e307cc7449b9bd28d6bacae40d5f0f",
+      "confirmed": true,
+      "provisional": false,
+      "needsReview": false,
+      "allConfirmedChecks": 1,
+      "actionIssues": 12,
+      "warningAssessments": [
+        "confirmed_mismatch"
+      ]
+    },
+    {
+      "case": "fault-grossWeight",
+      "role": "grossWeight",
+      "originalActualSha": "177d758028e307cc7449b9bd28d6bacae40d5f0f",
+      "confirmed": true,
+      "provisional": false,
+      "needsReview": false,
+      "allConfirmedChecks": 1,
+      "actionIssues": 5,
+      "warningAssessments": [
+        "confirmed_mismatch",
+        "not_applicable"
+      ]
+    },
+    {
+      "case": "fault-houseBlNumber",
+      "role": "houseBlNumber",
+      "originalActualSha": "177d758028e307cc7449b9bd28d6bacae40d5f0f",
+      "confirmed": true,
+      "provisional": false,
+      "needsReview": false,
+      "allConfirmedChecks": 2,
+      "actionIssues": 7,
+      "warningAssessments": [
+        "confirmed_mismatch",
+        "confirmed_match"
+      ]
+    },
+    {
+      "case": "fault-hsCode",
+      "role": "hsCode",
+      "originalActualSha": "177d758028e307cc7449b9bd28d6bacae40d5f0f",
+      "confirmed": false,
+      "provisional": true,
+      "needsReview": false,
+      "allConfirmedChecks": 0,
+      "actionIssues": 4,
+      "warningAssessments": [
+        "provisional_mismatch"
+      ]
+    },
+    {
+      "case": "fault-model",
+      "role": "goodsDescription",
+      "originalActualSha": "177d758028e307cc7449b9bd28d6bacae40d5f0f",
+      "confirmed": true,
+      "provisional": true,
+      "needsReview": true,
+      "allConfirmedChecks": 1,
+      "actionIssues": 8,
+      "warningAssessments": [
+        "confirmed_mismatch",
+        "provisional_mismatch",
+        "needs_review"
+      ]
+    },
+    {
+      "case": "fault-packageCount",
+      "role": "packageCount",
+      "originalActualSha": "177d758028e307cc7449b9bd28d6bacae40d5f0f",
+      "confirmed": true,
+      "provisional": false,
+      "needsReview": false,
+      "allConfirmedChecks": 1,
+      "actionIssues": 5,
+      "warningAssessments": [
+        "confirmed_mismatch",
+        "not_applicable"
+      ]
+    },
+    {
+      "case": "fault-quantity",
+      "role": "quantity",
+      "originalActualSha": "177d758028e307cc7449b9bd28d6bacae40d5f0f",
+      "confirmed": true,
+      "provisional": false,
+      "needsReview": false,
+      "allConfirmedChecks": 1,
+      "actionIssues": 5,
+      "warningAssessments": [
+        "confirmed_mismatch"
+      ]
+    },
+    {
+      "case": "fault-sealNumber",
+      "role": "sealNumber",
+      "originalActualSha": "177d758028e307cc7449b9bd28d6bacae40d5f0f",
+      "confirmed": true,
+      "provisional": false,
+      "needsReview": false,
+      "allConfirmedChecks": 1,
+      "actionIssues": 5,
+      "warningAssessments": [
+        "confirmed_mismatch"
+      ]
+    }
+  ],
+  "confirmed": 7,
+  "confirmedOrProvisional": 8,
+  "includingReview": 8
+}

@@ -1,0 +1,309 @@
+{
+  "kind": "FREE intermediate development replay before subset scope protection; NEVER DEPLOYED; not final source performance",
+  "sourceResponseSha": "62bdcb91e728a51bef5c411f15a7627141557014",
+  "outcomes": {
+    "matches": 41,
+    "mismatches": 4,
+    "review": 47,
+    "requiredMissing": 0,
+    "notApplicable": 26,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 4,
+    "evidenceRecovered": 5,
+    "checksExecuted": 110,
+    "independentChecks": 120,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 2
+  },
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "warningCodes": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "warningCodes": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "warningCodes": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "warningCodes": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "warningCodes": []
+    }
+  ],
+  "issues": [
+    {
+      "title": "컨테이너 목록",
+      "assessment": "confirmed_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "컨테이너 목록",
+      "assessment": "confirmed_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "컨테이너 목록",
+      "assessment": "confirmed_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "컨테이너 목록",
+      "assessment": "confirmed_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "3종 공통 총중량",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 1
+    },
+    {
+      "title": "3종 공통 포장 개수",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 1
+    },
+    {
+      "title": "3종 공통 총중량",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 1
+    },
+    {
+      "title": "3종 공통 포장 개수",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 1
+    },
+    {
+      "title": "화물 품명 의미",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "화물 품명 의미",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "화물 품명 의미",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 3
+    },
+    {
+      "title": "화물 품명 의미",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 3
+    },
+    {
+      "title": "문서 전체 총중량",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "문서 전체 총중량",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "문서 전체 총중량",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "문서 전체 총중량",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "HS 공통 6단위 (전체 세번과 구분)",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 1
+    },
+    {
+      "title": "HS 공통 6단위 (전체 세번과 구분)",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 1
+    },
+    {
+      "title": "HS 공통 6단위 (전체 세번과 구분)",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 1
+    },
+    {
+      "title": "HS 공통 6단위 (전체 세번과 구분)",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 1
+    },
+    {
+      "title": "문서 전체 포장 개수",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "문서 전체 포장 개수",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "문서 전체 포장 개수",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "문서 전체 포장 개수",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 4
+    },
+    {
+      "title": "기재 물품 수량 (합계/단일품목 범위)",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 3
+    },
+    {
+      "title": "기재 물품 수량 (합계/단일품목 범위)",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 3
+    },
+    {
+      "title": "기재 물품 수량 (합계/단일품목 범위)",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "기재 물품 수량 (합계/단일품목 범위)",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "Seal 번호",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "Seal 번호",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "Seal 번호",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "Seal 번호",
+      "assessment": "provisional_mismatch",
+      "relatedChecks": 2
+    },
+    {
+      "title": "AI 상품 의미 · 규격 비교",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "AI 상품 의미 · 규격 비교",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "컨테이너 CXUU9000011 총중량",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "컨테이너 CXUU9000011 포장 개수",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "복수 신고 물품 수량 합계",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "AI 상품 의미 · 규격 비교",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "AI 상품 의미 · 규격 비교",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "컨테이너 CXUU9000010 총중량",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "컨테이너 CXUU9000010 포장 개수",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "품목 CERAMIC MEMBRANE MODULE MODEL 10000 물품 수량",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "품목 REUSABLE SILICONE SEAL RING MODEL SR7 물품 수량",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "AI 상품 의미 · 규격 비교",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "AI 상품 의미 · 규격 비교",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "컨테이너 CXUU9000011 총중량",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "컨테이너 CXUU9000011 포장 개수",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "AI 상품 의미 · 규격 비교",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "AI 상품 의미 · 규격 비교",
+      "assessment": "needs_review",
+      "relatedChecks": 1
+    },
+    {
+      "title": "컨테이너 CXUU9000010 총중량",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    },
+    {
+      "title": "컨테이너 CXUU9000010 포장 개수",
+      "assessment": "provisional_match",
+      "relatedChecks": 1
+    }
+  ],
+  "groups": [
+    {
+      "title": "복수 신고 물품 수량 합계",
+      "assessment": "needs_review",
+      "uncertainties": [
+        "HBL 전체 품목 집합과 신고 품목 집합이 정확히 대응하지 않습니다."
+      ]
+    }
+  ],
+  "semanticStatus": "complete",
+  "codeWasUncommitted": true
+}

@@ -1,0 +1,49 @@
+{
+  "privateInputsNotPublished": true,
+  "immutableInputHashes": [
+    {
+      "name": "error-fault-quantity-177d758028e307cc7449b9bd28d6bacae40d5f0f.json",
+      "sha256": "fa24b6b4a685dd68371568d9dee8e81d3667b06f9d27849dc3608b53fe7c7314"
+    },
+    {
+      "name": "error-fault-containerNumber-177d758028e307cc7449b9bd28d6bacae40d5f0f.json",
+      "sha256": "7c1eb12fbd65bb8b0256b1796db4f5647dbd1b51d4795c405c600957ece15d89"
+    },
+    {
+      "name": "error-fault-model-177d758028e307cc7449b9bd28d6bacae40d5f0f.json",
+      "sha256": "05c19579150041612ab8842963177d72326699b29c987f4f7ebd1ee0c66b61a3"
+    },
+    {
+      "name": "error-fault-houseBlNumber-177d758028e307cc7449b9bd28d6bacae40d5f0f.json",
+      "sha256": "cc84f17088df80f6868d8dd58a47fdafd8b951bc84e0ed742423c8b98e7e0308"
+    },
+    {
+      "name": "error-fault-hsCode-177d758028e307cc7449b9bd28d6bacae40d5f0f.json",
+      "sha256": "633bbf3ef9dbba686682fb488f711b9ab936cf5f8916ec21be5162dbce1f6072"
+    },
+    {
+      "name": "error-fault-grossWeight-177d758028e307cc7449b9bd28d6bacae40d5f0f.json",
+      "sha256": "fc481d3c8dd3b9f94992aeb065d0185df5e4be429a866292ee83c17985fd1f83"
+    },
+    {
+      "name": "error-fault-packageCount-177d758028e307cc7449b9bd28d6bacae40d5f0f.json",
+      "sha256": "53c215913c75fc7b585261f1c959cb8edc8f5b265e8ca42c54c2a1d5db37626f"
+    },
+    {
+      "name": "error-fault-sealNumber-177d758028e307cc7449b9bd28d6bacae40d5f0f.json",
+      "sha256": "56bacc5db51542ab3b9a04cd39850a07b610b883f48c1d8840a3e6cc8d46fb0b"
+    },
+    {
+      "name": "complex-13-62bdcb91e728a51bef5c411f15a7627141557014.json",
+      "sha256": "8ffa0de958182edc0afe14825b9ab0eb5838bac88f8c28e007da047a1f59053e"
+    },
+    {
+      "name": "set2-ui-85bc3af810aa43c050d53c9dead045934a186bc9.json",
+      "sha256": "f643fd8214918bffd44d0ec1131168fa7f0bbdc234e825a2409da33d3abbdc89"
+    },
+    {
+      "name": "set3-ui-7884bb3c62976c129f0006ce5b6f140791c5720c.json",
+      "sha256": "a718edb9348493f1d201f5e6e7c473451ff125ed5902bd5cf7f4d33c33350915"
+    }
+  ]
+}

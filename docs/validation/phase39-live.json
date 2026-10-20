@@ -52,9 +52,9 @@
   "finalSourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
   "validationReport": "docs/validation/final-engine-2026-10-18/README.md",
   "checkpoint": {
-    "at": "2026-10-19T04:35:27.595Z",
-    "sourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
-    "status": "FINAL_EVALUATION_COMPLETED_WITH_UNRESOLVED_FAILURES"
+    "date": "2026-10-20",
+    "sourceSha": "46e8f2708e8a4eb966f34b093568489171946d5e",
+    "status": "FOLLOW_UP_DEPLOYED_WITHOUT_NEW_PAID_VALIDATION"
   },
   "set3Fix": {
     "sourceSha": "7884bb3c62976c129f0006ce5b6f140791c5720c",
@@ -318,5 +318,40 @@
     "budgetStop": "DOCUMENT_ATTEMPT_CAP_REACHED",
     "automaticRetries": 0,
     "fullGoalComplete": false
-  }
+  },
+  "currentCodeSourceSha": "46e8f2708e8a4eb966f34b093568489171946d5e",
+  "lastActualEvaluationSha": "62bdcb91e728a51bef5c411f15a7627141557014",
+  "followUp20261020": {
+    "sourceSha": "46e8f2708e8a4eb966f34b093568489171946d5e",
+    "report": "docs/validation/declaration-scope-2026-10-20/REPORT.md",
+    "paidDocuments": 0,
+    "providerRequests": 0,
+    "paidValidation": "NOT_RUN_CUMULATIVE_DOCUMENT_CAP_REACHED",
+    "additionalBudgetApproved": false,
+    "localUnits": 783,
+    "localBrowserTests": 70,
+    "actionsQuality": "success",
+    "actionsProduction": "success",
+    "publicProductionShaVerified": true,
+    "freeComplexRelationships": {
+      "before": 1,
+      "after": 5,
+      "expected": 5
+    },
+    "freeComplexActionIssues": 51,
+    "freeComplexConfirmedFalsePositives": 0,
+    "freeErrors": {
+      "confirmed": 7,
+      "provisional": 1,
+      "cases": 8
+    },
+    "fullGoalComplete": false
+  },
+  "checkpointHistory": [
+    {
+      "at": "2026-10-19T04:35:27.595Z",
+      "sourceSha": "62bdcb91e728a51bef5c411f15a7627141557014",
+      "status": "FINAL_EVALUATION_COMPLETED_WITH_UNRESOLVED_FAILURES"
+    }
+  ]
 }
