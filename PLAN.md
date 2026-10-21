@@ -200,3 +200,7 @@ E 재동결: 최초Blind4는100%추출에도245/300검증·잘못복구2로실�
 - 마지막 호환 경계: 재인용 owner 힌트는 제품정체성 유지에만 사용하고 기존 owner없는 잘못된 모델의 보수적 정책을 유지. 새10선택 통과. ship9은 Commit/Push 전 의도 중지; source2813 그대로. 다음 frozen gate838/70 뒤 actual final-SHA 절차 그대로.
 - 최종개발결함: 3자HS와Native행HS의동일원인중복2카드. 전체실제비공통세번이정확히Native증거로덮일때만원인연결(새세번반례보존). 신규2/타입/린트통과; 무료기존실제HS 2확정유지·조치2→1. 고정D986응답은개발피드백으로열람하지않아별도봉인, 새SHA D재평가별도보존. 만약D결과로튜닝하면새Holdout교체.
 - 다음frozen gate840/70후새정확SHA actual A/B/Seal/중복+오류8종(6부모+8MF)+D4+실제UI10. 누적327/432/확인0.483048805+미확인0.0622898375계속. Source986과무료재생은최종SHA실증이아님.
+
+- [x] 06a2521 실제 A/B·오류8종·동결D 검증 (증거/ledger 보존).
+- [x] 최종UI Set2 countryCode 한영 qualifier 실패 추적; 전체qty는 이미native검증됨을 확인, 잘못된 item-only 검증도구 수정.
+- [ ] 국가 qualifier 회귀20개/전체ship, 새SHA actual A/B·오류·독립·UI, 원장 및 최종증거브랜치 저장.

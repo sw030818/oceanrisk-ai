@@ -124,3 +124,19 @@ it("verifies and recovers both explicit suffix atoms in an owned one-line cargo 
   expect(d.cargoRecords[0].fields.quantity.current.status).toBe("verified");
   expect(d.cargoRecords[0].fields.goodsDescription.current.value).toBe(goods);
 });
+
+
+describe("bilingual explicit country qualifiers remain geographic facts", () => {
+  it.each([["KR", "대한민국"],["US", "미국"],["CA", "캐나다"],["NL", "네덜란드"],["SG", "싱가포르"],["DE", "독일"],["GB", "영국"],["JP", "일본"],["AU", "호주"],["AE", "아랍에미리트"],["BE", "벨기에"],["FR", "프랑스"],["NZ", "뉴질랜드"],["HK", "홍콩"],["VN", "베트남"]])("agrees on code and Korean country %s", (code, name) => {
+    expect(countryCode(`${code} / ${name}`)).toBe(code);
+    expect(countryCode(`${name} (${code})`)).toBe(code);
+  });
+  it.each(["NL / 독일", "네덜란드 (US)", "NL / unknown", "FR / 베트남"])("does not discard a conflicting or unsupported qualifier %s", value => expect(countryCode(value)).toBeNull());
+  it("uses a verified bilingual country for port equality without changing raw source", async () => {
+    const a=await shipping34Fixture("house_bl", {pod:"Rotterdam, Netherlands"}), b=await shipping34Fixture("export_declaration", {pod:"Rotterdam", destinationCountry:"NL / 네덜란드"});
+    const docs=[a.document,b.document];
+    expect(contextualPort(root32(b.document,"portOfDischarge")!,docs)).toBe("NLRTM");
+    expect(b.document.fields.destinationCountry.current.value).toBe("NL / 네덜란드");
+    expect(reviewShipping(docs).primaryChecks!.find(c=>c.comparison?.meaning==="portOfDischarge")?.assessment).toBe("confirmed_match");
+  });
+});

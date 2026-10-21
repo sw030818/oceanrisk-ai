@@ -763,3 +763,12 @@
 - HoldoutD는986에서 API응답만 수신한 상태로 결과파일/정답평가값을 이 수정의 개발피드백으로 열람하지 않았다. HS변경은 독립 Development 오류만 기반. 과거D호출과 그후같은고정D의 최종SHA 재평가를 별도 표기하며, 이전 D결과를 최종성공으로 대체하지 않는다. 만약D실패를 보고 수정하면D를retire하고새독립Holdout이필요하다.
 - 누적327문서/432요청/확인추정USD0.4830488050000003+미확인상한0.062289837500000146, 상한1000/1500/USD2보존. 자동재시도0. 이번HS metadata수정후추가유료0.
 - 다음: frozen840단위/70브라우저/build/worker/ship/exactSHA→새실제A/B 및대표Seal/중복·오류8종모두(6부모18PDF+변경MF8PDF)→미열람고정D 최종SHA재평가→실제UI A/Set2/Set3→새같은SHA증거/원장보존. 최초응답/기존986결과를새SHA성과로재표기금지.
+
+## 2026-10-21 최종 06a2521 실제 실증 및 Set2 후속 원인
+- 실제 A 4/4·34/34, B 5/5·최초77/83·native83/83, 각각 조치0/확정오탐0. A 품목2/B3, 총1000 EA/PCS·50 CTNS·500 KG 확정일치. 원래51개 전수47native+4scope 해소, B90→0.
+- 실제 오류8종: 8/8 확정탐지, FP0/FN0, 최초580/582/native582/582, 관계22/22. 정상 parent6거래 모두 조치0. 복수 Seal/중복/다른HBL/누락 각1문제, 원본검사 및 실제 합계보호 유지.
+- 동결 Holdout D 최종06a 실제4문서58/58·품목2/전체1000 일치·조치0·FP0. 결과는 별도 보존. 이후 발견된 Set2 국가 별칭 수정에 Holdout의 정답/응답은 사용하지 않는다.
+- 실제 Production A 브라우저는 Manifest45초 API_UNAVAILABLE: 성공3개/부분화면/원문후보 보존, 비용 미확인 예약유지, 성공으로 집계하지 않음. 새로운 완전한 브라우저 흐름은 수동 재검증 예정.
+- Set2 실제3문서: Manifest AI item/cargo quantity null이나 독립 native 문서전체5000PCS additionalFields는 verified, 실제 whole-quantity comparison도 confirmed_match. 행에 전체값을 복사하지 않는다. private 브라우저 verifier가 item/cargo만 검사한 오류를 root32 기반 범위별 검사로 수정했다.
+- 실제 Set2 port hold 원인: destinationCountry 원문 `NL / 네덜란드`는 검증됐으나 countryCode의 NL 한국어 별칭 부재로 contextualPort가 null. 기존 지원15개 국가의 한국어/영어/코드 일관성을 확장한다. 다른 국가/미지원 qualifier·edited/OCR/다른문서 힌트 보호는 유지하며 신규20개 검사 추가. 상품 사전/레이아웃/화면/추출값 변경 없음.
+- 누적 ledger는 그대로 유지. source 변경 후 전체 ship 및 새 최종SHA A/B·오류·동결 독립자료·실제UI를 다시 확인해야 하며 06a 실증을 후속SHA 성공으로 주장하지 않는다. private PDF/원본응답/화면은 공개하지 않는다.
