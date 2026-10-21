@@ -1,4 +1,4 @@
-import { declarationAllocations } from './declaration-allocation';
+import { allocationDependencyRoles } from './allocation-hints';
 import type{ShippingDocument}from'./schema';import type{ShippingCheck}from'./review-model';import{identifiers32,identifierValues32,root32,text32,verified32,refKey32}from'./review-evidence';import{nativeRecordHbl}from'./native-record-link';
 // Diagnose actual native reference sets, not file names or substring matches.
 // This changes causal presentation only. It never proves a shipment or a sum.
@@ -35,7 +35,7 @@ export function linkReferenceDependencies(checks:ShippingCheck[],docs:ShippingDo
   }
   if(!causes.size)continue;
   const candidate=causes.values().next().value!;
-  const allocationRoles=new Set(declarationAllocations(docs,[{...candidate,declarationMembership:{hblDocumentId:bl.id,declarationDocumentIds:own.map(v=>v.d.id)}}]).filter(c=>c.assessment==='confirmed_match').map(c=>c.allocationCoverage!.meaning));
+  const allocationRoles=allocationDependencyRoles(docs,bl,related.map(v=>v.d),candidate);
   for(const c of checks){
    if(c.semantic&&['INVALID_SEMANTIC_EVIDENCE','SEMANTIC_STALE','SEMANTIC_NOT_COMPLETED','AMBIGUOUS_SEMANTIC_MAPPING'].includes(c.semantic.validationCode))continue;
    if(c.referenceCause||c.rootCauseKind==='value_conflict'||c.assessment==='confirmed_match'||c.assessment==='not_applicable'||c.disposition==='informational'||!c.fields.length||!c.fields.every(verified32)||c.semantic?.nativeClaims?.length||['explicit_conflict','different_product'].includes(c.semantic?.relation??''))continue;

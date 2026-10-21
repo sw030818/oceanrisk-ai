@@ -5,7 +5,7 @@ import type {SemanticReport} from '../../src/modules/shipping/semantic-schema';
 export async function consistencyFixture(options: {
  quantity?: number; quantityB?: number; missingReference?: boolean;
  foreignHbl?: boolean; manifestHs?: string; manifestTotal?: number;
- model?: string; seal?: string; partial?: boolean; duplicate?: boolean;
+ model?: string; seal?: string; duplicateSeal?:string; partial?: boolean; duplicate?: boolean;
  noModel?: boolean; thirdDeclaration?: boolean;
 } = {}) {
  const en=['OPTICAL WAVEGUIDE MODEL WG42','TORQUE LIMITER MODEL TL17','KINETIC BRAKE MODEL KB62'];
@@ -24,7 +24,7 @@ export async function consistencyFixture(options: {
   totals:{quantity:row(i,true).qty,packageCount:cs[i].packages,grossWeight:cs[i].gross},declaration:refs[i],scope:options.partial&&i===0?'partial shipment':common.scope,rows:[row(i,true)],containers:[cs[i]],
  }));
  specs.push(fixture35('house_manifest',{...common,id:'cx-mf',totals:{...totals,quantity:options.manifestTotal??totals.quantity},declarationRefs:[refs.join(', ')],rows:all.map(i=>({...row(i),hs:i===0?options.manifestHs??hs[0]:hs[i]})),containers:cs.slice(0,count).map((c,i)=>({...c,seal:i===0?options.seal??c.seal:c.seal}))}));
- if(options.duplicate)specs.push(fixture35('export_declaration',{...common,id:'cx-duplicate',declaration:refs[0],rows:[row(0,true)],containers:[cs[0]]}));
+ if(options.duplicate)specs.push(fixture35('export_declaration',{...common,id:'cx-duplicate',totals:{quantity:row(0,true).qty,packageCount:cs[0].packages,grossWeight:cs[0].gross},declaration:refs[0],rows:[row(0,true)],containers:[{...cs[0],seal:options.duplicateSeal??cs[0].seal}]}));
  const fixtures=await Promise.all(specs),docs=fixtures.map(f=>recoverNative(f.document,f.pdf)),context=semanticContext(docs);
  const family=(value:unknown)=>en.findIndex((v,i)=>String(value).includes(v.split(' MODEL')[0])||String(value).includes(ko[i].split(' MODEL')[0]));
  const report:SemanticReport={status:'complete',inputKey:context.key,requestedPairs:context.pairs.length,omittedPairs:0,model:'MOCK-never-provider',decisions:{pairs:context.pairs.map(p=>({

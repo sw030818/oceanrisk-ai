@@ -1,3 +1,7 @@
+import {nativeRecordHbl} from "./native-record-link";
+import {text32} from "./review-evidence";
+import { recitationOwner } from "./recovery-owner";
+import { normalizeText } from "../evidence/verify";
 import type { PdfDocument } from "../documents/schema";
 import type { ShippingDocument, ShippingField } from "./schema";
 import { shippingDocumentSchema, emptyShippingField } from "./schema";
@@ -13,7 +17,7 @@ import { numericShippingFields } from "./catalog";
 import { physicalLines, spanText } from "../layout/physical-spans";
 import { countryCode, portMeaning } from "./ports";
 import { numericTokens } from "../evidence/numbers";
-import { cargoCountAtoms } from "./cargo-description";
+import { cargoCountAtoms, cargoDescription } from "./cargo-description";
 import { verifyShippingField } from "./verify";
 import { independentlyVerified } from "./effective";
 import { nativeGoodsSpans } from "./goods-context";
@@ -28,6 +32,7 @@ export interface RecoveryTarget {
   scope: EntityScope;
   entityId: string;
   field: ShippingField;
+  literalRecitation?: boolean;
   owner?: NonNullable<
     NonNullable<ShippingField["current"]["source"]>["layout"]
   >;
@@ -56,7 +61,7 @@ const eligible = new Set([
   "shipper",
   "consignee",
 ]);
-export function recoveryTargets(doc: ShippingDocument): RecoveryTarget[] {
+export function recoveryTargets(doc: ShippingDocument, pdf?: PdfDocument): RecoveryTarget[] {
   // A caller explicitly withholding a previously verified type is an unsupported
   // snapshot, not an unverified-title case. Preserve that existing opt-out.
   if (
@@ -81,6 +86,11 @@ export function recoveryTargets(doc: ShippingDocument): RecoveryTarget[] {
         : scope === "container"
           ? "containerNumber"
           : "houseBlNumber";
+    let inferred = !owner && scope === "item" && typeof anchor?.current.value === "string" && pdf ? recitationOwner(fields, pdf) : undefined;
+    // Citation repair must not veto the existing unique-native-source repair
+    // of a genuinely wrong AI name/model. Use this narrower owner hint only
+    // when its actual native name preserves the candidate's product identity.
+    if(inferred&&anchor&&!nativeCandidates(pdf!,{id:'anchor-recite',role:anchorRole,scope,entityId:id,field:anchor,owner:inferred}).some(c=>typeof c.value==='string'&&typeof anchor.current.value==='string'&&normalizeText(cargoDescription(c.value).goods)===normalizeText(cargoDescription(anchor.current.value).goods)))inferred=undefined;
     for (const [role, field] of Object.entries(fields))
       if (
         eligible.has(role) &&
@@ -95,7 +105,8 @@ export function recoveryTargets(doc: ShippingDocument): RecoveryTarget[] {
           scope,
           entityId: id,
           field,
-          owner,
+          owner: owner ?? (role === anchorRole ? inferred : undefined),
+          ...(role === anchorRole && inferred ? {literalRecitation:true} : {}),
         });
   };
   add(doc.fields, "document", doc.id);
@@ -311,7 +322,8 @@ export function mergeRecovery(
   if (
     t.field.original.status === "verified" ||
     t.field.current.status === "user_edited" ||
-    independentlyVerified(t.field)
+    independentlyVerified(t.field) ||
+    (t.literalRecitation && (typeof t.field.current.value !== "string" || typeof candidate.value !== "string" || normalizeText(cargoDescription(t.field.current.value).goods) !== normalizeText(cargoDescription(candidate.value).goods)))
   )
     return false;
   const tested = verifyShippingField(candidate, pdf, t.role, t.scope, t.owner);
@@ -375,19 +387,23 @@ export function refreshRecoveryCoverage(
 // Recover an entirely omitted goods collection only from independently proven
 // closed native rows. This never invents an initial AI candidate, translation,
 // container row or source total, and never repopulates a user-edited snapshot.
-function seedOmittedNativeItems(doc: ShippingDocument, pdf: PdfDocument) {
-  if (doc.classificationStatus !== "classified" || doc.items.length ||
-      doc.cargoRecords.length || shippingValues(doc).some(f=>f.current.status === "user_edited")) return 0;
-  const target: RecoveryTarget={id:"item/native-missing/goodsDescription",role:"goodsDescription",scope:"item",entityId:"native-missing",field:emptyShippingField()};
+function missingNativeRows(pdf:PdfDocument,target:RecoveryTarget) {
   const rows=new Map<string,Candidate[]>();
   for(const c of nativeCandidates(pdf,target)) {
-    const f=verifyShippingField(c,pdf,"goodsDescription","item"),s=f.current.source;
+    const f=verifyShippingField(c,pdf,target.role,target.scope),s=f.current.source;
     const page=pdf.pages.find(p=>p.page===s?.page);
     if(f.current.status!=="verified" || s?.provenance!=="pdf_text" || !s.layout || !page ||
        !s.segments?.length || s.segments.some(segment=>{const b=page.blocks?.find(b=>b.id===segment.blockId);return !b||!nativeCell(page,b);}))continue;
     const key=JSON.stringify([s.page,s.layout.tableId,s.layout.rowId]),xs=rows.get(key)??[];
     if(!xs.some(v=>JSON.stringify(v)===JSON.stringify(c)))xs.push(c);rows.set(key,xs);
   }
+  return rows;
+}
+function seedOmittedNativeItems(doc: ShippingDocument, pdf: PdfDocument) {
+  if (doc.classificationStatus !== "classified" || doc.items.length ||
+      doc.cargoRecords.length || shippingValues(doc).some(f=>f.current.status === "user_edited")) return 0;
+  const target: RecoveryTarget={id:"item/native-missing/goodsDescription",role:"goodsDescription",scope:"item",entityId:"native-missing",field:emptyShippingField()};
+  const rows=missingNativeRows(pdf,target);
   if(rows.size>100)return 0;
   let applied=0;
   for(const candidates of rows.values()) {
@@ -398,14 +414,28 @@ function seedOmittedNativeItems(doc: ShippingDocument, pdf: PdfDocument) {
   }
   return applied;
 }
+function seedOmittedNativeContainers(doc:ShippingDocument,pdf:PdfDocument) {
+ if(doc.classificationStatus!=="classified"||doc.containers.length||doc.cargoRecords.some(c=>c.fields.containerNumber.current.value!==null)||shippingValues(doc).some(f=>f.current.status==='user_edited'))return 0;
+ const hbl=nativeRecordHbl(doc);if(!hbl)return 0;
+ const hblCandidates=(['document','cargo'] as const).flatMap(scope=>nativeCandidates(pdf,{id:'native-hbl-scope',role:'houseBlNumber',scope,entityId:doc.id,field:emptyShippingField()}).filter(c=>verifyShippingField(c,pdf,'houseBlNumber',scope).current.status==='verified'));
+ if(!hblCandidates.length||hblCandidates.some(c=>text32(c.value)!==hbl))return 0;
+ const target:RecoveryTarget={id:'container/native-missing/containerNumber',role:'containerNumber',scope:'container',entityId:'native-missing',field:emptyShippingField()},rows=missingNativeRows(pdf,target);
+ if(rows.size>100)return 0;let applied=0;
+ for(const candidates of rows.values()) {
+  if(candidates.length!==1)continue;
+  const id='native-container-'+(doc.containers.length+1),container={id,containerNumber:emptyShippingField(),sealNumber:emptyShippingField(),packageCount:emptyShippingField(),packageUnit:emptyShippingField(),grossWeight:emptyShippingField(),weightUnit:emptyShippingField()};
+  if(mergeRecovery(pdf,{...target,id:'container/'+id+'/containerNumber',entityId:id,field:container.containerNumber},candidates[0],'native')){doc.containers.push(container);applied++;}
+ }
+ return applied;
+}
 export function recoverNative(
   input: ShippingDocument,
   pdf: PdfDocument,
 ): ShippingDocument {
   const start = performance.now(),
     doc = structuredClone(input),
-    seeded = seedOmittedNativeItems(doc, pdf),
-    targets = recoveryTargets(doc);
+    seeded = seedOmittedNativeItems(doc, pdf) + seedOmittedNativeContainers(doc, pdf),
+    targets = recoveryTargets(doc, pdf);
   if (
     doc.classificationStatus !== "classified" &&
     doc.classification?.current.status === "verified"
@@ -463,6 +493,13 @@ export function recoverNative(
     for (const t of targets) {
       if (attempted.has(t.field)) continue;
       attempted.add(t.field);
+      // An independently repaired anchor can make the original citation valid.
+      // Recheck that exact cited cell against the proved owner, never pick a
+      // same-valued number elsewhere when native expressions repeat a count.
+      const originalSource=t.field.original.source;
+      if(t.owner&&!t.literalRecitation&&t.scope!=="document"&&t.field.original.verificationCode==='row_mismatch'&&t.field.original.value!==null&&originalSource?.fileId===pdf.id&&originalSource.segments?.length&&mergeRecovery(pdf,t,{value:t.field.original.value,evidence:{page:originalSource.page,blockIds:originalSource.segments.map(s=>s.blockId)}},"native")){
+        applied++;continue;
+      }
       const verified = nativeCandidates(pdf, t)
         .map((c) => ({
           c,
@@ -471,7 +508,8 @@ export function recoverNative(
         .filter(
           (v) =>
             v.f.current.status === "verified" &&
-            v.f.current.source?.provenance === "pdf_text",
+            v.f.current.source?.provenance === "pdf_text" &&
+            (!t.literalRecitation || typeof t.field.current.value === "string" && typeof v.c.value === "string" && normalizeText(cargoDescription(t.field.current.value).goods) === normalizeText(cargoDescription(v.c.value).goods)),
         );
       // A repeated literal in different source locations is ambiguous, even when
       // its numeric values happen to be equal. No first/nearest/global match.
@@ -501,7 +539,7 @@ export function recoverNative(
               : "SOURCE_NOT_PRESENT";
       failures[code] = (failures[code] ?? 0) + 1;
     }
-    for (const t of recoveryTargets(doc))
+    for (const t of recoveryTargets(doc, pdf))
       if (!attempted.has(t.field) && !targets.some((v) => v.field === t.field))
         targets.push(t);
   }

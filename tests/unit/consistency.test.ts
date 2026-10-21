@@ -86,3 +86,12 @@ it('preserves a user-cleared shipment scope as an edit rather than native full-s
  const r=reviewShipping(docs,{semantic:f.report});expect(r.checks.some(c=>c.declarationCoverage)).toBe(false);
  expect(r.checks.some(c=>c.title==='복수 신고 대응 품목 수량'&&c.fields.some(f=>f.documentId===docs[1].id)&&c.assessment==='confirmed_match')).toBe(false);
 });
+it('links identical native allocation aliases to the duplicate reference question without actually deduplicating or confirming the sum',async()=>{
+ const x=await consistencyFixture({duplicate:true}),r=reviewShipping(x.docs,{semantic:x.report});
+ expect(r.checks.some(c=>c.declarationCoverage)).toBe(false);expect(r.issues).toHaveLength(1);expect(r.issues![0].cause).toBe('reference_conflict');expect(r.checks.length).toBeGreaterThan(50);
+},20000);
+it('preserves an independent literal Seal change between same-number copies instead of using a hypothetical identical allocation',async()=>{
+ const x=await consistencyFixture({duplicate:true,duplicateSeal:'DIFFERENT-77'}),r=reviewShipping(x.docs,{semantic:x.report});
+ expect(r.checks.some(c=>c.declarationCoverage)).toBe(false);expect(r.issues!.some(i=>i.cause==='reference_conflict')).toBe(true);
+ expect(r.primaryChecks!.some(c=>c.fields.some(f=>f.fieldName==='sealNumber'&&f.field.current.value==='DIFFERENT-77')&&c.assessment.endsWith('mismatch'))).toBe(true);expect(r.issues!.length).toBeGreaterThan(1);
+},20000);

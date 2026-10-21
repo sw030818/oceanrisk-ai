@@ -192,3 +192,9 @@ E 재동결: 최초Blind4는100%추출에도245/300검증·잘못복구2로실�
 - 최종 안전 보강: 전체 신고 포함 미확정 상태의 행 수량 차이는 잠정으로 보호. ship6은 Commit/Push 전 의도 중지했으며 새 full gate 목표818/70. 같은 근거의 일치와 전체 합계 입증을 계속 분리한다.
 - 추가 회귀: 같은 HBL의 업로드된 미포함 신고까지 전체 포함 판정에 반영; 사용자 null scope 수정 보호. source 동결 gate 목표819/70, actual calls remain215/288 before new deployment.
 - ship7은817/819통과·기존2개timeout으로 Commit/Push 안 됨. CPU프로파일→헤더 캐시의 반복signature allocation 제거,3744조회0차이·변경감지7검사통과. 기존 timeout/기준 보존한 새 gate826/70; 누적 API215/288 그대로.
+
+## 2813f92 실제 실패 뒤 이어서 수행
+- 완료: 새실제A/B0문제·원51/90→0, 복합8오류패킷실제/타임아웃2건불변보존,267/351/확인0.39891352+미확인0.0622898375누적.
+- 완료: Manifest 복합문구의 잘못된 인용으로 생긴 앵커 순환을 같은 Native행의 독립HS/수량/실제이름 재인용으로 해소; 빈 컨테이너 Native행 복구; 동일Native배분의 참조 원인 가설(실제 집계중복제거/확정 금지). 42선택/타입/린트 통과, 기준완화없음.
+- 현재: frozen ship837/70 및새동일SHA배포. 이후새실제A/B+Seal/중복→같은SHA기존8오류(부모3거래9PDF+물리변경8PDF)→미사용HoldoutD4→실제UI A/Set2/3. 기존ledger/unknown비용유지. 수정에 사용한 오류자료는Blind아님.
+- 마지막 호환 경계: 재인용 owner 힌트는 제품정체성 유지에만 사용하고 기존 owner없는 잘못된 모델의 보수적 정책을 유지. 새10선택 통과. ship9은 Commit/Push 전 의도 중지; source2813 그대로. 다음 frozen gate838/70 뒤 actual final-SHA 절차 그대로.
