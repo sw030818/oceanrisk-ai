@@ -1,3 +1,4 @@
+import { linkHsSetDependencies } from "./conflict-causes";
 import { linkValueDependencies } from "./value-dependencies";
 import { resolveIndependentRecords } from "./independent-records";
 import { linkReferenceDependencies } from "./reference-dependencies";
@@ -919,6 +920,7 @@ export function withFactReview(
   resolveIndependentRecords(primary, documents, relations);
   directGoodsConflicts(documents, review, primary);
   directHsConflicts(documents, relations, primary);
+  linkHsSetDependencies(primary);
   primary.sort((a, b) => a.id.localeCompare(b.id));
   for (const d of documents) {
     if (

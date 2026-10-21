@@ -12,9 +12,9 @@ export function attributeRoots(pair:SemanticPair,context:Context){
 export function linkHsSetDependencies(checks:ShippingCheck[]){
  const roots=checks.filter(c=>c.rootCauseKind==='value_conflict'&&c.assessment==='confirmed_mismatch'&&c.rootCauseIds?.includes(c.id)&&c.comparison?.meaning==='hsCode'&&c.fields.filter(f=>f.fieldName==='hsCode').length===2);
  for(const c of checks){if(c.comparison?.meaning!=='hsCode'||c.assessment!=='confirmed_mismatch'||roots.includes(c)||!c.fields.every(verified32))continue;
-  const ids=[...new Set(c.fields.map(f=>f.documentId))];if(ids.length!==2)continue;
+  const ids=[...new Set(c.fields.map(f=>f.documentId))];if(ids.length<2)continue;
   const sets=ids.map(id=>new Set(c.fields.filter(f=>f.documentId===id&&f.fieldName==='hsCode').map(f=>hsSix(f.field.current.value))));if(sets.some(s=>s.has(null)))continue;
-  const difference=[...new Set([...sets[0],...sets[1]])].filter(v=>sets[0].has(v)!==sets[1].has(v));if(!difference.length)continue;
+  const difference=[...new Set(sets.flatMap(s=>[...s]))].filter(v=>!sets.every(s=>s.has(v)));if(!difference.length)continue;
   const matching=roots.filter(r=>r.fields.filter(f=>f.fieldName==='hsCode').every(f=>c.fields.some(v=>refKey32(v)===refKey32(f))));
   const covered=new Set(matching.flatMap(r=>r.fields.filter(f=>f.fieldName==='hsCode').map(f=>hsSix(f.field.current.value))));
   if(matching.length&&difference.every(v=>covered.has(v))&&[...covered].every(v=>difference.includes(v))){c.rootCauseIds=matching.map(r=>r.id);c.rootCauseKind='value_conflict';}
