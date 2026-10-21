@@ -1,3 +1,6 @@
+import { linkValueDependencies } from "./value-dependencies";
+import { resolveIndependentRecords } from "./independent-records";
+import { linkReferenceDependencies } from "./reference-dependencies";
 import { linkDeclarationDependencies } from "./dependency-causes";
 import { directHsConflicts } from "./direct-hs-conflicts";
 import type { SemanticReport } from "./semantic-schema";
@@ -43,7 +46,7 @@ const subject = (c: ShippingCheck, meaning: string) =>
     : c.fields.some((f) => f.fieldName === meaning);
 // Aggregate quantity checks carry reference and goods fields as prerequisites;
 // their subject is still quantity, not the first prerequisite in the array.
-const originalMeaning=(c:ShippingCheck)=>c.category==='quantity'&&c.fields.some(f=>f.fieldName==='quantity')?'quantity':c.fields.find(f=>!f.fieldName.endsWith('Unit'))?.fieldName??c.category;
+const originalMeaning=(c:ShippingCheck)=>c.comparison?.meaning??(c.category==='quantity'&&c.fields.some(f=>f.fieldName==='quantity')?'quantity':c.fields.find(f=>!f.fieldName.endsWith('Unit'))?.fieldName??c.category);
 const titles: Record<string, string> = {
   houseBlNumber: "검증된 공통 HBL 참조",
   declarationNumber: "수출신고 참조",
@@ -913,6 +916,7 @@ export function withFactReview(
     );
   }
   resolveDeclarationScopes(primary, review.checks, documents, relations, semantic);
+  resolveIndependentRecords(primary, documents, relations);
   directGoodsConflicts(documents, review, primary);
   directHsConflicts(documents, relations, primary);
   primary.sort((a, b) => a.id.localeCompare(b.id));
@@ -930,6 +934,9 @@ export function withFactReview(
     ]);
     primary.at(-1)!.title = "문서 유형의 원문 근거 확인 필요";
   }
+  linkDeclarationDependencies(primary, review.checks, documents);
+  linkReferenceDependencies(primary, documents);
+  linkValueDependencies(primary, documents);
   const outcomes = {
     matches: primary.filter((c) => c.assessment === "confirmed_match").length,
     mismatches: primary.filter((c) => c.assessment === "confirmed_mismatch")
@@ -973,7 +980,6 @@ export function withFactReview(
     checksExecuted: review.checks.length,
     independentChecks: primary.length,
   };
-  linkDeclarationDependencies(primary,review.checks,documents);
   return withReviewIssues(
     { ...review, primaryChecks: primary, outcomes },
     documents,

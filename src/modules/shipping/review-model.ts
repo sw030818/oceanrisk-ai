@@ -27,8 +27,11 @@ export interface ShippingCheck {
     declarationDocumentIds: string[];
     itemMappings?: { documentId: string; itemId: string; targetItemId: string; proof: string }[];
   };
-  declarationMembership?: { hblDocumentId: string; declarationDocumentIds: string[] };
+  declarationMembership?: { hblDocumentId: string; declarationDocumentIds: string[]; itemMappings?: { documentId:string; itemId:string; targetItemId:string; proof:string }[] };
   rootCauseIds?: string[];
+  rootCauseKind?: 'scope'|'value_conflict'|'reference_conflict';
+  referenceCause?: {kind:'missing'|'unlisted'|'duplicate'|'hbl_conflict';declarationNumber:string};
+  independentOwnerProof?: 'same_hbl_container_record'|'same_hbl_document_record';
   allocationCoverage?: { groupCheckId: string; meaning: string; documentIds: string[] };
   scopeResolution?: {
     groupCheckId: string;

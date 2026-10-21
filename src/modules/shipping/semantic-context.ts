@@ -1,4 +1,5 @@
 import { nativeProductIdentifiers } from "./product-identifiers";
+import{nativeRecordLinked}from'./native-record-link';
 import type { ShippingDocument, ShippingField } from "./schema";
 import { independentlyVerified } from "./effective";
 import { factHbl } from "./facts";
@@ -16,7 +17,7 @@ export interface SemanticProduct {
   descriptions: { value: string; blockIds: string[] }[];
   hsCode: string | null;
 }
-export interface SemanticPair { left: SemanticProduct; right: SemanticProduct; relationshipId: string; }
+export interface SemanticPair { left: SemanticProduct; right: SemanticProduct; relationshipId: string; relationshipConfirmed?:boolean; }
 export function semanticInputKey(documents: ShippingDocument[]) {
   return stableJson([...documents].sort((a, b) => a.id.localeCompare(b.id)));
 }
@@ -49,14 +50,15 @@ export function semanticContext(documents: ShippingDocument[]) {
   const relations = relateShipping(documents), all: SemanticPair[] = [];
   for (const [index, left] of products.entries()) for (const right of products.slice(index + 1)) {
     if (left.ref.documentId === right.ref.documentId || left.hbl !== right.hbl || documents.find(d=>d.id===left.ref.documentId)?.detectedType === documents.find(d=>d.id===right.ref.documentId)?.detectedType) continue;
-    const relationship = relations.find(r => r.documentIds.includes(left.ref.documentId) && r.documentIds.includes(right.ref.documentId) && r.status === "evidence_confirmed" && !r.conflictRoles.length && !r.mappingWarnings?.length);
+    const a=documents.find(d=>d.id===left.ref.documentId)!,b=documents.find(d=>d.id===right.ref.documentId)!;
+    const relationship = relations.find(r => r.documentIds.includes(a.id) && r.documentIds.includes(b.id) && (r.status === "evidence_confirmed" && !r.conflictRoles.length && !r.mappingWarnings?.length||nativeRecordLinked(a,b,relations)));
     if (!relationship || text32(left.ref.field.current.value) === text32(right.ref.field.current.value)) continue;
     const exactOwner=(p:SemanticProduct,otherDoc:string)=>{
       const same=products.filter(q=>q.ref.documentId===otherDoc&&text32(q.ref.field.current.value)===text32(p.ref.field.current.value));
       return same.length===1&&products.filter(q=>q.ref.documentId===p.ref.documentId&&text32(q.ref.field.current.value)===text32(p.ref.field.current.value)).length===1?same[0]:undefined;
     };
     if(exactOwner(left,right.ref.documentId)||exactOwner(right,left.ref.documentId))continue;
-    all.push({left,right,relationshipId:relationship.id});
+    all.push({left,right,relationshipId:relationship.id,relationshipConfirmed:relationship.status==='evidence_confirmed'&&!relationship.mappingWarnings?.length&&!relationship.conflictRoles.length});
   }
   // Preserve the complete small candidate set (including negative alternatives)
   // and its diagnostics. Reduce only a large Cartesian set that risks saturating

@@ -45,11 +45,11 @@ export function validateSemanticDecision(d: SemanticDecision, pair: SemanticPair
   if(!semanticEvidenceValid(d.left,pair.left)||!semanticEvidenceValid(d.right,pair.right)||d.claims.some(c=>!semanticEvidenceValid(c.left,pair.left)||!semanticEvidenceValid(c.right,pair.right)))
     return {assessment:"needs_review",code:"INVALID_SEMANTIC_EVIDENCE",reason:"AI가 인용한 필드·원문·블록 소속이 맞지 않아 의미 판단을 사용하지 않습니다."};
   const native = nativeAttributeClaims(pair);
-  if (native.length) return { assessment: pair.left.whole && pair.right.whole ? "confirmed_mismatch" : "provisional_mismatch", code:"VERIFIED_LITERAL_ATTRIBUTE_CONFLICT", reason:"AI 응답과 별개로, 같은 선적 원문의 공통 모델/규격 라벨에 서로 다른 기재값이 확인됐습니다. 전체 품목 범위가 불명확하면 잠정으로 보호합니다." };
+  if (native.length) return { assessment: pair.left.whole && pair.right.whole && pair.relationshipConfirmed!==false ? "confirmed_mismatch" : "provisional_mismatch", code:"VERIFIED_LITERAL_ATTRIBUTE_CONFLICT", reason:"AI 응답과 별개로, 같은 선적 원문의 공통 모델/규격 라벨에 서로 다른 기재값이 확인됐습니다. 전체 품목 범위나 참조 연결이 불명확하면 잠정으로 보호합니다." };
   if(d.relation==="same_product"||d.relation==="compatible_incomplete")
     return {assessment:"provisional_match",code:d.relation==="same_product"?"AI_SEMANTIC_EQUIVALENCE":"AI_INCOMPLETE_ATTRIBUTES",reason:"검증된 원문에 대한 AI 의미 대응입니다. 언어적 판단은 잠정이며 누락된 속성을 추정하거나 확정 일치 건수로 올리지 않습니다."};
   if(d.relation==="explicit_conflict"||d.relation==="different_product") {
-    const literal=d.claims.some(c=>literalAttributeConflict(c)&&unambiguousClaim(c,pair)), firm=literal&&pair.left.whole&&pair.right.whole;
+    const literal=d.claims.some(c=>literalAttributeConflict(c)&&unambiguousClaim(c,pair)), firm=literal&&pair.left.whole&&pair.right.whole&&pair.relationshipConfirmed!==false;
     return {assessment:firm?"confirmed_mismatch":"provisional_mismatch",code:firm?"VERIFIED_LITERAL_ATTRIBUTE_CONFLICT":"AI_SEMANTIC_DIFFERENCE",reason:firm?"같은 선적의 유일한 전체 품목 원문에서 공통 속성 라벨과 서로 다른 기재값을 독립 대조했습니다.":"AI가 상품/속성 차이를 제안했습니다. 번역·품목 대응·범위 또는 독립적인 명시 속성 입증이 부족해 잠정 차이로 표시합니다."};
   }
   return {assessment:"needs_review",code:"AI_MEANING_UNRESOLVED",reason:"AI도 상품의 의미 대응을 판단하지 못했습니다. 실제 품목·규격을 작성자에게 확인해 주세요."};

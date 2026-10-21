@@ -13,7 +13,8 @@ export function directHsConflicts(docs:ShippingDocument[],relations:ShippingRela
    const fields=[ref32(a,'goodsDescription',left.fields.goodsDescription,{itemId:left.id}),ref32(a,'hsCode',left.fields.hsCode,{itemId:left.id}),ref32(b,'goodsDescription',right.fields.goodsDescription,{itemId:right.id}),ref32(b,'hsCode',right.fields.hsCode,{itemId:right.id})];
    const l=hsSix(left.fields.hsCode.current.value),r=hsSix(right.fields.hsCode.current.value);if(!l||!r||l===r||!fields.every(verified32))continue;
    if(primary.some(c=>c.assessment==='confirmed_mismatch'&&c.comparison?.meaning==='hsCode'&&[a.id,b.id].every(id=>c.fields.some(f=>f.documentId===id))))continue;
-   primary.push({id:'native-hs/'+a.id+'/'+left.id+'/'+b.id+'/'+right.id,scope:'house_bl_manifest',category:'goods',title:'같은 원문 품목의 HS 공통 6자리 충돌',assessment:'confirmed_mismatch',importance:'high',documentIds:[a.id,b.id],relationshipIds:[rel.id],fields,explanation:'검증된 같은 HBL의 전체 품목 표에서 원문 품명이 유일하게 대응하는 행의 실제 HS 공통 6자리를 비교했습니다. 다른 서류의 번역 보류와 독립적인 숫자 충돌입니다.',followUp:'해당 품목의 원문 세번과 작성자의 분류 근거를 확인해 주세요.',comparison:{meaning:'hsCode',hbl:null,scope:'hbl_record',reasonCodes:[],relatedCheckIds:[],facts:[]}});
+   const id='native-hs/'+a.id+'/'+left.id+'/'+b.id+'/'+right.id;
+   primary.push({id,rootCauseIds:[id],rootCauseKind:'value_conflict',scope:'house_bl_manifest',category:'goods',title:'같은 원문 품목의 HS 공통 6자리 충돌',assessment:'confirmed_mismatch',importance:'high',documentIds:[a.id,b.id],relationshipIds:[rel.id],fields,explanation:'검증된 같은 HBL의 전체 품목 표에서 원문 품명이 유일하게 대응하는 행의 실제 HS 공통 6자리를 비교했습니다. 다른 서류의 번역 보류와 독립적인 숫자 충돌입니다.',followUp:'해당 품목의 원문 세번과 작성자의 분류 근거를 확인해 주세요.',comparison:{meaning:'hsCode',hbl:null,scope:'hbl_record',reasonCodes:[],relatedCheckIds:[],facts:[]}});
   }
  }
 }

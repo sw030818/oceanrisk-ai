@@ -149,8 +149,18 @@ export function resolveDeclarationScopes(
         const nums=c.fields.filter(f=>f.fieldName==="quantity");
         const ds=ids.map(id=>documents.find(d=>d.id===id)!);
         const mappings=ds.slice(1).map(d=>matchProductRows(ds[0].items.map(i=>ref32(ds[0],"goodsDescription",i.fields.goodsDescription,{itemId:i.id})),d.items.map(i=>ref32(d,"goodsDescription",i.fields.goodsDescription,{itemId:i.id})),documents,semantic));
-        const connected=nums.length>=2&&nums.every(f=>!!f.itemId)&&mappings.length>0&&mappings.every(m=>m.strong&&m.matches.some(pair=>nums.some(f=>f.documentId===pair.left.documentId&&f.itemId===pair.left.itemId)&&nums.some(f=>f.documentId===pair.right.documentId&&f.itemId===pair.right.itemId)));
+        const connected=nums.length>=2&&nums.every(f=>!!f.itemId)&&mappings.length>0&&mappings.every(m=>m.matches.some(pair=>pair.proof!=='ai_only'&&nums.some(f=>f.documentId===pair.left.documentId&&f.itemId===pair.left.itemId)&&nums.some(f=>f.documentId===pair.right.documentId&&f.itemId===pair.right.itemId)));
         if(connected){c.assessment="confirmed_match";c.importance="info";c.scopeResolution={groupCheckId:proof.id,kind:"aligned_carriers"};c.comparison!.reasonCodes=[];c.uncertainties=[];c.explanation="검증된 전체 품목 집합의 유일한 행 대응과 동일 단위를 확인한 뒤 해당 품목의 원문 수량을 비교했습니다.";continue;}
+      }
+      // Membership and comparison scope are distinct from product identity.
+      // Comparing a full list/total with one member is invalid even when that
+      // member's model is the very reason its row match remains unresolved.
+      const carrierIds=ids.filter(id=>carriers.has(id)),declIds=ids.filter(id=>declarations.has(id));
+      const globalGoods=meaning==='goodsDescription'&&carrierIds.some(id=>c.fields.filter(f=>f.documentId===id&&f.fieldName==='goodsDescription'&&(f.itemId||f.cargoId)).length>1);
+      const globalHs=meaning==='hsCode'&&carrierIds.some(id=>c.fields.filter(f=>f.documentId===id&&f.fieldName==='hsCode').length>1)&&carrierIds.every(id=>{const hs=new Set(c.fields.filter(f=>f.documentId===id&&f.fieldName==='hsCode').map(f=>String(f.field.current.value).replace(/\D/g,'').slice(0,6)));return declIds.every(d=>c.fields.filter(f=>f.documentId===d&&f.fieldName==='hsCode').every(f=>hs.has(String(f.field.current.value).replace(/\D/g,'').slice(0,6))));});
+      const documentTotal=meaning==='quantity'&&c.fields.filter(f=>f.fieldName==='quantity').every(f=>!f.itemId&&!f.cargoId);
+      if(subset&&c.assessment.startsWith('provisional')&&(globalGoods||globalHs||documentTotal)){
+        c.assessment='not_applicable';if(proof.rootCauseIds?.length){c.rootCauseIds=[...proof.rootCauseIds];c.rootCauseKind=proof.rootCauseKind;}c.importance='info';c.scopeResolution={groupCheckId:proof.id,kind:'subset'};c.comparison!.reasonCodes=['FIELD_NOT_APPLICABLE'];c.comparison!.relatedCheckIds=[...new Set([...c.comparison!.relatedCheckIds,proof.id])];c.explanation='전체 HBL의 목록·기재 합계와 개별 신고의 목록·기재값은 같은 비교 범위가 아닙니다. 원문 품목 대응 및 전체 신고 합계 검사는 별도로 유지하며, 그 검사가 미확정이면 확인 필요로 남깁니다.';continue;
       }
       if (subset && ["containerNumber", "sealNumber"].includes(meaning ?? "")) {
         // Whole carrier lists and an individual declaration are different sets.

@@ -1,0 +1,11 @@
+import {it,expect} from 'vitest';
+import {cellHeading} from '../../src/modules/layout/shipping-geometry';
+import type {PdfPage} from '../../src/modules/documents/schema';
+const page=():PdfPage=>({page:1,text:'',cells:[{x:0,y:0,width:100,height:20},{x:0,y:20,width:100,height:20}],blocks:[{id:'h',text:'Quantity',x:2,y:2,width:50,height:8,row:1},{id:'v',text:'CTNS',x:2,y:22,width:40,height:8,row:2}]});
+it('invalidates a heading after an in-place native text edit',()=>{const p=page(),c=p.cells![0];expect(cellHeading(p,c)?.role).toBe('quantity');p.blocks![0].text='Gross Weight';expect(cellHeading(p,c)?.role).toBe('grossWeight');});
+it('invalidates an otherwise identical replaced block so returned native objects belong to this page',()=>{const p=page(),c=p.cells![0];cellHeading(p,c);p.blocks![0]={...p.blocks![0]};expect(cellHeading(p,c)?.blocks[0]).toBe(p.blocks![0]);});
+it('does not reuse ownership after a block leaves the closed cell',()=>{const p=page(),c=p.cells![0];cellHeading(p,c);p.blocks![0].x=500;expect(cellHeading(p,c)).toBeNull();});
+it('invalidates native cell geometry and restores only after the real border is restored',()=>{const p=page(),c=p.cells![0];cellHeading(p,c);c.x=500;expect(cellHeading(p,c)).toBeNull();c.x=0;expect(cellHeading(p,c)?.role).toBe('quantity');});
+it('invalidates contextual package-unit decisions when an external aligned header changes',()=>{const p=page(),c=p.cells![1];expect(cellHeading(p,c)).toBeNull();p.blocks![0].text='unlabelled';expect(cellHeading(p,c)?.role).toBe('packageCount');});
+it('separates identical page/cell IDs in different documents',()=>{const a=page(),b=page();b.blocks![0].text='Net Weight';expect(cellHeading(a,a.cells![0])?.role).toBe('quantity');expect(cellHeading(b,b.cells![0])?.role).toBe('netWeight');});
+it('does not cache an external rectangle by mutable object identity',()=>{const p=page(),c={...p.cells![0]};expect(cellHeading(p,c)?.role).toBe('quantity');c.x=500;expect(cellHeading(p,c)).toBeNull();});

@@ -4,7 +4,7 @@ import type { ShippingCheck } from "./review-model";
 import { refKey32, ref32, verified32, type FieldRef } from "./review-evidence";
 export interface IssueCause {
   key: string;
-  kind: "classification" | "evidence" | "scope";
+  kind: "classification" | "evidence" | "scope" | "value_conflict" | "reference_conflict";
   fields: FieldRef[];
 }
 // Causal links, not fuzzy title/category deduplication. An unverified owner

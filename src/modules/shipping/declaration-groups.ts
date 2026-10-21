@@ -1,4 +1,4 @@
-import { goodsCore } from "./equivalence";
+import { goodsCore,hsSix } from "./equivalence";
 import { goodsComparisonValue } from "./goods-context";
 import { matchProductRows } from './product-matching';
 import type { SemanticReport } from './semantic-schema';
@@ -117,8 +117,8 @@ export function declarationGroupChecks(
     if (
       [bl, ...linked].some(
         (d) =>
-          d.fields.shipmentScope?.current.value != null &&
-          d.fields.shipmentScope.current.status !== "verified",
+          d.fields.shipmentScope?.current.status === 'user_edited' || (d.fields.shipmentScope?.current.value != null &&
+          d.fields.shipmentScope.current.status !== "verified"),
       )
     )
       blockers.push("선적 범위의 사용자 수정 또는 미확인 근거가 있습니다.");
@@ -134,6 +134,9 @@ export function declarationGroupChecks(
       blockers.push("품명·HS·수량·단위 중 일부 근거가 미확인입니다.");
     const literalKeys=(rs:typeof refs)=>rs.map(r=>goodsCore(goodsComparisonValue(r.description.field))+"/"+text32(r.hs.field.current.value));
     if([literalKeys(refs),literalKeys(target)].some(keys=>new Set(keys).size!==keys.length))blockers.push("복수 신고 또는 HBL에 중복 품목이 있어 명시적 배분 없이 합산하지 않습니다.");
+    if([...refs,...target].some(r=>typeof r.quantity.field.current.value!=='number'||!Number.isFinite(r.quantity.field.current.value)||r.quantity.field.current.value<0||r.quantity.field.current.value>Number.MAX_SAFE_INTEGER))blockers.push('수량의 안전한 숫자 형식을 확인하지 못했습니다.');
+    if(docs.some(d=>d.detectedType==='export_declaration'&&d.classificationStatus==='classified'&&!linked.some(v=>v.id===d.id)&&identifiers32(d,'houseBlNumber').some(f=>verified32(f)&&blNumbers.has(text32(f.field.current.value)))))
+      blockers.push('같은 검증 HBL의 신고서 일부가 명시된 신고 참조 관계 밖에 있습니다.');
     const structuralBlockerCount=blockers.length;
     const mapping = matchProductRows(refs.map(r=>r.description),target.map(r=>r.description),docs,semantic);
     if (!mapping.complete) blockers.push("HBL 전체 품목 집합과 신고 품목 집합이 정확히 대응하지 않습니다.");
@@ -169,22 +172,33 @@ export function declarationGroupChecks(
     const same =
       Math.abs(left - right) <=
       Math.max(1e-9, Math.max(left, right) * Number.EPSILON * refs.length);
-    if (!blockers.length)
+    const rowMismatches:{id:string;delta:number}[]=[];
+    // A bad counterpart elsewhere cannot veto an independently proved row.
+    // Full declaration membership is still required separately for a total.
+    if (bl.classificationStatus==='classified'&&!bl.nativeScopeLimitation&&!["partial","combined_packages"].includes(scope32(bl))&&bl.fields.shipmentScope?.current.status!=='user_edited'&&(bl.fields.shipmentScope?.current.value==null||bl.fields.shipmentScope.current.status==='verified')&&bl.collectionCoverage?.items.complete&&docs.filter(d=>d.detectedType==='house_bl'&&identifiers32(d,'houseBlNumber').some(f=>verified32(f)&&blNumbers.has(text32(f.field.current.value)))).length===1)
       for (const [i, row] of refs.entries()) {
         const mapped = mapping.matches.find(m=>m.left===row.description),
           index = target.findIndex((r) => r.description===mapped?.right),
           matched = target[index];
+        const owner=docs.find(d=>d.id===row.description.documentId)!;
+        if(!mapped||mapped.proof==='ai_only'||!matched||owner.classificationStatus!=='classified'||owner.nativeScopeLimitation||!owner.collectionCoverage?.items.complete||['partial','combined_packages'].includes(scope32(owner))||owner.fields.shipmentScope?.current.status==='user_edited'||(owner.fields.shipmentScope?.current.value!=null&&owner.fields.shipmentScope.current.status!=='verified')||![...Object.values(row),...Object.values(matched)].every(verified32)||!units[i]||!units[refs.length+index]||units[i]!.unit!==units[refs.length+index]!.unit||[row,matched].some(r=>typeof r.quantity.field.current.value!=='number'||!Number.isFinite(r.quantity.field.current.value)||r.quantity.field.current.value<0||r.quantity.field.current.value>Number.MAX_SAFE_INTEGER))continue;
         const equal =
           Number(row.quantity.field.current.value) * units[i]!.factor ===
           Number(matched.quantity.field.current.value) *
             units[refs.length + index]!.factor;
+        const rowId=key32(bl.id,"check","declaration-group-item-"+row.description.documentId+"/"+row.description.itemId);
+        if(hsSix(row.hs.field.current.value)!==hsSix(matched.hs.field.current.value)){
+          const hsId=rowId+'/hs';checks.push({id:hsId,title:'대응 품목의 HS 공통 6자리 충돌',scope:'house_bl_declaration',category:'goods',assessment:'confirmed_mismatch',importance:'high',relationshipIds:[],fields:[row.description,row.hs,matched.description,matched.hs],rootCauseIds:[hsId],rootCauseKind:'value_conflict',explanation:'동일한 원문 품명과 유일한 명시 제품 식별자로 대응한 행에서 검증된 HS 공통 6자리가 다릅니다. 수량 일치와 별개인 분류 기재 차이입니다.',followUp:'해당 품목의 세번 기재와 분류 근거를 확인해 주세요.',comparison:{meaning:'hsCode',hbl:null,scope:'original_check',reasonCodes:[],relatedCheckIds:[],facts:[]}});
+        }
+        if(!equal)rowMismatches.push({id:rowId,delta:Number(row.quantity.field.current.value)*units[i]!.factor-Number(matched.quantity.field.current.value)*units[refs.length+index]!.factor});
         checks.push({
-          id: key32(bl.id, "check", "declaration-group-item-" + row.description.documentId + "/" + row.description.itemId),
+          id: rowId,
           scope: "document",
           category: "quantity",
           title: "복수 신고 대응 품목 수량",
-          importance: equal ? "info" : "high",
-          assessment: equal ? "confirmed_match" : "confirmed_mismatch",
+          importance: equal ? "info" : structuralBlockerCount===0 ? "high" : "attention",
+          assessment: equal ? "confirmed_match" : structuralBlockerCount===0 ? "confirmed_mismatch" : "provisional_mismatch",
+          ...(!equal?{rootCauseIds:[rowId],rootCauseKind:'value_conflict' as const}:{}),
           relationshipIds: [],
           fields: [
             row.description,
@@ -197,7 +211,7 @@ export function declarationGroupChecks(
             matched.unit,
           ],
           explanation:
-            "명시된 전체 신고 목록의 서로 다른 품목을 HBL의 유일한 품명·HS 행에 대응해 수량을 비교했습니다.",
+            "해당 신고의 원문 품목을 같은 검증 HBL의 유일한 품목행에 대응해 기재 수량을 비교했습니다. 전체 신고 포함·합산 여부는 별도 검사이며, 포함 범위가 미확정일 때 수량 차이는 잠정으로 보호합니다.",
           followUp: "해당 신고 품목과 HBL 물품 수량·단위를 확인해 주세요.",
         });
       }
@@ -220,7 +234,8 @@ export function declarationGroupChecks(
         )
         .map((r) => r.id),
       fields,
-      ...(!structuralBlockerCount?{declarationMembership:{hblDocumentId:bl.id,declarationDocumentIds:linked.map(d=>d.id)},...(!mapping.strong?{rootCauseIds:["declaration-product-map/"+bl.id]}:{})}:{}),
+      ...(!structuralBlockerCount?{declarationMembership:{hblDocumentId:bl.id,declarationDocumentIds:linked.map(d=>d.id),itemMappings:mapping.matches.filter(m=>m.proof!=='ai_only').map(m=>({documentId:m.left.documentId,itemId:m.left.itemId!,targetItemId:m.right.itemId!,proof:m.proof}))},...(!mapping.strong?{rootCauseIds:["declaration-product-map/"+bl.id]}:{})}:{}),
+      ...(!blockers.length&&!same&&rowMismatches.length&&Math.abs(rowMismatches.reduce((n,r)=>n+r.delta,0)-(left-right))<=Math.max(1,Math.abs(left),Math.abs(right))*1e-9?{rootCauseIds:rowMismatches.map(r=>r.id),rootCauseKind:'value_conflict' as const}:{}),
       explanation: blockers.length
         ? "신고 합산의 포함·중복·행 근거 조건을 충족하지 못했습니다."
         : "명시된 전체 신고 목록과 서로 다른 검증된 품목 집합의 물품 수량을 합산했습니다. 포장/중량을 물품 수량에 포함하지 않았습니다.",

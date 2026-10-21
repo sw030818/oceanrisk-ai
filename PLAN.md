@@ -183,3 +183,12 @@ E 재동결: 최초Blind4는100%추출에도245/300검증·잘못복구2로실�
 - d13edf6 실제 실패를 반영한 두 번째 루프: A의 정상 합계 성공 후 긴 ID 오기1건, 독립 B의 한영 병기 제목 검증 실패(90개 파생 보류)를 확인. 짧은 enum ID/원본 ID 보존/검증된 대체 소유 경로/동일 유형 병기 제목을 공통 계층에서 수정. 현재163/226. 선택회귀→전체 ship→새SHA 실제A/B→8물리오류→Holdout D→Production 실제UI/원본 Set2·3 순서를 유지하며 실패한 d13 결과는 원본으로 보존.
 - caebf7c는 Actions quality 성공이지만 Vercel 배포 실패. 로그 접근 인증 부재/원인 미확정. Vercel 환경 선택55검사 통과. verify 기본worker1로 자원 사용을 통일한 뒤 전체 ship/동일SHA 배포 재확인. 실제 검증예산163/226 그대로 보존하며 새 Production에서만 유료 재검증을 계속한다.
 - worker1 단독 gate는807/808(기존PDF검사5.4초timeout)로중단. CPU계측으로 matcher보다라벨배열/반복regexp/GC 비용이큰것확인, 기존라벨과2190입력0차이의compiled-regexp최적화+36회귀통과. 다음전체gate는같은808/70/worker와검사기준/5초제한을유지. Vercel실패원인미확정, 실제새SHA실증은배포확인후계속.
+
+## 2026-10-21 복원 체크포인트
+- 완료: 실제7f A4/B5 PDF 평가 모두 합계/관계/한영 대응 정상·조치0, 원51개 전수native/scope 감사, 215/288 ledger 복원.
+- 완료: 실제 오류에서 나온 독립 행/참조 목록/동일 컨테이너/문서 합계 원인별 후속 수정. 기존 scope 회귀 실패1건의 원인은 독립 배분 부족까지 묶은 것으로 수정; 기존 테스트 기준 보존.
+- 현재: 후속 소스 frozen 전체 ship, 통과 전 Push/유료 호출 금지. Source gate 목표817단위/70브라우저 및기존worker검사.
+- 다음: 새로운 exact SHA 실제A/B→오류8종/복합참조→미사용HoldoutD→실제UI/Set2·3→동일 sourceSHA의 sanitized evidence 보존. 기존7f/이전실패와 무료재생은 새SHA 실제평가와 분리. 누적1000/1500/USD2, 사용215/288/확인0.32686513+미확인0.0379324를 이어받는다.
+- 최종 안전 보강: 전체 신고 포함 미확정 상태의 행 수량 차이는 잠정으로 보호. ship6은 Commit/Push 전 의도 중지했으며 새 full gate 목표818/70. 같은 근거의 일치와 전체 합계 입증을 계속 분리한다.
+- 추가 회귀: 같은 HBL의 업로드된 미포함 신고까지 전체 포함 판정에 반영; 사용자 null scope 수정 보호. source 동결 gate 목표819/70, actual calls remain215/288 before new deployment.
+- ship7은817/819통과·기존2개timeout으로 Commit/Push 안 됨. CPU프로파일→헤더 캐시의 반복signature allocation 제거,3744조회0차이·변경감지7검사통과. 기존 timeout/기준 보존한 새 gate826/70; 누적 API215/288 그대로.

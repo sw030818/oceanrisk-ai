@@ -35,38 +35,45 @@ const body = (p: PdfPage, c: PdfCell) =>
     .filter((b) => inside(c, b))
     .sort((a, b) => a.y - b.y || a.x - b.x);
 type Heading = ReturnType<typeof computeCellHeading>;
-const headingCache = new WeakMap<
-  PdfPage,
-  WeakMap<PdfCell, { signature: string; value: Heading }>
->();
-export function cellHeading(page: PdfPage, cell: PdfCell): Heading {
-  let cache = headingCache.get(page);
-  if (!cache) {
-    cache = new WeakMap();
-    headingCache.set(page, cache);
+type HeadingSnapshot = {
+  blocks: { ref: PdfBlock; id: string; text: string; x: number; y: number; width: number; height: number; row: number }[];
+  cells: { ref: PdfCell; x: number; y: number; width: number; height: number }[];
+  headings: Map<PdfCell, Heading>;
+  page: number; source: PdfPage['textSource'];
+};
+const headingCache = new WeakMap<PdfPage, HeadingSnapshot>();
+function unchangedHeadingInputs(page: PdfPage, snapshot: HeadingSnapshot) {
+  const bs = page.blocks ?? [], cs = page.cells ?? [];
+  if (page.page !== snapshot.page || page.textSource !== snapshot.source || bs.length !== snapshot.blocks.length || cs.length !== snapshot.cells.length) return false;
+  // Exact scalar comparisons avoid rebuilding/serializing the complete cell
+  // geometry on every heading lookup. In-place edits and replaced objects both
+  // invalidate the page; no document text is retained beyond this weak key.
+  for (let i = 0; i < bs.length; i++) {
+    const b = bs[i], v = snapshot.blocks[i];
+    if (b !== v.ref || b.id !== v.id || b.text !== v.text || b.x !== v.x || b.y !== v.y || b.width !== v.width || b.height !== v.height || b.row !== v.row) return false;
   }
-  // PDFs are immutable in the pipeline, but editors/tests may alter blocks.
-  // Include content and geometry so a cached heading never proves stale text.
-  const bs = body(page, cell);
-  const contextualUnit = /^(?:CTNS?|CARTONS?|PKGS?)$/i.test(
-    bs[0]?.text.trim() ?? "",
-  );
-  const signature = JSON.stringify([
-    (page.cells ?? []).map((c) => [c.x, c.y, c.width, c.height]),
-    (contextualUnit ? (page.blocks ?? []) : bs).map((b) => [
-      b.id,
-      b.text,
-      b.x,
-      b.y,
-      b.width,
-      b.height,
-      b.row,
-    ]),
-  ]);
-  const previous = cache.get(cell);
-  if (previous?.signature === signature) return previous.value;
-  const value = computeCellHeading(page, cell, bs);
-  cache.set(cell, { signature, value });
+  for (let i = 0; i < cs.length; i++) {
+    const c = cs[i], v = snapshot.cells[i];
+    if (c !== v.ref || c.x !== v.x || c.y !== v.y || c.width !== v.width || c.height !== v.height) return false;
+  }
+  return true;
+}
+export function cellHeading(page: PdfPage, cell: PdfCell): Heading {
+  let snapshot = headingCache.get(page);
+  if (!snapshot || !unchangedHeadingInputs(page, snapshot)) {
+    snapshot = {
+      blocks: (page.blocks ?? []).map(b => ({...b, ref: b})),
+      cells: (page.cells ?? []).map(c => ({...c, ref: c})),
+      headings: new Map(), page: page.page, source: page.textSource,
+    };
+    headingCache.set(page, snapshot);
+  }
+  // Arbitrary query rectangles are not native page cells. Never cache them by
+  // identity without their own mutation signature.
+  if (!(page.cells ?? []).includes(cell)) return computeCellHeading(page, cell, body(page, cell));
+  if (snapshot.headings.has(cell)) return snapshot.headings.get(cell)!;
+  const value = computeCellHeading(page, cell, body(page, cell));
+  snapshot.headings.set(cell, value);
   return value;
 }
 function computeCellHeading(page: PdfPage, cell: PdfCell, bs: PdfBlock[]) {

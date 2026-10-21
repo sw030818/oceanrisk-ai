@@ -20,6 +20,7 @@ export function linkDeclarationDependencies(primary:ShippingCheck[],original:Shi
    if(role==='hsCode'&&new Set(c.fields.filter(f=>f.fieldName==='hsCode').map(f=>String(f.field.current.value).replace(/\D/g,''))).size>1)continue;
    if(!['goodsDescription','hsCode','quantity'].includes(role??'')&&!c.semantic&&c.id!==group.id)continue;
    c.rootCauseIds=[...group.rootCauseIds!];
+   c.rootCauseKind=group.rootCauseKind;
   }
  }
 }
