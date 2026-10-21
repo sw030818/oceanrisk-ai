@@ -1,0 +1,169 @@
+{
+  "kind": "ACTUAL OpenAI analysis of synthetic PDFs; evaluator truth never sent to provider",
+  "case": "holdout-d",
+  "fault": null,
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "sourceShaStable": true,
+  "semantic": "complete",
+  "documents": [
+    {
+      "file": "holdout-d/01.pdf",
+      "type": "house_bl",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 18,
+      "first": 18,
+      "current": 18,
+      "verified": 18,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "holdout-d/02.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "holdout-d/03.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "holdout-d/04.pdf",
+      "type": "house_manifest",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 18,
+      "first": 18,
+      "current": 18,
+      "verified": 18,
+      "verifiedWrong": 0
+    }
+  ],
+  "successfulDocuments": 4,
+  "failedDocuments": 0,
+  "firstCorrect": 58,
+  "currentCorrect": 58,
+  "verifiedCorrect": 58,
+  "expectedFields": 58,
+  "verifiedWrong": 0,
+  "actionIssues": 0,
+  "confirmedErrors": [],
+  "confirmedFP": 0,
+  "confirmedTargetDetected": false,
+  "warningTargetDetected": false,
+  "declarationTotals": [
+    {
+      "title": "복수 신고 물품 수량 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "a294adad-17f7-4a84-a16a-ee0c76ba0956",
+          "value": 1000,
+          "unit": "PCS",
+          "formula": "sum",
+          "componentKeys": [
+            "a294adad-17f7-4a84-a16a-ee0c76ba0956/item/item-1",
+            "a294adad-17f7-4a84-a16a-ee0c76ba0956/item/item-2"
+          ]
+        },
+        {
+          "documentId": "12d95b04-c520-46c4-814f-345bf650c2f8+552870c6-8989-43db-a0a2-44ce9e1a7e97",
+          "value": 1000,
+          "unit": "EA",
+          "formula": "sum",
+          "componentKeys": [
+            "12d95b04-c520-46c4-814f-345bf650c2f8/item/item-1",
+            "552870c6-8989-43db-a0a2-44ce9e1a7e97/item/item-1"
+          ]
+        }
+      ],
+      "itemMappings": 2
+    },
+    {
+      "title": "복수 신고 총중량 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "12d95b04-c520-46c4-814f-345bf650c2f8+552870c6-8989-43db-a0a2-44ce9e1a7e97",
+          "value": 500,
+          "unit": "KG",
+          "formula": "sum",
+          "componentKeys": [
+            "12d95b04-c520-46c4-814f-345bf650c2f8",
+            "552870c6-8989-43db-a0a2-44ce9e1a7e97"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "복수 신고 포장 개수 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "12d95b04-c520-46c4-814f-345bf650c2f8+552870c6-8989-43db-a0a2-44ce9e1a7e97",
+          "value": 50,
+          "unit": "CTNS",
+          "formula": "sum",
+          "componentKeys": [
+            "12d95b04-c520-46c4-814f-345bf650c2f8",
+            "552870c6-8989-43db-a0a2-44ce9e1a7e97"
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    }
+  ],
+  "outcomes": {
+    "matches": 64,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 50,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 2,
+    "evidenceRecovered": 8,
+    "checksExecuted": 112,
+    "independentChecks": 120,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 6
+  },
+  "durationMs": 97895
+}

@@ -1,0 +1,144 @@
+{
+  "kind": "ACTUAL OpenAI analysis of synthetic PDFs; evaluator truth never sent to provider",
+  "case": "fault-foreign-hbl",
+  "fault": "foreign-hbl",
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "sourceShaStable": true,
+  "semantic": "complete",
+  "documents": [
+    {
+      "file": "fault-foreign-hbl/01.pdf",
+      "type": "house_bl",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-foreign-hbl/02.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 10,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-foreign-hbl/03.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-foreign-hbl/04.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-foreign-hbl/05.pdf",
+      "type": "house_manifest",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    }
+  ],
+  "successfulDocuments": 5,
+  "failedDocuments": 0,
+  "firstCorrect": 82,
+  "currentCorrect": 83,
+  "verifiedCorrect": 83,
+  "expectedFields": 83,
+  "verifiedWrong": 0,
+  "actionIssues": 1,
+  "confirmedErrors": [
+    {
+      "id": "declaration_manifest/check/2294db05-44c2-40fd-9d77-25e442eb495b%2Frelationship%2F534859b1-37a3-44c2-ab89-73efb3016671%2FhouseBlNumber",
+      "title": "House B/L 번호",
+      "role": "houseBlNumber"
+    },
+    {
+      "id": "house_bl_declaration/check/534859b1-37a3-44c2-ab89-73efb3016671%2Frelationship%2F5efe6b29-8a03-4b9d-a06f-61c8e850960a%2FhouseBlNumber",
+      "title": "House B/L 번호",
+      "role": "houseBlNumber"
+    }
+  ],
+  "confirmedFP": null,
+  "confirmedTargetDetected": true,
+  "warningTargetDetected": true,
+  "declarationTotals": [],
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "conflict",
+      "conflictRoles": [
+        "houseBlNumber"
+      ]
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "conflict",
+      "conflictRoles": [
+        "houseBlNumber"
+      ]
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    }
+  ],
+  "outcomes": {
+    "matches": 53,
+    "mismatches": 2,
+    "review": 63,
+    "requiredMissing": 0,
+    "notApplicable": 37,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 4,
+    "evidenceRecovered": 7,
+    "checksExecuted": 161,
+    "independentChecks": 162,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 7
+  },
+  "durationMs": 94453
+}

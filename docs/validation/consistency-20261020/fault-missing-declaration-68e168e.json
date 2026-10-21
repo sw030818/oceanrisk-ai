@@ -1,0 +1,129 @@
+{
+  "kind": "ACTUAL OpenAI analysis of synthetic PDFs; evaluator truth never sent to provider",
+  "case": "fault-missing-declaration",
+  "fault": "missing-declaration",
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "sourceShaStable": true,
+  "semantic": "complete",
+  "documents": [
+    {
+      "file": "fault-missing-declaration/01.pdf",
+      "type": "house_bl",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-missing-declaration/02.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-missing-declaration/03.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-missing-declaration/04.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 10,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-missing-declaration/05.pdf",
+      "type": "house_manifest",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    }
+  ],
+  "successfulDocuments": 5,
+  "failedDocuments": 0,
+  "firstCorrect": 82,
+  "currentCorrect": 83,
+  "verifiedCorrect": 83,
+  "expectedFields": 83,
+  "verifiedWrong": 0,
+  "actionIssues": 1,
+  "confirmedErrors": [],
+  "confirmedFP": null,
+  "confirmedTargetDetected": false,
+  "warningTargetDetected": true,
+  "declarationTotals": [],
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "proposed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    }
+  ],
+  "outcomes": {
+    "matches": 52,
+    "mismatches": 0,
+    "review": 57,
+    "requiredMissing": 0,
+    "notApplicable": 28,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 4,
+    "evidenceRecovered": 7,
+    "checksExecuted": 134,
+    "independentChecks": 146,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 9
+  },
+  "durationMs": 84659
+}

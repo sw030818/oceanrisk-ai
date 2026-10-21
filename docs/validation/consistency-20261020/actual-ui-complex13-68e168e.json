@@ -1,0 +1,49 @@
+{
+  "kind": "NEW actual extraction + semantic API + Production browser UI",
+  "case": "complex13",
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "documents": 4,
+  "correctClassifications": 4,
+  "semanticStatus": "complete",
+  "analysisBatches": 2,
+  "semanticRequests": 1,
+  "outcomes": {
+    "matches": 64,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 50,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 2,
+    "evidenceRecovered": 8,
+    "checksExecuted": 113,
+    "independentChecks": 120,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 6
+  },
+  "actionIssues": 0,
+  "groupStatus": "confirmed_match",
+  "totals": [
+    1000,
+    1000
+  ],
+  "itemMappings": 2,
+  "desktop": true,
+  "mobile": true,
+  "delta": {
+    "documents": 4,
+    "requests": 5,
+    "costUsd": 0.00571201500000007
+  },
+  "budget": {
+    "documents": 458,
+    "requests": 608,
+    "measuredCostUsd": 0.6685350650000009,
+    "unresolvedCostUpperUsd": 0.07450616250000036,
+    "maxDocuments": 1000,
+    "maxRequests": 1500,
+    "maxCostUsd": 2
+  },
+  "durationMs": 87666
+}

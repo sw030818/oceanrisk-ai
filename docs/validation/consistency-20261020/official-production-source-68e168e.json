@@ -1,0 +1,7 @@
+{
+  "expectedSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "verified": true,
+  "deploymentId": "dpl_4cPPFYEMy1WSnkUxxetYjr2k6Eg4",
+  "reason": "Production HTTP response serves the expected SHA and has the OpenAI key configured. This is not key validity, a real AI accuracy test or Vercel control-plane Ready confirmation.",
+  "attempts": 1
+}

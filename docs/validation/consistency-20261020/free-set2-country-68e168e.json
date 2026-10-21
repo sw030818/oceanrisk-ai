@@ -1,0 +1,13 @@
+{
+  "kind": "FREE unchanged actual response; country-qualifier normalization only, no new AI and no semantic-key rewrite",
+  "originalSourceSha": "06a25217e67b3da35b93f7d92f283f44ef7bf2b3",
+  "issuesBefore": 1,
+  "issuesAfter": 0,
+  "wholeQuantity": 5000,
+  "quantityVerified": true,
+  "unit": "PCS",
+  "unitVerified": true,
+  "port": [
+    "confirmed_match"
+  ]
+}

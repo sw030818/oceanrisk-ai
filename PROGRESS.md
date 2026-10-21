@@ -680,3 +680,9 @@ Source 7884bb3c62976c129f0006ce5b6f140791c5720c. npm ci/type/lint/754 unit/70 br
 - Source: 7f1c08a0d1944f3c9acde52125a6a53fd5cef4d1; 상세 결과: docs/validation/consistency-20261020/REPORT.md
 - 누적 사용량: {"documents":184,"requests":251,"measuredCostUsd":0.2838282900000001,"unresolvedCostUpperUsd":0.037932399999999984,"maxDocuments":1000,"maxRequests":1500,"maxCostUsd":2}
 - 완료 상태: false (실패 이력/미검증 범위는 위 증거에 별도 보존)
+
+
+## 2026-10-21 범용 정합성 실제 평가 최종 기록
+- Source: 68e168e66011b5ca4faafeb7736e4cae806fa111; 상세 결과: docs/validation/consistency-20261020/REPORT.md
+- 누적 사용량: {"documents":464,"requests":616,"measuredCostUsd":0.6798426100000009,"unresolvedCostUpperUsd":0.07450616250000036,"maxDocuments":1000,"maxRequests":1500,"maxCostUsd":2}
+- 완료 상태: true (실패 이력/미검증 범위는 위 증거에 별도 보존)

@@ -1,1 +1,191 @@
-{"sourceSha":"7f1c08a0d1944f3c9acde52125a6a53fd5cef4d1","complete":false,"actualNormalCases":{"A":{"documents":4,"verifiedCoreFields":34,"expectedCoreFields":34,"actionIssues":0,"confirmedFP":0,"itemMappings":2,"declarationQuantity":1000},"B":{"documents":5,"verifiedCoreFields":83,"expectedCoreFields":83,"actionIssues":0,"confirmedFP":0,"itemMappings":3,"declarationQuantity":1000}},"original51":{"resolvedByNativeProof":47,"resolvedByExplicitScopeProof":4,"remainingIndependentIssues":0},"unitTests":808,"browserTests":70,"paidAttemptsThisInstruction":34,"parsedDocumentResponses":33,"failedDocumentResponses":1,"pending":["derived aggregate/row issue grouping","model-conflict dependent holds","remaining actual eight fault packets","fresh blind holdout","final Production real browser API","Set2/Set3 actual regression"],"rawPdfOrProviderResponsesPublished":false}
+{
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "complete": true,
+  "kind": "Actual OpenAI on synthetic and user-provided test documents; original-candidate/free/MOCK evidence separately labelled",
+  "actualNormalCases": {
+    "A": {
+      "documents": 4,
+      "rows": 2,
+      "verified": 34,
+      "expected": 34,
+      "issues": 0,
+      "confirmedFP": 0
+    },
+    "B": {
+      "documents": 5,
+      "rows": 3,
+      "initialCorrect": 82,
+      "currentCorrect": 83,
+      "verified": 83,
+      "expected": 83,
+      "issues": 0,
+      "confirmedFP": 0
+    }
+  },
+  "original51": {
+    "resolvedNative": 47,
+    "resolvedScope": 4,
+    "remaining": 0
+  },
+  "oldB90": {
+    "remaining": 0,
+    "knownCause": "native verification of bilingual document title, not AI initial-type correction"
+  },
+  "canonicalFaults": {
+    "cases": 8,
+    "confirmed": 8,
+    "confirmedFP": 0,
+    "missing": 0,
+    "paidModifiedDocuments": 8,
+    "reusedSameShaParentOccurrences": 16
+  },
+  "holdout": {
+    "synthetic": true,
+    "developmentUseBeforeFirstCall": false,
+    "documents": 4,
+    "classified": 4,
+    "verified": 58,
+    "expected": 58,
+    "issues": 0,
+    "confirmedFP": 0
+  },
+  "complex": [
+    {
+      "case": "fault-seal",
+      "documents": 5,
+      "issues": 1,
+      "confirmed": true,
+      "warning": true,
+      "verified": 83,
+      "expected": 83
+    },
+    {
+      "case": "fault-duplicate",
+      "documents": 6,
+      "issues": 1,
+      "confirmed": false,
+      "warning": true,
+      "verified": 94,
+      "expected": 94
+    },
+    {
+      "case": "fault-foreign-hbl",
+      "documents": 5,
+      "issues": 1,
+      "confirmed": true,
+      "warning": true,
+      "verified": 83,
+      "expected": 83
+    },
+    {
+      "case": "fault-missing-declaration",
+      "documents": 5,
+      "issues": 1,
+      "confirmed": false,
+      "warning": true,
+      "verified": 83,
+      "expected": 83
+    }
+  ],
+  "unitTests": 860,
+  "browserTests": 70,
+  "additionalActualProductionUi": 3,
+  "budget": {
+    "documents": 464,
+    "requests": 616,
+    "measuredCostUsd": 0.6798426100000009,
+    "unresolvedCostUpperUsd": 0.07450616250000036,
+    "maxDocuments": 1000,
+    "maxRequests": 1500,
+    "maxCostUsd": 2
+  },
+  "resumeBaseline": {
+    "documents": 215,
+    "requests": 288,
+    "measuredCostUsd": 0.32686513000000017,
+    "unresolvedCostUpperUsd": 0.0379324,
+    "maxDocuments": 1000,
+    "maxRequests": 1500,
+    "maxCostUsd": 2
+  },
+  "resumeDelta": {
+    "documents": 249,
+    "requests": 328,
+    "measuredCostUsd": 0.35297748000000073,
+    "unresolvedCostUpperUsd": 0.03657376250000036
+  },
+  "actualPaidAttempts": {
+    "kind": "Unique actual PDF attempt IDs; same-SHA parent/cached successes counted once, first failures retained",
+    "baselineDocuments": 215,
+    "ledgerDeltaDocuments": 249,
+    "observedAttempts": 249,
+    "parsedSuccessfulDocuments": 246,
+    "failedDocuments": 3,
+    "unobservedConservativeReservations": 0,
+    "failures": [
+      {
+        "sourceSha": "2813f92dfa7e914bdf61acf4f589e4ac00315cfd",
+        "type": "export_declaration",
+        "code": "API_UNAVAILABLE",
+        "success": false,
+        "durationMs": 45026
+      },
+      {
+        "sourceSha": "2813f92dfa7e914bdf61acf4f589e4ac00315cfd",
+        "type": "house_manifest",
+        "code": "API_UNAVAILABLE",
+        "success": false,
+        "durationMs": 45022
+      },
+      {
+        "sourceSha": "06a25217e67b3da35b93f7d92f283f44ef7bf2b3",
+        "type": "house_manifest",
+        "code": "API_UNAVAILABLE",
+        "success": false,
+        "durationMs": 45015
+      }
+    ],
+    "bySource": [
+      {
+        "sourceSha": "2813f92dfa7e914bdf61acf4f589e4ac00315cfd",
+        "attempts": 52,
+        "success": 50,
+        "failures": 2
+      },
+      {
+        "sourceSha": "986b7e31cb7d25a5cb9cb7cb943fa0905e9e54d4",
+        "attempts": 60,
+        "success": 60,
+        "failures": 0
+      },
+      {
+        "sourceSha": "06a25217e67b3da35b93f7d92f283f44ef7bf2b3",
+        "attempts": 67,
+        "success": 66,
+        "failures": 1
+      },
+      {
+        "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+        "attempts": 70,
+        "success": 70,
+        "failures": 0
+      }
+    ]
+  },
+  "finalSourcePaidDocumentAttempts": {
+    "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+    "attempts": 70,
+    "success": 70,
+    "failures": 0
+  },
+  "automaticRetries": 0,
+  "sourceUnchangedAfterActualEvaluation": true,
+  "rawPdfOrProviderResponsesPublished": false,
+  "limits": [
+    "One newly frozen synthetic holdout shipment; not generalization certification for arbitrary customer/scanned/OCR PDFs.",
+    "Language-only product equivalence remains provisional; independent native identity/scope is required for a firm aggregate.",
+    "Complex multiple-product model conflict on prior 2813 source was provisional; canonical final-source single-whole-item model fault was confirmed.",
+    "Provider failures and unknown maximum cost are retained in the attempt inventory; one evaluation-parent preflight interruption reused the already-paid extraction.",
+    "Vercel Git integration/deployment success and official exact SHA were verified; no authenticated management API Ready query was available."
+  ]
+}

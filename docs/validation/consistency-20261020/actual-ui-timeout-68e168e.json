@@ -1,0 +1,6 @@
+{
+  "sourceSha": "06a25217e67b3da35b93f7d92f283f44ef7bf2b3",
+  "reason": "Initial browser Manifest extraction returned API_UNAVAILABLE after 45015 ms; three successes, partial UI and unknown cost retained. New complete real browser flow will be explicitly manually run; no automatic retry.",
+  "failedDocuments": 1,
+  "successfulDocuments": 3
+}

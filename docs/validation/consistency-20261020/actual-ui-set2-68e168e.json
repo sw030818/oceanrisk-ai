@@ -1,0 +1,215 @@
+{
+  "kind": "NEW actual first extraction + semantic API + real Production user UI",
+  "case": "set2",
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "durationMs": 50833,
+  "documents": 3,
+  "correctClassifications": 3,
+  "semanticStatus": "complete",
+  "analysisBatches": 2,
+  "semanticRequests": 1,
+  "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 11,
+    "notComparable": 0,
+    "evidenceFailed": 17,
+    "evidenceUnverified": 7,
+    "evidenceRecovered": 12,
+    "checksExecuted": 61,
+    "independentChecks": 24,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+  },
+  "quantityProof": true,
+  "manifestWholeQuantityVerified": true,
+  "packageProof": true,
+  "firstQuantityCandidates": [
+    {
+      "quantityValueCorrect": false,
+      "quantityStatus": "missing",
+      "unitValueCorrect": false,
+      "unitStatus": "missing",
+      "currentQuantityVerified": false,
+      "quantityRecovery": null,
+      "unitRecovery": null
+    },
+    {
+      "quantityValueCorrect": false,
+      "quantityStatus": "missing",
+      "unitValueCorrect": false,
+      "unitStatus": "missing",
+      "currentQuantityVerified": false,
+      "quantityRecovery": null,
+      "unitRecovery": null
+    }
+  ],
+  "podMatch": true,
+  "quantityMatch": true,
+  "actionIssues": 0,
+  "desktop": true,
+  "mobile": true,
+  "delta": {
+    "documents": 3,
+    "requests": 4,
+    "costUsd": 0.005761459999999996
+  },
+  "budget": {
+    "documents": 461,
+    "requests": 612,
+    "measuredCostUsd": 0.6742965250000009,
+    "unresolvedCostUpperUsd": 0.07450616250000036,
+    "maxDocuments": 1000,
+    "maxRequests": 1500,
+    "maxCostUsd": 2
+  },
+  "checks": [
+    {
+      "meaning": "packageCount",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "consignee",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "containerNumber",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "declarationNumber",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "goodsDescription",
+      "status": "provisional_match",
+      "disposition": "informational",
+      "reasons": [],
+      "code": "AI_SEMANTIC_EQUIVALENCE"
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "houseBlNumber",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "hsCode",
+      "status": "confirmed_match",
+      "reasons": [],
+      "code": "VERIFIED_HS_DIGITS_NATIVE_OWNER"
+    },
+    {
+      "meaning": "netWeight",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "packageCount",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "portOfDischarge",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "portOfLoading",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "quantity",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "sealNumber",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "shipper",
+      "status": "confirmed_match",
+      "reasons": []
+    },
+    {
+      "meaning": "packageCount",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "grossWeight",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "netWeight",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "quantity",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "weight",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    },
+    {
+      "meaning": "reference",
+      "status": "not_applicable",
+      "reasons": [
+        "FIELD_NOT_APPLICABLE"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "frozenBeforeFirstCall": true,
+  "truthSha256": "ffb8700bf14428f766dec23b7000d8e3ea89f0aec0a1f523c8d4989b99568a22",
+  "holdout": [
+    {
+      "case": "holdout-d",
+      "file": "holdout-d/01.pdf",
+      "type": "house_bl",
+      "partition": "holdout",
+      "sha256": "716db6fef7a49f2d67a45cbeef35e29703502d6baf96132e855833469ea6fa5a"
+    },
+    {
+      "case": "holdout-d",
+      "file": "holdout-d/02.pdf",
+      "type": "export_declaration",
+      "partition": "holdout",
+      "sha256": "a3179e75b1645c1d459c51bb4eaed2318ba4c8c4f7ccab9c4165d8d73d48e840"
+    },
+    {
+      "case": "holdout-d",
+      "file": "holdout-d/03.pdf",
+      "type": "export_declaration",
+      "partition": "holdout",
+      "sha256": "78dbb2972210400a8605e0e2361f001a67942379bb251864df0a4c6f983b253e"
+    },
+    {
+      "case": "holdout-d",
+      "file": "holdout-d/04.pdf",
+      "type": "house_manifest",
+      "partition": "holdout",
+      "sha256": "53d430ebbd079564320eb265f9ec01ef4b91494996e39f55a20d3dce9984ec78"
+    }
+  ]
+}

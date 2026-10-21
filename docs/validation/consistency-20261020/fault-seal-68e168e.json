@@ -1,0 +1,199 @@
+{
+  "kind": "ACTUAL OpenAI analysis of synthetic PDFs; evaluator truth never sent to provider",
+  "case": "fault-seal",
+  "fault": "seal",
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "sourceShaStable": true,
+  "semantic": "complete",
+  "documents": [
+    {
+      "file": "fault-seal/01.pdf",
+      "type": "house_bl",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-seal/02.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 10,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-seal/03.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 11,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-seal/04.pdf",
+      "type": "export_declaration",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 11,
+      "first": 10,
+      "current": 11,
+      "verified": 11,
+      "verifiedWrong": 0
+    },
+    {
+      "file": "fault-seal/05.pdf",
+      "type": "house_manifest",
+      "apiSuccess": true,
+      "initialClassification": true,
+      "classified": true,
+      "total": 25,
+      "first": 25,
+      "current": 25,
+      "verified": 25,
+      "verifiedWrong": 0
+    }
+  ],
+  "successfulDocuments": 5,
+  "failedDocuments": 0,
+  "firstCorrect": 81,
+  "currentCorrect": 83,
+  "verifiedCorrect": 83,
+  "expectedFields": 83,
+  "verifiedWrong": 0,
+  "actionIssues": 1,
+  "confirmedErrors": [
+    {
+      "id": "fact35/syn-ci-b-27/0dbc5651-5367-480a-807d-8e7564e52851|1bd10dce-6cc7-4ef6-877b-0317ca42401a/sealNumber",
+      "title": "Seal 번호",
+      "role": "sealNumber"
+    }
+  ],
+  "confirmedFP": null,
+  "confirmedTargetDetected": true,
+  "warningTargetDetected": true,
+  "declarationTotals": [
+    {
+      "title": "복수 신고 물품 수량 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "0dbc5651-5367-480a-807d-8e7564e52851",
+          "value": 1000,
+          "unit": "PCS",
+          "formula": "sum",
+          "componentKeys": [
+            "0dbc5651-5367-480a-807d-8e7564e52851/item/item-1",
+            "0dbc5651-5367-480a-807d-8e7564e52851/item/item-2",
+            "0dbc5651-5367-480a-807d-8e7564e52851/item/item-3"
+          ]
+        },
+        {
+          "documentId": "20f5feee-446d-4034-b0fe-ffda9aca7e15+7fd410f0-205c-4b42-a0b4-1f16e8c16c3f+a299ea51-d62d-410a-be40-02af725470e3",
+          "value": 1000,
+          "unit": "EA",
+          "formula": "sum",
+          "componentKeys": [
+            "20f5feee-446d-4034-b0fe-ffda9aca7e15/item/item-1",
+            "7fd410f0-205c-4b42-a0b4-1f16e8c16c3f/item/item-1",
+            "a299ea51-d62d-410a-be40-02af725470e3/item/item-1"
+          ]
+        }
+      ],
+      "itemMappings": 3
+    },
+    {
+      "title": "복수 신고 총중량 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "20f5feee-446d-4034-b0fe-ffda9aca7e15+7fd410f0-205c-4b42-a0b4-1f16e8c16c3f+a299ea51-d62d-410a-be40-02af725470e3",
+          "value": 500,
+          "unit": "KG",
+          "formula": "sum",
+          "componentKeys": [
+            "20f5feee-446d-4034-b0fe-ffda9aca7e15",
+            "7fd410f0-205c-4b42-a0b4-1f16e8c16c3f",
+            "a299ea51-d62d-410a-be40-02af725470e3"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "복수 신고 포장 개수 합계",
+      "assessment": "confirmed_match",
+      "computed": [
+        {
+          "documentId": "20f5feee-446d-4034-b0fe-ffda9aca7e15+7fd410f0-205c-4b42-a0b4-1f16e8c16c3f+a299ea51-d62d-410a-be40-02af725470e3",
+          "value": 50,
+          "unit": "CTNS",
+          "formula": "sum",
+          "componentKeys": [
+            "20f5feee-446d-4034-b0fe-ffda9aca7e15",
+            "7fd410f0-205c-4b42-a0b4-1f16e8c16c3f",
+            "a299ea51-d62d-410a-be40-02af725470e3"
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    },
+    {
+      "status": "evidence_confirmed",
+      "conflictRoles": []
+    }
+  ],
+  "outcomes": {
+    "matches": 85,
+    "mismatches": 1,
+    "review": 1,
+    "requiredMissing": 0,
+    "notApplicable": 73,
+    "notComparable": 0,
+    "evidenceFailed": 21,
+    "evidenceUnverified": 15,
+    "evidenceRecovered": 10,
+    "checksExecuted": 171,
+    "independentChecks": 169,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 9
+  },
+  "durationMs": 85193
+}

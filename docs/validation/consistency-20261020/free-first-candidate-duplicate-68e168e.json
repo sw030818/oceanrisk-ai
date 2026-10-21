@@ -1,0 +1,56 @@
+{
+  "kind": "FREE exact original candidate re-ground + native verification only, NO new provider call or semantic key rewrite",
+  "originalSourceSha": "2813f92dfa7e914bdf61acf4f589e4ac00315cfd",
+  "case": "fault-duplicate",
+  "manifestInitialProductEvidence": [
+    "verified",
+    "verified",
+    "verified"
+  ],
+  "manifestRecoveredProductEvidence": [
+    "verified",
+    "verified",
+    "verified"
+  ],
+  "manifestRecoveredRows": true,
+  "containers": [
+    {
+      "type": "house_bl",
+      "aiArrayCount": 3,
+      "recoveredArrayCount": 3,
+      "nativeComplete": true
+    },
+    {
+      "type": "export_declaration",
+      "aiArrayCount": 1,
+      "recoveredArrayCount": 1,
+      "nativeComplete": true
+    },
+    {
+      "type": "export_declaration",
+      "aiArrayCount": 1,
+      "recoveredArrayCount": 1,
+      "nativeComplete": true
+    },
+    {
+      "type": "export_declaration",
+      "aiArrayCount": 0,
+      "recoveredArrayCount": 1,
+      "nativeComplete": true
+    },
+    {
+      "type": "export_declaration",
+      "aiArrayCount": 1,
+      "recoveredArrayCount": 1,
+      "nativeComplete": true
+    },
+    {
+      "type": "house_manifest",
+      "aiArrayCount": 3,
+      "recoveredArrayCount": 3,
+      "nativeComplete": true
+    }
+  ],
+  "newMeaningAnalysisRequired": true,
+  "verificationSourceSha": "986b7e31cb7d25a5cb9cb7cb943fa0905e9e54d4"
+}
