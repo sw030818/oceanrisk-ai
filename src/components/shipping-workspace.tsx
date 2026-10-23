@@ -469,7 +469,18 @@ export function ShippingWorkspace() {
               : comparisonEnabled
                 ? "문서별 분석·서류 대조 완료"
                 : "문서별 분석 완료 · 삼각대조 미실시";
-  const verdict = !resultAnalysis
+  const failedNames = [
+    ...new Set(
+      results.filter((r) => r.error).map((r) => shippingLabels[r.uploadSlot].title),
+    ),
+  ];
+  const failurePrefix =
+    resultAnalysis &&
+    summary.failedDocuments &&
+    summary.failedDocuments < results.length
+      ? `${failedNames.join(" · ")} 파일 ${summary.failedDocuments}개의 AI 분석이 실패해 비교에서 빠졌습니다. 서류 업로드 화면에서 분석을 다시 시작하면 실패한 파일만 다시 분석합니다. `
+      : "";
+  const verdictBody = !resultAnalysis
     ? "PDF에서 글자와 위치만 준비했습니다. AI 판독과 서류 대조는 실행하지 않았습니다."
     : summary.failedDocuments === results.length
       ? "모든 파일의 AI 분석이 실패했습니다. 아래 파일별 오류를 확인해 주세요."
@@ -484,6 +495,7 @@ export function ShippingWorkspace() {
         : comparisonEnabled
           ? "서류 간 대조를 실행하지 못했습니다. 같은 거래로 연결할 근거가 부족하거나 대조할 서류가 부족합니다."
           : "서류별 판독만 실행했습니다. 서류끼리 비교하려면 서로 다른 서류를 2종 이상 올려 주세요.";
+  const verdict = failurePrefix + verdictBody;
   return (
     <div className="min-h-screen bg-[#f5f7fb] text-slate-800">
       <header className="flex h-[72px] items-center justify-between border-b border-slate-200 bg-white px-5 md:px-9">

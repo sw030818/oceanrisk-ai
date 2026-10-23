@@ -177,6 +177,10 @@ test("a failed middle batch preserves four successes and continues later indepen
   await expect(page.getByText("오류 코드: BATCH_REQUEST_FAILED")).toHaveCount(
     2,
   );
+  // The verdict leads with the failed files so a partial comparison is not read as complete.
+  await expect(page.getByTestId("result-verdict")).toContainText(
+    "파일 2개의 AI 분석이 실패해 비교에서 빠졌습니다",
+  );
   await expect(
     page.getByRole("alert").filter({ hasText: "합성 배치 연결 실패" }),
   ).toHaveCount(2);
