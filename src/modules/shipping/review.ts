@@ -1,5 +1,5 @@
 import { declarationAllocations } from "./declaration-allocation";
-import { contextualPort } from "./port-context";
+import { portRelation } from "./port-context";
 import { withSemanticReview } from "./semantic-integration";
 import type { SemanticReport } from "./semantic-schema";
 import { withFactReview } from "./fact-review";
@@ -591,13 +591,13 @@ export function reviewShipping(
         (!party.certain || party.addressConflict)
           ? ["원문 당사자명과 주소를 구분하거나 주소 차이를 확인해야 합니다."]
           : [];
-      const mappedPort =
-        role.startsWith("portOf") &&
-        left &&
-        right &&
-        contextualPort(left, documents) &&
-        contextualPort(left, documents) ===
-          contextualPort(right, documents);
+      const relation =
+        role.startsWith("portOf") && left && right
+          ? portRelation(left, right, documents)
+          : null;
+      // Different printed text naming one identified port (UN/LOCODE, local
+      // name, exonym, country qualifier) is the same place.
+      const mappedPort = relation === "same" && !!different;
       const similarGoods =
         role === "goodsDescription" &&
         left &&
@@ -617,7 +617,7 @@ export function reviewShipping(
             right.field.current.value,
           ) === "semantic"
         ) &&
-        (role === "goodsDescription" || (role.startsWith("portOf") && !(left && right && contextualPort(left, documents, true) && contextualPort(right, documents, true))))
+        (role === "goodsDescription" || (role.startsWith("portOf") && relation !== "different"))
           ? [
               "언어·요약·항구명/코드 등 표기 차이일 수 있습니다. 문자열 차이를 물품 또는 항구의 확정 오류로 단정하지 않습니다.",
             ]

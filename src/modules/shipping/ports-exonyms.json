@@ -1,0 +1,29 @@
+{
+  "source": "Maintainer-curated English conventional names (exonyms) and common romanizations that are not printed in the pinned UN/LOCODE entry for the same port. UN/LOCODE parenthetical names (e.g. 'Mumbai (ex Bombay)') are read from the gazetteer itself and are not repeated here.",
+  "policy": "Each alias must point to a port-function LOCODE in ports-gazetteer.json (enforced by unit test). An alias adds a candidate; it never removes another same-name location, so collisions produce ambiguity instead of a forced identity.",
+  "aliases": [
+    ["Antwerp", "BEANR"],
+    ["Genoa", "ITGOA"],
+    ["Naples", "ITNAP"],
+    ["Venice", "ITVCE"],
+    ["Leghorn", "ITLIV"],
+    ["Lisbon", "PTLIS"],
+    ["Gothenburg", "SEGOT"],
+    ["Copenhagen", "DKCPH"],
+    ["Dunkirk", "FRDKK"],
+    ["Marseilles", "FRMRS"],
+    ["Flushing", "NLVLI"],
+    ["Seville", "ESSVQ"],
+    ["Corunna", "ESLCG"],
+    ["Salonica", "GRSKG"],
+    ["Danzig", "PLGDN"],
+    ["Saigon", "VNSGN"],
+    ["Ho Chi Minh", "VNSGN"],
+    ["Rangoon", "MMRGN"],
+    ["Pusan", "KRPUS"],
+    ["Inchon", "KRINC"],
+    ["Hai Phong", "VNHPH"],
+    ["Dammam", "SADMM"],
+    ["Chittagong", "BDCGP"]
+  ]
+}

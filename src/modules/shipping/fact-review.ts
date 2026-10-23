@@ -35,7 +35,7 @@ import { resolveDeclarationScopes } from "./declaration-scope";
 import { directGoodsConflicts } from "./direct-goods-conflicts";
 import { withReviewIssues } from "./issues";
 import { compareGoods } from "./goods-semantics";
-import { contextualPort } from "./port-context";
+import { portRelation } from "./port-context";
 import { hsSix, goodsCore } from "./equivalence";
 import { shippingValues } from "./fields";
 import { partyMatch32 } from "./parties";
@@ -547,9 +547,7 @@ export function withFactReview(
         const normalize = (f: FieldRef) =>
           role === "sealNumber" || role === "hsCode"
             ? bound(f)
-            : role.startsWith("portOf")
-              ? (() => { const code = contextualPort(f, group); if (!code) reasons.push("SCOPE_UNRESOLVED"); return code ?? text32(f.field.current.value); })()
-              : role === "hsCode"
+            : role === "hsCode"
                 ? (hsSix(f.field.current.value) ??
                   text32(f.field.current.value))
                 : role === "goodsDescription"
@@ -566,10 +564,17 @@ export function withFactReview(
             .join("|"),
         );
         let same = ns.every((n) => n === ns[0]);
-        // Equal printed codes can agree without claiming gazetteer coverage.
-        // Different unresolved codes/names cannot prove a geographic conflict.
-        if (role.startsWith("portOf") && !same && valid.some(s =>
-          (s.verified.length ? s.verified : s.refs).some(f => !contextualPort(f, group, true)))) reasons.push("SCOPE_UNRESOLVED");
+        if (role.startsWith("portOf")) {
+          // Ports are compared by geographic identity, each value read in its
+          // own document context. Equal printed text agrees without claiming
+          // gazetteer coverage. A confirmed conflict needs at least one pair
+          // proven distinct; otherwise unresolved names stay provisional.
+          const refsOf = (s: (typeof valid)[number]) => s.verified.length ? s.verified : s.refs;
+          const relations = valid.flatMap((s, i) => valid.slice(i + 1).flatMap((t) =>
+            refsOf(s).flatMap((f) => refsOf(t).map((g) => portRelation(f, g, group)))));
+          same = relations.every((r) => r === "same");
+          if (!same && !relations.includes("different")) reasons.push("SCOPE_UNRESOLVED");
+        }
         let membership = false;
         if (role === "declarationNumber" && declarationSubset) {
           const expected = new Set(

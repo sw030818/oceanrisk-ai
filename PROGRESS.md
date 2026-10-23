@@ -772,3 +772,9 @@
 - Set2 실제3문서: Manifest AI item/cargo quantity null이나 독립 native 문서전체5000PCS additionalFields는 verified, 실제 whole-quantity comparison도 confirmed_match. 행에 전체값을 복사하지 않는다. private 브라우저 verifier가 item/cargo만 검사한 오류를 root32 기반 범위별 검사로 수정했다.
 - 실제 Set2 port hold 원인: destinationCountry 원문 `NL / 네덜란드`는 검증됐으나 countryCode의 NL 한국어 별칭 부재로 contextualPort가 null. 기존 지원15개 국가의 한국어/영어/코드 일관성을 확장한다. 다른 국가/미지원 qualifier·edited/OCR/다른문서 힌트 보호는 유지하며 신규20개 검사 추가. 상품 사전/레이아웃/화면/추출값 변경 없음.
 - 누적 ledger는 그대로 유지. source 변경 후 전체 ship 및 새 최종SHA A/B·오류·동결 독립자료·실제UI를 다시 확인해야 하며 06a 실증을 후속SHA 성공으로 주장하지 않는다. private PDF/원본응답/화면은 공개하지 않는다.
+
+## 2026-10-23 Claude 환경 첫 실제 검증 → 항구 동일성 공통 결함 수정
+- 68e168e 실제 신규 분석(Production API, gpt-6-luna, 자동 재시도0): universal-01 정상 3/3 분류·조치0·확정FP0. 같은 거래 신고필증만 양하항 ROTTERDAM→ANTWERP로 재렌더링한 오류는 양측 원문 검증에도 **잠정 불일치**에 그침. 원인: 항구 사전 20개 큐레이션(앤트워프는 `Antwerpen`만), `portMeaning("ANTWERP"/"SHANGHAI"/"NINGBO")=null` → review 표기 차이 가드·fact-review SCOPE_UNRESOLVED. 추출/근거/API 단계는 정상. 6문서·8요청·USD0.0071815, 원장 470/624는 evidence 3890040에 보존.
+- 수정: 이미 출처로 고정된 UN/LOCODE(sha 6257…)에서 항구 기능(1) 17,527개를 `scripts/build-port-data.ts`로 재현 생성(이름 변경 행 병합, RR/XX/X 제외, 괄호 공식 별칭 `Mumbai (ex Bombay)` 등 사용). 관용 영문 표기 23개(`ports-exonyms.json`)는 기존 항구 코드에만 연결되고 동명 항구를 지우지 않는다. 국가명은 CLDR 47(en/ko) 고정 표 + 기존 수동표 우선.
+- 판정: 동일 = 양쪽이 하나의 같은 항구로 식별되거나 같은 인쇄 텍스트(국가 충돌 없음). 확정 불일치 = 각 텍스트가 가리킬 수 있는 **모든 동명 항구**가 서로 겹치지 않을 때만. 미등록/모호/업계 관용코드(UN/LOCODE상 공항인 CNSHA 등)/국가 충돌 qualifier는 잠정. 상태 등급으로 동명 항구를 고르지 않음(중간 시도에서 Victoria 회귀로 확인 후 제거). 기존 20개 기준 항구 이름은 종전 의미 유지(Rotterdam→NLRTM, Vancouver CA/US 모호).
+- 무료 재생(새 유료 호출 아님): 오늘 실제 응답 재계산 오류 양하항 잠정→확정 불일치, 정상 12일치/0/0 유지. 단위 943 통과(신규 port-identity 83). 새 SHA 실제 OpenAI·브라우저 검증은 배포 후 별도 수행·보고.
