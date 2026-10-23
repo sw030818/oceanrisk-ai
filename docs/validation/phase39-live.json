@@ -4,10 +4,10 @@
   "providerRequests": 616,
   "automaticRetries": 0,
   "budget": {
-    "documents": 526,
-    "requests": 704,
-    "measuredCostUsd": 0.7529623300000015,
-    "unresolvedCostUpperUsd": 0.0745061625000004,
+    "documents": 529,
+    "requests": 708,
+    "measuredCostUsd": 0.7558893900000014,
+    "unresolvedCostUpperUsd": 0.07450616250000039,
     "maxDocuments": 1000,
     "maxRequests": 1500,
     "maxCostUsd": 2
@@ -32,10 +32,10 @@
   "previousProposalUsd": 10,
   "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
   "currentCumulativeUsage": {
-    "documents": 526,
-    "requests": 704,
-    "measuredCostUsd": 0.7529623300000015,
-    "unresolvedCostUpperUsd": 0.0745061625000004,
+    "documents": 529,
+    "requests": 708,
+    "measuredCostUsd": 0.7558893900000014,
+    "unresolvedCostUpperUsd": 0.07450616250000039,
     "maxDocuments": 1000,
     "maxRequests": 1500,
     "maxCostUsd": 2
@@ -399,6 +399,16 @@
       "documents": 56,
       "requests": 80
     },
+    "automaticRetries": 0
+  },
+  "set2Diagnosis20261023": {
+    "sourceSha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+    "added": {
+      "documents": 3,
+      "requests": 4
+    },
+    "purpose": "private Set2 one manual diagnostic run after user-reported provisional issues; raw kept private",
+    "result": "12 match / 0 action issues on this run; reported issues reproduced offline from a split-item AI output",
     "automaticRetries": 0
   }
 }
