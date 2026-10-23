@@ -138,6 +138,16 @@ describe("a goods cell annotated with its own HS line stays one verified item", 
   });
 });
 
+describe("a colon inside the product text is not a label", () => {
+  it("keeps RATIO 40:1 and times like 10:30 inside a verified goods value", async () => {
+    for (const goods of ["GEAR REDUCER RATIO 40:1", "TIMER SWITCH PRESET 10:30"]) {
+      const f = await shipping34Fixture("house_bl", { goods });
+      const doc = run(f.wire, f);
+      expect(doc.items[0].fields.goodsDescription.current.status).toBe("verified");
+    }
+  });
+});
+
 describe("a phantom entity is set aside, never compared, never lost", () => {
   it("keeps the real item, records the rejected candidate and says why", () => {
     const wire = structuredClone(bl.wire);

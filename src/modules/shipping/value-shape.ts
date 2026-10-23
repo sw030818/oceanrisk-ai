@@ -73,28 +73,35 @@ const rowAttributes: Record<string, string[]> = {
   cargo: ["houseBlNumber", "goodsDescription", "hsCode", "quantity", "quantityUnit", "packageCount", "packageUnit", "grossWeight", "grossWeightUnit", "containerNumber", "sealNumber"],
   container: ["containerNumber", "sealNumber", "packageCount", "packageUnit", "grossWeight", "grossWeightUnit", "weightUnit"],
 };
-export function foreignLineLabel(page: PdfPage, block: PdfBlock, role: string, scope: string): string | null {
-  // Only the continuous phrase that leads into the value counts: a label in a
-  // separate column of the same table line (SEAL: in one cell, HS: in the
-  // next) belongs to that other cell.
-  const sorted = (page.blocks ?? [])
-    .filter((b) => b.row === block.row && Math.abs(b.y + b.height - (block.y + block.height)) <= Math.max(b.height, block.height) * 0.6)
-    .sort((a, b) => a.x - b.x);
-  let i = sorted.findIndex((b) => b.id === block.id);
-  const run: PdfBlock[] = [];
-  while (i > 0) {
-    const prev = sorted[i - 1], cur = sorted[i];
-    if (cur.x - (prev.x + prev.width) > Math.max(prev.height, cur.height) * 2.5) break;
-    run.unshift(prev);
-    i--;
-  }
-  const own = block.text;
-  const head = spanText(run) + " " + own.slice(0, Math.max(0, own.lastIndexOf(":") + 1));
+export function foreignLineLabel(page: PdfPage, values: PdfBlock[], role: string, scope: string, value: string | number): string | null {
+  const ids = new Set(values.map((b) => b.id));
   const allowed = new Set([role, ...(unitParents[role] ?? []), ...(rowAttributes[scope] ?? [])]);
-  for (const m of head.matchAll(/([\p{L}][\p{L}\p{N} .&\/()-]{0,40}?)\s*:/gu)) {
-    const label = m[1].trim();
-    const labelRole = shippingRole(label);
-    if (!labelRole || !allowed.has(labelRole)) return label;
+  // Each printed line of the value starts at its leftmost cited block; only
+  // text BEFORE the value on that line can label it. Colons inside the value
+  // (RATIO 40:1) or after a digit (10:30) are never labels.
+  const lineStarts = [...new Map(values.map((b) => [b.row, b])).keys()].map(
+    (row) => values.filter((b) => b.row === row).sort((a, b) => a.x - b.x)[0],
+  );
+  for (const first of lineStarts) {
+    const sorted = (page.blocks ?? [])
+      .filter((b) => b.row === first.row && Math.abs(b.y + b.height - (first.y + first.height)) <= Math.max(b.height, first.height) * 0.6)
+      .sort((a, b) => a.x - b.x);
+    let i = sorted.findIndex((b) => b.id === first.id);
+    const run: PdfBlock[] = [];
+    while (i > 0) {
+      const prev = sorted[i - 1], cur = sorted[i];
+      if (ids.has(prev.id) || cur.x - (prev.x + prev.width) > Math.max(prev.height, cur.height) * 2.5) break;
+      run.unshift(prev);
+      i--;
+    }
+    const own = normalizeText(first.text), at = own.indexOf(normalizeText(String(value)).split(" ")[0] ?? "");
+    const head = spanText(run) + " " + (at > 0 ? first.text.slice(0, at) : "");
+    for (const m of head.matchAll(/([\p{L}][\p{L}\p{N} .&\/()-]{0,40}?)\s*:(?!\d)/gu)) {
+      const label = m[1].trim();
+      if (/\d$/.test(label)) continue;
+      const labelRole = shippingRole(label);
+      if (!labelRole || !allowed.has(labelRole)) return label;
+    }
   }
   return null;
 }
