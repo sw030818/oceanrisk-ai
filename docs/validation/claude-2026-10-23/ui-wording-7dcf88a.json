@@ -1,0 +1,131 @@
+{
+ "purpose": "Real Production browser checks of the result-screen wording change. Engine unchanged since 7443eb2.",
+ "automaticRetries": 0,
+ "runs": [
+  {
+   "label": "ui-set2-1801",
+   "sha": "1801de15678d12e2ac575d3b335c691427dbd3ab",
+   "input": "private Set2 (contents not published)",
+   "uiError": true,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.0029655500000000004
+    },
+    {
+     "slot": "export_declaration",
+     "error": "API_UNAVAILABLE",
+     "costUsd": null
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "costUsd": 0.00156672
+    }
+   ],
+   "semanticStatus": null,
+   "heading": null,
+   "kpis": null,
+   "defaultFilter": null,
+   "mobileNoOverflow": null,
+   "verdict": null
+  },
+  {
+   "label": "ui-set2-7dcf",
+   "sha": "7dcf88a5b8efd909783059e3251095c58a2c8356",
+   "input": "private Set2 (contents not published)",
+   "uiError": false,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.00098018
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "costUsd": 0.00075703
+    },
+    {
+     "slot": "house_manifest",
+     "error": "API_UNAVAILABLE",
+     "costUsd": null
+    }
+   ],
+   "semanticStatus": "complete",
+   "heading": "문서 분석 일부 성공 · 확인 필요",
+   "kpis": "확정 불일치 | 0 | 원문 근거로 확인된 서류 간 차이 | 확인 필요 | 0 | 확정하기 전 사람이 봐야 할 항목 | 원문 근거 미확인 값 | 4 | 비교에는 사용하지 않음 | 확인된 일치 | 9 | 원문 근거로 같은 값 확인",
+   "defaultFilter": "core",
+   "mobileNoOverflow": true,
+   "verdict": "(contains Set2 field names; summarized) failed-file prefix shown"
+  },
+  {
+   "label": "ui-pod-7dcf",
+   "sha": "7dcf88a5b8efd909783059e3251095c58a2c8356",
+   "input": "synthetic universal-01 with declaration POD changed to ANTWERP",
+   "uiError": false,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.000981845
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "costUsd": 0.00099572
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "costUsd": 0.00092372
+    }
+   ],
+   "semanticStatus": "complete",
+   "heading": "확정 불일치 1건 · 제출 전 확인 필요",
+   "kpis": "확정 불일치 | 1 | 원문 근거로 확인된 서류 간 차이 | 확인 필요 | 0 | 확정하기 전 사람이 봐야 할 항목 | 원문 근거 미확인 값 | 3 | 비교에는 사용하지 않음 | 확인된 일치 | 11 | 원문 근거로 같은 값 확인",
+   "defaultFilter": "attention",
+   "mobileNoOverflow": true,
+   "verdict": "양하항 (POD): 원문 근거로 서류 간 값이 다르게 확인됐습니다. 적하목록 제출 전에 원본 서류를 확인해 주세요."
+  },
+  {
+   "label": "ui-set2b-7dcf",
+   "sha": "7dcf88a5b8efd909783059e3251095c58a2c8356",
+   "input": "private Set2 (contents not published)",
+   "uiError": false,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.00073868
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "costUsd": 0.00078353
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "costUsd": 0.00173255
+    }
+   ],
+   "semanticStatus": "complete",
+   "heading": "확인 필요 1건 · 확정된 불일치 없음",
+   "kpis": "확정 불일치 | 0 | 원문 근거로 확인된 서류 간 차이 | 확인 필요 | 1 | 확정하기 전 사람이 봐야 할 항목 | 원문 근거 미확인 값 | 9 | 비교에는 사용하지 않음 | 확인된 일치 | 14 | 원문 근거로 같은 값 확인",
+   "defaultFilter": "attention",
+   "mobileNoOverflow": true,
+   "verdict": "(contains Set2 field names; summarized) no failed file"
+  }
+ ],
+ "budgetAfter": {
+  "documents": 694,
+  "requests": 934,
+  "measuredCostUsd": 0.9457563800000016,
+  "unresolvedCostUpperUsd": 0.12285267500000051,
+  "maxDocuments": 1000,
+  "maxRequests": 1500,
+  "maxCostUsd": 2
+ }
+}
