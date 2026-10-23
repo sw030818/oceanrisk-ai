@@ -1,0 +1,170 @@
+[
+ {
+  "id": "claude-port-p1",
+  "hbl": "CLD-PORT-001",
+  "declaration": "CLD-DECL-001",
+  "shipper": "Claude Eval Exporter 1 Co",
+  "consignee": "Claude Eval Buyer 1 BV",
+  "packages": 20,
+  "gross": 300,
+  "items": [
+   {
+    "en": "NETWORK GATEWAY MODEL NG84 RAM 8GB STORAGE 128GB",
+    "ko": "네트워크 게이트웨이 MODEL NG84 RAM 8GB STORAGE 128GB",
+    "hs": "8517.62",
+    "quantity": 84,
+    "unit": "PCS"
+   }
+  ],
+  "containers": [
+   {
+    "container": "CLDU2000000",
+    "seal": "CLD-SEAL-01",
+    "packages": 20,
+    "gross": 300
+   }
+  ],
+  "description": "same port, different notation",
+  "ports": {
+   "house_bl": [
+    "BUSAN",
+    "GENOA"
+   ],
+   "export_declaration": [
+    "KRPUS",
+    "ITGOA"
+   ],
+   "house_manifest": [
+    "PUSAN",
+    "GENOVA, ITALY"
+   ]
+  },
+  "expectedPod": "confirmed_match"
+ },
+ {
+  "id": "claude-port-p2",
+  "hbl": "CLD-PORT-002",
+  "declaration": "CLD-DECL-002",
+  "shipper": "Claude Eval Exporter 2 Co",
+  "consignee": "Claude Eval Buyer 2 BV",
+  "packages": 23,
+  "gross": 345,
+  "items": [
+   {
+    "en": "REUSABLE POLYPROPYLENE CRATE MODEL RC12",
+    "ko": "재사용 폴리프로필렌 상자 MODEL RC12",
+    "hs": "3923.10",
+    "quantity": 240,
+    "unit": "PCS"
+   }
+  ],
+  "containers": [
+   {
+    "container": "CLDU2000001",
+    "seal": "CLD-SEAL-02",
+    "packages": 23,
+    "gross": 345
+   }
+  ],
+  "description": "same name, different country",
+  "ports": {
+   "house_bl": [
+    "INCHEON",
+    "VANCOUVER, CANADA"
+   ],
+   "export_declaration": [
+    "INCHEON",
+    "VANCOUVER, USA"
+   ],
+   "house_manifest": [
+    "INCHEON",
+    "VANCOUVER, CANADA"
+   ]
+  },
+  "expectedPod": "confirmed_mismatch"
+ },
+ {
+  "id": "claude-port-p3",
+  "hbl": "CLD-PORT-003",
+  "declaration": "CLD-DECL-003",
+  "shipper": "Claude Eval Exporter 3 Co",
+  "consignee": "Claude Eval Buyer 3 BV",
+  "packages": 26,
+  "gross": 390,
+  "items": [
+   {
+    "en": "HANDHELD OPTICAL REFRACTOMETER MODEL RF3",
+    "ko": "휴대용 광학 굴절계 MODEL RF3",
+    "hs": "9027.50",
+    "quantity": 125,
+    "unit": "PCS"
+   }
+  ],
+  "containers": [
+   {
+    "container": "CLDU2000002",
+    "seal": "CLD-SEAL-03",
+    "packages": 26,
+    "gross": 390
+   }
+  ],
+  "description": "different ports outside former subset",
+  "ports": {
+   "house_bl": [
+    "BUSAN",
+    "SHANGHAI"
+   ],
+   "export_declaration": [
+    "BUSAN",
+    "NINGBO"
+   ],
+   "house_manifest": [
+    "BUSAN",
+    "SHANGHAI"
+   ]
+  },
+  "expectedPod": "confirmed_mismatch"
+ },
+ {
+  "id": "claude-port-p4",
+  "hbl": "CLD-PORT-004",
+  "declaration": "CLD-DECL-004",
+  "shipper": "Claude Eval Exporter 4 Co",
+  "consignee": "Claude Eval Buyer 4 BV",
+  "packages": 29,
+  "gross": 435,
+  "items": [
+   {
+    "en": "ANODIZED ALUMINIUM BRACKET MODEL AB6",
+    "ko": "양극산화 알루미늄 브래킷 MODEL AB6",
+    "hs": "7616.99",
+    "quantity": 175,
+    "unit": "PCS"
+   }
+  ],
+  "containers": [
+   {
+    "container": "CLDU2000003",
+    "seal": "CLD-SEAL-04",
+    "packages": 29,
+    "gross": 435
+   }
+  ],
+  "description": "industry code reassigned to airport",
+  "ports": {
+   "house_bl": [
+    "BUSAN",
+    "CNSHA"
+   ],
+   "export_declaration": [
+    "BUSAN",
+    "SHANGHAI"
+   ],
+   "house_manifest": [
+    "BUSAN",
+    "CNSHA"
+   ]
+  },
+  "expectedPod": "provisional"
+ }
+]

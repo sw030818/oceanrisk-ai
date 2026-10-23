@@ -1,0 +1,445 @@
+{
+ "sourceSha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+ "kind": "NEW paid OpenAI via Production API (run.mts mirrors scripts/universal/live.ts transport); truth read only after runs",
+ "apiRuns": [
+  {
+   "label": "c2336-normal-u01",
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 31123,
+   "apiErrors": 0,
+   "classified": 3,
+   "fields": {
+    "expected": 69,
+    "firstCorrect": 69,
+    "finalCorrect": 69,
+    "verifiedCorrect": 69,
+    "verifiedWrong": 0,
+    "firstMissing": 0,
+    "correctButUnverified": []
+   },
+   "relationships": [
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed"
+   ],
+   "ports": {
+    "portOfDischarge": "confirmed_match",
+    "portOfLoading": "confirmed_match"
+   },
+   "expected": {
+    "portOfDischarge": "confirmed_match",
+    "portOfLoading": "confirmed_match"
+   },
+   "portVerdictOk": true,
+   "confirmedFP": [],
+   "actionIssues": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 10,
+    "notComparable": 0,
+    "evidenceFailed": 2,
+    "evidenceUnverified": 2,
+    "evidenceRecovered": 3,
+    "checksExecuted": 61,
+    "independentChecks": 23,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+   },
+   "cost": 0.00399879
+  },
+  {
+   "label": "c2336-fault-pod-u01",
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 31504,
+   "apiErrors": 0,
+   "classified": 3,
+   "fields": {
+    "expected": 69,
+    "firstCorrect": 69,
+    "finalCorrect": 69,
+    "verifiedCorrect": 69,
+    "verifiedWrong": 0,
+    "firstMissing": 0,
+    "correctButUnverified": []
+   },
+   "relationships": [
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed"
+   ],
+   "ports": {
+    "portOfDischarge": "confirmed_mismatch",
+    "portOfLoading": "confirmed_match"
+   },
+   "expected": {
+    "portOfDischarge": "confirmed_mismatch",
+    "portOfLoading": "confirmed_match"
+   },
+   "portVerdictOk": true,
+   "confirmedFP": [],
+   "actionIssues": [
+    "양하항 / POD / confirmed_mismatch"
+   ],
+   "outcomes": {
+    "matches": 11,
+    "mismatches": 1,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 10,
+    "notComparable": 0,
+    "evidenceFailed": 2,
+    "evidenceUnverified": 2,
+    "evidenceRecovered": 3,
+    "checksExecuted": 61,
+    "independentChecks": 23,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+   },
+   "cost": 0.0028352100000000003
+  },
+  {
+   "label": "c2336-claude-port-p1",
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 30077,
+   "apiErrors": 0,
+   "classified": 3,
+   "fields": {
+    "expected": 69,
+    "firstCorrect": 69,
+    "finalCorrect": 69,
+    "verifiedCorrect": 69,
+    "verifiedWrong": 0,
+    "firstMissing": 0,
+    "correctButUnverified": []
+   },
+   "relationships": [
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed"
+   ],
+   "ports": {
+    "portOfDischarge": "confirmed_match",
+    "portOfLoading": "confirmed_match"
+   },
+   "expected": {
+    "portOfDischarge": "confirmed_match",
+    "portOfLoading": "confirmed_match"
+   },
+   "portVerdictOk": true,
+   "confirmedFP": [],
+   "actionIssues": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 10,
+    "notComparable": 0,
+    "evidenceFailed": 8,
+    "evidenceUnverified": 4,
+    "evidenceRecovered": 6,
+    "checksExecuted": 61,
+    "independentChecks": 23,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+   },
+   "cost": 0.0034285849999999996
+  },
+  {
+   "label": "c2336-claude-port-p2",
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 23569,
+   "apiErrors": 0,
+   "classified": 3,
+   "fields": {
+    "expected": 69,
+    "firstCorrect": 46,
+    "finalCorrect": 62,
+    "verifiedCorrect": 62,
+    "verifiedWrong": 0,
+    "firstMissing": 23,
+    "correctButUnverified": []
+   },
+   "relationships": [
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed"
+   ],
+   "ports": {
+    "portOfDischarge": "confirmed_mismatch",
+    "portOfLoading": "confirmed_match"
+   },
+   "expected": {
+    "portOfDischarge": "confirmed_mismatch",
+    "portOfLoading": "confirmed_match"
+   },
+   "portVerdictOk": true,
+   "confirmedFP": [],
+   "actionIssues": [
+    "양하항 / POD / confirmed_mismatch",
+    "컨테이너 목록 / provisional_match",
+    "Seal 번호 / provisional_match"
+   ],
+   "outcomes": {
+    "matches": 9,
+    "mismatches": 1,
+    "review": 2,
+    "requiredMissing": 0,
+    "notApplicable": 10,
+    "notComparable": 0,
+    "evidenceFailed": 4,
+    "evidenceUnverified": 2,
+    "evidenceRecovered": 20,
+    "checksExecuted": 53,
+    "independentChecks": 23,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+   },
+   "cost": 0.002793335
+  },
+  {
+   "label": "c2336-claude-port-p3",
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 27232,
+   "apiErrors": 0,
+   "classified": 3,
+   "fields": {
+    "expected": 69,
+    "firstCorrect": 69,
+    "finalCorrect": 69,
+    "verifiedCorrect": 69,
+    "verifiedWrong": 0,
+    "firstMissing": 0,
+    "correctButUnverified": []
+   },
+   "relationships": [
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed"
+   ],
+   "ports": {
+    "portOfDischarge": "confirmed_mismatch",
+    "portOfLoading": "confirmed_match"
+   },
+   "expected": {
+    "portOfDischarge": "confirmed_mismatch",
+    "portOfLoading": "confirmed_match"
+   },
+   "portVerdictOk": true,
+   "confirmedFP": [],
+   "actionIssues": [
+    "양하항 / POD / confirmed_mismatch"
+   ],
+   "outcomes": {
+    "matches": 11,
+    "mismatches": 1,
+    "review": 0,
+    "requiredMissing": 0,
+    "notApplicable": 10,
+    "notComparable": 0,
+    "evidenceFailed": 6,
+    "evidenceUnverified": 4,
+    "evidenceRecovered": 3,
+    "checksExecuted": 61,
+    "independentChecks": 23,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+   },
+   "cost": 0.0034244600000000003
+  },
+  {
+   "label": "c2336-claude-port-p4",
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 28575,
+   "apiErrors": 0,
+   "classified": 3,
+   "fields": {
+    "expected": 69,
+    "firstCorrect": 69,
+    "finalCorrect": 69,
+    "verifiedCorrect": 69,
+    "verifiedWrong": 0,
+    "firstMissing": 0,
+    "correctButUnverified": []
+   },
+   "relationships": [
+    "evidence_confirmed",
+    "evidence_confirmed",
+    "evidence_confirmed"
+   ],
+   "ports": {
+    "portOfDischarge": "provisional_mismatch",
+    "portOfLoading": "confirmed_match"
+   },
+   "expected": {
+    "portOfDischarge": "provisional",
+    "portOfLoading": "confirmed_match"
+   },
+   "portVerdictOk": true,
+   "confirmedFP": [],
+   "actionIssues": [
+    "양하항 / POD / provisional_mismatch"
+   ],
+   "outcomes": {
+    "matches": 11,
+    "mismatches": 0,
+    "review": 1,
+    "requiredMissing": 0,
+    "notApplicable": 10,
+    "notComparable": 0,
+    "evidenceFailed": 2,
+    "evidenceUnverified": 2,
+    "evidenceRecovered": 1,
+    "checksExecuted": 61,
+    "independentChecks": 23,
+    "comparisonEvidenceUnverified": 0,
+    "informational": 1
+   },
+   "cost": 0.00340921
+  }
+ ],
+ "browserRuns": {
+  "ui-normal-u01": {
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 61484,
+   "uiError": "locator.scrollIntoViewIfNeeded: Timeout 29992.979ms exceeded.\nCall log:\n\u001b[2m  - attempting scroll into view action\u001b[22m\n\u001b[2m    2 × waiting for element to be stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying scroll into view action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying scroll into view action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be stable",
+   "results": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "cost": 0.00081434
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "cost": 0.0006905699999999999
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "cost": 0.00073585
+    }
+   ],
+   "semanticRequested": true,
+   "semanticStatus": "complete",
+   "podRow": null,
+   "podDialog": null,
+   "flaggedChecks": [],
+   "mobileNoOverflow": null
+  },
+  "ui-fault-pod-u01": {
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 34777,
+   "uiError": null,
+   "results": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "cost": 0.00083084
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "cost": 0.00068007
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "cost": 0.00075185
+    }
+   ],
+   "semanticRequested": true,
+   "semanticStatus": "complete",
+   "podRow": "양하항 / POD\n\n1개 검사 통합\n\n\t\nROTTERDAM원문 확인\n\np.1\n\n\t\nANTWERP원문 확인\n\np.1\n\n\t\nROTTERDAM원문 확인\n\np.1\n\n\t확인된 불일치\n상세 보기 →\n양하항 / POD · 확인된 불일치",
+   "podDialog": "양하항 / POD\n상세 닫기\n확인된 불일치\n양하항 / POD · 확인된 불일치\n\n같은 의미의 원문 기재값을 같은 선적의 명시적 참조 범위에서 대조했습니다.\n\n다음 확인: 원본 작성자에게 판정 사유와 해당 HBL/품목/화물 범위를 확인해 주세요.\n\n판정 코드: VERIFIED\n\n원본 검사 진단 3건\n원문값 · 정규화 · 근거 위치\nROTTERDAM원문 확인\n\nevaluation-2.pdf · 1페이지 · p1-b7\n\n정규화: NLRTM · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\nROTTERDAM원문 확인\n\nevaluation-0.pdf · 1페이지 · p1-b12, p1-b13\n\n정규화: NLRTM · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\nANTWERP원문 확인\n\nevaluation-1.pdf · 1페이지 · p1-b12, p1-b13\n\n정규화: BEANR · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\n수정·복원 후 무료로 다시 계산합니다. 사용자 수정은 원문 검증 성공과 구분합니다.\n\nAI 추출값·원문 근거 확인 및 수정\nAI 추출값·원문 근거 확인 및 수정\nAI 추출값·원문 근거 확인 및 수정",
+   "flaggedChecks": [
+    {
+     "a": "confirmed_mismatch",
+     "c": "port",
+     "t": "양하항 / POD · 확인된 불일치"
+    },
+    {
+     "a": "confirmed_mismatch",
+     "c": "port",
+     "t": "양하항 / POD · 확인된 불일치"
+    }
+   ],
+   "mobileNoOverflow": true
+  },
+  "ui-normal-u01-b": {
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 32315,
+   "uiError": null,
+   "results": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "cost": 0.0006623400000000001
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "cost": 0.0006730699999999999
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "cost": 0.00075185
+    }
+   ],
+   "semanticRequested": true,
+   "semanticStatus": "complete",
+   "podRow": "양하항 / POD\n\n1개 검사 통합\n\n\t\nROTTERDAM원문 확인\n\np.1\n\n\t\nROTTERDAM원문 확인\n\np.1\n\n\t\nROTTERDAM원문 확인\n\np.1\n\n\t확인된 일치\n상세 보기 →\n양하항 / POD · 확인된 일치",
+   "podDialog": "양하항 / POD\n상세 닫기\n확인된 일치\n양하항 / POD · 확인된 일치\n\n같은 의미의 원문 기재값을 같은 선적의 명시적 참조 범위에서 대조했습니다.\n\n다음 확인: 검증된 기재값의 출처와 계산 범위를 확인해 주세요.\n\n판정 코드: VERIFIED\n\n원본 검사 진단 3건\n원문값 · 정규화 · 근거 위치\nROTTERDAM원문 확인\n\nevaluation-1.pdf · 1페이지 · p1-b12, p1-b13\n\n정규화: NLRTM · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\nROTTERDAM원문 확인\n\nevaluation-0.pdf · 1페이지 · p1-b12, p1-b13\n\n정규화: NLRTM · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\nROTTERDAM원문 확인\n\nevaluation-2.pdf · 1페이지 · p1-b7\n\n정규화: NLRTM · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\n수정·복원 후 무료로 다시 계산합니다. 사용자 수정은 원문 검증 성공과 구분합니다.\n\nAI 추출값·원문 근거 확인 및 수정\nAI 추출값·원문 근거 확인 및 수정\nAI 추출값·원문 근거 확인 및 수정",
+   "flaggedChecks": [],
+   "mobileNoOverflow": true
+  },
+  "ui-port-p2": {
+   "sha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+   "durationMs": 34424,
+   "uiError": null,
+   "results": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "cost": 0.00076234
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "cost": 0.00068361
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "cost": 0.00083274
+    }
+   ],
+   "semanticRequested": true,
+   "semanticStatus": "complete",
+   "podRow": "양하항 / POD\n\n1개 검사 통합\n\n\t\nVANCOUVER, CANADA원문 확인\n\np.1\n\n\t\nVANCOUVER, USA원문 확인\n\np.1\n\n\t\nVANCOUVER, CANADA원문 확인\n\np.1\n\n\t확인된 불일치\n상세 보기 →\n양하항 / POD · 확인된 불일치",
+   "podDialog": "양하항 / POD\n상세 닫기\n확인된 불일치\n양하항 / POD · 확인된 불일치\n\n같은 의미의 원문 기재값을 같은 선적의 명시적 참조 범위에서 대조했습니다.\n\n다음 확인: 원본 작성자에게 판정 사유와 해당 HBL/품목/화물 범위를 확인해 주세요.\n\n판정 코드: VERIFIED\n\n원본 검사 진단 3건\n원문값 · 정규화 · 근거 위치\nVANCOUVER, CANADA원문 확인\n\nevaluation-0.pdf · 1페이지 · p1-b7\n\n정규화: CAVAN · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\nVANCOUVER, CANADA원문 확인\n\nevaluation-2.pdf · 1페이지 · p1-b12, p1-b13\n\n정규화: CAVAN · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\nVANCOUVER, USA원문 확인\n\nevaluation-1.pdf · 1페이지 · p1-b12, p1-b13\n\n정규화: USVAN · 실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.\n\n수정·복원 후 무료로 다시 계산합니다. 사용자 수정은 원문 검증 성공과 구분합니다.\n\nAI 추출값·원문 근거 확인 및 수정\nAI 추출값·원문 근거 확인 및 수정\nAI 추출값·원문 근거 확인 및 수정",
+   "flaggedChecks": [
+    {
+     "a": "confirmed_mismatch",
+     "c": "port",
+     "t": "양하항 / POD · 확인된 불일치"
+    },
+    {
+     "a": "confirmed_mismatch",
+     "c": "port",
+     "t": "양하항 / POD · 확인된 불일치"
+    }
+   ],
+   "mobileNoOverflow": true
+  }
+ },
+ "freeReplayBeforeDeploy": {
+  "note": "stored 68e168e real responses recomputed with 2336c47 code; not a paid result",
+  "normal": "12 match/0/0 unchanged",
+  "faultPod": "provisional_mismatch -> confirmed_mismatch"
+ }
+}

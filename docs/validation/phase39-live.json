@@ -4,10 +4,10 @@
   "providerRequests": 616,
   "automaticRetries": 0,
   "budget": {
-    "documents": 470,
-    "requests": 624,
-    "measuredCostUsd": 0.6870241100000011,
-    "unresolvedCostUpperUsd": 0.07450616250000036,
+    "documents": 526,
+    "requests": 704,
+    "measuredCostUsd": 0.7529623300000015,
+    "unresolvedCostUpperUsd": 0.0745061625000004,
     "maxDocuments": 1000,
     "maxRequests": 1500,
     "maxCostUsd": 2
@@ -32,10 +32,10 @@
   "previousProposalUsd": 10,
   "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
   "currentCumulativeUsage": {
-    "documents": 470,
-    "requests": 624,
-    "measuredCostUsd": 0.6870241100000011,
-    "unresolvedCostUpperUsd": 0.07450616250000036,
+    "documents": 526,
+    "requests": 704,
+    "measuredCostUsd": 0.7529623300000015,
+    "unresolvedCostUpperUsd": 0.0745061625000004,
     "maxDocuments": 1000,
     "maxRequests": 1500,
     "maxCostUsd": 2
@@ -385,5 +385,20 @@
     "automaticRetries": 0,
     "preCallAborts": 2,
     "preCallAbortsNote": "ESM loader and Node proxy errors before any reservation; no provider call"
+  },
+  "claudePortFix20261023": {
+    "sourceSha": "2336c47ba4fff4e9349743e99a2fc46ea118b1af",
+    "report": "docs/validation/claude-2026-10-23/REPORT.md",
+    "previousBudget": {
+      "documents": 470,
+      "requests": 624,
+      "measuredCostUsd": 0.6870241100000011,
+      "unresolvedCostUpperUsd": 0.07450616250000036
+    },
+    "added": {
+      "documents": 56,
+      "requests": 80
+    },
+    "automaticRetries": 0
   }
 }

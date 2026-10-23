@@ -1,0 +1,98 @@
+[
+ {
+  "case": "claude-port-p1",
+  "type": "house_bl",
+  "layout": "split",
+  "file": "pdf/claude-port-p1/01.pdf",
+  "sha256": "5e54229fc6ff15a9011e29ccb3d8ee9814ae61b2c79cd3b9677bca6c19832a8b",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p1",
+  "type": "export_declaration",
+  "layout": "form",
+  "file": "pdf/claude-port-p1/02.pdf",
+  "sha256": "8fff43bdfc1412adae2b56196b4cb2fd01e05f079dd9ea8fb13188fd81b17f0a",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p1",
+  "type": "house_manifest",
+  "layout": "ledger",
+  "file": "pdf/claude-port-p1/03.pdf",
+  "sha256": "fce9561c6b44cad0d8a469d42ff2b772297abfa425709fd4212c4831ab3812bb",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p2",
+  "type": "house_bl",
+  "layout": "ledger",
+  "file": "pdf/claude-port-p2/01.pdf",
+  "sha256": "dc89d714694bea24a1de99fa9cafd8ed1b45990a8122e4bd0b522a349bd6ae2c",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p2",
+  "type": "export_declaration",
+  "layout": "split",
+  "file": "pdf/claude-port-p2/02.pdf",
+  "sha256": "1edbc45bd625d4605c3d76fb2551e363709a4761c0a811bdd2e63a7078e2b9c1",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p2",
+  "type": "house_manifest",
+  "layout": "boxed",
+  "file": "pdf/claude-port-p2/03.pdf",
+  "sha256": "a6396eb3e246fc54635965ab57d9533c190f8ddc133f8ffb96948ac105a3d95f",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p3",
+  "type": "house_bl",
+  "layout": "form",
+  "file": "pdf/claude-port-p3/01.pdf",
+  "sha256": "3db54f8e964a1ccfb24374561e4cd530a6dd26cced0a14193aec766d9f3bf719",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p3",
+  "type": "export_declaration",
+  "layout": "boxed",
+  "file": "pdf/claude-port-p3/02.pdf",
+  "sha256": "17c113fe9feea0612b7422c9758632974f44842e9b46c97616e8a5513a4058b0",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p3",
+  "type": "house_manifest",
+  "layout": "split",
+  "file": "pdf/claude-port-p3/03.pdf",
+  "sha256": "fdcb41843f5409d493d4bf00d2b32f2f942d9c0500889ba8a5f3db9819c492b6",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p4",
+  "type": "house_bl",
+  "layout": "boxed",
+  "file": "pdf/claude-port-p4/01.pdf",
+  "sha256": "24634c17bddbb132331e1f8e8af0c983a0974d860b062e967e99cf0fce1ac853",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p4",
+  "type": "export_declaration",
+  "layout": "ledger",
+  "file": "pdf/claude-port-p4/02.pdf",
+  "sha256": "06d4ad19301f9733448ce38eb886150112ff7c69aa48d65af52535fe2d3a1a8b",
+  "synthetic": true
+ },
+ {
+  "case": "claude-port-p4",
+  "type": "house_manifest",
+  "layout": "form",
+  "file": "pdf/claude-port-p4/03.pdf",
+  "sha256": "39910d4a68cd8d8fdf78e4d197203e20762ac8e72f98dcdc5c88bee8d537c9e3",
+  "synthetic": true
+ }
+]
