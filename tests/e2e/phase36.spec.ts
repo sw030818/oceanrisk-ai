@@ -40,7 +40,7 @@ for (const width of [1440, 390])
     await expect(page.getByTestId("shipping-review")).toBeVisible();
     await page.getByLabel("검토 결과 필터").selectOption("all");
     await page
-      .getByRole("button", { name: "기재 물품 수량 (합계/단일품목 범위) 상세 분석", exact: true })
+      .getByRole("button", { name: "물품 수량 상세 분석", exact: true })
       .click();
     const drawer = page.getByRole("dialog", { name: "상세 분석 패널" });
     await expect(drawer).toContainText("확인된 일치");

@@ -8,6 +8,7 @@ import {
 } from "@/modules/shipping/presentation";
 import { pairedReadings } from "@/modules/shipping/display-reading";
 import { assessmentLabels } from "@/modules/rules/model";
+import { displayTitle } from "@/modules/shipping/display-titles";
 export function ShippingReport({
   results,
   review,
@@ -113,7 +114,7 @@ export function ShippingReport({
           {review.issues?.map((issue) => (
             <li key={issue.id} className="mb-2">
               <strong>
-                {issue.title} · {labels[issue.assessment]}
+                {displayTitle(issue.title)} · {labels[issue.assessment]}
               </strong>
               <p>
                 관련 검사 {issue.relatedCheckIds.length}건 · {issue.explanation}
@@ -142,7 +143,7 @@ export function ShippingReport({
           <tbody>
             {groups.map((g) => (
               <tr key={g.id}>
-                <th className="align-top">{g.title}</th>
+                <th className="align-top">{displayTitle(g.title)}</th>
                 {shippingTypes.map((t) => (
                   <td key={t} className="align-top">
                     {pairedReadings(

@@ -23,11 +23,12 @@ import {
 } from "@/modules/shipping/display-reading";
 import { shippingFieldLabels } from "@/modules/shipping/catalog";
 import { ShippingFields } from "./shipping-fields";
+import { displayTitle } from "@/modules/shipping/display-titles";
 import type { GroundedField } from "@/modules/documents/schema";
 const labels: Record<ShippingAssessment, string> = {
   ...assessmentLabels,
-  provisional_match: "값은 같지만 근거 확인 필요 (잠정 일치)",
-  provisional_mismatch: "차이가 있으나 확정 전 확인 필요 (잠정 불일치)",
+  provisional_match: "잠정 일치 · 근거 확인 필요",
+  provisional_mismatch: "잠정 불일치 · 확인 필요",
   not_comparable: "비교 불가",
   not_applicable: "대조 대상 없음",
 };
@@ -56,7 +57,9 @@ export function ShippingReviewPanel({
   onConfirmRelationship?: (id: string) => void;
   onEvidence: (f: GroundedField<string | number>, label: string) => void;
 }) {
-  const [filter, setFilter] = useState("attention"),
+  const [filter, setFilter] = useState(() =>
+      review.issues && !review.issues.length ? "core" : "attention",
+    ),
     [shipment, setShipment] = useState("all"),
     [selected, setSelected] = useState<string | null>(null);
   const dialog = useRef<HTMLDialogElement>(null),
@@ -114,12 +117,35 @@ export function ShippingReviewPanel({
           "AI 분석된 대상 서류가 부족합니다. PDF 원문 준비만으로 대조 성공을 표시하지 않습니다."}
       </div>
     );
+  const issues = review.issues;
+  const mismatchIssues = issues
+    ? issues.filter((i) => i.assessment === "confirmed_mismatch").length ||
+      (review.outcomes?.mismatches ?? 0)
+    : (review.outcomes?.mismatches ?? s.confirmedMismatches);
+  const attentionIssues = issues
+    ? issues.filter((i) => i.assessment !== "confirmed_mismatch").length
+    : s.needsReview;
+  const unverified =
+    review.outcomes?.evidenceUnverified ?? review.outcomes?.evidenceFailed ?? 0;
+  const attentionGroups = groups.filter((g) =>
+    g.checks.some(
+      (c) =>
+        c.disposition !== "informational" &&
+        c.assessment !== "confirmed_match" &&
+        c.assessment !== "not_applicable",
+    ),
+  ).length;
+  const issueCount = issues?.length ?? attentionGroups;
+  const notApplicableGroups = groups.filter((g) =>
+    g.checks.every((c) => c.assessment === "not_applicable"),
+  ).length;
   const visible = groups
     .map((g) => ({
       ...g,
       checks: g.checks.filter(
         (c) =>
           filter === "all" ||
+          (filter === "core" && c.assessment !== "not_applicable") ||
           (filter === "not_applicable" && c.assessment === "not_applicable") ||
           (filter === "mismatch" && c.assessment.endsWith("mismatch")) ||
           (filter === "match" && (c.assessment === "confirmed_match"||c.disposition==="informational")) ||
@@ -200,67 +226,67 @@ export function ShippingReviewPanel({
             서류 간 대조 결과
           </h2>
           <span className="text-xs text-slate-500">
-            검사 {review.checks.length}건 · 비교표 {groups.length}행 · 확정
-            불일치 {review.outcomes?.mismatches ?? s.confirmedMismatches}건
+            비교 항목 {groups.length}개
           </span>
         </div>
-        <p className="mt-2 text-xs text-slate-600">
-          관계: 근거 확인 {s.confirmedRelationships} · 사용자 확인{" "}
-          {s.userConfirmedRelationships} · 후보 {s.proposedRelationships} · 충돌{" "}
-          {s.conflictingRelationships} / 양자 검사 {s.pairChecks} · 삼각 검사{" "}
-          {s.triangleChecks}
-        </p>
         <div
           data-testid="review-kpis"
           className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4"
         >
-          {[
+          {(
             [
-              "확정 불일치",
-              review.outcomes?.mismatches ?? s.confirmedMismatches,
-            ],
-            [
-              "확인 필요",
-              review.issues?.filter(
-                (i) => i.assessment !== "confirmed_mismatch",
-              ).length ?? s.needsReview,
-            ],
-            [
-              "현재 원문 근거 미확인",
-              review.outcomes?.evidenceUnverified ??
-                review.outcomes?.evidenceFailed ??
-                0,
-            ],
-            ["확인된 일치", review.outcomes?.matches ?? s.matches],
-          ].map(([label, value]) => (
+              [
+                "확정 불일치",
+                mismatchIssues,
+                "원문 근거로 확인된 서류 간 차이",
+                "text-red-700",
+              ],
+              [
+                "확인 필요",
+                attentionIssues,
+                "확정하기 전 사람이 봐야 할 항목",
+                "text-orange-800",
+              ],
+              [
+                "원문 근거 미확인 값",
+                unverified,
+                unverified === 0
+                  ? "모든 값의 원문 위치 확인"
+                  : review.outcomes?.comparisonEvidenceUnverified === 0
+                    ? "비교에는 사용하지 않음"
+                    : "비교 결과에 영향 · 검토 필요",
+                "text-slate-700",
+              ],
+              [
+                "확인된 일치",
+                review.outcomes?.matches ?? s.matches,
+                "원문 근거로 같은 값 확인",
+                "text-emerald-800",
+              ],
+            ] as const
+          ).map(([label, value, note, tone]) => (
             <div
               key={label}
               className="rounded-lg border border-slate-200 bg-slate-50 p-3"
             >
               <p className="text-[11px] text-slate-600">{label}</p>
-              <p className="mt-1 text-xl font-bold text-[#142744]">{value}</p>
+              <p className={`mt-1 text-xl font-bold ${tone}`}>{value}</p>
+              <p className="mt-0.5 text-[10px] text-slate-500">{note}</p>
             </div>
           ))}
         </div>
-        {!!(
-          review.outcomes?.evidenceUnverified ?? review.outcomes?.evidenceFailed
-        ) && (
+        {unverified > 0 && (
           <p
-            data-testid={review.outcomes?.comparisonEvidenceUnverified===0?"review-unused-candidates":"review-incomplete"}
-            className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-amber-900"
+            data-testid={
+              review.outcomes?.comparisonEvidenceUnverified === 0
+                ? "review-unused-candidates"
+                : "review-incomplete"
+            }
+            className="mt-3 rounded-lg bg-amber-50 p-3 text-xs leading-5 text-amber-900"
           >
-            {review.outcomes?.comparisonEvidenceUnverified===0
-              ? "판정에 사용하지 않은 원문 미확인 추출 후보가 있습니다. 후보와 최초 진단은 상세에 보존하며, 해당 값은 비교 근거로 사용하지 않았습니다."
-              : "검토 미완료 · 원문 근거를 확인하지 못한 필드가 남아 있습니다. 확정 불일치 0건은 모든 서류가 정상이라는 뜻이 아닙니다."}
-          </p>
-        )}
-        {review.outcomes && (
-          <p className="mt-2 text-xs text-slate-500">
-            독립 판정 {review.outcomes.independentChecks} · 대조 대상 없음{" "}
-            {review.outcomes.notApplicable} · 최초 AI 근거 미확인{" "}
-            {review.outcomes.evidenceFailed} · 현재 복구{" "}
-            {review.outcomes.evidenceRecovered ?? 0} (원본 검사 진단은 상세에
-            보존)
+            {review.outcomes?.comparisonEvidenceUnverified === 0
+              ? `AI가 읽었지만 원문에서 위치를 확인하지 못한 값 ${unverified}개는 비교에 쓰지 않았습니다. 아래 서류별 판독 결과에서 확인하거나 직접 입력할 수 있습니다.`
+              : "검토 미완료 · 비교에 쓰인 값 중 원문 근거를 확인하지 못한 값이 있습니다. 확정 불일치가 0건이어도 모든 서류가 정상이라는 뜻은 아닙니다."}
           </p>
         )}
         <div className="mt-4 flex flex-wrap gap-2">
@@ -270,11 +296,12 @@ export function ShippingReviewPanel({
             onChange={(e) => setFilter(e.target.value)}
             className="rounded-lg border border-slate-200 p-2 text-xs"
           >
-            <option value="attention">우선 확인</option>
-            <option value="all">전체</option>
+            <option value="attention">먼저 확인할 문제</option>
+            <option value="core">주요 항목 (대조 대상 없음 제외)</option>
+            <option value="all">전체 항목</option>
             <option value="mismatch">불일치</option>
             <option value="review">확인 필요 · 정보 부족</option>
-            <option value="match">일치·AI 의미 대응</option>
+            <option value="match">일치 · AI 의미 대응</option>
             <option value="not_applicable">대조 대상 없음</option>
           </select>
           {options.length > 1 && (
@@ -297,23 +324,35 @@ export function ShippingReviewPanel({
           )}
           <button
             onClick={() =>
-              setFilter(filter === "attention" ? "all" : "attention")
+              setFilter(filter === "attention" ? "core" : "attention")
             }
             className="rounded-lg border border-slate-200 px-3 py-2 text-xs"
           >
             {filter === "attention"
-              ? "일치·대조 대상 없음 포함 전체 보기"
-              : "확인할 항목만 보기"}
+              ? "일치 항목까지 보기"
+              : "확인할 문제만 보기"}
           </button>
         </div>
       </div>
-      {filter === "attention" && (
+      {!issueCount && !attentionGroups && (
+        <p
+          data-testid="normal-review-summary"
+          className="mx-4 mt-4 rounded-lg bg-emerald-50 p-3 text-xs leading-5 text-emerald-900"
+        >
+          {review.outcomes?.comparisonEvidenceUnverified
+            ? "확정된 차이는 없지만, 비교에 쓰인 값 중 원문 근거를 확인하지 못한 값이 있어 검토가 끝나지 않았습니다. "
+            : "확인할 문제가 없습니다. "}
+          원문 근거로 일치를 확인한 검사 {review.outcomes?.matches ?? s.matches}
+          건입니다.
+        </p>
+      )}
+      {filter === "attention" && !!issueCount && (
         <section
           aria-label="업무상 확인할 문제"
           className="space-y-2 px-4 pb-4"
         >
           <p className="text-sm font-semibold text-slate-800">
-            조치가 필요한 문제 {review.issues?.length ?? visible.length}건
+            먼저 확인할 문제 {issueCount}건
           </p>
           {(review.issues ?? [])
             .filter(
@@ -333,7 +372,7 @@ export function ShippingReviewPanel({
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h4 className="text-xs font-semibold">
-                    {issue.title} ·{" "}
+                    {displayTitle(issue.title)} ·{" "}
                     {issue.rootCauseIds?.some((k) =>
                       k.includes("product-meaning"),
                     )
@@ -346,7 +385,7 @@ export function ShippingReviewPanel({
                       setSelected(
                         "issue-selection:" +
                           JSON.stringify({
-                            title: issue.title,
+                            title: displayTitle(issue.title),
                             checkIds: issue.relatedCheckIds,
                           }),
                       );
@@ -358,7 +397,9 @@ export function ShippingReviewPanel({
                 <p className="mt-1 break-words text-xs text-slate-600">
                   {issue.explanation}
                 </p>
-                <p className="mt-1 text-xs text-slate-700">{issue.followUp}</p>
+                <p className="mt-1 text-xs text-slate-700">
+                  확인 방법: {issue.followUp}
+                </p>
                 <p className="mt-1 break-words text-[11px] text-slate-600">
                   영향 항목:{" "}
                   {[
@@ -386,18 +427,6 @@ export function ShippingReviewPanel({
                 </p>
               </article>
             ))}
-          {!visible.length && (
-            <p
-              data-testid="normal-review-summary"
-              className="rounded-lg bg-emerald-50 p-3 text-xs text-emerald-900"
-            >
-              {(review.outcomes?.evidenceUnverified ?? 0) > 0
-                ? "현재 비교에서 확인된 오류는 없지만 원문 근거 검토가 남아 있습니다. 확인된 일치 "
-                : "현재 실행된 검사에서 확인할 문제가 없습니다. 확인된 일치 "}
-              {review.outcomes?.matches ?? s.matches}건입니다. 전체 보기에서
-              모든 검사와 대조 대상 없음을 확인할 수 있습니다.
-            </p>
-          )}
         </section>
       )}
       <p className="px-4 pb-2 text-[11px] text-slate-500 md:hidden">
@@ -447,11 +476,13 @@ export function ShippingReviewPanel({
                     onClick={() => setSelected(g.id)}
                     className="text-left hover:text-blue-700"
                   >
-                    {g.title}
+                    {displayTitle(g.title)}
                   </button>
-                  <p className="mt-1 text-[10px] font-normal text-slate-500">
-                    {g.checks.length}개 검사 통합
-                  </p>
+                  {g.checks.length > 1 && (
+                    <p className="mt-1 text-[10px] font-normal text-slate-500">
+                      검사 {g.checks.length}건 묶음
+                    </p>
+                  )}
                 </th>
                 {shippingTypes.map((t) => (
                   <td key={t} className="block min-w-0 md:table-cell md:p-3">
@@ -502,9 +533,7 @@ export function ShippingReviewPanel({
                           documents.find((d) => d.id === f.documentId)
                             ?.detectedType === t,
                       ) && (
-                        <span className="text-slate-400">
-                          정보 없음 / 대상 없음
-                        </span>
+                        <span className="text-slate-400">해당 없음</span>
                       )}
                     </div>
                   </td>
@@ -517,7 +546,7 @@ export function ShippingReviewPanel({
                   </span>
                   <button
                     onClick={() => setSelected(g.id)}
-                    aria-label={`${g.title} 상세 분석`}
+                    aria-label={`${displayTitle(g.title)} 상세 분석`}
                     className="mt-2 block text-xs font-semibold text-blue-700"
                   >
                     상세 보기 →
@@ -544,6 +573,8 @@ export function ShippingReviewPanel({
                     .filter((raw) => {
                       const eligible =
                         filter === "all" ||
+                        (filter === "core" &&
+                          raw.assessment !== "not_applicable") ||
                         (filter === "mismatch" &&
                           raw.assessment.endsWith("mismatch")) ||
                         (filter === "match" &&
@@ -600,14 +631,50 @@ export function ShippingReviewPanel({
             {!visible.length && (
               <tr>
                 <td colSpan={5} className="p-8 text-center text-slate-500">
-                  선택한 필터에 표시할 항목이 없습니다. 전체 보기에서 비교
-                  범위와 정보 부족을 확인해 주세요.
+                  이 필터에 해당하는 항목이 없습니다. 필터를 &lsquo;전체
+                  항목&rsquo;으로 바꾸면 모든 비교를 볼 수 있습니다.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+      {filter !== "all" &&
+        filter !== "not_applicable" &&
+        notApplicableGroups > 0 && (
+          <p className="mx-4 mt-3 text-[11px] text-slate-500">
+            대조 대상 없음 {notApplicableGroups}개 항목은 숨겼습니다. 한
+            서류에만 있거나 어느 서류에도 적히지 않은 항목입니다.{" "}
+            <button
+              onClick={() => setFilter("all")}
+              className="font-semibold text-blue-700 underline"
+            >
+              모두 보기
+            </button>
+          </p>
+        )}
+      <details className="mx-4 mt-4 rounded-lg border border-slate-200 p-3">
+        <summary className="cursor-pointer text-xs font-semibold">
+          검사 세부 수치
+        </summary>
+        <p className="mt-2 text-xs leading-6 text-slate-600">
+          서류 연결: 원문 근거 {s.confirmedRelationships} · 사용자 확인{" "}
+          {s.userConfirmedRelationships} · 후보 {s.proposedRelationships} ·
+          충돌 {s.conflictingRelationships}
+          <br />
+          원본 검사 {review.checks.length}건 (양자 검사 {s.pairChecks} · 삼각
+          검사 {s.triangleChecks})
+          {review.outcomes && (
+            <>
+              <br />
+              독립 판정 {review.outcomes.independentChecks} · 대조 대상 없음{" "}
+              {review.outcomes.notApplicable} · 최초 AI 근거 미확인{" "}
+              {review.outcomes.evidenceFailed} · 원문으로 복구{" "}
+              {review.outcomes.evidenceRecovered ?? 0}
+            </>
+          )}
+        </p>
+      </details>
       <details className="m-4 rounded-lg border border-slate-200 p-3">
         <summary className="cursor-pointer text-xs font-semibold">
           선적 연결 근거와 범위 확인
@@ -669,7 +736,9 @@ export function ShippingReviewPanel({
         {active && (
           <>
             <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white p-5">
-              <h3 className="text-base font-bold">{active.title}</h3>
+              <h3 className="text-base font-bold">
+                {displayTitle(active.title)}
+              </h3>
               <button
                 onClick={() => {
                   dialog.current?.close();
@@ -692,7 +761,10 @@ export function ShippingReviewPanel({
                   className="mt-4 border-b border-slate-100 pb-4 text-xs leading-6"
                 >
                   <strong>
-                    {c.title} · {c.disposition==="informational"?"AI 의미상 대응 (정보)":labels[c.assessment]}
+                    {displayTitle(c.title ?? c.category)} ·{" "}
+                    {c.disposition === "informational"
+                      ? "AI 의미상 대응 (정보)"
+                      : labels[c.assessment]}
                   </strong>
                   <p>{c.explanation}</p>
                   {!!c.uncertainties?.length && (

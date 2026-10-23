@@ -90,7 +90,7 @@ test("three documents form safe multipart batches and preserve selected types wi
     page.getByRole("heading", { name: "PDF 자료 준비 완료", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText("3종 삼각대조 자료 준비", { exact: true }),
+    page.getByText("3종 대조 가능", { exact: true }),
   ).toBeVisible();
   await expect(page.getByText(/실제 분류 미실시/)).toHaveCount(3);
   expect(requests).toBe(2);

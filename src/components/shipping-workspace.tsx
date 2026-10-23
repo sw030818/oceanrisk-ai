@@ -39,6 +39,7 @@ import {
 
 import { safeError } from "@/modules/documents/errors";
 import { summarizeShipping } from "@/modules/shipping/summary";
+import { issueSummary } from "@/modules/shipping/display-titles";
 import type { ShippingResult } from "@/modules/shipping/prepare";
 import { shippingDocumentSchema } from "@/modules/shipping/schema";
 import type { GroundedField, PdfPage } from "@/modules/documents/schema";
@@ -417,16 +418,72 @@ export function ShippingWorkspace() {
     >
       <Info size={17} className="mt-1 shrink-0" />
       <p>
-        <strong>문서 분석과 서류 간 대조는 별도 단계입니다.</strong>
+        <strong>AI가 읽은 값을 그대로 믿지 않습니다.</strong>
         <br />
-        AI는 문서 분류·값·근거 후보를 추출하고, 코드가 실제 원문을 대조합니다.
-        {comparisonEnabled
-          ? "검증된 같은 선적 범위에서 대조하고, 불확실 항목은 잠정/보류로 표시합니다."
-          : "삼각대조는 아직 실행하지 않습니다. 분석 후 연결 근거에 따라 실행 여부를 안내합니다."}{" "}
-        사용자 수정값은 원문 검증 완료로 표시하지 않습니다.
+        AI가 서류 종류와 값을 읽으면, 프로그램이 각 값이 PDF 원문의 어느
+        위치에 있는지 다시 확인합니다. 원문에서 확인된 값만 서류끼리 비교하고,
+        확인하지 못한 값이나 사용자가 고친 값은 &lsquo;확정&rsquo;으로 판정하지
+        않습니다. 서류 간 대조는 분석 후 같은 거래로 연결된 서류가 있을 때만
+        실행합니다.
       </p>
     </div>
   );
+  const issues = review.issues ?? [];
+  const mismatchIssues = issues.filter(
+    (i) => i.assessment === "confirmed_mismatch",
+  );
+  const otherIssues = issues.filter(
+    (i) => i.assessment !== "confirmed_mismatch",
+  );
+  const reviewed = comparisonEnabled && review.status !== "not_performed";
+  // Never let issue grouping hide a confirmed mismatch count.
+  const mismatchCount =
+    mismatchIssues.length || (review.outcomes?.mismatches ?? 0);
+  const comparisonUnverified =
+    review.outcomes?.comparisonEvidenceUnverified ?? 0;
+  const unusedUnverified =
+    comparisonUnverified === 0
+      ? (review.outcomes?.evidenceUnverified ?? 0)
+      : 0;
+  const heading =
+    summary.failedDocuments === results.length
+      ? resultAnalysis
+        ? "문서 분석 실패"
+        : "자료 준비 실패"
+      : summary.failedDocuments
+        ? resultAnalysis
+          ? "문서 분석 일부 성공 · 확인 필요"
+          : "자료 준비 일부 완료"
+        : !resultAnalysis
+          ? "PDF 자료 준비 완료"
+          : reviewed && review.issues
+            ? mismatchCount
+              ? `확정 불일치 ${mismatchCount}건 · 제출 전 확인 필요`
+              : otherIssues.length
+                ? `확인 필요 ${otherIssues.length}건 · 확정된 불일치 없음`
+                : comparisonUnverified
+                  ? "서류 대조 완료 · 원문 미확인 값 검토 필요"
+                  : "서류 대조 완료 · 확인할 문제 없음"
+            : summary.partialDocuments
+              ? "문서 분석 일부 성공 · 확인 필요"
+              : comparisonEnabled
+                ? "문서별 분석·서류 대조 완료"
+                : "문서별 분석 완료 · 삼각대조 미실시";
+  const verdict = !resultAnalysis
+    ? "PDF에서 글자와 위치만 준비했습니다. AI 판독과 서류 대조는 실행하지 않았습니다."
+    : summary.failedDocuments === results.length
+      ? "모든 파일의 AI 분석이 실패했습니다. 아래 파일별 오류를 확인해 주세요."
+      : reviewed && review.issues
+        ? mismatchCount
+          ? `${issueSummary(mismatchIssues) || "일부 항목"}: 원문 근거로 서류 간 값이 다르게 확인됐습니다. 적하목록 제출 전에 원본 서류를 확인해 주세요.`
+          : otherIssues.length
+            ? `원문 근거로 확정된 차이는 없습니다. ${issueSummary(otherIssues)} 항목은 근거가 부족하거나 범위가 불분명해 사람이 확인해야 합니다.`
+            : comparisonUnverified
+              ? "확정된 차이는 없지만, 비교에 쓰인 값 중 원문에서 위치를 확인하지 못한 값이 있습니다."
+              : `원문 근거로 확인한 ${review.outcomes?.matches ?? review.summary?.matches ?? 0}개 검사가 모두 일치합니다.${unusedUnverified ? ` AI가 읽었지만 원문에서 위치를 확인하지 못한 값 ${unusedUnverified}개는 비교에 쓰지 않았습니다.` : ""}`
+        : comparisonEnabled
+          ? "서류 간 대조를 실행하지 못했습니다. 같은 거래로 연결할 근거가 부족하거나 대조할 서류가 부족합니다."
+          : "서류별 판독만 실행했습니다. 서류끼리 비교하려면 서로 다른 서류를 2종 이상 올려 주세요.";
   return (
     <div className="min-h-screen bg-[#f5f7fb] text-slate-800">
       <header className="flex h-[72px] items-center justify-between border-b border-slate-200 bg-white px-5 md:px-9">
@@ -492,10 +549,12 @@ export function ShippingWorkspace() {
               <h1 className="break-keep text-2xl font-bold tracking-tight text-[#142744] md:text-[28px]">
                 {tab === "upload"
                   ? "적하목록 신고 전, 원문부터 정확하게."
-                  : "원문과 서류 대조 결과를 확인하세요."}
+                  : "서류 검토 결과"}
               </h1>
               <p className="mt-2.5 text-sm leading-6 text-slate-500">
-                중소 포워더를 위한 서로 다른 출처의 선적·신고 자료 검토
+                {tab === "upload"
+                  ? "House B/L · 수출신고필증 · House 적하목록의 값이 서로 맞는지 신고 전에 확인합니다."
+                  : "결론을 먼저 보고, 문제 항목은 원문 위치로 바로 확인하세요."}
               </p>
             </div>
             <div className="flex gap-2 lg:hidden">
@@ -533,17 +592,18 @@ export function ShippingWorkspace() {
                 <div className="relative flex flex-wrap justify-between gap-6">
                   <div>
                     <p className="mb-4 text-[10px] text-blue-100">
-                      선적서류와 신고 예정자료, 한곳에서
+                      House B/L · 수출신고필증 · House 적하목록
                     </p>
                     <h2 className="text-xl font-semibold leading-relaxed md:text-2xl">
-                      서로 다른 원본 자료를,
+                      세 서류의 값이 서로 맞는지,
                       <br />
-                      신고 전에 함께 검토하도록.
+                      적하목록 제출 전에 확인하세요.
                     </h2>
                     <p className="mt-3 max-w-xl text-xs leading-6 text-blue-100/75">
-                      House B/L · 수출신고필증 · House 적하목록
-                      <br />각 유형에 여러 PDF를 추가하고, 연결된 2종·3종을 함께
-                      검토하세요.
+                      PDF를 올리면 AI가 값을 읽고, 원문 위치를 확인한 값만
+                      서류끼리 비교합니다.
+                      <br />
+                      서류마다 여러 PDF를 올릴 수 있습니다.
                     </p>
                   </div>
                   <div className="self-center">
@@ -551,7 +611,7 @@ export function ShippingWorkspace() {
                       03<span className="ml-1 text-sm text-blue-200">종</span>
                     </p>
                     <p className="mt-2 text-[10px] text-blue-100/70">
-                      준비 대상 문서
+                      교차 검토 서류
                     </p>
                   </div>
                 </div>
@@ -559,10 +619,10 @@ export function ShippingWorkspace() {
               {pending}
               <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-7">
                 <div className="mb-6">
-                  <h2 className="text-sm font-bold">검토할 선적서류 업로드</h2>
+                  <h2 className="text-sm font-bold">서류를 종류별 칸에 올려 주세요</h2>
                   <p className="mt-2 text-xs leading-6 text-slate-500">
-                    서류 종류는 사용자가 선택한 영역입니다. 실제 유형은 분석 후
-                    원문 제목과 대조해 확인합니다.
+                    다른 칸에 잘못 올려도 분석 후 문서 제목으로 실제 종류를
+                    확인해 알려 드립니다.
                   </p>
                 </div>
                 <div
@@ -584,17 +644,20 @@ export function ShippingWorkspace() {
                   ))}
                 </div>
                 <p className="mt-4 text-[11px] leading-6 text-slate-500">
-                  {entries.length}개 문서 · {selectedTypes}종 · 최대 24개 / 64
-                  MB · 요청당 4 MB 이내 자동 배치
-                  <br />한 종류도 개별 분석할 수 있습니다. 서로 다른 유형과
-                  검증된 연결이 있어야 서류 대조를 실행합니다.
+                  {entries.length}개 파일 · {selectedTypes}종 선택 (최대 24개 ·
+                  합계 64 MB · 파일당 4 MB · 30페이지)
+                  <br />
+                  서로 다른 서류가 2종 이상이고 같은 거래로 확인되면 서류끼리
+                  비교합니다. 한 종류만 올리면 서류별 판독만 합니다.
                 </p>
                 <div className="mt-5 rounded-xl bg-slate-50 p-4 text-xs leading-6 text-slate-600">
                   <p>
-                    자료 사용·처리 권한을 확인해 주세요. AI 분석은 추출
-                    텍스트·위치 정보를 OpenAI에 전송합니다. 스캔 페이지는 선택적
-                    OCR을 위해 해당 PDF 페이지 이미지를 전송할 수 있습니다. PDF
-                    원문만 보기는 OpenAI를 호출하지 않습니다.
+                    AI 분석을 위해 PDF에서 읽은 글자와 위치 정보를 OpenAI로
+                    보냅니다. 글자가 없는 스캔 페이지는 해당 페이지 이미지가
+                    전송될 수 있습니다. 원본 PDF는 브라우저에서만 열고 서버에
+                    보관하지 않습니다. &lsquo;PDF 원문만 보기&rsquo;는 OpenAI를
+                    사용하지 않습니다. 회사·공공 자료는 처리 권한이 있는지 먼저
+                    확인해 주세요.
                   </p>
                   <label className="mt-3 flex items-start gap-2">
                     <input
@@ -604,13 +667,13 @@ export function ShippingWorkspace() {
                       onChange={(e) => setConsent(e.target.checked)}
                       className="mt-1.5"
                     />
-                    자료 처리 및 외부 AI 전송 안내와 사용 권한을 확인했습니다.
+                    서류를 처리할 권한이 있고, 외부 AI 전송 안내를 확인했습니다.
                   </label>
                 </div>
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-xs text-slate-500">
-                      AI 분류 → 원문 근거 확인 → 연결된 서류 대조
+                      AI 판독 → 원문 위치 확인 → 서류끼리 비교
                     </p>
                     <button
                       onClick={() => prepare(false)}
@@ -643,8 +706,9 @@ export function ShippingWorkspace() {
                     role="status"
                     className="mt-4 text-xs leading-6 text-blue-700"
                   >
-                    {batchProgress.current}/{batchProgress.total} 배치 · PDF
-                    원문과 AI 응답을 확인하고 완료된 결과를 통합합니다.
+                    {batchProgress.current}/{batchProgress.total}번째 묶음 처리
+                    중 · 파일마다 AI 판독과 원문 확인에 수십 초가 걸릴 수
+                    있습니다.
                     <button
                       onClick={() => abort.current?.abort()}
                       className="ml-3 underline"
@@ -656,10 +720,10 @@ export function ShippingWorkspace() {
               </section>
               <div className="mt-6 grid gap-4 md:grid-cols-3">
                 {[
-                  "자료 선택",
-                  "PDF 원문 확인",
-                  "AI 추출·근거 확인 및 선적 대조",
-                ].map((label, i) => (
+                  ["서류 올리기", "종류별 칸에 PDF를 올립니다. 서류마다 여러 파일도 됩니다."],
+                  ["AI 판독 · 원문 확인", "AI가 읽은 값마다 PDF의 실제 라벨·행·열 위치를 다시 확인합니다."],
+                  ["서류끼리 비교", "같은 거래의 값만 비교해 불일치와 확인할 항목을 알려 줍니다."],
+                ].map(([label, body], i) => (
                   <div
                     key={label}
                     className="rounded-xl border border-slate-200 bg-white p-4"
@@ -668,163 +732,98 @@ export function ShippingWorkspace() {
                       0{i + 1}
                     </span>
                     <p className="mt-2 text-xs font-semibold">{label}</p>
+                    <p className="mt-1 text-[11px] leading-5 text-slate-500">
+                      {body}
+                    </p>
                   </div>
                 ))}
               </div>
             </>
           ) : (
             <>
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <h2 className="text-lg font-bold">
-                  {summary.failedDocuments === results.length
-                    ? resultAnalysis
-                      ? "문서 분석 실패"
-                      : "자료 준비 실패"
-                    : summary.failedDocuments ||
-                        (resultAnalysis && summary.partialDocuments)
-                      ? resultAnalysis
-                        ? "문서 분석 일부 성공 · 확인 필요"
-                        : "자료 준비 일부 완료"
-                      : resultAnalysis
-                        ? comparisonEnabled
-                          ? "문서별 분석·서류 대조 완료"
-                          : "문서별 분석 완료 · 삼각대조 미실시"
-                        : "PDF 자료 준비 완료"}
-                </h2>
-                <button
-                  onClick={reset}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold"
-                >
-                  새 서류 검토
-                </button>
-              </div>
-              {!!reusedDocuments && (
-                <p className="mb-3 text-xs text-blue-700">
-                  기존 성공 결과 {reusedDocuments}개를 유지했습니다. 해당 문서는
-                  AI를 다시 호출하지 않았습니다.
-                </p>
-              )}
-              <div className="mb-5">
-                <ShippingReport results={results} review={review} />
-              </div>
-              <div className="mb-4 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs leading-6 text-slate-600">
-                <strong className="text-[#142744]">
-                  {results.length}개 파일
-                </strong>{" "}
-                · PDF 원문 준비{" "}
-                {results.filter((r) => r.pdf.pages.length > 0).length} · 선택{" "}
-                {summary.uploadedTypes}종 · 실제 분류 {summary.classifiedTypes}
-                종 · AI 분석 {summary.analyzedDocuments} · 부분{" "}
-                {summary.partialDocuments} · 실패 {summary.failedDocuments}
-                <p>
-                  유형 분류 성공{" "}
-                  {
-                    results.filter(
-                      (r) => r.document?.classificationStatus === "classified",
-                    ).length
-                  }{" "}
-                  · 불확실{" "}
-                  {
-                    results.filter(
-                      (r) =>
-                        r.document?.classificationStatus === "needs_review",
-                    ).length
-                  }{" "}
-                  · 미실시/실패{" "}
-                  {
-                    results.filter(
-                      (r) =>
-                        !r.document ||
-                        r.document.classificationStatus === "not_performed",
-                    ).length
-                  }
+              <section
+                aria-label="검토 결론"
+                className={`mb-5 rounded-2xl border bg-white p-5 md:p-6 ${reviewed && mismatchCount ? "border-red-200" : reviewed && otherIssues.length ? "border-orange-200" : "border-slate-200"}`}
+              >
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0 max-w-3xl">
+                    <h2 className="text-lg font-bold text-[#142744]">
+                      {heading}
+                    </h2>
+                    <p
+                      data-testid="result-verdict"
+                      className="mt-2 text-sm leading-6 text-slate-600"
+                    >
+                      {verdict}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <ShippingReport results={results} review={review} />
+                    <button
+                      onClick={reset}
+                      className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold"
+                    >
+                      새 서류 검토
+                    </button>
+                  </div>
+                </div>
+                <p className="mt-4 border-t border-slate-100 pt-3 text-xs leading-6 text-slate-500">
+                  파일 {results.length}개 ·{" "}
+                  {shippingTypes
+                    .filter((t) =>
+                      results.some(
+                        (r) => (r.detectedType ?? r.uploadSlot) === t,
+                      ),
+                    )
+                    .map((t) => shippingLabels[t].title)
+                    .join(" · ")}
+                  {resultAnalysis &&
+                    ` · AI 분석 ${summary.analyzedDocuments}개${summary.failedDocuments ? ` · 실패 ${summary.failedDocuments}개` : ""}`}{" "}
+                  {!resultAnalysis && (
+                    <>
+                      · 대조 준비:{" "}
+                      <span className="font-semibold text-slate-700">
+                        {summary.comparisonReadiness === "ready_for_triangle"
+                          ? "3종 대조 가능"
+                          : summary.comparisonReadiness === "ready_for_pair"
+                            ? "2종 대조 가능"
+                            : "대상 서류 부족"}
+                      </span>{" "}
+                    </>
+                  )}
+                  · 서류 간 대조:{" "}
+                  <span className="font-semibold text-slate-700">
+                    {!comparisonEnabled
+                      ? "분석 미실시"
+                      : review.triangleStatus === "performed"
+                        ? "3종 대조 완료"
+                        : review.triangleStatus === "insufficient_documents"
+                          ? "2종만 대조 · 3종 부족"
+                          : "같은 거래 연결 확인 필요"}
+                  </span>
                 </p>
                 {results.some(
                   (r) => r.document?.classificationStatus === "needs_review",
                 ) && (
-                  <p className="text-orange-800">
-                    {results.length}개 파일을 검토했으나{" "}
+                  <p className="mt-2 text-xs text-orange-800">
+                    {results.length}개 파일 중{" "}
                     {
                       results.filter(
                         (r) =>
                           r.document?.classificationStatus === "needs_review",
                       ).length
                     }
-                    개 문서의 유형 근거를 확인하지 못했습니다. 문서 분류
-                    근거에서 실제 이유를 확인해 주세요.
+                    개는 문서 제목으로 서류 종류를 확인하지 못했습니다.
+                    아래 서류별 판독 결과에서 이유를 확인해 주세요.
                   </p>
                 )}
-                <p>
-                  대조 준비 상태:{" "}
-                  <span>
-                    {summary.comparisonReadiness === "ready_for_triangle"
-                      ? "3종 삼각대조 자료 준비"
-                      : summary.comparisonReadiness === "ready_for_pair"
-                        ? "2종 대조 자료 준비"
-                        : "대상 서류 부족"}
-                  </span>{" "}
-                  · 서류 간 삼각대조:{" "}
-                  <span>
-                    {!comparisonEnabled
-                      ? "분석 미실시"
-                      : review.triangleStatus === "performed"
-                        ? "검증 범위 대조 실행"
-                        : review.triangleStatus === "insufficient_documents"
-                          ? "대상 3종 부족"
-                          : "공통 연결 확인 필요"}
-                  </span>
-                </p>
-              </div>
-              {comparisonEnabled && (
-                <div className="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4">
-                  {[
-                    [
-                      "확정 불일치",
-                      review.outcomes?.mismatches ??
-                        review.summary?.confirmedMismatches ??
-                        0,
-                      "text-red-700",
-                    ],
-                    [
-                      "잠정·확인 필요",
-                      review.outcomes?.review ??
-                        (review.summary?.provisional ?? 0) +
-                          (review.summary?.needsReview ?? 0),
-                      "text-orange-800",
-                    ],
-                    [
-                      "정보 부족·비교 불가",
-                      review.outcomes
-                        ? review.outcomes.requiredMissing +
-                          review.outcomes.notComparable
-                        : (review.summary?.insufficient ?? 0) +
-                          (review.summary?.notComparable ?? 0),
-                      "text-slate-600",
-                    ],
-                    [
-                      "확인된 일치",
-                      review.outcomes?.matches ?? review.summary?.matches ?? 0,
-                      "text-emerald-800",
-                    ],
-                  ].map(([label, n, color]) => (
-                    <div
-                      key={label}
-                      className="rounded-xl border border-slate-200 bg-white p-4"
-                    >
-                      <p className="text-xs text-slate-500">{label}</p>
-                      <p className={`mt-2 text-3xl font-semibold ${color}`}>
-                        {n}
-                      </p>
-                      <p className="mt-1 text-[10px] text-slate-400">
-                        {review.outcomes
-                          ? "의미·범위별 독립 판정 기준"
-                          : "원본 검사 기준 · 통합 비교표와 건수 구분"}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {pending}
+                {!!reusedDocuments && (
+                  <p className="mt-2 text-xs text-blue-700">
+                    기존 성공 결과 {reusedDocuments}개를 유지했습니다. 해당
+                    문서는 AI를 다시 호출하지 않았습니다.
+                  </p>
+                )}
+              </section>
               {comparisonEnabled && (
                 <ShippingReviewPanel
                   review={review}
@@ -854,7 +853,17 @@ export function ShippingWorkspace() {
                   }
                 />
               )}
-              <div className="mt-6 space-y-5">
+              <div className="mt-8">
+                <h2 className="text-base font-bold text-[#142744]">
+                  서류별 판독 결과
+                </h2>
+                <p className="mt-1 text-xs leading-5 text-slate-500">
+                  AI가 읽은 값과 원문 위치를 서류마다 확인하고, 잘못 읽은 값은
+                  직접 고칠 수 있습니다. 고친 값은 다시 계산하지만 원문 확인
+                  완료로 표시하지 않습니다.
+                </p>
+              </div>
+              <div className="mt-4 space-y-5">
                 {results.map((result) => (
                   <section
                     key={result.pdf.id}
@@ -897,10 +906,10 @@ export function ShippingWorkspace() {
                                 shippingValues(result.document).some(
                                   (f) => f.current.status === "user_edited",
                                 )
-                              ? "사용자 수정 · 원문 근거 상태 유지"
+                              ? "사용자 수정 포함"
                               : result.document?.extractionStatus === "partial"
-                                ? "분석 일부 성공 · 근거 확인 필요"
-                                : "문서 분석·원문 근거 검증 완료"}
+                                ? "일부 값 원문 미확인"
+                                : "모든 값 원문 확인"}
                       </span>
                     </div>
                     {urlById.get(result.pdf.id) && (

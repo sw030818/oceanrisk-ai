@@ -151,7 +151,7 @@ test("classification uncertainty is distinct from upload count", async ({
 }) => {
   await setup(page, "uncertain");
   await expect(
-    page.getByText(/3개 파일을 검토했으나 1개 문서의 유형 근거/),
+    page.getByText(/3개 파일 중 1개는 문서 제목으로 서류 종류를 확인하지 못했습니다/),
   ).toBeVisible();
   await expect(page.getByRole("table").first()).toBeVisible();
 });
@@ -161,7 +161,7 @@ test("drawer editing/restoring recalculates free and keeps original source", asy
   const calls = await setup(page);
   await page.getByLabel("검토 결과 필터").selectOption("all");
   await page
-    .getByRole("button", { name: "문서 전체 포장 개수 상세 분석" })
+    .getByRole("button", { name: "포장 개수 (서류 전체) 상세 분석" })
     .click();
   const drawer = page.getByRole("dialog", { name: "상세 분석 패널" });
   await drawer

@@ -5,13 +5,13 @@ test("external OpenAI disclosure and explicit free PDF-only mode are explicit, w
 }) => {
   await page.goto("/");
   await expect(
-    page.getByText(/AI 분석은 추출 텍스트·위치 정보를 OpenAI에 전송/),
+    page.getByText(/PDF에서 읽은 글자와 위치 정보를 OpenAI로/),
   ).toBeVisible();
   await expect(page.getByRole("status")).toContainText(
-    "삼각대조는 아직 실행하지 않습니다",
+    "서류 간 대조는 분석 후",
   );
   await expect(
-    page.getByText(/PDF 원문만 보기는 OpenAI를 호출하지 않습니다/),
+    page.getByText(/PDF 원문만 보기.{0,2}는 OpenAI를 사용하지 않습니다/),
   ).toBeVisible();
   await expect(page.getByLabel(/접근 코드/)).toHaveCount(0);
   await expect(page.getByText(/Google Gemini로 전송/)).toHaveCount(0);

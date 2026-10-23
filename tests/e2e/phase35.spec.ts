@@ -70,7 +70,7 @@ for (const width of [1440, 390])
     await setup(page);
     await page
       .getByRole("button", {
-        name: "문서 전체 포장 개수 상세 분석",
+        name: "포장 개수 (서류 전체) 상세 분석",
         exact: true,
       })
       .click();
@@ -83,7 +83,7 @@ for (const width of [1440, 390])
       .getByText(/원본 검사 진단/)
       .first()
       .click();
-    await expect(drawer).toContainText("문서 전체 포장 개수");
+    await expect(drawer).toContainText("포장 개수 (서류 전체)");
     await page.keyboard.press("Escape");
     await page.getByLabel("검토 결과 필터").selectOption("not_applicable");
     await expect(page.getByTestId("comparison-row").first()).toContainText(
@@ -103,7 +103,7 @@ test("PHASE35 root correction on previously missing AI aggregate recomputes with
 }) => {
   const calls = await setup(page);
   await page
-    .getByRole("button", { name: "문서 전체 포장 개수 상세 분석", exact: true })
+    .getByRole("button", { name: "포장 개수 (서류 전체) 상세 분석", exact: true })
     .click();
   const drawer = page.getByRole("dialog", { name: "상세 분석 패널" });
   await drawer
@@ -131,7 +131,7 @@ test("PHASE35 independent mismatch and print summary preserve source diagnostics
   await page.getByLabel("검토 결과 필터").selectOption("mismatch");
   await expect(page.getByTestId("comparison-row")).toHaveCount(1);
   await page
-    .getByRole("button", { name: "문서 전체 포장 개수 상세 분석", exact: true })
+    .getByRole("button", { name: "포장 개수 (서류 전체) 상세 분석", exact: true })
     .click();
   await expect(
     page.getByRole("dialog", { name: "상세 분석 패널" }),

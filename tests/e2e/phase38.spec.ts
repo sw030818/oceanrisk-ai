@@ -41,7 +41,7 @@ for (const width of [1440, 390])
       .getByRole("button", { name: "AI 서류 분석 시작", exact: true })
       .click();
     await expect(page.getByTestId("review-kpis")).toContainText(
-      "현재 원문 근거 미확인",
+      "원문 근거 미확인 값",
     );
     await expect(page.getByTestId("review-incomplete")).toContainText(
       "검토 미완료",

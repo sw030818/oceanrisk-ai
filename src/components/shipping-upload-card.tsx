@@ -124,7 +124,7 @@ export function ShippingUploadCard({
                       waiting: "분석 대기",
                       processing: "처리 중",
                       complete: "완료",
-                      partial: "일부 성공 · 확인 필요",
+                      partial: "완료 · 일부 값 원문 미확인",
                       failed: "실패",
                     }[p?.state ?? "waiting"]
                   }

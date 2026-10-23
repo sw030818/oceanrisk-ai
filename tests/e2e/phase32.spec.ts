@@ -73,7 +73,7 @@ test("MOCK AI + real PDF: two types run pair comparison and explicitly lack tria
   page,
 }) => {
   await mock32(page, { two: true });
-  await expect(page.getByText("대상 3종 부족", { exact: true })).toBeVisible();
+  await expect(page.getByText("2종만 대조 · 3종 부족", { exact: true })).toBeVisible();
   await expect(page.getByTestId("shipping-review")).toContainText("양자 검사");
   await page
     .getByLabel("검토 결과 필터")
@@ -92,7 +92,7 @@ test("MOCK AI + real PDF: three normal documents show confirmed shared triangle 
 }) => {
   await mock32(page);
   await expect(
-    page.getByText("검증 범위 대조 실행", { exact: true }),
+    page.getByText("3종 대조 완료", { exact: true }),
   ).toBeVisible();
   await expect(page.getByTestId("shipping-review")).toContainText(
     "확정 불일치",
@@ -163,7 +163,7 @@ test("MOCK AI + real PDF: uncertain references retain candidates and never prete
 }) => {
   await mock32(page, { scenario: "uncertain" });
   await expect(
-    page.getByText("공통 연결 확인 필요", { exact: true }),
+    page.getByText("같은 거래 연결 확인 필요", { exact: true }),
   ).toBeVisible();
   await expect(page.getByTestId("shipping-review")).toContainText("확인 필요");
   await page
@@ -185,7 +185,7 @@ test("MOCK AI + real PDF: one provider failure does not stop the remaining pair 
 }) => {
   await mock32(page, { partial: true });
   await expect(page.getByText("오류 코드: API_AUTH_OR_CONFIG")).toBeVisible();
-  await expect(page.getByText("대상 3종 부족", { exact: true })).toBeVisible();
+  await expect(page.getByText("2종만 대조 · 3종 부족", { exact: true })).toBeVisible();
   await page
     .getByLabel("검토 결과 필터")
     .selectOption("all");
@@ -215,7 +215,7 @@ test("MOCK AI + real PDF: actual classification governs review despite wrong upl
     page.getByRole("alert").filter({ hasText: "문서 유형 불일치" }),
   ).toHaveCount(2);
   await expect(
-    page.getByText("검증 범위 대조 실행", { exact: true }),
+    page.getByText("3종 대조 완료", { exact: true }),
   ).toBeVisible();
 });
 test("MOCK AI + real PDF: explicit user relationship confirmation remains provisional and costs no new request", async ({
