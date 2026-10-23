@@ -262,7 +262,7 @@ export function verifyShippingField(
     return finish();
   }
   if (scope !== "document") {
-    const label = values.map((b) => foreignLineLabel(page, b, role)).find(Boolean);
+    const label = values.map((b) => foreignLineLabel(page, b, role, scope)).find(Boolean);
     if (label) {
       g = fail(g, "not_field_value", `'${label}:' 라벨이 붙은 문장의 값은 품목·컨테이너·화물 표의 행 값으로 사용하지 않습니다.`);
       return finish();

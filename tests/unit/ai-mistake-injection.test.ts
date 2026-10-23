@@ -126,6 +126,18 @@ describe("injected AI mistakes never become verified facts", () => {
   });
 });
 
+describe("a goods cell annotated with its own HS line stays one verified item", () => {
+  it("does not reject the product because of the HS label inside its cell", () => {
+    const wire = structuredClone(bl.wire);
+    const g = blockIds(bl, "GLASS STORAGE JARS").blockIds, h = ["HS:", "7010.90-1000"].flatMap((t) => blockIds(bl, t).blockIds);
+    wire.items[0].fields.goodsDescription = { value: "GLASS STORAGE JARS HS: 7010.90-1000", evidence: { page: 1, blockIds: [...g, ...h] } };
+    const doc = run(wire, bl);
+    expect(doc.items).toHaveLength(1);
+    expect(doc.items[0].fields.goodsDescription.current.status).toBe("verified");
+    expect(doc.items[0].fields.hsCode.current.status).toBe("verified");
+  });
+});
+
 describe("a phantom entity is set aside, never compared, never lost", () => {
   it("keeps the real item, records the rejected candidate and says why", () => {
     const wire = structuredClone(bl.wire);

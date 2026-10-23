@@ -65,7 +65,15 @@ export function numberIsIdentifier(text: string, value: number): boolean {
  * field ("TOTAL PACKAGES:", "SHIPPING MARK:") makes the line a labelled
  * statement, not a member of an item/container/cargo table row.
  */
-export function foreignLineLabel(page: PdfPage, block: PdfBlock, role: string): string | null {
+// Labels that annotate the SAME table row (an HS line or a count inside the
+// goods cell, a seal under its container) are part of that row. Labels of
+// totals, other documents or free statements are not.
+const rowAttributes: Record<string, string[]> = {
+  item: ["goodsDescription", "tradeDescription", "hsCode", "quantity", "quantityUnit", "packageCount", "packageUnit", "grossWeight", "grossWeightUnit", "netWeight", "netWeightUnit", "declaredWeight", "declaredWeightUnit"],
+  cargo: ["houseBlNumber", "goodsDescription", "hsCode", "quantity", "quantityUnit", "packageCount", "packageUnit", "grossWeight", "grossWeightUnit", "containerNumber", "sealNumber"],
+  container: ["containerNumber", "sealNumber", "packageCount", "packageUnit", "grossWeight", "grossWeightUnit", "weightUnit"],
+};
+export function foreignLineLabel(page: PdfPage, block: PdfBlock, role: string, scope: string): string | null {
   // Only the continuous phrase that leads into the value counts: a label in a
   // separate column of the same table line (SEAL: in one cell, HS: in the
   // next) belongs to that other cell.
@@ -82,7 +90,7 @@ export function foreignLineLabel(page: PdfPage, block: PdfBlock, role: string): 
   }
   const own = block.text;
   const head = spanText(run) + " " + own.slice(0, Math.max(0, own.lastIndexOf(":") + 1));
-  const allowed = new Set([role, ...(unitParents[role] ?? [])]);
+  const allowed = new Set([role, ...(unitParents[role] ?? []), ...(rowAttributes[scope] ?? [])]);
   for (const m of head.matchAll(/([\p{L}][\p{L}\p{N} .&\/()-]{0,40}?)\s*:/gu)) {
     const label = m[1].trim();
     const labelRole = shippingRole(label);
