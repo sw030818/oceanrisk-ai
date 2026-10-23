@@ -36,6 +36,8 @@ export async function shipping34Fixture(
     title?: string;
     house?: boolean;
     partial?: boolean;
+    // Free text lines printed under the goods table (footer statements).
+    footer?: { text: string; x: number; y: number }[];
   } = {},
 ) {
   const hbl = change.hbl ?? "HB-SYN-R34-401",
@@ -141,6 +143,7 @@ export async function shipping34Fixture(
       text(String(change.volume), 556, 427);
       text("CBM", 600, 427);
     }
+    for (const f of change.footer ?? []) text(f.text, f.x, f.y);
     const cn = text("SYN-U3401401", 36, 427);
     const sn = text("SEAL: " + seal, 36, 451);
     const pn = text(String(packages), 166, 427);

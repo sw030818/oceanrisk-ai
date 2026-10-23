@@ -136,6 +136,7 @@ export interface GroundedField<T> {
     | "context_unverified"
     | "user_edited"
     | "ocr_unverified"
+    | "not_field_value"
     | EvidenceIssue;
   source: {
     scopeBasis?: "document_field" | "entity_row";

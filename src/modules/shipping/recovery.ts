@@ -167,7 +167,7 @@ export function failureCode(t: RecoveryTarget): FailureCode {
   if (c === "ocr_unverified") return "OCR_UNVERIFIED";
   if (f.value === null) return "MISSING_EXTRACTION";
   if (c === "row_mismatch") return "WRONG_ENTITY_ASSIGNMENT";
-  if (c === "role_mismatch") return "WRONG_FIELD_ASSIGNMENT";
+  if (c === "role_mismatch" || c === "not_field_value") return "WRONG_FIELD_ASSIGNMENT";
   if (
     [
       "missing_evidence",

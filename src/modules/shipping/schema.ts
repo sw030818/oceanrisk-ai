@@ -67,6 +67,7 @@ const groundedSchema = z.object({
       "context_unverified",
       "user_edited",
       "ocr_unverified",
+      "not_field_value",
       "page_missing",
       "block_missing",
       "duplicate_block",
@@ -255,6 +256,21 @@ const common = {
   containers: z.array(containerSchema).max(100),
   references: z.array(shipmentReferenceSchema).max(100),
   informationWarnings: z.array(z.string().max(200)).max(100).default([]),
+  // AI entity candidates whose identifying value provably cannot be that
+  // field (value shape / labelled statement). Kept for review, not compared.
+  rejectedCandidates: z
+    .array(
+      z
+        .object({
+          kind: z.enum(["item", "container", "cargo"]),
+          id: z.string().min(1),
+          value: z.string().max(300).nullable(),
+          reason: z.string().max(300),
+        })
+        .strict(),
+    )
+    .max(100)
+    .default([]),
   extractionStatus: z.enum(["not_performed", "partial", "complete"]),
   factCoverage: z
     .object({

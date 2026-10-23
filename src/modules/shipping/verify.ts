@@ -26,6 +26,7 @@ import { cargoCountAtoms } from "./cargo-description";
 import { atomRole, countAtoms } from "./count-atoms";
 import type { Candidate } from "./ai-schema";
 import type { ShippingField } from "./schema";
+import { shapeProblem, numberIsIdentifier, foreignLineLabel } from "./value-shape";
 type Location = NonNullable<
   NonNullable<GroundedField<unknown>["source"]>["layout"]
 >;
@@ -118,6 +119,13 @@ export function verifyShippingField(
       "ocr_unverified",
       "OCR 인식 문자열과 대조했지만 PDF 이미지에서 독립 확인한 원문은 아닙니다. 숫자·단위·페이지를 원본에서 직접 확인해 주세요.",
     );
+    return finish();
+  }
+  // The value's own shape is independent of its citation: a bare "(250)"
+  // cannot be a product name whether or not a block was cited.
+  const shape = g.value === null ? null : shapeProblem(role, g.value);
+  if (shape) {
+    g = fail(g, "not_field_value", shape);
     return finish();
   }
   if (g.status !== "verified" || !page) return finish();
@@ -248,6 +256,17 @@ export function verifyShippingField(
       "같은 원문 셀에 해당 수치의 여러 행이 있어 한 행을 문서 전체 기재값으로 확정할 수 없습니다.",
     );
     return finish();
+  }
+  if (typeof g.value === "number" && values.some((b) => numberIsIdentifier(b.text, g.value as number))) {
+    g = fail(g, "not_field_value", "모델·번호·유형 표기 뒤의 숫자는 수량·포장·중량 값으로 사용하지 않습니다.");
+    return finish();
+  }
+  if (scope !== "document") {
+    const label = values.map((b) => foreignLineLabel(page, b, role)).find(Boolean);
+    if (label) {
+      g = fail(g, "not_field_value", `'${label}:' 라벨이 붙은 문장의 값은 품목·컨테이너·화물 표의 행 값으로 사용하지 않습니다.`);
+      return finish();
+    }
   }
   const locations = values
     .map((b) => shippingCell(page, [b], scope))

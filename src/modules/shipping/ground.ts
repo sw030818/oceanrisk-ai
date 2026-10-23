@@ -161,6 +161,32 @@ export function groundShipping(
     id: `cargo-${index + 1}`,
     fields: entity(r.fields, "cargo", "houseBlNumber"),
   }));
+  // An entity whose identifying value provably cannot be that field (a bare
+  // count "(250)" as goods, a labelled TOTAL line) is not a table row. It is
+  // kept as a rejected candidate and left out of comparisons, but only while
+  // another entity of the same kind stands on verified evidence; otherwise it
+  // stays visible as an unverified entity.
+  const rejected: NonNullable<ShippingDocument["rejectedCandidates"]> = [];
+  const keepEntities = <T extends { id: string }>(
+    kind: "item" | "container" | "cargo",
+    list: T[],
+    anchorOf: (e: T) => ShippingField,
+  ) => {
+    const isPhantom = (e: T) => anchorOf(e).original.verificationCode === "not_field_value";
+    if (!list.some((e) => !isPhantom(e) && anchorOf(e).original.status === "verified")) return list;
+    return list.filter((e) => {
+      if (!isPhantom(e)) return true;
+      const a = anchorOf(e).original;
+      rejected.push({ kind, id: e.id, value: a.value === null ? null : String(a.value).slice(0, 300), reason: a.reason.slice(0, 300) });
+      return false;
+    });
+  };
+  doc.items = keepEntities("item", doc.items, (i) =>
+    i.fields.goodsDescription.original.value !== null ? i.fields.goodsDescription : i.fields.tradeDescription,
+  );
+  doc.containers = keepEntities("container", doc.containers, (c) => c.containerNumber);
+  doc.cargoRecords = keepEntities("cargo", doc.cargoRecords, (c) => c.fields.houseBlNumber);
+  doc.rejectedCandidates = rejected;
   const roles = {
     house_bl: "houseBlNumber",
     export_declaration: "declarationNumber",
@@ -261,7 +287,12 @@ export function groundShipping(
       (key) =>
         `${shippingFieldLabels[key as keyof typeof shippingFieldLabels]} 정보가 추출되지 않았습니다. 원문을 확인해 주세요.`,
     );
+  for (const r of rejected)
+    doc.informationWarnings.push(
+      `AI가 ${r.kind === "item" ? "품목" : r.kind === "container" ? "컨테이너" : "화물 행"}으로 제안한 '${(r.value ?? "").slice(0, 40)}'은 원문 해당 표의 값이 아니어서 비교에서 제외했습니다.`,
+    );
   doc.extractionStatus =
+    rejected.length === 0 &&
     doc.informationWarnings.length === 0 &&
     doc.classificationStatus === "classified" &&
     all.every(
