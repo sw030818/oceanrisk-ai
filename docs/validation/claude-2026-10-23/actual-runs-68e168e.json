@@ -1,0 +1,437 @@
+{
+ "claude-20261023-normal-u01": {
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "sourceShaStable": true,
+  "kind": "NEW paid OpenAI extraction + semantic via Production API (not replay, not mock)",
+  "inputSha256": [
+   "2fe6bf90e1992f00418958bc8ecc47efffd7c3dd3ba101427197ada4977b1507",
+   "e693f72a19ae6ac7eaff9485db26726474b3f245c6dfe23770a1de1515a49c6d",
+   "d7fa3e68542e54cacb139b722447eea3828d43fbe54e86bb98d8ac4e8064a92b"
+  ],
+  "durationMs": 34979,
+  "documents": [
+   {
+    "uploadType": "house_bl",
+    "detectedType": "house_bl",
+    "classificationStatus": "classified",
+    "model": "gpt-6-luna",
+    "estimatedCostUsd": 0.00180955,
+    "retryCount": 0,
+    "error": null
+   },
+   {
+    "uploadType": "export_declaration",
+    "detectedType": "export_declaration",
+    "classificationStatus": "classified",
+    "model": "gpt-6-luna",
+    "estimatedCostUsd": 0.00099572,
+    "retryCount": 0,
+    "error": null
+   },
+   {
+    "uploadType": "house_manifest",
+    "detectedType": "house_manifest",
+    "classificationStatus": "classified",
+    "model": "gpt-6-luna",
+    "estimatedCostUsd": 0.00095772,
+    "retryCount": 0,
+    "error": null
+   }
+  ],
+  "semantic": {
+   "model": "gpt-6-luna",
+   "requestCount": 1,
+   "retryCount": 0,
+   "estimatedCostUsd": 0.0004353
+  },
+  "outcomes": {
+   "matches": 12,
+   "mismatches": 0,
+   "review": 0,
+   "requiredMissing": 0,
+   "notApplicable": 10,
+   "notComparable": 0,
+   "evidenceFailed": 2,
+   "evidenceUnverified": 2,
+   "evidenceRecovered": 0,
+   "checksExecuted": 61,
+   "independentChecks": 23,
+   "comparisonEvidenceUnverified": 0,
+   "informational": 1
+  },
+  "summary": {
+   "matches": 46,
+   "confirmedMismatches": 0,
+   "provisional": 2,
+   "needsReview": 2,
+   "insufficient": 11,
+   "notComparable": 0,
+   "confirmedRelationships": 3,
+   "userConfirmedRelationships": 0,
+   "proposedRelationships": 0,
+   "conflictingRelationships": 0,
+   "pairChecks": 58,
+   "triangleChecks": 3
+  },
+  "actionIssues": [],
+  "primaryChecks": [
+   {
+    "meaning": "weight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "reference",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "consignee",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "containerNumber",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "declarationNumber",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "goodsDescription",
+    "assessment": "provisional_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "grossWeight",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "houseBlNumber",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "hsCode",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "netWeight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "packageCount",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "portOfDischarge",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "portOfLoading",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "quantity",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "sealNumber",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "shipper",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "weight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "reference",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "grossWeight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "netWeight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "packageCount",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "weight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "reference",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   }
+  ]
+ },
+ "claude-20261023-fault-pod-u01": {
+  "sourceSha": "68e168e66011b5ca4faafeb7736e4cae806fa111",
+  "sourceShaStable": true,
+  "kind": "NEW paid OpenAI extraction + semantic via Production API (not replay, not mock)",
+  "inputSha256": [
+   "2fe6bf90e1992f00418958bc8ecc47efffd7c3dd3ba101427197ada4977b1507",
+   "29ccdb9f1789431d6af1b6d116087d404d6ee0c344cdcb64a002b73f28d37575",
+   "d7fa3e68542e54cacb139b722447eea3828d43fbe54e86bb98d8ac4e8064a92b"
+  ],
+  "durationMs": 29693,
+  "documents": [
+   {
+    "uploadType": "house_bl",
+    "detectedType": "house_bl",
+    "classificationStatus": "classified",
+    "model": "gpt-6-luna",
+    "estimatedCostUsd": 0.00081434,
+    "retryCount": 0,
+    "error": null
+   },
+   {
+    "uploadType": "export_declaration",
+    "detectedType": "export_declaration",
+    "classificationStatus": "classified",
+    "model": "gpt-6-luna",
+    "estimatedCostUsd": 0.00099072,
+    "retryCount": 0,
+    "error": null
+   },
+   {
+    "uploadType": "house_manifest",
+    "detectedType": "house_manifest",
+    "classificationStatus": "classified",
+    "model": "gpt-6-luna",
+    "estimatedCostUsd": 0.00075185,
+    "retryCount": 0,
+    "error": null
+   }
+  ],
+  "semantic": {
+   "model": "gpt-6-luna",
+   "requestCount": 1,
+   "retryCount": 0,
+   "estimatedCostUsd": 0.0004263
+  },
+  "outcomes": {
+   "matches": 11,
+   "mismatches": 0,
+   "review": 1,
+   "requiredMissing": 0,
+   "notApplicable": 10,
+   "notComparable": 0,
+   "evidenceFailed": 2,
+   "evidenceUnverified": 2,
+   "evidenceRecovered": 2,
+   "checksExecuted": 61,
+   "independentChecks": 23,
+   "comparisonEvidenceUnverified": 0,
+   "informational": 1
+  },
+  "summary": {
+   "matches": 44,
+   "confirmedMismatches": 0,
+   "provisional": 4,
+   "needsReview": 2,
+   "insufficient": 11,
+   "notComparable": 0,
+   "confirmedRelationships": 3,
+   "userConfirmedRelationships": 0,
+   "proposedRelationships": 0,
+   "conflictingRelationships": 0,
+   "pairChecks": 58,
+   "triangleChecks": 3
+  },
+  "actionIssues": [
+   {
+    "title": "양하항 / POD",
+    "assessment": "provisional_mismatch",
+    "cause": "scope"
+   }
+  ],
+  "primaryChecks": [
+   {
+    "meaning": "weight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "reference",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "consignee",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "containerNumber",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "declarationNumber",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "goodsDescription",
+    "assessment": "provisional_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "grossWeight",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "houseBlNumber",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "hsCode",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "netWeight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "packageCount",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "portOfDischarge",
+    "assessment": "provisional_mismatch",
+    "reasonCodes": [
+     "SCOPE_UNRESOLVED"
+    ]
+   },
+   {
+    "meaning": "portOfLoading",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "quantity",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "sealNumber",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "shipper",
+    "assessment": "confirmed_match",
+    "reasonCodes": []
+   },
+   {
+    "meaning": "weight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "reference",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "grossWeight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "netWeight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "packageCount",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "weight",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   },
+   {
+    "meaning": "reference",
+    "assessment": "not_applicable",
+    "reasonCodes": [
+     "FIELD_NOT_APPLICABLE"
+    ]
+   }
+  ]
+ },
+ "fieldScoreText": "===== claude-20261023-normal-u01\n-- house_bl -> house_bl classified | items 1 ctrs 1 | cost 0.00180955\n   houseBlNumber          OK SYN-UNIV-001                           [verified]\n   declarationNumber      OK SYN-DECL-001                           [verified]\n   shipper                OK Synthetic Origin 1 Ltd                 [verified]\n   consignee              OK Synthetic Destination 1 Ltd            [verified]\n   portOfLoading          OK BUSAN                                  [verified]\n   portOfDischarge        OK ROTTERDAM                              [verified]\n   packageCount           OK 12                                     [verified]\n   grossWeight            OK 120                                    [verified]\n   item.goodsDescription  OK WOVEN COTTON APRON MODEL A17           [verified]\n   item.hsCode            OK 6211.42                                [verified]\n   item.quantity          OK 420                                    [verified]\n   item.quantityUnit      OK PCS                                    [verified]\n   ctr.containerNumber    OK EVLU1000000                            [verified]\n   ctr.sealNumber         OK EVAL-SEAL-01-1                         [verified]\n   ctr.packageCount       OK 12                                     [verified]\n   ctr.grossWeight        OK 120                                    [verified]\n-- export_declaration -> export_declaration classified | items 1 ctrs 1 | cost 0.00099572\n   houseBlNumber          OK SYN-UNIV-001                           [verified]\n   declarationNumber      OK SYN-DECL-001                           [verified]\n   shipper                -- expected 'Synthetic Origin 1 Ltd' : field absent\n   consignee              OK Synthetic Destination 1 Ltd            [verified]\n   portOfLoading          OK BUSAN                                  [verified]\n   portOfDischarge        OK ROTTERDAM                              [verified]\n   packageCount           OK 12                                     [verified]\n   grossWeight            OK 120                                    [verified]\n   item.goodsDescription  OK 면직물 앞치마 MODEL A17                      [verified]\n   item.hsCode            OK 6211.42                                [verified]\n   item.quantity          OK 420                                    [verified]\n   item.quantityUnit      OK PCS                                    [verified]\n   ctr.containerNumber    OK EVLU1000000                            [verified]\n   ctr.sealNumber         OK EVAL-SEAL-01-1                         [verified]\n   ctr.packageCount       OK 12                                     [verified]\n   ctr.grossWeight        OK 120                                    [verified]\n-- house_manifest -> house_manifest classified | items 1 ctrs 1 | cost 0.00095772\n   houseBlNumber          OK SYN-UNIV-001                           [verified]\n   declarationNumber      OK SYN-DECL-001                           [verified]\n   shipper                OK Synthetic Origin 1 Ltd                 [verified]\n   consignee              OK Synthetic Destination 1 Ltd            [verified]\n   portOfLoading          OK BUSAN                                  [verified]\n   portOfDischarge        OK ROTTERDAM                              [verified]\n   packageCount           OK 12                                     [verified]\n   grossWeight            OK 120                                    [verified]\n   item.goodsDescription  OK WOVEN COTTON APRON MODEL A17           [verified]\n   item.hsCode            OK 6211.42                                [verified]\n   item.quantity          OK 420                                    [verified]\n   item.quantityUnit      OK PCS                                    [verified]\n   ctr.containerNumber    OK EVLU1000000                            [verified]\n   ctr.sealNumber         OK EVAL-SEAL-01-1                         [verified]\n   ctr.packageCount       OK 12                                     [verified]\n   ctr.grossWeight        OK 120                                    [verified]\nTOTAL value correct 47 / 48 | original verified 47 / 48\nwrong/absent [('export_declaration', 'shipper', 'absent')]\nnot verified []\n===== claude-20261023-fault-pod-u01\n-- house_bl -> house_bl classified | items 1 ctrs 1 | cost 0.00081434\n   houseBlNumber          OK SYN-UNIV-001                           [verified]\n   declarationNumber      OK SYN-DECL-001                           [verified]\n   shipper                OK Synthetic Origin 1 Ltd                 [verified]\n   consignee              OK Synthetic Destination 1 Ltd            [verified]\n   portOfLoading          OK BUSAN                                  [verified]\n   portOfDischarge        OK ROTTERDAM                              [verified]\n   packageCount           OK 12                                     [verified]\n   grossWeight            OK 120                                    [verified]\n   item.goodsDescription  OK WOVEN COTTON APRON MODEL A17           [verified]\n   item.hsCode            OK 6211.42                                [verified]\n   item.quantity          OK 420                                    [verified]\n   item.quantityUnit      OK PCS                                    [verified]\n   ctr.containerNumber    OK EVLU1000000                            [verified]\n   ctr.sealNumber         OK EVAL-SEAL-01-1                         [verified]\n   ctr.packageCount       OK 12                                     [verified]\n   ctr.grossWeight        OK 120                                    [verified]\n-- export_declaration -> export_declaration classified | items 1 ctrs 1 | cost 0.00099072\n   houseBlNumber          OK SYN-UNIV-001                           [verified]\n   declarationNumber      OK SYN-DECL-001                           [verified]\n   shipper                -- expected 'Synthetic Origin 1 Ltd' : field absent\n   consignee              OK Synthetic Destination 1 Ltd            [verified]\n   portOfLoading          OK BUSAN                                  [verified]\n   portOfDischarge        OK ANTWERP                                [verified]\n   packageCount           OK 12                                     [verified]\n   grossWeight            OK 120                                    [verified]\n   item.goodsDescription  OK 면직물 앞치마 MODEL A17                      [verified]\n   item.hsCode            OK 6211.42                                [verified]\n   item.quantity          OK 420                                    [verified]\n   item.quantityUnit      OK PCS                                    [verified]\n   ctr.containerNumber    OK EVLU1000000                            [verified]\n   ctr.sealNumber         OK EVAL-SEAL-01-1                         [verified]\n   ctr.packageCount       OK 12                                     [verified]\n   ctr.grossWeight        OK 120                                    [verified]\n-- house_manifest -> house_manifest classified | items 1 ctrs 1 | cost 0.00075185\n   houseBlNumber          XX None                                   [missing / current 'SYN-UNIV-001' verified]\n   declarationNumber      XX None                                   [missing / current 'SYN-DECL-001' verified]\n   shipper                OK Synthetic Origin 1 Ltd                 [verified]\n   consignee              OK Synthetic Destination 1 Ltd            [verified]\n   portOfLoading          OK BUSAN                                  [verified]\n   portOfDischarge        OK ROTTERDAM                              [verified]\n   packageCount           OK 12                                     [verified]\n   grossWeight            OK 120                                    [verified]\n   item.goodsDescription  OK WOVEN COTTON APRON MODEL A17           [verified]\n   item.hsCode            OK 6211.42                                [verified]\n   item.quantity          OK 420                                    [verified]\n   item.quantityUnit      OK PCS                                    [verified]\n   ctr.containerNumber    OK EVLU1000000                            [verified]\n   ctr.sealNumber         OK EVAL-SEAL-01-1                         [verified]\n   ctr.packageCount       OK 12                                     [verified]\n   ctr.grossWeight        OK 120                                    [verified]\nTOTAL value correct 45 / 48 | original verified 45 / 48\nwrong/absent [('export_declaration', 'shipper', 'absent'), ('house_manifest', 'houseBlNumber', None, 'SYN-UNIV-001'), ('house_manifest', 'declarationNumber', None, 'SYN-DECL-001')]\nnot verified [('house_manifest', 'houseBlNumber', 'missing', 'missing_value', 'verified'), ('house_manifest', 'declarationNumber', 'missing', 'missing_value', 'verified')]\n"
+}
