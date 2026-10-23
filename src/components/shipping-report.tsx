@@ -8,7 +8,7 @@ import {
 } from "@/modules/shipping/presentation";
 import { pairedReadings } from "@/modules/shipping/display-reading";
 import { assessmentLabels } from "@/modules/rules/model";
-import { displayTitle } from "@/modules/shipping/display-titles";
+import { displayTitle, issueValues } from "@/modules/shipping/display-titles";
 export function ShippingReport({
   results,
   review,
@@ -17,6 +17,11 @@ export function ShippingReport({
   review: ShippingReview;
 }) {
   const docs = results.flatMap((r) => (r.document ? [r.document] : [])),
+    docLabel = (id: string) => {
+      const d = docs.find((v) => v.id === id);
+      return d ? shippingLabels[d.detectedType ?? d.uploadType].title : id;
+    },
+    labelOrder = shippingTypes.map((t) => shippingLabels[t].title),
     groups = comparisonGroups(review, docs, undefined, true),
     labels = {
       ...assessmentLabels,
@@ -116,6 +121,9 @@ export function ShippingReport({
               <strong>
                 {displayTitle(issue.title)} · {labels[issue.assessment]}
               </strong>
+              {issueValues(issue, docLabel, labelOrder) && (
+                <p>{issueValues(issue, docLabel, labelOrder)}</p>
+              )}
               <p>
                 관련 검사 {issue.relatedCheckIds.length}건 · {issue.explanation}
               </p>

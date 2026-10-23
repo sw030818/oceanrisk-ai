@@ -23,7 +23,7 @@ import {
 } from "@/modules/shipping/display-reading";
 import { shippingFieldLabels } from "@/modules/shipping/catalog";
 import { ShippingFields } from "./shipping-fields";
-import { displayTitle } from "@/modules/shipping/display-titles";
+import { displayTitle, issueValues } from "@/modules/shipping/display-titles";
 import type { GroundedField } from "@/modules/documents/schema";
 const labels: Record<ShippingAssessment, string> = {
   ...assessmentLabels,
@@ -208,6 +208,16 @@ export function ShippingReviewPanel({
       </span>
     </button>
   );
+  const documentLabel = (id: string) => {
+    const d = documents.find((v) => v.id === id);
+    if (!d) return id;
+    const type = d.detectedType ?? d.uploadType;
+    const title = shippingLabels[type].title;
+    return documents.filter((v) => (v.detectedType ?? v.uploadType) === type).length > 1
+      ? `${title}(${d.fileName})`
+      : title;
+  };
+  const labelOrder = shippingTypes.map((t) => shippingLabels[t].title);
   const tableFields = (g: ComparisonGroup, type: string) => {
     const fs = comparisonDisplayFields(g).filter(
       (f) =>
@@ -394,6 +404,14 @@ export function ShippingReviewPanel({
                     판정·원문 근거 확인
                   </button>
                 </div>
+                {issueValues(issue, documentLabel, labelOrder) && (
+                  <p
+                    data-testid="issue-values"
+                    className="mt-1 break-words text-xs font-semibold text-slate-900"
+                  >
+                    {issueValues(issue, documentLabel, labelOrder)}
+                  </p>
+                )}
                 <p className="mt-1 break-words text-xs text-slate-600">
                   {issue.explanation}
                 </p>

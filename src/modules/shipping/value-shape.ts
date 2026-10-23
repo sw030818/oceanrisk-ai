@@ -105,3 +105,29 @@ export function foreignLineLabel(page: PdfPage, values: PdfBlock[], role: string
   }
   return null;
 }
+
+/**
+ * Where cited blocks sit inside their stroked vector cell. "table": the cell
+ * holds only the value (its column title lives in another cell). "labelled":
+ * the same cell prints a title above the value, like a form box ("화물명세",
+ * "(16) Description of Goods"). Null without closed-cell proof.
+ */
+export function cellRole(page: PdfPage, blockIds: string[]): { kind: "table" } | { kind: "labelled"; label: string } | null {
+  const blocks = page.blocks ?? [];
+  const values = blocks.filter((b) => blockIds.includes(b.id));
+  if (!values.length || !page.cells?.length) return null;
+  const top = Math.min(...values.map((b) => b.y));
+  const within = (b: PdfBlock, c: { x: number; y: number; width: number; height: number }) => {
+    const x = b.x + b.width / 2, y = b.y + b.height / 2;
+    return x >= c.x && x <= c.x + c.width && y >= c.y && y <= c.y + c.height;
+  };
+  const first = values.reduce((a, b) => (b.y < a.y || (b.y === a.y && b.x < a.x) ? b : a));
+  const cell = page.cells
+    .filter((c) => within(first, c))
+    .sort((a, b) => a.width * a.height - b.width * b.height)[0];
+  if (!cell || !values.every((b) => within(b, cell))) return null;
+  const titles = blocks.filter(
+    (b) => !blockIds.includes(b.id) && within(b, cell) && b.y + b.height <= top + 1 && /\p{L}{2,}/u.test(b.text),
+  );
+  return titles.length ? { kind: "labelled", label: spanText(titles).slice(0, 60) } : { kind: "table" };
+}

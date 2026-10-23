@@ -24,6 +24,8 @@ import {
   recoverCitedClassification,
 } from "./verify";
 import type { PdfDocument } from "../documents/schema";
+import { cellRole } from "./value-shape";
+import { normalizeText } from "../evidence/verify";
 import type { EntityScope } from "../layout/shipping-cells";
 export function groundShipping(
   raw: unknown,
@@ -166,6 +168,38 @@ export function groundShipping(
   // kept as a rejected candidate and left out of comparisons, but only while
   // another entity of the same kind stands on verified evidence; otherwise it
   // stays visible as an unverified entity.
+  // A goods value printed in a titled form box outside the item table (a
+  // "화물명세" summary restating the table) is not another item row. Applies
+  // only when the same document proves an item in a plain table cell, so a
+  // single boxed item ("Description of Goods" box) is never touched.
+  const goodsAnchor = (i: (typeof doc.items)[number]) =>
+    i.fields.goodsDescription.original.value !== null ? i.fields.goodsDescription : i.fields.tradeDescription;
+  const placement = (f: ShippingField) => {
+    const src = f.original.source;
+    const page = pdf.pages.find((p) => p.page === src?.page);
+    if (!page || page.textSource === "ocr" || src?.fileId !== pdf.id || !src.segments?.length) return null;
+    // A cited title ("화물명세") is not part of the value; keep it as a title.
+    const value = normalizeText(String(f.original.value ?? ""));
+    const ids = src.segments.map((s) => s.blockId);
+    const valueIds = ids.filter((id) => {
+      const b = page.blocks?.find((v) => v.id === id);
+      return !!b && value.includes(normalizeText(b.text));
+    });
+    return cellRole(page, valueIds.length ? valueIds : ids);
+  };
+  const placed = doc.items.map((i) => ({ item: i, at: placement(goodsAnchor(i)) }));
+  if (placed.some((p) => p.at?.kind === "table" && goodsAnchor(p.item).original.status === "verified"))
+    for (const p of placed) {
+      if (p.at?.kind !== "labelled") continue;
+      const f = goodsAnchor(p.item);
+      f.original = {
+        ...f.original,
+        status: "unverified",
+        verificationCode: "not_field_value",
+        reason: `품목표 밖 제목 칸('${p.at.label}')의 값입니다. 같은 서류의 품목표 행과 구분해 별도 품목으로 쓰지 않습니다.`.slice(0, 300),
+      };
+      f.current = structuredClone(f.original);
+    }
   const rejected: NonNullable<ShippingDocument["rejectedCandidates"]> = [];
   const keepEntities = <T extends { id: string }>(
     kind: "item" | "container" | "cargo",

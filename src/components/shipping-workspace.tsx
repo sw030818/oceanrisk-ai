@@ -39,7 +39,11 @@ import {
 
 import { safeError } from "@/modules/documents/errors";
 import { summarizeShipping } from "@/modules/shipping/summary";
-import { issueSummary } from "@/modules/shipping/display-titles";
+import {
+  displayTitle,
+  issueSummary,
+  issueValues,
+} from "@/modules/shipping/display-titles";
 import type { ShippingResult } from "@/modules/shipping/prepare";
 import { shippingDocumentSchema } from "@/modules/shipping/schema";
 import type { GroundedField, PdfPage } from "@/modules/documents/schema";
@@ -469,6 +473,20 @@ export function ShippingWorkspace() {
               : comparisonEnabled
                 ? "문서별 분석·서류 대조 완료"
                 : "문서별 분석 완료 · 삼각대조 미실시";
+  const documents = results.flatMap((r) => (r.document ? [r.document] : []));
+  const labelOrder = shippingTypes.map((t) => shippingLabels[t].title);
+  const documentLabel = (id: string) => {
+    const d = documents.find((v) => v.id === id);
+    if (!d) return id;
+    const type = d.detectedType ?? d.uploadType;
+    return documents.filter((v) => (v.detectedType ?? v.uploadType) === type).length > 1
+      ? `${shippingLabels[type].title}(${d.fileName})`
+      : shippingLabels[type].title;
+  };
+  const singleMismatchValues =
+    mismatchIssues.length === 1
+      ? issueValues(mismatchIssues[0], documentLabel, labelOrder)
+      : null;
   const failedNames = [
     ...new Set(
       results.filter((r) => r.error).map((r) => shippingLabels[r.uploadSlot].title),
@@ -486,7 +504,9 @@ export function ShippingWorkspace() {
       ? "모든 파일의 AI 분석이 실패했습니다. 아래 파일별 오류를 확인해 주세요."
       : reviewed && review.issues
         ? mismatchCount
-          ? `${issueSummary(mismatchIssues) || "일부 항목"}: 원문 근거로 서류 간 값이 다르게 확인됐습니다. 적하목록 제출 전에 원본 서류를 확인해 주세요.`
+          ? singleMismatchValues
+            ? `${displayTitle(mismatchIssues[0].title)} — ${singleMismatchValues}. 원문 근거로 확인된 차이입니다. 적하목록 제출 전에 원본 서류를 확인해 주세요.`
+            : `${issueSummary(mismatchIssues) || "일부 항목"}: 원문 근거로 서류 간 값이 다르게 확인됐습니다. 적하목록 제출 전에 원본 서류를 확인해 주세요.`
           : otherIssues.length
             ? `원문 근거로 확정된 차이는 없습니다. ${issueSummary(otherIssues)} 항목은 근거가 부족하거나 범위가 불분명해 사람이 확인해야 합니다.`
             : comparisonUnverified

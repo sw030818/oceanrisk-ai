@@ -428,6 +428,20 @@ function seedOmittedNativeContainers(doc:ShippingDocument,pdf:PdfDocument) {
  }
  return applied;
 }
+const anchorRoles: Record<string, string> = { item: "goodsDescription", container: "containerNumber", cargo: "houseBlNumber" };
+const rowKey = (f: ShippingField) => {
+  const s = f.current.source;
+  return s?.layout ? JSON.stringify([s.page, s.layout.tableId, s.layout.rowId]) : "";
+};
+function claimedRows(doc: ShippingDocument, scope: string, exceptId: string) {
+  const anchors =
+    scope === "item"
+      ? doc.items.filter((i) => i.id !== exceptId).flatMap((i) => [i.fields.goodsDescription, i.fields.tradeDescription])
+      : scope === "container"
+        ? doc.containers.filter((c) => c.id !== exceptId).map((c) => c.containerNumber)
+        : doc.cargoRecords.filter((c) => c.id !== exceptId).map((c) => c.fields.houseBlNumber);
+  return new Set(anchors.filter((f) => f.current.status === "verified").map(rowKey).filter(Boolean));
+}
 export function recoverNative(
   input: ShippingDocument,
   pdf: PdfDocument,
@@ -525,7 +539,15 @@ export function recoverNative(
           ]),
         ).values(),
       ];
-      if (unique.length === 1 && mergeRecovery(pdf, t, unique[0].c, "native")) {
+      // One native row belongs to one entity: never hand a row another
+      // item/container/cargo already stands on to a second entity. This only
+      // refuses; it never resolves ambiguity by elimination.
+      const owned =
+        unique.length === 1 &&
+        t.scope !== "document" &&
+        t.role === anchorRoles[t.scope] &&
+        claimedRows(doc, t.scope, t.entityId).has(rowKey(unique[0].f));
+      if (unique.length === 1 && !owned && mergeRecovery(pdf, t, unique[0].c, "native")) {
         applied++;
         continue;
       }
