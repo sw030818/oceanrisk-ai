@@ -1,0 +1,161 @@
+{
+ "purpose": "Real Production browser checks after one-row-per-item recovery, titled summary box rejection and conflict values on issues.",
+ "automaticRetries": 0,
+ "runs": [
+  {
+   "label": "ui-pod-9e4d",
+   "sha": "9e4d5e2adb3e7e4b8b43267db671e43b51a882d9",
+   "input": "synthetic universal-01 + declaration POD ANTWERP",
+   "uiError": false,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.00171205
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "costUsd": 0.0011612200000000001
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "costUsd": 0.00093172
+    }
+   ],
+   "semanticStatus": "complete",
+   "heading": "확정 불일치 1건 · 제출 전 확인 필요",
+   "kpis": "확정 불일치 | 1 | 원문 근거로 확인된 서류 간 차이 | 확인 필요 | 0 | 확정하기 전 사람이 봐야 할 항목 | 원문 근거 미확인 값 | 4 | 비교에는 사용하지 않음 | 확인된 일치 | 11 | 원문 근거로 같은 값 확인",
+   "defaultFilter": "attention",
+   "mobileNoOverflow": true,
+   "verdict": "양하항 (POD) — House B/L · House 적하목록: ROTTERDAM ↔ 수출신고필증: ANTWERP. 원문 근거로 확인된 차이입니다. 적하목록 제출 전에 원본 서류를 확인해 주세요."
+  },
+  {
+   "label": "ui-qty-9e4d",
+   "sha": "9e4d5e2adb3e7e4b8b43267db671e43b51a882d9",
+   "input": "synthetic universal-01 + manifest quantity 437",
+   "uiError": false,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.00086914
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "costUsd": 0.00169422
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "costUsd": 0.00093172
+    }
+   ],
+   "semanticStatus": "complete",
+   "heading": "확정 불일치 1건 · 제출 전 확인 필요",
+   "kpis": "확정 불일치 | 1 | 원문 근거로 확인된 서류 간 차이 | 확인 필요 | 0 | 확정하기 전 사람이 봐야 할 항목 | 원문 근거 미확인 값 | 4 | 비교에는 사용하지 않음 | 확인된 일치 | 11 | 원문 근거로 같은 값 확인",
+   "defaultFilter": "attention",
+   "mobileNoOverflow": true,
+   "verdict": "물품 수량 — House B/L · 수출신고필증: 420 PCS ↔ House 적하목록: 437 PCS. 원문 근거로 확인된 차이입니다. 적하목록 제출 전에 원본 서류를 확인해 주세요."
+  },
+  {
+   "label": "ui-set2r1-9e4d",
+   "sha": "9e4d5e2adb3e7e4b8b43267db671e43b51a882d9",
+   "input": "private Set2 (contents not published)",
+   "uiError": false,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.0022408450000000004
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "costUsd": 0.0021797200000000004
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "costUsd": 0.00151272
+    }
+   ],
+   "semanticStatus": "complete",
+   "heading": "서류 대조 완료 · 확인할 문제 없음",
+   "kpis": "확정 불일치 | 0 | 원문 근거로 확인된 서류 간 차이 | 확인 필요 | 0 | 확정하기 전 사람이 봐야 할 항목 | 원문 근거 미확인 값 | 6 | 비교에는 사용하지 않음 | 확인된 일치 | 12 | 원문 근거로 같은 값 확인",
+   "defaultFilter": "core",
+   "mobileNoOverflow": true,
+   "verdict": null
+  },
+  {
+   "label": "ui-set2r2-9e4d",
+   "sha": "9e4d5e2adb3e7e4b8b43267db671e43b51a882d9",
+   "input": "private Set2 (contents not published)",
+   "uiError": false,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.00082218
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "costUsd": 0.0014235299999999999
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "costUsd": 0.00091055
+    }
+   ],
+   "semanticStatus": "complete",
+   "heading": "서류 대조 완료 · 확인할 문제 없음",
+   "kpis": "확정 불일치 | 0 | 원문 근거로 확인된 서류 간 차이 | 확인 필요 | 0 | 확정하기 전 사람이 봐야 할 항목 | 원문 근거 미확인 값 | 4 | 비교에는 사용하지 않음 | 확인된 일치 | 12 | 원문 근거로 같은 값 확인",
+   "defaultFilter": "core",
+   "mobileNoOverflow": true,
+   "verdict": null
+  },
+  {
+   "label": "ui-set2r3-9e4d",
+   "sha": "9e4d5e2adb3e7e4b8b43267db671e43b51a882d9",
+   "input": "private Set2 (contents not published)",
+   "uiError": false,
+   "documents": [
+    {
+     "slot": "house_bl",
+     "error": null,
+     "costUsd": 0.00085318
+    },
+    {
+     "slot": "export_declaration",
+     "error": null,
+     "costUsd": 0.00137753
+    },
+    {
+     "slot": "house_manifest",
+     "error": null,
+     "costUsd": 0.0009360499999999999
+    }
+   ],
+   "semanticStatus": "complete",
+   "heading": "서류 대조 완료 · 확인할 문제 없음",
+   "kpis": "확정 불일치 | 0 | 원문 근거로 확인된 서류 간 차이 | 확인 필요 | 0 | 확정하기 전 사람이 봐야 할 항목 | 원문 근거 미확인 값 | 4 | 비교에는 사용하지 않음 | 확인된 일치 | 12 | 원문 근거로 같은 값 확인",
+   "defaultFilter": "core",
+   "mobileNoOverflow": true,
+   "verdict": null
+  }
+ ],
+ "budgetAfter": {
+  "documents": 709,
+  "requests": 954,
+  "measuredCostUsd": 0.9678321300000013,
+  "unresolvedCostUpperUsd": 0.12285267500000051,
+  "maxDocuments": 1000,
+  "maxRequests": 1500,
+  "maxCostUsd": 2
+ },
+ "note": "The titled summary-box phantom did not recur in these three Set2 runs; the fix is proven by replaying the stored real Set2 answers with the observed phantom added and by unit tests, not by a live recurrence."
+}

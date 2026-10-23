@@ -1,12 +1,12 @@
 {
   "phase": "3.9",
   "approval": "USER_FINAL_ENGINE_INSTRUCTION_USD2",
-  "providerRequests": 631,
+  "providerRequests": 651,
   "automaticRetries": 0,
   "budget": {
-    "documents": 694,
-    "requests": 934,
-    "measuredCostUsd": 0.9457563800000016,
+    "documents": 709,
+    "requests": 954,
+    "measuredCostUsd": 0.9678321300000013,
     "unresolvedCostUpperUsd": 0.12285267500000051,
     "maxDocuments": 1000,
     "maxRequests": 1500,
