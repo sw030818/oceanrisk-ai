@@ -1,0 +1,44 @@
+[
+ {
+  "case": "claude-trap-t1",
+  "type": "house_bl",
+  "layout": "trapbl",
+  "file": "pdf/claude-trap-t1/01.pdf",
+  "sha256": "d3d8d548edda885b70baf00529b95d0ead90f5d55ceb4afd1418727a730c59f2"
+ },
+ {
+  "case": "claude-trap-t1",
+  "type": "export_declaration",
+  "layout": "form",
+  "file": "pdf/claude-trap-t1/02.pdf",
+  "sha256": "1c82c02591dddd89b06f028574609dfdbd8f7477cec3ecf7dd588ea378ba0945"
+ },
+ {
+  "case": "claude-trap-t1",
+  "type": "house_manifest",
+  "layout": "ledger",
+  "file": "pdf/claude-trap-t1/03.pdf",
+  "sha256": "e3eb24eaaa7026f2e995842b55eef1d10525a095f41b1d4972d71c3d218cb3d4"
+ },
+ {
+  "case": "claude-trap-t2",
+  "type": "house_bl",
+  "layout": "trapbl",
+  "file": "pdf/claude-trap-t2/01.pdf",
+  "sha256": "5e2811cc049abcb0c3d400bd4bb10eb2078319b3fc8c3ee9399caad7129c756f"
+ },
+ {
+  "case": "claude-trap-t2",
+  "type": "export_declaration",
+  "layout": "split",
+  "file": "pdf/claude-trap-t2/02.pdf",
+  "sha256": "e0f4d3b5b6e2a1d951f583198bec6b506fc38d9041b1a996d73fee129562ba1d"
+ },
+ {
+  "case": "claude-trap-t2",
+  "type": "house_manifest",
+  "layout": "stacked",
+  "file": "pdf/claude-trap-t2/03.pdf",
+  "sha256": "7ebde94d2d10d9d2327b777b4c18e02a2fb877a644a863f79b6592d12c19865c"
+ }
+]

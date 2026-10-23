@@ -1,0 +1,412 @@
+{
+ "finalSourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+ "kind": "NEW paid OpenAI via Production API; Set2 inputs private",
+ "runs": [
+  {
+   "label": "c52ef-set2-r1",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c52ef-set2-r2",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c52ef-set2-r3",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c52ef-set2-r4",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c52ef-set2-r5",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c52ef-trap-t1-r1",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c52ef-trap-t1-r2",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c52ef-trap-t2-r1",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c52ef-trap-t2-r2",
+   "sha": "52efe5d8869a48f04ee5fd51cf8fd19673aeb266",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-claude-port-p1",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-claude-port-p2",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 11,
+    "mismatches": 1,
+    "review": 0
+   },
+   "actionIssues": [
+    "양하항 / POD / confirmed_mismatch"
+   ],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-claude-port-p3",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 11,
+    "mismatches": 1,
+    "review": 0
+   },
+   "actionIssues": [
+    "양하항 / POD / confirmed_mismatch"
+   ],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-claude-port-p4",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 11,
+    "mismatches": 0,
+    "review": 1
+   },
+   "actionIssues": [
+    "양하항 / POD / provisional_mismatch"
+   ],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-fault-pod-u01",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 11,
+    "mismatches": 1,
+    "review": 0
+   },
+   "actionIssues": [
+    "양하항 / POD / confirmed_mismatch"
+   ],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-normal-u01",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-set2-r1",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c7443-set2-r2",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c7443-set2-r3",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c7443-set2-r4",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c7443-set2-r5",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "c7443-trap-t1-r1",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-trap-t1-r2",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-trap-t2-r1",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "c7443-trap-t2-r2",
+   "sha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "cada9-set2-r1",
+   "sha": "ada9ed23d7f83b3641f0ee8c4542f2314e392bc5",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "cada9-set2-r2",
+   "sha": "ada9ed23d7f83b3641f0ee8c4542f2314e392bc5",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "cada9-set2-r3",
+   "sha": "ada9ed23d7f83b3641f0ee8c4542f2314e392bc5",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 13,
+    "mismatches": 0,
+    "review": 3
+   },
+   "actionIssues": [
+    "필드 원문 근거 확인 필요 / provisional_match",
+    "필드 원문 근거 확인 필요 / provisional_match",
+    "필드 원문 근거 확인 필요 / provisional_match"
+   ],
+   "rejectedCandidates": 0,
+   "input": "private Set2 (3 PDFs, not published)"
+  },
+  {
+   "label": "cada9-trap-t1-r1",
+   "sha": "ada9ed23d7f83b3641f0ee8c4542f2314e392bc5",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "cada9-trap-t1-r2",
+   "sha": "ada9ed23d7f83b3641f0ee8c4542f2314e392bc5",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "cada9-trap-t2-r1",
+   "sha": "ada9ed23d7f83b3641f0ee8c4542f2314e392bc5",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  },
+  {
+   "label": "cada9-trap-t2-r2",
+   "sha": "ada9ed23d7f83b3641f0ee8c4542f2314e392bc5",
+   "apiErrors": [],
+   "outcomes": {
+    "matches": 12,
+    "mismatches": 0,
+    "review": 0
+   },
+   "actionIssues": [],
+   "rejectedCandidates": 0
+  }
+ ],
+ "diagnosis": "Set2 provisional issues = AI split-item (250) from TOTAL PACKAGES footer verified by column position; reproduced offline",
+ "intermediateRegressions": [
+  "ada9ed2: HS label inside goods cell rejected (Set2 r3, 3 issues)",
+  "52efe5d: RATIO 40:1 colon read as label (universal-03 6 issues, fault-grossWeight 9)"
+ ],
+ "freeChecks": {
+  "aiMistakeInjection": "pre-fix engine verified 6/12 injected mistakes; fixed 0",
+  "regrade2336": "20 real runs, 2660 fields, 0 status changes; 52efe5d engine shows 22"
+ }
+}

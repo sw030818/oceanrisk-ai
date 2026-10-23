@@ -4,10 +4,10 @@
   "providerRequests": 616,
   "automaticRetries": 0,
   "budget": {
-    "documents": 529,
-    "requests": 708,
-    "measuredCostUsd": 0.7558893900000014,
-    "unresolvedCostUpperUsd": 0.07450616250000039,
+    "documents": 682,
+    "requests": 919,
+    "measuredCostUsd": 0.9320497050000015,
+    "unresolvedCostUpperUsd": 0.09725773750000048,
     "maxDocuments": 1000,
     "maxRequests": 1500,
     "maxCostUsd": 2
@@ -32,10 +32,10 @@
   "previousProposalUsd": 10,
   "baselineSourceSha": "a57ffaf10e836f74e2e2cffb1d551d632cc4e678",
   "currentCumulativeUsage": {
-    "documents": 529,
-    "requests": 708,
-    "measuredCostUsd": 0.7558893900000014,
-    "unresolvedCostUpperUsd": 0.07450616250000039,
+    "documents": 682,
+    "requests": 919,
+    "measuredCostUsd": 0.9320497050000015,
+    "unresolvedCostUpperUsd": 0.09725773750000048,
     "maxDocuments": 1000,
     "maxRequests": 1500,
     "maxCostUsd": 2
@@ -409,6 +409,20 @@
     },
     "purpose": "private Set2 one manual diagnostic run after user-reported provisional issues; raw kept private",
     "result": "12 match / 0 action issues on this run; reported issues reproduced offline from a split-item AI output",
+    "automaticRetries": 0
+  },
+  "shapeFix20261023": {
+    "finalSourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+    "intermediateSha": [
+      "ada9ed23d7f83b3641f0ee8c4542f2314e392bc5",
+      "52efe5d8869a48f04ee5fd51cf8fd19673aeb266"
+    ],
+    "report": "docs/validation/claude-2026-10-23/REPORT.md",
+    "added": {
+      "documents": 153,
+      "requests": 211
+    },
+    "providerTimeouts": 3,
     "automaticRetries": 0
   }
 }

@@ -1,0 +1,62 @@
+[
+ {
+  "id": "claude-trap-t1",
+  "hbl": "CLD-TRAP-001",
+  "declaration": "CLD-TDECL-001",
+  "shipper": "Claude Trap Exporter 1 Co",
+  "consignee": "Claude Trap Buyer 1 GmbH",
+  "pol": "BUSAN",
+  "pod": "HAMBURG",
+  "packages": 26,
+  "gross": 410,
+  "items": [
+   {
+    "en": "BOROSILICATE REAGENT BOTTLE 250ML",
+    "ko": "붕규산 시약병 250ML",
+    "hs": "7010.90",
+    "quantity": 330,
+    "unit": "PCS"
+   }
+  ],
+  "words": "TWENTY-SIX",
+  "mark": "BRT-26",
+  "containers": [
+   {
+    "container": "CLTU3000000",
+    "seal": "CLT-SEAL-01",
+    "packages": 26,
+    "gross": 410
+   }
+  ]
+ },
+ {
+  "id": "claude-trap-t2",
+  "hbl": "CLD-TRAP-002",
+  "declaration": "CLD-TDECL-002",
+  "shipper": "Claude Trap Exporter 2 Co",
+  "consignee": "Claude Trap Buyer 2 GmbH",
+  "pol": "BUSAN",
+  "pod": "SINGAPORE",
+  "packages": 30,
+  "gross": 480,
+  "items": [
+   {
+    "en": "EMPTY COSMETIC DISPENSER MODEL DP2 30ML",
+    "ko": "빈 화장품 디스펜서 MODEL DP2 30ML",
+    "hs": "3923.30",
+    "quantity": 900,
+    "unit": "PCS"
+   }
+  ],
+  "words": "THIRTY",
+  "mark": "DPS-30",
+  "containers": [
+   {
+    "container": "CLTU3000001",
+    "seal": "CLT-SEAL-02",
+    "packages": 30,
+    "gross": 480
+   }
+  ]
+ }
+]

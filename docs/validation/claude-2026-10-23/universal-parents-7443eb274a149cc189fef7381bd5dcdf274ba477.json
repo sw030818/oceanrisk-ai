@@ -1,0 +1,4206 @@
+{
+  "stage": "development",
+  "sourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+  "synthetic": true,
+  "cases": 6,
+  "documents": 18,
+  "classified": 17,
+  "apiFailures": 1,
+  "expectedRelationships": 18,
+  "relationshipTP": 16,
+  "relationshipFP": 0,
+  "relationshipFN": 2,
+  "expectedCoreFields": 444,
+  "firstCorrect": 419,
+  "currentCorrect": 421,
+  "verifiedCorrect": 421,
+  "verifiedWrong": 0,
+  "correctButUnverified": 4,
+  "firstMissing": 25,
+  "wrongCitations": 0,
+  "confirmedFP": 0,
+  "confirmedTP": 0,
+  "confirmedFN": 0,
+  "warningDetected": 0,
+  "medianDurationMs": 52250,
+  "rows": [
+    {
+      "relationshipTP": 1,
+      "relationshipFP": 0,
+      "relationshipFN": 2,
+      "expectedRelationships": 3,
+      "case": "universal-01",
+      "stage": "development",
+      "sourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+      "partition": "development",
+      "documents": [
+        {
+          "type": "house_bl",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "export_declaration",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "exporter",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "house_manifest",
+          "classified": false,
+          "initialClassification": false,
+          "apiFailed": true,
+          "expected": 23,
+          "firstCorrect": 0,
+          "currentCorrect": 0,
+          "verifiedCorrect": 0,
+          "verifiedWrong": 0,
+          "firstMissing": 23,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": false,
+              "current": false,
+              "verified": false,
+              "code": null
+            }
+          ]
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedTP": 0,
+      "warningDetection": false,
+      "falseNegative": false,
+      "falsePositive": 0,
+      "outcomes": {
+        "matches": 11,
+        "mismatches": 0,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 4,
+        "notComparable": 0,
+        "evidenceFailed": 0,
+        "evidenceUnverified": 0,
+        "evidenceRecovered": 1,
+        "checksExecuted": 17,
+        "independentChecks": 16,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "independentActionIssues": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed"
+        }
+      ],
+      "durationMs": 74715,
+      "paidDocuments": 3,
+      "reusedParents": 0,
+      "sourceShaStable": true,
+      "semanticStatus": "complete"
+    },
+    {
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationshipFN": 0,
+      "expectedRelationships": 3,
+      "case": "universal-02",
+      "stage": "development",
+      "sourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+      "partition": "development",
+      "documents": [
+        {
+          "type": "house_bl",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "export_declaration",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {
+            "row_mismatch": 1
+          },
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "exporter",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "house_manifest",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedTP": 0,
+      "warningDetection": false,
+      "falseNegative": false,
+      "falsePositive": 0,
+      "outcomes": {
+        "matches": 12,
+        "mismatches": 0,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 2,
+        "evidenceUnverified": 1,
+        "evidenceRecovered": 2,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "independentActionIssues": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        }
+      ],
+      "durationMs": 42481,
+      "paidDocuments": 3,
+      "reusedParents": 0,
+      "sourceShaStable": true,
+      "semanticStatus": "complete"
+    },
+    {
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationshipFN": 0,
+      "expectedRelationships": 3,
+      "case": "universal-03",
+      "stage": "development",
+      "sourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+      "partition": "development",
+      "documents": [
+        {
+          "type": "house_bl",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {
+            "row_mismatch": 2
+          },
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "export_declaration",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {
+            "row_mismatch": 2
+          },
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "exporter",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "house_manifest",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 21,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 2,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": false,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": false,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedTP": 0,
+      "warningDetection": false,
+      "falseNegative": false,
+      "falsePositive": 0,
+      "outcomes": {
+        "matches": 12,
+        "mismatches": 0,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 4,
+        "evidenceUnverified": 4,
+        "evidenceRecovered": 5,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "independentActionIssues": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        }
+      ],
+      "durationMs": 38806,
+      "paidDocuments": 3,
+      "reusedParents": 0,
+      "sourceShaStable": true,
+      "semanticStatus": "complete"
+    },
+    {
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationshipFN": 0,
+      "expectedRelationships": 3,
+      "case": "universal-04",
+      "stage": "development",
+      "sourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+      "partition": "development",
+      "documents": [
+        {
+          "type": "house_bl",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 27,
+          "firstCorrect": 27,
+          "currentCorrect": 27,
+          "verifiedCorrect": 27,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "export_declaration",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 27,
+          "firstCorrect": 27,
+          "currentCorrect": 27,
+          "verifiedCorrect": 27,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "exporter",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "house_manifest",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 27,
+          "firstCorrect": 27,
+          "currentCorrect": 27,
+          "verifiedCorrect": 27,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-1",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedTP": 0,
+      "warningDetection": false,
+      "falseNegative": false,
+      "falsePositive": 0,
+      "outcomes": {
+        "matches": 20,
+        "mismatches": 0,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 16,
+        "notComparable": 0,
+        "evidenceFailed": 0,
+        "evidenceUnverified": 0,
+        "evidenceRecovered": 2,
+        "checksExecuted": 69,
+        "independentChecks": 37,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "independentActionIssues": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        }
+      ],
+      "durationMs": 52250,
+      "paidDocuments": 3,
+      "reusedParents": 0,
+      "sourceShaStable": true,
+      "semanticStatus": "complete"
+    },
+    {
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationshipFN": 0,
+      "expectedRelationships": 3,
+      "case": "universal-05",
+      "stage": "development",
+      "sourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+      "partition": "development",
+      "documents": [
+        {
+          "type": "house_bl",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 29,
+          "firstCorrect": 29,
+          "currentCorrect": 29,
+          "verifiedCorrect": 29,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "export_declaration",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 29,
+          "firstCorrect": 29,
+          "currentCorrect": 29,
+          "verifiedCorrect": 29,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 2,
+          "rowAmbiguities": 0,
+          "failureCodes": {
+            "row_mismatch": 2
+          },
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "exporter",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "house_manifest",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 29,
+          "firstCorrect": 29,
+          "currentCorrect": 29,
+          "verifiedCorrect": 29,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {},
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-1",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedTP": 0,
+      "warningDetection": false,
+      "falseNegative": false,
+      "falsePositive": 0,
+      "outcomes": {
+        "matches": 26,
+        "mismatches": 0,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 4,
+        "evidenceUnverified": 2,
+        "evidenceRecovered": 2,
+        "checksExecuted": 70,
+        "independentChecks": 37,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "independentActionIssues": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        }
+      ],
+      "durationMs": 58208,
+      "paidDocuments": 3,
+      "reusedParents": 0,
+      "sourceShaStable": true,
+      "semanticStatus": "complete"
+    },
+    {
+      "relationshipTP": 3,
+      "relationshipFP": 0,
+      "relationshipFN": 0,
+      "expectedRelationships": 3,
+      "case": "universal-06",
+      "stage": "development",
+      "sourceSha": "7443eb274a149cc189fef7381bd5dcdf274ba477",
+      "partition": "development",
+      "documents": [
+        {
+          "type": "house_bl",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {
+            "value_mismatch": 1
+          },
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "export_declaration",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 0,
+          "rowAmbiguities": 0,
+          "failureCodes": {
+            "row_mismatch": 1
+          },
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "exporter",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        },
+        {
+          "type": "house_manifest",
+          "classified": true,
+          "initialClassification": true,
+          "apiFailed": false,
+          "expected": 23,
+          "firstCorrect": 23,
+          "currentCorrect": 23,
+          "verifiedCorrect": 23,
+          "verifiedWrong": 0,
+          "firstMissing": 0,
+          "wrongCitations": 0,
+          "correctButUnverified": 2,
+          "rowAmbiguities": 0,
+          "failureCodes": {
+            "row_mismatch": 2
+          },
+          "fields": [
+            {
+              "scope": "document",
+              "role": "houseBlNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "declarationNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipper",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "consignee",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfLoading",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "portOfDischarge",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "shipmentScope",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "document",
+              "role": "grossWeightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "goodsDescription",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "hsCode",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantity",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "item-0",
+              "role": "quantityUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "containerNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "sealNumber",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageCount",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "packageUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "grossWeight",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            },
+            {
+              "scope": "container-0",
+              "role": "weightUnit",
+              "first": true,
+              "current": true,
+              "verified": true,
+              "code": null
+            }
+          ]
+        }
+      ],
+      "confirmedErrors": [],
+      "confirmedTP": 0,
+      "warningDetection": false,
+      "falseNegative": false,
+      "falsePositive": 0,
+      "outcomes": {
+        "matches": 12,
+        "mismatches": 0,
+        "review": 0,
+        "requiredMissing": 0,
+        "notApplicable": 10,
+        "notComparable": 0,
+        "evidenceFailed": 6,
+        "evidenceUnverified": 4,
+        "evidenceRecovered": 3,
+        "checksExecuted": 61,
+        "independentChecks": 23,
+        "comparisonEvidenceUnverified": 0,
+        "informational": 1
+      },
+      "independentActionIssues": 0,
+      "relationships": [
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        },
+        {
+          "status": "evidence_confirmed"
+        }
+      ],
+      "durationMs": 47186,
+      "paidDocuments": 3,
+      "reusedParents": 0,
+      "sourceShaStable": true,
+      "semanticStatus": "complete"
+    }
+  ]
+}
