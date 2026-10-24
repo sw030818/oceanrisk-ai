@@ -14,7 +14,7 @@ import type {
 import {
   goodsEquivalent,
   hsSix,
-  contextualCarton,
+  contextualPackageUnit,
 } from "./equivalence";
 import { declarationGroupChecks } from "./declaration-groups";
 import { relateShipping } from "./relationships";
@@ -29,6 +29,7 @@ import {
   refKey32,
   comparisonField32 as root32,
   scope32,
+  registerShippingSet,
   text32,
   unit32,
   verified32,
@@ -125,6 +126,7 @@ export function reviewShipping(
   const documents = [...input]
     .filter((d) => d.extractionStatus !== "not_performed")
     .sort((a, b) => a.id.localeCompare(b.id));
+  registerShippingSet(documents);
   const relationships = relateShipping(documents),
     checks: ShippingCheck[] = [];
   for (const r of relationships)
@@ -193,8 +195,11 @@ export function reviewShipping(
     const same =
       equal ?? new Set(fs.map((f) => text32(f.field.current.value))).size <= 1;
     const safe = present && fs.every(verified32) && !why.length;
+    // A pair where one document does not print the field at all is not a
+    // comparison. Genuinely required information is flagged once per document
+    // by the required-information check, not again for every pair.
     const assessment: ShippingAssessment = !present
-      ? "insufficient_information"
+      ? "not_applicable"
       : safe
         ? same
           ? "confirmed_match"
@@ -232,8 +237,15 @@ export function reviewShipping(
     why: string[],
     links: string[],
     title: string,
+    optional = false,
   ) {
     const fs = [...values, ...units].filter((f): f is FieldRef => !!f);
+    // Per-container figures are optional detail: a form without them is not
+    // missing information, because document totals are compared separately.
+    if (optional && missing(values)) {
+      add(scope, id, category, fs, "not_applicable", title, "한쪽 서류에 컨테이너별 수치가 없어 비교 대상이 아닙니다. 문서 합계는 별도로 비교합니다.", why, links);
+      return;
+    }
     if (missing(values) || missing(units)) {
       add(
         scope,
@@ -248,11 +260,10 @@ export function reviewShipping(
       );
       return;
     }
-    const normalized = units.map((f) =>
-      category === "packaging" && contextualCarton(f)
-        ? { unit: "CTNS", factor: 1 }
-        : unit32(f!.field.current.value, category),
-    );
+    const normalized = units.map((f) => {
+      const code = category === "packaging" ? contextualPackageUnit(f) : null;
+      return code ? { unit: code, factor: 1 } : unit32(f!.field.current.value, category);
+    });
     if (
       normalized.some((u) => !u) ||
       new Set(normalized.map((u) => u?.unit)).size !== 1
@@ -822,6 +833,7 @@ export function reviewShipping(
         anchorGuard,
         links,
         `컨테이너 ${ca.containerNumber.current.value} 포장 개수`,
+        true,
       );
       number(
         scope,
@@ -832,9 +844,11 @@ export function reviewShipping(
         anchorGuard,
         links,
         `컨테이너 ${ca.containerNumber.current.value} 총중량`,
+        true,
       );
-      const multiple =
-        (ca.sealNumbers?.length ?? 0) > 1 || (cb.sealNumbers?.length ?? 0) > 1;
+      const seals = (c: typeof ca) =>
+        new Set((c.sealNumbers ?? []).filter(has32).map((f) => text32(f.current.value))).size;
+      const multiple = seals(ca) > 1 || seals(cb) > 1;
       compare(
         scope,
         prefix + "/seal",
@@ -1052,29 +1066,37 @@ export function reviewShipping(
           reason:
             "해당 화물행의 명시적 HBL 참조를 원본 HBL에 연결했습니다. 합산 범위는 별도 검증합니다.",
         });
-      if (cargo.length) {
-        const containers = cargo.map((c) =>
+      // Records that only list members of one native manifest row are views of
+      // that row; the row's amounts are counted once.
+      const rowKey = (c: (typeof cargo)[number]) => {
+        const src = c.fields.houseBlNumber.current.source;
+        return src?.layout ? `${src.page}/${src.layout.tableId}/${src.layout.rowId}` : c.id;
+      };
+      const rows = cargo.filter((c, i) => cargo.findIndex((o) => rowKey(o) === rowKey(c)) === i);
+      if (rows.length) {
+        const containers = rows.map((c) =>
           ref32(manifest, "containerNumber", c.fields.containerNumber, {
             cargoId: c.id,
           }),
         );
         const disjoint =
-          containers.every(verified32) &&
+          rows.length === 1 ||
+          (containers.every(verified32) &&
           new Set(containers.map((f) => text32(f.field.current.value))).size ===
-            cargo.length;
+            rows.length);
         for (const [name, unit, kind] of [
           ["packageCount", "packageUnit", "packaging"],
           ["grossWeight", "grossWeightUnit", "weight"],
         ] as const) {
           const total = root32(bl, name),
             totalUnit = root32(bl, unit),
-            values = cargo.map((c) =>
+            values = rows.map((c) =>
               ref32(manifest, name, c.fields[name], { cargoId: c.id }),
             ),
-            units = cargo.map((c) =>
+            units = rows.map((c) =>
               ref32(manifest, unit, c.fields[unit], { cargoId: c.id }),
             ),
-            ids = cargo.map((c) =>
+            ids = rows.map((c) =>
               ref32(manifest, "houseBlNumber", c.fields.houseBlNumber, {
                 cargoId: c.id,
               }),
@@ -1093,9 +1115,17 @@ export function reviewShipping(
             validUnits =
               ns.every((n) => n !== null) &&
               new Set(ns.map((n) => n?.unit)).size === 1;
+          // A B/L and its own manifest row state the same HBL shipment, so
+          // the contract-level "no partial shipment" proof is not needed;
+          // an explicit partial or co-packed scope still blocks.
+          const explicitScope = [bl, manifest].some((d) =>
+            ["partial", "combined_packages"].includes(scope32(d)),
+          );
           const why = [
             ...blockers32(bl, manifest, r, true).filter(
-              (w) => !w.startsWith("여러 HBL"),
+              (w) =>
+                !w.startsWith("여러 HBL") &&
+                (explicitScope || !w.startsWith("전체 선적 범위")),
             ),
             ...(!whole32(bl)
               ? ["HBL 문서 자체의 참조 범위를 확인해야 합니다."]
@@ -1183,7 +1213,9 @@ export function reviewShipping(
             ),
             n = Number(total.field.current.value) * ns[0]!.factor,
             equal = Math.abs(sum - n) <= Math.max(1, sum, n) * 1e-9,
-            safe = !why.length && all.every(verified32);
+            // Container numbers only prove disjoint rows; one row needs none.
+            proof = rows.length === 1 ? all.filter((f) => !containers.includes(f)) : all,
+            safe = !why.length && proof.every(verified32);
           add(
             scope,
             r.id + "/aggregate/" + name,
@@ -1200,7 +1232,7 @@ export function reviewShipping(
             "동일 HBL의 서로 다른 컨테이너 화물행을 중복 없이 합산해 명시된 HBL 합계와 비교했습니다.",
             [
               ...why,
-              ...(!all.every(verified32)
+              ...(!proof.every(verified32)
                 ? ["원문 미확인 또는 사용자 수정값이 포함됩니다."]
                 : []),
             ],
@@ -1211,8 +1243,8 @@ export function reviewShipping(
                 value: sum,
                 unit: ns[0]!.unit,
                 formula: "sum",
-                componentKeys: cargo.map((c) =>
-                  key32(manifest.id, "cargo", c.id),
+                componentKeys: rows.map((c) =>
+                  key32(manifest.id, "rows", c.id),
                 ),
               },
             ],

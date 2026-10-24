@@ -2,7 +2,7 @@ import type { PdfPage, PdfBlock, PdfCell } from "../documents/schema";
 import { numericTokens } from "../evidence/numbers";
 import { physicalLines, spanText } from "./physical-spans";
 import { countAtoms } from "../shipping/count-atoms";
-import { shippingRole } from "../shipping/roles";
+import { shippingRole, compoundLabel, subfieldRole, subfieldMarker, type CompoundLabel } from "../shipping/roles";
 import type { EntityScope } from "./shipping-cells";
 import type { TableLink } from "./relations";
 const inside = (c: PdfCell, b: PdfBlock) =>
@@ -97,6 +97,19 @@ function computeCellHeading(page: PdfPage, cell: PdfCell, bs: PdfBlock[]) {
     )
   )
     return null;
+  // Several labels printed side by side on the box's top line, e.g.
+  // "(5) Port of Loading  (8) Port of Discharge  (9) Place of Delivery",
+  // each heading the value printed under it. A label may overhang the border.
+  const side = (page.blocks ?? [])
+    .filter((b) => Math.abs(b.y - first.y) < first.height * 0.6 && b.x >= cell.x - 1 && b.x < cell.x + cell.width && b.y < cell.y + cell.height)
+    .sort((a, b) => a.x - b.x);
+  if (side.length >= 2 && side.every((b) => shippingRole(b.text)))
+    return {
+      role: null,
+      compound: { kind: "ordered" as const, parts: side.map((b, i) => ({ marker: "#" + i, role: shippingRole(b.text), x: b.x })) },
+      blocks: side,
+      cell,
+    };
   const lines = physicalLines(page, bs);
   let head = lines[0] ?? [first];
   // A heading may wrap across two/three physical lines; stop at the first
@@ -104,6 +117,7 @@ function computeCellHeading(page: PdfPage, cell: PdfCell, bs: PdfBlock[]) {
   for (const line of lines.slice(1, 3)) {
     if (
       shippingRole(spanText(head)) ||
+      compoundLabel(spanText(head)) ||
       line[0].y - head.at(-1)!.y >
         Math.max(first.height, line[0].height) * 2.5 ||
       line.some(
@@ -117,18 +131,65 @@ function computeCellHeading(page: PdfPage, cell: PdfCell, bs: PdfBlock[]) {
   // Shared Container/Seal column: container identifier establishes the row;
   // the Seal requires its own literal SEAL label within that same closed cell.
   const cleaned = whole.replace(/\s*&\s*Seal No\.?$/i, "");
+  const role =
+    shippingRole(whole) ?? shippingRole(cleaned) ?? shippingRole(first.text);
   return {
-    role:
-      shippingRole(whole) ?? shippingRole(cleaned) ?? shippingRole(first.text),
+    role,
+    compound: role ? null : compoundLabel(whole),
     blocks: head,
     cell,
   };
 }
+// Role of a value line under a compound heading. Lines are read in order; a
+// later label line inside the same cell ("Total No. of Packages (in words)")
+// owns the lines below it. Explicit markers decide; otherwise an ordered
+// heading needs one line (or one same-line block) per part, or exactly one
+// part left without an inline label ("SEAL: ...") of its own.
+function compoundRole(page: PdfPage, cell: PdfCell, compound: CompoundLabel, headBlocks: PdfBlock[], b: PdfBlock): string | null {
+  const below = Math.max(-Infinity, ...headBlocks.map((h) => h.y + h.height));
+  const values = body(page, cell).filter((v) => !headBlocks.includes(v) && v.y > below - 0.5);
+  const lines = physicalLines(page, values);
+  const inline = (text: string) => { const m = text.match(/^([^:]{1,40}):\s*\S/); return m ? shippingRole(m[1]) : null; };
+  const regions: { label: string | null; lines: PdfBlock[][] }[] = [{ label: null, lines: [] }];
+  for (const line of lines) {
+    const text = spanText(line), label = numericTokens(text).length ? null : shippingRole(text);
+    if (label) {
+      if (line.includes(b)) return null;
+      regions.push({ label, lines: [] });
+    } else regions.at(-1)!.lines.push(line);
+  }
+  const region = regions.find((r) => r.lines.some((l) => l.includes(b)));
+  if (!region) return null;
+  if (region.label) return region.label;
+  const own = region.lines;
+  const at = own.findIndex((l) => l.includes(b));
+  if (at < 0) return null;
+  if (compound.kind !== "ordered") return subfieldRole(compound, b.text, at);
+  if (subfieldMarker(b.text)) return null;
+  const n = compound.parts.length;
+  // Side-by-side labels: the value belongs to the label it starts under.
+  if (compound.parts.every((p) => p.x !== undefined)) {
+    const tol = Math.max(b.height, 4);
+    const under = compound.parts.filter((p) => p.x! <= b.x + tol).sort((x, y) => y.x! - x.x!)[0];
+    const next = compound.parts.filter((p) => p.x! > b.x + tol).sort((x, y) => x.x! - y.x!)[0];
+    return under && (!next || b.x + b.width <= next.x! + tol * 4) ? under.role : null;
+  }
+  if (own.length === 1 && own[0].length === n)
+    return compound.parts[[...own[0]].sort((x, y) => x.x - y.x).indexOf(b)].role;
+  if (own.length === n && own.every((l) => l.length === 1)) return compound.parts[at].role;
+  if (inline(spanText(own[at]))) return null;
+  const labelled = new Set(own.map((l) => inline(spanText(l))).filter(Boolean));
+  const open = compound.parts.filter((p) => !labelled.has(p.role));
+  return labelled.size && open.length === 1 ? open[0].role : null;
+}
 // A label-only closed cell and its immediately adjoining value cell form a
 // key/value pair. Full shared edges prove the association; proximity, titles,
 // data units and competing adjacent labels do not. No template coordinates.
+// "16. 적재장소", "(21) 물품소재지", "⑬ 목적국": a numbered box caption is a
+// label even when its meaning is not one we compare.
+const numberedCaption = (t: string) => /^(?:\(\d{1,3}\)|\d{1,3}[.)])\s*[A-Za-z가-힣]/.test(t.normalize("NFKC").trim()) && !/\d{3,}/.test(t.replace(/^\D*\d{1,3}/, ""));
 export function nativeKeyValue(page: PdfPage, b: PdfBlock) {
-  const cell=nativeCell(page,b);if(!cell || shippingRole(b.text))return null;
+  const cell=nativeCell(page,b);if(!cell || shippingRole(b.text) || numberedCaption(b.text))return null;
   const pairs:{role:string;label:PdfCell;vertical:boolean}[]=[];
   for(const label of page.cells??[]) {
     const horizontal=Math.abs(label.y-cell.y)<.4 && Math.abs(label.height-cell.height)<.4 && Math.abs(label.x+label.width-cell.x)<.4;
@@ -157,7 +218,10 @@ export function geometricRole(page: PdfPage, b: PdfBlock): string | null {
       .map((b) => shippingRole(b.text))
       .filter(Boolean),
   );
-  const heading = semanticHeadings.size > 2 ? null : cellHeading(page, cell);
+  // Many unrelated labels in one box are not one heading, unless they are an
+  // explicit compound heading whose parts are resolved individually.
+  const boxed = cellHeading(page, cell);
+  const heading = semanticHeadings.size > 2 && !boxed?.compound ? null : boxed;
   const same = body(page, cell)
     .filter((v) => v.row === b.row && v.x + v.width <= b.x + 0.5)
     .sort((a, b) => b.x - a.x)[0];
@@ -166,6 +230,11 @@ export function geometricRole(page: PdfPage, b: PdfBlock): string | null {
   if (/^\(?HS\s+[0-9][0-9. -]*\)?$/i.test(b.text)) return "hsCode";
   const inline = b.text.match(/^([^:]+):\s*.+$/);
   if (inline && shippingRole(inline[1])) return shippingRole(inline[1]);
+  if (
+    heading?.compound &&
+    b.y > Math.max(...heading.blocks.map((h) => h.y + h.height)) - 0.5
+  )
+    return compoundRole(page, cell, heading.compound, heading.blocks, b);
   if (
     heading?.role &&
     b.y > Math.max(...heading.blocks.map((h) => h.y + h.height)) - 0.5
@@ -196,7 +265,7 @@ export function geometricRole(page: PdfPage, b: PdfBlock): string | null {
     .sort((a, b) => b.y - a.y);
   for (const c of candidates) {
     const h = cellHeading(page, c);
-    if (!h?.role) continue;
+    if (!h?.role && !h?.compound) continue;
     // A populated data cell between the header and this row is fine for a table;
     // a later semantic heading terminates the table.
     if (
@@ -209,7 +278,7 @@ export function geometricRole(page: PdfPage, b: PdfBlock): string | null {
       )
     )
       return null;
-    return h.role;
+    return h.role ?? compoundRole(page, cell, h.compound!, [], b);
   }
   return null;
 }
@@ -236,7 +305,8 @@ export function nativeTableLink(
   );
   // A closing aggregate band is not another item/container/cargo row. Read
   // actual labels in aligned cells; no template coordinates or expected values.
-  if(!bands.some(c=>anchors.includes(cellHeading(page,c)?.role??"")) && bands.some(c=>{
+  const headsAnchor = (c: PdfCell) => { const h = cellHeading(page, c); return anchors.includes(h?.role ?? "") || !!h?.compound?.parts.some((p) => anchors.includes(p.role ?? "")); };
+  if(!bands.some(headsAnchor) && bands.some(c=>{
     const lines=physicalLines(page,body(page,c));
     return lines.some((_,i)=>[1,2,3].some(n=>
       shippingRole(spanText(lines.slice(i,i+n).flat()))?.startsWith("total")));
@@ -279,6 +349,43 @@ export function nativeTableLink(
     (b) =>
       anchors.includes(geometricRole(page, b) ?? "") && !shippingRole(b.text),
   );
+  // Several containers listed in one cell, each line followed by its own
+  // "SEAL: ..." line: every container line opens its own row inside the cell.
+  const listed = ab.filter((b) => /^[A-Z]{4}\s?\d{6,7}\b/.test(b.text.trim()));
+  if (scope === "container" && listed.length > 1) {
+    if (!blocks.every((v) => nativeCell(page, v) === anchor)) return null;
+    const owners = blocks.map((v) => listed.filter((a) => a.y <= v.y + 0.5).sort((a, b) => b.y - a.y)[0]);
+    if (owners.some((o) => !o) || new Set(owners).size !== 1) return null;
+    return { tableId: `p${page.page}:list${anchor.x},${anchor.y}`, rowId: `p${page.page}:listrow${owners[0]!.y}`, role, unit: null };
+  }
+  // Several goods listed in one description cell ("SAID TO CONTAIN:"), each
+  // closed by its own quantity line ("QTY: 550 SET" / "(360 PCS)"): every
+  // group of lines up to its quantity line is one item row inside the cell.
+  if (scope === "item") {
+    const own = cellHeading(page, anchor)?.blocks ?? [];
+    const lines = physicalLines(page, body(page, anchor)).filter(
+      (l) => !l.some((b) => own.includes(b)) && !/:\s*$/.test(spanText(l).trim()),
+    );
+    const closes = lines.map((l) => {
+      const atoms = countAtoms(spanText(l));
+      return l.some((b) => geometricRole(page, b) === "quantity") ||
+        (atoms.length === 1 && atoms[0].role === "quantity");
+    });
+    if (closes.filter(Boolean).length > 1) {
+      if (!blocks.every((v) => nativeCell(page, v) === anchor)) return null;
+      const groups: PdfBlock[][][] = [];
+      let open: PdfBlock[][] = [];
+      lines.forEach((l, i) => {
+        open.push(l);
+        if (closes[i]) { groups.push(open); open = []; }
+      });
+      // Trailing unclosed lines or a group without goods text are not rows.
+      if (open.length || groups.some((g) => g.length < 2)) return null;
+      const owner = groups.find((g) => blocks.every((v) => g.some((l) => l.includes(v))));
+      if (!owner) return null;
+      return { tableId: `p${page.page}:listg${anchor.x},${anchor.y}`, rowId: `p${page.page}:listrow${owner[0][0].y}`, role, unit: null };
+    }
+  }
   if (
     scope !== "item" &&
     ab.filter((b) => /^[A-Z0-9][A-Z0-9-]{5,}$/i.test(b.text.trim())).length !==
@@ -303,7 +410,7 @@ export function nativeTableLink(
   if ([...numericRows.values()].some((rows) => rows.size > 1)) return null;
   const headings = bands
     .map((c) => cellHeading(page, c))
-    .filter((h) => h?.role);
+    .filter((h) => h?.role || h?.compound);
   const inlineHeaders = headings.some((h) =>
     h!.blocks.some((b) => b.y < first.y - 2),
   );
@@ -315,7 +422,7 @@ export function nativeTableLink(
             (c) =>
               c.y < cell.y &&
               Math.abs(c.x - cell.x) < 0.4 &&
-              cellHeading(page, c)?.role,
+              (cellHeading(page, c)?.role || cellHeading(page, c)?.compound),
           )
           .map((c) => c.y),
       );
@@ -371,6 +478,12 @@ export function nativeDocumentField(page: PdfPage, b: PdfBlock) {
   const c = nativeCell(page, b),
     h = c && cellHeading(page, c);
   if (nativeDocumentFieldAmbiguous(page, b)) return false;
+  // A form box holding several labelled document fields side by side
+  // ("(5) Port of Loading (8) Port of Discharge ...") with one value under each.
+  if (h?.compound?.kind === "ordered" && h.blocks.some((v) => v.y < b.y - 2)) {
+    const role = geometricRole(page, b);
+    if (role && h.compound.parts.some((p) => p.role === role)) return true;
+  }
   return (
     !!h?.role &&
     h.blocks.some((v) => v.y < b.y - 2) &&

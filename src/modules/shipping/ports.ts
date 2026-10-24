@@ -135,6 +135,14 @@ function resolve(raw: string): Set<string> | "conflict" | null {
     if (right) { const r = narrow(right, m[1].trim()); if (r) return r; }
   }
   const words = raw.split(" ");
+  // Korean forms print "KRPUS 부산항": a leading listed code whose trailing
+  // local name is unlisted. A trailing name that denotes another port conflicts.
+  const lead = words[0].toUpperCase();
+  if (words.length > 1 && isLocode(lead) && ports().status.has(lead)) {
+    const rest = resolve(words.slice(1).join(" "));
+    if (!rest) return new Set([lead]);
+    return rest !== "conflict" && rest.has(lead) ? new Set([lead]) : "conflict";
+  }
   for (let i = words.length - 1; i > 0; i--) {
     const name = lookup(words.slice(0, i).join(" "));
     if (name && countryOf(words.slice(i).join(" "))) return narrow(name, words.slice(i).join(" "));

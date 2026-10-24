@@ -89,6 +89,7 @@ export const shippingFields = {
   ],
   house_manifest: [
     "houseBlNumber",
+    "declarationNumber",
     "shipper",
     "consignee",
     "goodsDescription",

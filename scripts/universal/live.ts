@@ -8,7 +8,7 @@ import {policy39,paid39Extraction,paid39Semantic} from '../lib/phase39-live';
 import {reviewShipping} from '../../src/modules/shipping/review';
 import type {ShippingType} from '../../src/modules/shipping/catalog';
 const arg=(key:string)=>process.argv.find(a=>a.startsWith('--'+key+'='))?.slice(key.length+3);
-if(arg('approved-documents')!==String(policy39.documents)||arg('approved-requests')!==String(policy39.requests)||arg('approved-max-cost-usd')!=='2.00')throw Error('Explicit current user approval required; flags alone are not approval');
+if(arg('approved-documents')!==String(policy39.documents)||arg('approved-requests')!==String(policy39.requests)||arg('approved-max-cost-usd')!==policy39.cost.toFixed(2))throw Error('Explicit current user approval required; flags alone are not approval');
 const sha=arg('sha')??'',stage=arg('stage')??'',id=arg('case')??'',dir='test-results/universal',base=arg('corpus')==='replacement'?'tests/fixtures/universal-replacement/':'tests/fixtures/universal/';
 if(!/^[a-f0-9]{40}$/.test(sha)||!['baseline','development','holdout','stress','error','final'].includes(stage)||!/^[-a-zA-Z0-9]+$/.test(id))throw Error('Exact source and safe stage/case required');
 const manifest=JSON.parse(await readFile(base+'manifest.json','utf8')) as {case:string;partition:string;file:string;sha256:string;type:ShippingType;parent?:string}[];

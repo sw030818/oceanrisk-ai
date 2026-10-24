@@ -35,8 +35,14 @@ export function hsSix(v: unknown) {
   const digits = v.replace(/[. -]/g, "");
   return digits.length >= 6 ? digits.slice(0, 6) : null;
 }
-export function contextualCarton(ref: FieldRef | undefined) {
-  if (!ref || !verified32(ref) || text32(ref.field.current.value) !== "ct")
+// Bare "CT"/"PL" codes are package kinds only in a verified package-unit cell.
+const contextualCodes: Record<string, string> = { ct: "CTNS", pl: "PALLETS" };
+export function contextualPackageUnit(ref: FieldRef | undefined): string | null {
+  const code = ref ? contextualCodes[text32(ref.field.current.value)] : undefined;
+  return code && contextualCarton(ref, true) ? code : null;
+}
+export function contextualCarton(ref: FieldRef | undefined, anyCode = false) {
+  if (!ref || !verified32(ref) || (anyCode ? !contextualCodes[text32(ref.field.current.value)] : text32(ref.field.current.value) !== "ct"))
     return false;
   const source = ref.field.current.source;
   return (

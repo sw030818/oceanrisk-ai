@@ -165,6 +165,31 @@ export function ShippingWorkspace() {
       setError(safeError(e).message);
     }
   }
+  // Synthetic sample transactions (no real company data) let a visitor try
+  // the flow without their own documents. Loading never starts AI analysis.
+  async function loadSample(kind: "normal" | "mismatch") {
+    if (busy) return;
+    try {
+      const names: Record<ShippingType, string> = {
+        house_bl: "house-bl",
+        export_declaration: "export-declaration",
+        house_manifest: "house-manifest",
+      };
+      const label = kind === "normal" ? "예시-정상" : "예시-오류포함";
+      const loaded = await Promise.all(
+        shippingTypes.map(async (slot) => {
+          const res = await fetch(`/samples/${kind}/${names[slot]}.pdf`);
+          if (!res.ok) throw new Error("예시 서류를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.");
+          const blob = await res.blob();
+          return [slot, [new File([blob], `${label}-${names[slot]}.pdf`, { type: "application/pdf", lastModified: 0 })]] as [ShippingType, File[]];
+        }),
+      );
+      setError(null);
+      commitSlots({ ...emptySlots(), ...Object.fromEntries(loaded) });
+    } catch (e) {
+      setError(safeError(e).message);
+    }
+  }
   function remove(slot: ShippingType, id: string) {
     const next = {
       ...slots,
@@ -656,6 +681,31 @@ export function ShippingWorkspace() {
                     다른 칸에 잘못 올려도 분석 후 문서 제목으로 실제 종류를
                     확인해 알려 드립니다.
                   </p>
+                  <div
+                    data-testid="sample-loader"
+                    className="mt-3 flex flex-wrap items-center gap-2 text-xs"
+                  >
+                    <span className="text-slate-500">서류가 없다면 예시 서류로 체험하기:</span>
+                    <button
+                      type="button"
+                      onClick={() => loadSample("normal")}
+                      disabled={busy}
+                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+                    >
+                      정상 거래
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => loadSample("mismatch")}
+                      disabled={busy}
+                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+                    >
+                      오류 포함 거래
+                    </button>
+                    <span className="text-[11px] text-slate-400">
+                      가상의 회사·화물로 만든 합성 서류입니다.
+                    </span>
+                  </div>
                 </div>
                 <div
                   data-testid="upload-slots"

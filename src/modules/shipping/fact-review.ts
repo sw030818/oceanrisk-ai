@@ -1,3 +1,4 @@
+import { formPrints, requiredFields } from "./form-fields";
 import { linkHsSetDependencies } from "./conflict-causes";
 import { linkValueDependencies } from "./value-dependencies";
 import { resolveIndependentRecords } from "./independent-records";
@@ -23,6 +24,7 @@ import {
 import {
   identifiers32,
   identifierValues32,
+  containerValues32,
   root32,
   ref32,
   refKey32,
@@ -350,7 +352,33 @@ export function withFactReview(
               Math.max(1, Math.abs(f.value!), Math.abs(selected[0].value!)) *
                 1e-9,
           );
-        const status: ShippingAssessment = relevant.includes(
+        // A declaration often prints weight in whole kilograms. A value equal
+        // to the other document's figure rounded to its own printed precision
+        // is a rounding difference, kept provisional and never an error.
+        const printedDecimals = (f: (typeof selected)[number]) =>
+          f.derivation === "literal" || f.derivation === "single_native_row"
+            ? Math.max(0, ...f.refs.map((r) => {
+                const v = r.field.current.value;
+                const token = (r.field.current.source?.quote ?? "").match(/\d[\d,]*(?:\.\d+)?/g)
+                  ?.find((t) => Number(t.replace(/,/g, "")) === v);
+                return token?.split(".")[1]?.length ?? 0;
+              }))
+            : null;
+        const roundedSame =
+          !same && present && compatible &&
+          numericMeaning[meaning].category === "weight" &&
+          (() => {
+            const ds = selected.map(printedDecimals);
+            if (ds.some((d) => d === null)) return false;
+            const coarse = Math.min(...(ds as number[]));
+            const round = (v: number) => Math.round(v * 10 ** coarse) / 10 ** coarse;
+            return coarse < Math.max(...(ds as number[])) &&
+              selected.every((f, i) => ds[i] !== coarse || Math.abs(round(selected.find((g, j) => ds[j] !== coarse)!.value!) - f.value!) < 1e-9) &&
+              new Set(selected.filter((_, i) => ds[i] !== coarse).map((f) => f.value)).size === 1;
+          })();
+        const status: ShippingAssessment = roundedSame
+          ? "provisional_match"
+          : relevant.includes(
           "UNIT_INCOMPATIBLE",
         )
           ? "not_comparable"
@@ -423,6 +451,9 @@ export function withFactReview(
           ]);
           continue;
         }
+        // Missing only on documents whose standard form never prints this
+        // field (e.g. no POD on a 수출신고필증) is not missing information.
+        const expected = core && group.some((d) => !sets.find((s) => s.doc === d)?.refs.length && formPrints(d.detectedType, role));
         if (available.length < 2) {
           add(
             group,
@@ -430,8 +461,8 @@ export function withFactReview(
             role,
             category,
             refs,
-            core ? "insufficient_information" : "not_applicable",
-            core ? [...base, "FIELD_NOT_EXTRACTED"] : ["FIELD_NOT_APPLICABLE"],
+            expected ? "insufficient_information" : "not_applicable",
+            expected ? [...base, "FIELD_NOT_EXTRACTED"] : ["FIELD_NOT_APPLICABLE"],
           );
           continue;
         }
@@ -449,7 +480,7 @@ export function withFactReview(
               ? "USER_EDITED"
               : "EVIDENCE_UNVERIFIED",
           );
-        if (core && available.length !== group.length)
+        if (expected && available.length !== group.length)
           reasons.push("FIELD_NOT_EXTRACTED");
         const bound = (f: FieldRef) => {
           const d = documents.find((d) => d.id === f.documentId)!;
@@ -559,7 +590,7 @@ export function withFactReview(
                   : text32(f.field.current.value);
         const ns = valid.map((s) =>
           [...new Set((s.verified.length ? s.verified : s.refs).flatMap((f) =>
-            role === "declarationNumber" ? identifierValues32(f) : [normalize(f)]))]
+            role === "declarationNumber" ? identifierValues32(f) : role === "containerNumber" ? containerValues32(f) : [normalize(f)]))]
             .sort()
             .join("|"),
         );
@@ -660,6 +691,24 @@ export function withFactReview(
           if (!containers[0] || containers.some((ids) => ids !== containers[0]))
             reasons.push("SCOPE_UNRESOLVED");
         }
+        if (["containerNumber", "sealNumber"].includes(role)) {
+          // A consolidated list whose container is claimed by no cargo row
+          // cannot prove which HBL owns it, so its per-HBL list is incomplete.
+          const orphan = group.some(
+            (d) =>
+              factHbl(d) !== hbl &&
+              d.containers.some(
+                (c) =>
+                  has32(c.containerNumber) &&
+                  !d.cargoRecords.some(
+                    (r) =>
+                      text32(r.fields.containerNumber?.current.value) ===
+                      text32(c.containerNumber.current.value),
+                  ),
+              ),
+          );
+          if (orphan) reasons.push("SCOPE_UNRESOLVED");
+        }
         if (role === "goodsDescription" && !same) {
           // Unknown translation or partial descriptions cannot establish a
           // confirmed product conflict merely because canonical strings differ.
@@ -746,26 +795,7 @@ export function withFactReview(
   }
   // Required document information is separate from optional cross-document fields.
   for (const doc of documents) {
-    const required =
-      doc.detectedType === "export_declaration"
-        ? [
-            "declarationNumber",
-            "exporter",
-            "goodsDescription",
-            "hsCode",
-            "quantity",
-            "quantityUnit",
-          ]
-        : [
-            "houseBlNumber",
-            "shipper",
-            "consignee",
-            "goodsDescription",
-            "packageCount",
-            "grossWeight",
-            "portOfLoading",
-            "portOfDischarge",
-          ];
+    const required = requiredFields[doc.detectedType ?? ""] ?? requiredFields.house_bl;
     for (const role of required) {
       const refs: FieldRef[] = [];
       const root = root32(doc, role);

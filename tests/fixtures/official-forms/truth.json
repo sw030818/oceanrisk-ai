@@ -1,0 +1,220 @@
+{
+ "normal": {
+  "expect": {
+   "kind": "normal"
+  },
+  "truth": {
+   "hbl": "ARFWPUS2613978",
+   "mbl": "OCEA263010429160",
+   "declaration": "99297-26-298730U",
+   "shipper": "ARIN PRECISION CO., LTD.",
+   "shipper_ko": "(주)아린정밀",
+   "shipper_addr": "45, GONGDAN-RO, GUMI-SI, GYEONGBUK, KOREA",
+   "consignee": "MERIDIAN RETAIL PTY LTD",
+   "dest_country": "AU",
+   "pol": "BUSAN, KOREA",
+   "pol_code": "KRPUS",
+   "pol_ko": "부산항",
+   "pod": "SYDNEY, AUSTRALIA",
+   "pod_city": "SYDNEY",
+   "vessel": "PACIFIC HARMONY",
+   "voyage": "013E",
+   "etd": "2026-08-02",
+   "forwarder": "ARIN GLOBAL LOGISTICS CO., LTD.",
+   "forwarder_code": "AGLC",
+   "carrier": "OCEANIA LINE CO., LTD.",
+   "carrier_code": "OCEA",
+   "items": [
+    {
+     "en": "CERAMIC COFFEE MUG 350ML",
+     "ko": "도자기 머그컵",
+     "model": "MODEL CM-350",
+     "hs": "6912.00-1000",
+     "unit": "PCS",
+     "quantity": 180,
+     "packages": 5,
+     "net": 68.4,
+     "gross": 72.9,
+     "fob": 10767.74
+    },
+    {
+     "en": "STAINLESS STEEL WATER BOTTLE 500ML",
+     "ko": "스테인리스 물병",
+     "model": "MODEL SB-500",
+     "hs": "9617.00-1000",
+     "unit": "PCS",
+     "quantity": 1200,
+     "packages": 50,
+     "net": 384.0,
+     "gross": 447.1,
+     "fob": 38543.74
+    },
+    {
+     "en": "COTTON T-SHIRT MEN'S",
+     "ko": "면 티셔츠(남성용)",
+     "model": "STYLE TS-21 / 100% COTTON",
+     "hs": "6109.10-0000",
+     "unit": "PCS",
+     "quantity": 250,
+     "packages": 5,
+     "net": 50.0,
+     "gross": 58.0,
+     "fob": 14680.44
+    },
+    {
+     "en": "MOISTURIZING CREAM 50ML",
+     "ko": "보습 크림",
+     "model": "MODEL MC-50 / 50ML",
+     "hs": "3304.99-1000",
+     "unit": "PCS",
+     "quantity": 3240,
+     "packages": 27,
+     "net": 291.6,
+     "gross": 338.9,
+     "fob": 143322.43
+    }
+   ],
+   "containers": [
+    {
+     "container": "BLRU3775944",
+     "seal": "KS3416033",
+     "type": "40HC",
+     "packages": 13,
+     "gross": 137.0
+    },
+    {
+     "container": "OCEU5807983",
+     "seal": "KS5464777",
+     "type": "40HC",
+     "packages": 74,
+     "gross": 779.9
+    }
+   ],
+   "pkg": "PL",
+   "packages": 87,
+   "gross": 916.9,
+   "net": 794.0,
+   "cbm": 7.745,
+   "mrn": "26OCEA77989",
+   "others": [
+    [
+     "ZEPHYR TOOLS CO., LTD.",
+     "OSLO MARINE AS",
+     "HAND TOOLS",
+     40,
+     "CT",
+     820.0
+    ],
+    [
+     "SEOWON FABRIC CO., LTD.",
+     "MILANO TESSUTI SRL",
+     "POLYESTER FABRIC",
+     65,
+     "RL",
+     2450.5
+    ]
+   ],
+   "decl_shipper_style": "both",
+   "bl_qty_style": "paren",
+   "weight_dec": 1
+  },
+  "sha256": {
+   "house_bl": "fcbabe23a8902aaa78e645da310a94645b74cd574cdeec6d0884e43648c37e25",
+   "export_declaration": "02befa80835a520f27c4d8454ae79efe4271e64e19c7c1e84778c5f1201a72ed",
+   "house_manifest": "3ef94283a4bc5c760a395adc8464d2f4e587c7a600743435ad094a66108bdace"
+  }
+ },
+ "mismatch": {
+  "expect": {
+   "kind": "error",
+   "fault": "packageCount",
+   "doc": "house_manifest",
+   "role": "packageCount"
+  },
+  "truth": {
+   "hbl": "SLEXKAN2620198",
+   "mbl": "OCEA267591300219",
+   "declaration": "52364-26-150662A",
+   "shipper": "ARIN PRECISION CO., LTD.",
+   "shipper_ko": "(주)아린정밀",
+   "shipper_addr": "45, GONGDAN-RO, GUMI-SI, GYEONGBUK, KOREA",
+   "consignee": "ANDES SUPPLY S.A.",
+   "dest_country": "BR",
+   "pol": "GWANGYANG, KOREA",
+   "pol_code": "KRKAN",
+   "pol_ko": "광양항",
+   "pod": "SANTOS, BRAZIL",
+   "pod_city": "SANTOS",
+   "vessel": "OCEAN AURORA",
+   "voyage": "048N",
+   "etd": "2026-01-04",
+   "forwarder": "SOL EXPRESS LOGISTICS INC.",
+   "forwarder_code": "SOLX",
+   "carrier": "OCEANIA LINE CO., LTD.",
+   "carrier_code": "OCEA",
+   "items": [
+    {
+     "en": "CERAMIC COFFEE MUG 350ML",
+     "ko": "도자기 머그컵",
+     "model": "MODEL CM-350",
+     "hs": "6912.00-1000",
+     "unit": "PCS",
+     "quantity": 360,
+     "packages": 10,
+     "net": 136.8,
+     "gross": 155.6,
+     "fob": 18710.39
+    },
+    {
+     "en": "LED LIGHT BULB 9W",
+     "ko": "LED 전구",
+     "model": "MODEL LB-09",
+     "hs": "8539.52-0000",
+     "unit": "PCS",
+     "quantity": 2500,
+     "packages": 25,
+     "net": 150.0,
+     "gross": 166.0,
+     "fob": 51741.68
+    },
+    {
+     "en": "MESH OFFICE CHAIR",
+     "ko": "메쉬 사무용 의자",
+     "model": "MODEL OC-5",
+     "hs": "9401.30-0000",
+     "unit": "PCS",
+     "quantity": 26,
+     "packages": 26,
+     "net": 338.0,
+     "gross": 359.0,
+     "fob": 51.92
+    }
+   ],
+   "containers": [
+    {
+     "container": "OCEU9413484",
+     "seal": "KS7247612",
+     "type": "40GP",
+     "packages": 61,
+     "gross": 680.6
+    }
+   ],
+   "pkg": "PL",
+   "packages": 61,
+   "gross": 680.6,
+   "net": 624.8,
+   "cbm": 2.482,
+   "mrn": "26OCEA93447",
+   "others": [],
+   "decl_shipper_style": "both",
+   "bl_qty_style": "line",
+   "weight_dec": 3,
+   "m_packages": 66
+  },
+  "sha256": {
+   "house_bl": "390a99af87e1148319a66784f9cf15d6359e64dfaf389f760b67ef3dc7ae6e47",
+   "export_declaration": "a0998dde20177dd0f37372ec9be06253f8df88f6489b1236299a5ac94c1199e0",
+   "house_manifest": "cd8b1f066ea4dfb997e1b1fac110c0c5e563034bece10ec6d715f50205000df8"
+  }
+ }
+}

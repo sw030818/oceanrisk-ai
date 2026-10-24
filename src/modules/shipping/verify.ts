@@ -1,4 +1,4 @@
-import { nativeDetailGroup } from "../layout/shipping-detail-group";
+import { nativeDetailGroup, nativeItemBlock } from "../layout/shipping-detail-group";
 import type {
   GroundedField,
   PdfDocument,
@@ -20,7 +20,7 @@ import {
   cellHeading,
   packageGoodsContext,
 } from "../layout/shipping-geometry";
-import { shippingRole, rootTotalRole, unitParents } from "./roles";
+import { shippingRole, rootTotalRole, unitParents, withoutSubfieldMarker, compoundLabel } from "./roles";
 import { nativeGoodsContext } from "./goods-context";
 import { cargoCountAtoms } from "./cargo-description";
 import { atomRole, countAtoms } from "./count-atoms";
@@ -46,8 +46,11 @@ function inlineRole(text: string, value: string | number): string | null {
   if (!match || !numericTokens(match[0]).includes(value)) return null;
   return shippingRole(text.slice(0, match.index).trim());
 }
+// A sub-field marker of a compound column ("C) ", "/", "1) ") is not part of
+// the printed value; which sub-field it marks is checked separately.
 const literal = (text: string, value: string) =>
   normalizeText(text) === normalizeText(value) ||
+  normalizeText(withoutSubfieldMarker(text)) === normalizeText(value) ||
   normalizeText(text.replace(/^[()]|[()]$/g, "")) === normalizeText(value) ||
   normalizeText(text.replace(/^\(?HS\s+/i, "").replace(/\)$/, "")) ===
     normalizeText(value) ||
@@ -191,9 +194,12 @@ export function verifyShippingField(
     return finish();
   }
   function valuesInDetail() {
-    return blocks!.some(b=>!!nativeDetailGroup(page!,b));
+    return blocks!.some(b=>!!nativeDetailGroup(page!,b)||!!nativeItemBlock(page!,b));
   }
   const units = unitParents[role];
+  // A line labelled as a document total ("Total No. of Packages (in words)")
+  // inside a body column states the whole document's figure, not a row's.
+  const totalLine = (b: PdfBlock) => /^total/.test(geometricRole(page, b) ?? "");
   const contextualAtom = (b: PdfBlock) => {
     const parent = geometricRole(page, b);
     if (
@@ -302,7 +308,7 @@ export function verifyShippingField(
     if (
       scope === "document" &&
       (entityHeaders || entityCell) &&
-      !(values.length && values.every((b) => nativeDocumentField(page, b)))
+      !(values.length && values.every((b) => nativeDocumentField(page, b) || totalLine(b)))
     ) {
       g = fail(
         g,
@@ -315,8 +321,15 @@ export function verifyShippingField(
       scope === "container" && role === "weightUnit"
         ? ["grossWeight", "totalGrossWeight", "grossWeightUnit"]
         : units;
+    const unitText = normalizeText(String(g.value));
+    // "14. 1)총중량(KGS) 2)총용적(CBM)": the unit printed on the matching part
+    // of a compound column header is that column's explicit unit header.
+    const compoundUnit = (b: PdfBlock) =>
+      compoundLabel(b.text)?.parts.find(
+        (p) => p.role && parents.includes(p.role) && p.unit && normalizeText(p.unit) === unitText,
+      )?.role ?? null;
     const labels = blocks
-      .map((b) => shippingRole(b.text.split(":")[0]))
+      .map((b) => shippingRole(b.text.split(":")[0]) ?? compoundUnit(b))
       .filter((r): r is string => !!r);
     const actual =
       values.map(b => contextualAtom(b)).find(Boolean) ??
@@ -347,9 +360,9 @@ export function verifyShippingField(
       (actual === role ||
         parents.includes(actual ?? "") ||
         labels.some((r) => r === role || parents.includes(r)));
-    const unitText = normalizeText(String(g.value));
     const quotedUnit =
       values.length > 0 ||
+      blocks.some((b) => !!compoundUnit(b)) ||
       blocks.some((b) => {
         const nums = numericTokens(b.text),
           r =
@@ -372,7 +385,7 @@ export function verifyShippingField(
     const rowOkay =
       !owner ||
       ((owner.tableId.startsWith(`p${page.page}:t`) ||
-        owner.tableId.startsWith(`p${page.page}:box`) || owner.tableId.startsWith(`p${page.page}:detail`)) &&
+        owner.tableId.startsWith(`p${page.page}:box`) || owner.tableId.startsWith(`p${page.page}:detail`) || owner.tableId.startsWith(`p${page.page}:item`) || owner.tableId.startsWith(`p${page.page}:list`)) &&
         blocks.every((b) => {
           const linked = shippingCell(page, [b], scope);
           if (linked?.tableId === owner.tableId && linked.rowId === owner.rowId)
@@ -382,6 +395,7 @@ export function verifyShippingField(
             heading = cell && cellHeading(page, cell);
           const parent =
             shippingRole(b.text) ??
+            compoundUnit(b) ??
             (heading?.blocks.some((v) => v.id === b.id) ? heading.role : null);
           return (
             (b.row === h ||
@@ -419,7 +433,7 @@ export function verifyShippingField(
   }
   if (
     typeof g.value === "number" &&
-    values.some((b) => numericTokens(b.text).length !== 1 && !contextualAtom(b))
+    values.some((b) => numericTokens(withoutSubfieldMarker(b.text)).length !== 1 && !contextualAtom(b))
   ) {
     g = fail(
       g,
@@ -495,7 +509,7 @@ export function verifyShippingField(
     if (
       tableOwned &&
       !actual?.startsWith("total") &&
-      !values.every((b) => nativeDocumentField(page, b))
+      !values.every((b) => nativeDocumentField(page, b) || totalLine(b))
     ) {
       g = fail(
         g,
@@ -556,7 +570,7 @@ function titleType(text: string): 'house_bl'|'export_declaration'|'house_manifes
   )
     return "export_declaration" as const;
   if (
-    /^(?:house manifest|house cargo manifest|(?:house|하우스)\s*적하목록|적하목록 신고 예정자료)$/.test(
+    /^(?:house manifest|house cargo manifest|(?:house|하우스)\s*적하목록|적하목록 신고 예정자료|혼재화물적하목록(?:\((?:해상|항공)(?:수출|수입)\))?|(?:sea |air )?consolidated cargo manifest)$/.test(
       korean,
     )
   )
@@ -573,8 +587,15 @@ function titleSignals(text:string){
   return text.split(/\s+[\/|]\s+/).flatMap(part=>{const found=titleType(part);return found?[found]:[];});
 }
 function masterTitleSignal(text:string){
-  return text.split(/\s+[\/|]\s+/).some(part=>/^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?)$/i.test(part.trim()));
+  return text.split(/\s+[\/|]\s+/).some(part=>/^(?:master (?:bill of lading|b\/?l)|m\.?b\.?l\.?|sea export cargo manifest)$/i.test(part.trim()) ||
+    /^적하목록\((?:해상|항공)수출\)$/.test(part.normalize("NFKC").replace(/\s+/g,"")));
 }
+// Explicit House issuance printed on a plain "Bill of Lading": a House B/L
+// statement, an NVOCC carrier clause or a FIATA FBL. A generic carrier/agent
+// clause is not House evidence.
+const houseIssuance = (text: string) =>
+  (/\bhouse\s*(?:b\/?l|bill of lading)\b/i.test(text) && /\b(?:issued|as carrier|signed)\b/i.test(text) && !/^\s*master\b/i.test(text)) ||
+  /\bNVOCC\b|non[- ]vessel[- ]operating common carrier|\bFIATA\b/i.test(text);
 function titleCandidates(page: PdfPage) {
   const bs = (page.blocks ?? []).filter(
     (b) => b.y < (page.height ?? 842) * 0.17,
@@ -683,16 +704,18 @@ export function verifyClassification(
           })
         : undefined;
     const master = titles.some(t=>masterTitleSignal(t.text));
+    const statements = phrases.filter((g) => houseIssuance(spanText(g)));
+    const legacy = house.length === 1 && !!issuer;
     valid =
       valid &&
       !!title &&
-      house.length === 1 &&
-      !!issuer &&
+      (legacy || statements.length > 0) &&
       !master &&
       (cited(title) ||
-        house[0].every((h) => blocks!.some((b) => b.id === h.id)));
+        (legacy ? house[0] : statements.flat()).every((h) => blocks!.some((b) => b.id === h.id)) ||
+        statements.some((g) => g.some((h) => blocks!.some((b) => b.id === h.id))));
     if (valid)
-      blocks = [...title!.g, ...issuer!, ...house[0]].filter(
+      blocks = [...title!.g, ...(legacy ? [...issuer!, ...house[0]] : statements[0])].filter(
         (b, i, bs) => bs.findIndex((x) => x.id === b.id) === i,
       );
   } else valid = valid && !!title;

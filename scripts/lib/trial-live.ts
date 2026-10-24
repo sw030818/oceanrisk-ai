@@ -28,7 +28,7 @@ export interface TrialPolicy {
   reservedBalanceUsd?: number;
   // Explicit correction of an older, unapproved cost proposal; usage is retained.
   previousCostProposal?: number;
-  previousApprovedCaps?: { documents: number; requests: number }[];
+  previousApprovedCaps?: { documents: number; requests: number; cost?: number }[];
 }
 export interface TrialBudget extends TestBudget {
   requests: number;
@@ -66,10 +66,12 @@ export function correctTrialCostProposal(policy:TrialPolicy,b:TrialBudget):Trial
 export function migrateApprovedTrialCaps(policy: TrialPolicy, b: TrialBudget): TrialBudget {
   // Only explicit, phase-specific approved predecessor caps can be expanded.
   // Every count and every confirmed/unknown charge is retained unchanged.
-  return b.maxCostUsd === policy.cost && policy.previousApprovedCaps?.some(p =>
+  // A predecessor may name its own approved cost cap; it never lowers a cap.
+  return policy.previousApprovedCaps?.some(p =>
     p.documents === b.maxDocuments && p.requests === b.maxRequests &&
+    (p.cost ?? policy.cost) === b.maxCostUsd && (p.cost ?? policy.cost) <= policy.cost &&
     p.documents <= policy.documents && p.requests <= policy.requests)
-    ? { ...b, maxDocuments: policy.documents, maxRequests: policy.requests } : b;
+    ? { ...b, maxDocuments: policy.documents, maxRequests: policy.requests, maxCostUsd: policy.cost } : b;
 }
 export async function withTrialBudget<T>(
   policy: TrialPolicy,

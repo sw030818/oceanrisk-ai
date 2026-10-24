@@ -14,7 +14,7 @@ import {
   shipmentOptions,
   type ComparisonGroup,
 } from "@/modules/shipping/presentation";
-import { portCode, contextualCarton } from "@/modules/shipping/equivalence";
+import { portCode, contextualPackageUnit } from "@/modules/shipping/equivalence";
 import { partyName32 } from "@/modules/shipping/parties";
 import { unit32, refKey32 } from "@/modules/shipping/review-evidence";
 import {
@@ -856,7 +856,7 @@ export function ShippingReviewPanel({
                       (["shipper", "consignee"].includes(f.fieldName)
                         ? partyName32(f)?.name
                         : null) ??
-                      (contextualCarton(f) ? "CTNS" : null) ??
+                      contextualPackageUnit(f) ??
                       (f.fieldName.endsWith("Unit")
                         ? unit32(
                             f.field.current.value,

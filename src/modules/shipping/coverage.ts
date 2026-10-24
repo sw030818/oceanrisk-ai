@@ -54,12 +54,18 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
         });
       return {complete,rowCount:required};
     }
+    // Cargo records that split one row's container/goods list are views of
+    // that row (ground keeps their identity verified and withholds amounts;
+    // other duplicates become unverified). Each native row must be covered.
+    const keys = scope === "cargo" ? new Set(extracted) : null;
     return {
       complete:
         actual.size > 0 &&
-        extracted.length === actual.size &&
-        new Set(extracted).size === extracted.length &&
-        extracted.every((v) => v !== null && actual.has(v)),
+        extracted.every((v) => v !== null && actual.has(v)) &&
+        (keys
+          ? keys.size === actual.size
+          : extracted.length === actual.size &&
+            new Set(extracted).size === extracted.length),
       rowCount: actual.size,
     };
   };
@@ -118,7 +124,7 @@ export function nativeFactCoverage(doc: ShippingDocument, pdf: PdfDocument) {
         effectiveProof(f).source?.provenance !== "ocr" &&
         !!effectiveProof(f).source?.layout?.tableId,
     );
-    const rows = fields
+    const cited = fields
       .flatMap((f) => {
         const s = effectiveProof(f).source;
         return s?.layout
@@ -126,6 +132,8 @@ export function nativeFactCoverage(doc: ShippingDocument, pdf: PdfDocument) {
           : [];
       })
       .sort();
+    // Verified cargo views of one row count that row once.
+    const rows = kind === "cargoRecords" ? [...new Set(cited)] : cited;
     return {
       complete:
         !!doc.collectionCoverage?.[kind].complete &&

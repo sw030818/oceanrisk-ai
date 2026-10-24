@@ -25,6 +25,7 @@ import {
 } from "./verify";
 import type { PdfDocument } from "../documents/schema";
 import { cellRole } from "./value-shape";
+import { requiredFields } from "./form-fields";
 import { normalizeText } from "../evidence/verify";
 import type { EntityScope } from "../layout/shipping-cells";
 export function groundShipping(
@@ -252,23 +253,50 @@ export function groundShipping(
         : null;
     };
     const addresses = rows.map(addr);
-    rows.forEach((row, i) => {
-      if (
-        addresses[i] &&
-        addresses.filter((a) => a === addresses[i]).length > 1
-      )
-        for (const f of Object.values(row))
-          if (f.original.value !== null) {
-            f.original = {
-              ...f.original,
-              status: "unverified",
-              verificationCode: "ambiguous_cell",
-              reason:
-                "동일 원문 행을 여러 항목으로 중복 추출해 독립 항목으로 확정하지 않습니다.",
-            };
-            f.current = structuredClone(f.original);
-          }
-    });
+    const duplicate = (f: ShippingField) => {
+      f.original = {
+        ...f.original,
+        status: "unverified",
+        verificationCode: "ambiguous_cell",
+        reason:
+          "동일 원문 행을 여러 항목으로 중복 추출해 독립 항목으로 확정하지 않습니다.",
+      };
+      f.current = structuredClone(f.original);
+    };
+    // One consolidated-manifest cargo row may list several containers, seals
+    // and goods lines. Records that only split those list members, with
+    // identical single values (HBL, parties, totals), are views of ONE row: the
+    // first keeps the single values, the others keep only their own list member.
+    const isCargo = rows.length > 0 && rows.every((r) => "houseBlNumber" in r && !("tradeDescription" in r));
+    const members = ["containerNumber", "sealNumber", "goodsDescription"];
+    // Shared identity values tie every view to its shipment; only amounts
+    // would double-count, so only those are withheld from later views.
+    const identity = ["houseBlNumber", "declarationNumber", "shipper", "consignee", "notifyParty"];
+    const key = (f: ShippingField | undefined) => f?.original.value === null || f?.original.value === undefined ? null : normalizeText(String(f.original.value));
+    const groups = new Map<string, number[]>();
+    addresses.forEach((a, i) => { if (a) groups.set(a, [...(groups.get(a) ?? []), i]); });
+    for (const ids of groups.values()) {
+      if (ids.length < 2) continue;
+      const group = ids.map((i) => rows[i]);
+      const scalars = Object.keys(group[0]).filter((k) => !members.includes(k));
+      const agree = scalars.every((k) => new Set(group.map((r) => key(r[k])).filter((v) => v !== null)).size <= 1);
+      const memberSig = group.map((r) => members.map((k) => key(r[k]) ?? "").join("|"));
+      const distinct = new Set(memberSig).size === group.length && memberSig.every((m) => m.replace(/\|/g, "") !== "");
+      if (isCargo && agree && distinct) {
+        // The AI's repeated value stays in `original` for audit; the view no
+        // longer offers it for comparison because the first record carries it.
+        group.slice(1).forEach((r) => {
+          for (const k of scalars)
+            if (r[k] && r[k].original.value !== null && !identity.includes(k)) {
+              const empty = { value: null, status: "missing" as const, verificationCode: "missing_value" as const, source: null, reason: "같은 화물 행의 첫 기록에 이미 반영된 값입니다. 이 기록은 컨테이너·품목 줄만 나타냅니다." };
+              r[k].original = { ...empty };
+              r[k].current = { ...empty };
+            }
+        });
+        continue;
+      }
+      for (const row of group) for (const f of Object.values(row)) if (f.original.value !== null) duplicate(f);
+    }
   }
   for (const c of doc.containers)
     if (c.containerNumber.original.status !== "verified")
@@ -284,26 +312,7 @@ export function groundShipping(
           f.current = structuredClone(f.original);
         }
   const all = shippingValues(doc);
-  const required =
-    type === "export_declaration"
-      ? [
-          "declarationNumber",
-          "exporter",
-          "goodsDescription",
-          "hsCode",
-          "quantity",
-          "quantityUnit",
-        ]
-      : [
-          "houseBlNumber",
-          "shipper",
-          "consignee",
-          "goodsDescription",
-          "packageCount",
-          "grossWeight",
-          "portOfLoading",
-          "portOfDischarge",
-        ];
+  const required: string[] = (type && requiredFields[type]) || requiredFields.house_bl;
   const present = (key: string) =>
     [
       doc.fields[key],

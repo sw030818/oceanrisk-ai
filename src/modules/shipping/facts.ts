@@ -13,7 +13,7 @@ import {
   has32,
   type FieldRef,
 } from "./review-evidence";
-import { contextualCarton, goodsCore } from "./equivalence";
+import { contextualPackageUnit, goodsCore } from "./equivalence";
 export type FactReason =
   | "FIELD_NOT_EXTRACTED"
   | "FIELD_NOT_APPLICABLE"
@@ -107,9 +107,8 @@ const rowKey = (f: FieldRef) => {
 };
 function normalized(ref: FieldRef | undefined, meaning: NumericMeaning) {
   const category = numericMeaning[meaning].category;
-  return category === "packaging" && contextualCarton(ref)
-    ? { unit: "CTNS", factor: 1 }
-    : unit32(ref?.field.current.value, category);
+  const code = category === "packaging" ? contextualPackageUnit(ref) : null;
+  return code ? { unit: code, factor: 1 } : unit32(ref?.field.current.value, category);
 }
 function makeFact(
   doc: ShippingDocument,
@@ -193,12 +192,14 @@ function nativeRows(
   anchors: FieldRef[],
 ) {
   const c = doc.factCoverage?.[kind];
+  // Verified cargo records sharing one row are views of it (see ground).
+  const keys = new Set(anchors.map(rowKey));
   return (
     !!c?.complete &&
-    c.rows.length === anchors.length &&
     c.rows.length > 0 &&
-    anchors.every((f) => verified32(f) && c.rows.includes(rowKey(f) ?? "")) &&
-    new Set(anchors.map(rowKey)).size === anchors.length
+    keys.size === c.rows.length &&
+    (kind === "cargoRecords" || keys.size === anchors.length) &&
+    anchors.every((f) => verified32(f) && c.rows.includes(rowKey(f) ?? ""))
   );
 }
 export function resolveHblFact(
@@ -393,7 +394,16 @@ export function resolveHblFact(
   });
   const cargo = [...doc.cargoRecords]
     .sort((a, b) => a.id.localeCompare(b.id))
-    .filter((c) => hbl && text32(c.fields.houseBlNumber.current.value) === hbl);
+    .filter((c) => hbl && text32(c.fields.houseBlNumber.current.value) === hbl)
+    // Records that only list members of one native row are views of it; the
+    // row's amount is counted once (later views carry no amount).
+    .filter((c, i, all) => {
+      const key = (r: typeof c) => {
+        const src = r.fields.houseBlNumber.current.source;
+        return src?.layout ? `${src.page}/${src.layout.tableId}/${src.layout.rowId}` : r.id;
+      };
+      return all.findIndex((o) => key(o) === key(c)) === i;
+    });
   if (meaning !== "netWeight")
     options.push({
       kind: "cargoRecords",
@@ -471,13 +481,14 @@ export function resolveHblFact(
         : o.anchors,
     );
     if (!complete) local.push("AGGREGATION_INCOMPLETE");
-    if (o.names.some((n) => !n) || new Set(o.names).size !== o.names.length)
+    if (o.names.length > 1 && (o.names.some((n) => !n) || new Set(o.names).size !== o.names.length))
       local.push("DUPLICATE_CARGO");
     if (o.kind === "cargoRecords") {
       if (
         doc.cargoRecords.some(
           (c) =>
             !cargo.includes(c) &&
+            text32(c.fields.houseBlNumber.current.value) !== hbl &&
             cargo.some(
               (r) =>
                 text32(c.fields.containerNumber.current.value) ===
@@ -488,6 +499,7 @@ export function resolveHblFact(
       )
         local.push("COMBINED_PACKAGES");
       if (
+        cargo.length > 1 &&
         cargo.some(
           (c) =>
             !verified32(

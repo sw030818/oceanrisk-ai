@@ -4,7 +4,7 @@ import type { ShippingDocument, ShippingField } from "./schema";
 import { independentlyVerified } from "./effective";
 import { factHbl } from "./facts";
 import { relateShipping } from "./relationships";
-import { identifiers32, ref32, refKey32, scope32, text32, verified32, type FieldRef } from "./review-evidence";
+import { identifiers32, registerShippingSet, ref32, refKey32, scope32, text32, verified32, type FieldRef } from "./review-evidence";
 import { stableJson } from "./semantic-schema";
 export const SEMANTIC_MAX_PAIRS = 40;
 export interface SemanticProduct {
@@ -22,6 +22,7 @@ export function semanticInputKey(documents: ShippingDocument[]) {
   return stableJson([...documents].sort((a, b) => a.id.localeCompare(b.id)));
 }
 export function semanticContext(documents: ShippingDocument[]) {
+  registerShippingSet(documents);
   const products: SemanticProduct[] = [];
   for (const d of documents) {
     if (d.classificationStatus !== "classified" || d.extractionStatus === "not_performed") continue;

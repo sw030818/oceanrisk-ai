@@ -1,12 +1,15 @@
 import type { FieldRef } from "./review-evidence";
 import { text32, verified32 } from "./review-evidence";
-import { shippingRole } from "./roles";
+import { shippingRole, withoutSubfieldMarker } from "./roles";
 const endDesignator =
-  /(?:\b(?:ltd|limited|llc|inc|incorporated|corp|corporation|gmbh|ag|bv|plc)\.?|주식회사|㈜)\s*$/i;
+  /(?:\b(?:ltd|limited|llc|inc|incorporated|corp|corporation|gmbh|ag|bv|nv|plc|srl|spa|sas|sarl|pvt|pty|pte)\.?|\b(?:b\.v|n\.v|s\.a|s\.l|s\.r\.l|s\.p\.a)\.?|주식회사|㈜|\(주\))\s*$/i;
+// "S) NAME" / "C) NAME" lines of an official compound party column carry a
+// sub-field marker that is not part of the party name.
+const party = (v: string) => text32(withoutSubfieldMarker(v));
 export function partyName32(f: FieldRef | undefined) {
   if (!f || !verified32(f) || typeof f.field.current.value !== "string")
     return null;
-  const value = text32(f.field.current.value),
+  const value = party(f.field.current.value),
     blocks = f.field.current.source?.blocks ?? [];
   const parts = blocks
     .map((b) => {
@@ -15,7 +18,7 @@ export function partyName32(f: FieldRef | undefined) {
       if (colon >= 0 && shippingRole(text.slice(0, colon)))
         text = text.slice(colon + 1);
       if (shippingRole(text)) return null;
-      const normalized = text32(text);
+      const normalized = party(text);
       return normalized && value.includes(normalized)
         ? { ...b, text: normalized }
         : null;
@@ -51,7 +54,10 @@ export function partyMatch32(a: FieldRef | undefined, b: FieldRef | undefined) {
     return { same: undefined, certain: false, addressConflict: false };
   const left = partyName32(a),
     right = partyName32(b),
-    rawSame = text32(a.field.current.value) === text32(b.field.current.value);
+    rawSame =
+      typeof a.field.current.value === "string" &&
+      typeof b.field.current.value === "string" &&
+      party(a.field.current.value) === party(b.field.current.value);
   if (rawSame) return { same: true, certain: true, addressConflict: false };
   if (!left || !right)
     return { same: undefined, certain: false, addressConflict: false };

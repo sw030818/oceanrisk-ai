@@ -8,7 +8,7 @@ import{reviewShipping}from'../../src/modules/shipping/review';
 import type{ShippingType}from'../../src/modules/shipping/catalog';
 const arg=(k:string)=>process.argv.find(a=>a.startsWith('--'+k+'='))?.slice(k.length+3);
 const sha=arg('sha')??'';
-if(arg('code-frozen')!=='true'||!/^[a-f0-9]{40}$/.test(sha)||arg('approved-documents')!==String(policy39.documents)||arg('approved-requests')!==String(policy39.requests)||arg('approved-max-cost-usd')!=='2.00')throw Error('Exact approved evaluation required');
+if(arg('code-frozen')!=='true'||!/^[a-f0-9]{40}$/.test(sha)||arg('approved-documents')!==String(policy39.documents)||arg('approved-requests')!==String(policy39.requests)||arg('approved-max-cost-usd')!==policy39.cost.toFixed(2))throw Error('Exact approved evaluation required');
 const corpus=arg('corpus')??'universal-complex',id=arg('case')??'complex-13',attempt=arg('attempt')??'';
 if(!/^[a-z0-9-]+$/.test(corpus)||!/^[-a-z0-9]+$/.test(id)||attempt&&!/^[-a-z0-9]+$/.test(attempt))throw Error('Safe corpus/case/attempt required');
 const base='tests/fixtures/'+corpus+'/',dir='test-results/universal/private',path=dir+'/'+id+'-'+sha+(attempt?'-'+attempt:'')+'.json';
