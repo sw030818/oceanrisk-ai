@@ -727,8 +727,25 @@ export function reviewShipping(
           ? "기재 물품 수량 (합계/단일품목 범위)"
           : "문서 전체 " + label(name),
       );
-    const ac = containerViews32(a).sort((a, b) => a.id.localeCompare(b.id)),
-      bc = containerViews32(b).sort((a, b) => a.id.localeCompare(b.id));
+    // A consolidated manifest lists other shipments' containers. Only the
+    // containers on cargo rows of this pair's verified HBL are counterparts.
+    const scopedViews = (d: ShippingDocument, other: ShippingDocument) => {
+      const views = containerViews32(d);
+      if (d.detectedType !== "house_manifest") return views;
+      const wanted = new Set(identifiers32(other, "houseBlNumber").filter(verified32).map((f) => text32(f.field.current.value)));
+      const rows = d.cargoRecords.map((c) => ({
+        hbl: ref32(d, "houseBlNumber", c.fields.houseBlNumber, { cargoId: c.id }),
+        container: text32(c.fields.containerNumber?.current.value),
+      }));
+      const verifiedRows = rows.filter((r) => verified32(r.hbl));
+      if (!wanted.size || !verifiedRows.length || verifiedRows.every((r) => wanted.has(text32(r.hbl.field.current.value)))) return views;
+      const others = new Set(verifiedRows.filter((r) => !wanted.has(text32(r.hbl.field.current.value)) && r.container).map((r) => r.container));
+      const mine = new Set(verifiedRows.filter((r) => wanted.has(text32(r.hbl.field.current.value)) && r.container).map((r) => r.container));
+      // Drop only containers proven to belong solely to other HBL rows.
+      return views.filter((v) => { const n = text32(v.containerNumber.current.value); return !others.has(n) || mine.has(n); });
+    };
+    const ac = scopedViews(a, b).sort((a, b) => a.id.localeCompare(b.id)),
+      bc = scopedViews(b, a).sort((a, b) => a.id.localeCompare(b.id));
     const containerSets = [
       ac.map((c) =>
         ref32(a, "containerNumber", c.containerNumber, containerEntry32(c)),

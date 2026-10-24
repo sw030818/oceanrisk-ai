@@ -9,7 +9,7 @@ export function semanticEvidenceValid(e: SemanticDecision["left"], p: SemanticPr
   if(!quote)return false;
   return p.descriptions.some(d => {
     if (!normalizeText(d.value).includes(quote) || !e.blockIds.every(id=>d.blockIds.includes(id))) return false;
-    const blocks = p.ref.field.current.source?.blocks ?? [];
+    const blocks = [...(p.ref.field.current.source?.blocks ?? []), ...((d as { blocks?: { id: string; text: string }[] }).blocks ?? [])];
     const selected = e.blockIds.map(id=>blocks.find(b=>b.id===id));
     if (selected.every(b=>!!b)) {
       const text = selected.map(b=>b!.text).join(" ");

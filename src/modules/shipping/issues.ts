@@ -22,6 +22,23 @@ export interface ReviewIssue {
   rootCauseIds?: string[];
   affectedFieldNames?: string[];
 }
+// Reasons that only say "the values agree, but full-table/whole-shipment
+// coverage is not proven". Any other reason (unconfirmed shipment link,
+// allocation hold, user edit, unit or reference question) stays an issue.
+const coverageReasons = new Set(["SCOPE_UNRESOLVED", "AGGREGATION_INCOMPLETE"]);
+const coverageNotes = new Set([
+  "전체 선적 범위가 양쪽 원문에서 확인되지 않았거나 부분/동시포장 범위입니다.",
+  "원문 컨테이너 표의 전체 행 포함을 입증하지 못했습니다.",
+  "여러 HBL 화물을 포함하는 문서 전체 합계는 직접 비교하지 않습니다.",
+  "HBL 기재 화물의 전체 포함 범위를 입증하지 못했습니다.",
+  "실제 PDF 전체 행과 계산 구성행의 포함을 확인하지 못했습니다.",
+]);
+function coverageGapOnly(c: ShippingCheck) {
+  if (c.scopeResolution || c.rootCauseIds?.length || c.semantic) return false;
+  const codes = c.comparison?.reasonCodes ?? [];
+  const notes = c.uncertainties ?? [];
+  return codes.every((r) => coverageReasons.has(r)) && notes.every((n) => coverageNotes.has(n)) && codes.length + notes.length > 0;
+}
 const rank = (s: ShippingCheck["assessment"]) =>
   s === "confirmed_mismatch" ? 0 : s === "provisional_mismatch" ? 1 : 2;
 // Group by the same cause AND shipment AND affected entity. Different item rows,
@@ -37,6 +54,10 @@ export function reviewIssues(
     const causal = evidenceCauses(c, documents);
     if(!causal.length&&c.rootCauseIds?.length&&(c.assessment!=="confirmed_mismatch"||c.rootCauseKind==='value_conflict'||c.rootCauseKind==='reference_conflict'))causal.push(...c.rootCauseIds.map(key=>({key,kind:c.rootCauseKind??'scope',fields:c.fields})));
     if (!causal.length) causal.push(...semanticCauses(c, documents));
+    // Equal values with no unverified field and no linked cause (only a
+    // scope/coverage proof gap) stay visible as a provisional match in the
+    // comparison table; they are not a problem to act on.
+    if (!causal.length && c.assessment === "provisional_match" && coverageGapOnly(c)) continue;
     if (causal.length) {
       for (const root of causal) {
         const key = "root:" + root.key;

@@ -1,3 +1,4 @@
+import { normalizeText } from "../evidence/verify";
 import { linkValueDependencies } from "./value-dependencies";
 import { linkReferenceDependencies } from "./reference-dependencies";
 import { linkDeclarationDependencies } from "./dependency-causes";
@@ -6,7 +7,7 @@ import { matchProductRows } from "./product-matching";
 import { ref32 } from "./review-evidence";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck, ShippingReview } from "./review-model";
-import { semanticContext } from "./semantic-context";
+import { semanticContext, type SemanticProduct } from "./semantic-context";
 import { semanticWireSchema, type SemanticReport } from "./semantic-schema";
 import { validateSemanticDecision, nativeAttributeClaims } from "./semantic-validation";
 import { withReviewIssues } from "./issues";
@@ -86,8 +87,27 @@ export function withSemanticReview(base: ShippingReview, documents: ShippingDocu
     const ps=ids.map(id=>context.products.filter(p=>p.ref.documentId===id&&p.hbl===old.comparison!.hbl));
     if(ids.length<2 || ps.some(xs=>!xs.length||xs.some(p=>!p.collectionComplete)||new Set(xs.map(p=>text32(p.ref.field.current.value))).size!==xs.length))continue;
     const matches:(typeof context.pairs[number])[]=[];let complete=true;
+    // A manifest row whose goods cell lists several printed lines is one list
+    // product. For goods names only: every item of the other document must be
+    // a member of it (a printed list line equal to/contained in its name, or a
+    // validated AI correspondence), and every list line must be claimed.
+    const lines=(p:SemanticProduct)=>(p.ref.field.current.source?.segments??[]).map(s=>normalizeText(s.quote)).filter(Boolean);
+    const isList=(xs:SemanticProduct[])=>xs.length===1&&!!xs[0].ref.cargoId&&lines(xs[0]).length>=2;
+    const listCovers=(list:SemanticProduct,items:SemanticProduct[])=>{
+      const ls=lines(list),claimed=new Set<string>();
+      const ok=items.every(item=>{
+        const name=normalizeText(String(item.ref.field.current.value)),ctx=item.descriptions.map(d=>normalizeText(d.value));
+        const hit=ls.filter(l=>name.includes(l)||ctx.some(c=>c.includes(l)));
+        hit.forEach(l=>claimed.add(l));
+        return hit.length>0||semanticChecks.some(c=>c.disposition==="informational"&&c.fields.some(f=>refKey32(f)===list.id)&&c.fields.some(f=>refKey32(f)===item.id));
+      });
+      return ok&&ls.every(l=>claimed.has(l)||items.length===ls.length);
+    };
     for(const[leftIndex,lefts]of ps.entries())for(const rights of ps.slice(leftIndex+1)){
-      if(lefts.length!==rights.length){complete=false;continue;}
+      if(lefts.length!==rights.length){
+        if(old.comparison.meaning==="goodsDescription"&&((isList(lefts)&&rights.length>1&&listCovers(lefts[0],rights))||(isList(rights)&&lefts.length>1&&listCovers(rights[0],lefts))))continue;
+        complete=false;continue;
+      }
       const used=new Set<string>();
       for(const left of lefts){
         const candidates=rights.filter(right=>String(left.ref.field.current.value)===String(right.ref.field.current.value)||semanticChecks.some(c=>c.disposition==="informational"&&c.fields.some(f=>refKey32(f)===left.id)&&c.fields.some(f=>refKey32(f)===right.id)));

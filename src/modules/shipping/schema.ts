@@ -31,6 +31,9 @@ const sourceSchema = evidenceSchema.extend({
   goodsContext: z.array(z.object({
     value: z.string().max(300),
     blockIds: z.array(z.string()).min(1).max(12),
+    // Printed text of each cited block, so a quote of part of the context line
+    // can be checked against the actual PDF text.
+    blocks: z.array(z.object({ id: z.string(), text: z.string().max(300) })).max(12).optional(),
   })).max(2).optional(),
   semanticRole: z.string().optional(),
   provenance: z.enum(["pdf_text", "ocr"]).optional(),

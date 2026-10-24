@@ -408,6 +408,16 @@ export function verifyShippingField(
             shippingRole(b.text) ??
             compoundUnit(b) ??
             (heading?.blocks.some((v) => v.id === b.id) ? heading.role : null);
+          // The label of a box whose own values sit in the owner row (a 란
+          // item block, list or detail row) belongs to that row.
+          const ownLabel =
+            !!cell && !!heading?.blocks.some((v) => v.id === b.id) &&
+            (page.blocks ?? []).some((v) => {
+              if (nativeCell(page, v) !== cell || heading.blocks.some((h) => h.id === v.id)) return false;
+              const l = shippingCell(page, [v], scope);
+              return l?.tableId === owner.tableId && l.rowId === owner.rowId;
+            });
+          if (ownLabel && (parents.includes(parent ?? "") || parent === role)) return true;
           return (
             (b.row === h ||
               (owner.tableId.startsWith(`p${page.page}:box`) &&
@@ -489,7 +499,12 @@ export function verifyShippingField(
       return finish();
     }
   }
+  // A label printed on the value's own line ("(통관고유부호) 보람-1-…") names
+  // that value more precisely than the enclosing box heading (수출화주).
+  const ownLineLabel =
+    values.length === 1 && typeof g.value === "string" ? inlineRole(values[0].text, g.value) : null;
   const actual =
+    (ownLineLabel === role ? ownLineLabel : null) ??
     values.map((b) => contextualAtom(b)).find(Boolean) ??
     location?.role ??
     values

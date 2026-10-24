@@ -47,9 +47,10 @@ export function nativeGoodsContext(
     const own = physicalLines(page, values).map(spanText).join(" ");
     if (trade && /[가-힣]/.test(own) && /[a-z]{3}/i.test(spanText(trade)) && !/[가-힣]/.test(spanText(trade))) {
       const english = [...trade, ...(model ?? [])];
+      const texts = (bs: PdfBlock[]) => bs.map((b) => ({ id: b.id, text: b.text }));
       return [
-        { value: own, blockIds: values.map((b) => b.id) },
-        { value: spanText(english), blockIds: english.map((b) => b.id) },
+        { value: own, blockIds: values.map((b) => b.id), blocks: texts(values) },
+        { value: spanText(english), blockIds: english.map((b) => b.id), blocks: texts(english) },
       ];
     }
     return;
