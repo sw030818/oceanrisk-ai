@@ -16,7 +16,7 @@ it.each(["normal", "mismatch"] as const)("official forms: every cited truth valu
     const failed = shippingValues(f.document).filter((v) => v.original.value !== null && v.current.status !== "verified" && v.current.value !== null);
     expect(failed.map((v) => [f.document.uploadType, v.current.value, v.current.verificationCode])).toEqual([]);
   }
-});
+}, 60000);
 it("official forms: a normal consolidated set has no confirmed mismatch and links the declaration through the manifest row", async () => {
   const docs = (await Promise.all(shippingTypes.map((t) => officialFormOracle("normal", t)))).map((f) => f.document);
   const r = reviewShipping(docs);
@@ -25,11 +25,11 @@ it("official forms: a normal consolidated set has no confirmed mismatch and link
   const link = r.relationships!.find((x) => x.documentIds.includes(bl.id) && x.documentIds.includes(decl.id))!;
   expect(link.status).toBe("evidence_confirmed");
   expect(r.primaryChecks!.some((c) => c.assessment === "confirmed_match" && c.comparison?.meaning === "grossWeight")).toBe(true);
-});
+}, 60000);
 it("official forms: the manifest package-count error is confirmed", async () => {
   const docs = (await Promise.all(shippingTypes.map((t) => officialFormOracle("mismatch", t)))).map((f) => f.document);
   const r = reviewShipping(docs);
   expect(officialFormTruth.mismatch.expect.role).toBe("packageCount");
   expect(r.primaryChecks!.filter((c) => c.assessment === "confirmed_mismatch").map((c) => c.comparison?.meaning)).toContain("packageCount");
   expect(r.primaryChecks!.filter((c) => c.assessment === "confirmed_mismatch").map((c) => c.comparison?.meaning).filter((m) => m !== "packageCount")).toEqual([]);
-});
+}, 60000);

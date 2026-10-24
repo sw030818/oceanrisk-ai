@@ -21,6 +21,7 @@ import {
   packageGoodsContext,
 } from "../layout/shipping-geometry";
 import { shippingRole, rootTotalRole, unitParents, withoutSubfieldMarker, compoundLabel } from "./roles";
+import { containerWithSize } from "./review-evidence";
 import { nativeGoodsContext } from "./goods-context";
 import { cargoCountAtoms } from "./cargo-description";
 import { atomRole, countAtoms } from "./count-atoms";
@@ -48,8 +49,16 @@ function inlineRole(text: string, value: string | number): string | null {
 }
 // A sub-field marker of a compound column ("C) ", "/", "1) ") is not part of
 // the printed value; which sub-field it marks is checked separately.
+// "BLRU0350340 / 40GP": the ISO size/type code printed after a container
+// number is not part of the container's identity.
+const containerOnly = (text: string, value: string) => {
+  const m = text.normalize("NFKC").match(containerWithSize);
+  return !!m && /^[A-Z]{4}\s?\d{6}\s?\d$/i.test(value.trim()) &&
+    normalizeText(m[1] + m[2] + m[3]) === normalizeText(value.replace(/\s/g, ""));
+};
 const literal = (text: string, value: string) =>
   normalizeText(text) === normalizeText(value) ||
+  containerOnly(text, value) ||
   normalizeText(withoutSubfieldMarker(text)) === normalizeText(value) ||
   normalizeText(text.replace(/^[()]|[()]$/g, "")) === normalizeText(value) ||
   normalizeText(text.replace(/^\(?HS\s+/i, "").replace(/\)$/, "")) ===

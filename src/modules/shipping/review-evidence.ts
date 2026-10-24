@@ -24,7 +24,7 @@ export const refKey32 = (r: FieldRef) =>
   r.fieldName;
 // "TCNU1234567 / 40HC": a container number printed with its ISO size/type
 // code. The code is not part of the container identity.
-const containerWithSize =
+export const containerWithSize =
   /^\s*([A-Z]{4})\s?(\d{6})\s?(\d)\s*(?:[\/,-]\s*)?(?:\d{2}\s?(?:'|FT|GP|HC|HQ|DC|DV|RF|RH|OT|FR|TK|PL)|\d{2}[GRUPTB]\d)\s*$/i;
 export const text32 = (v: unknown) => {
   if (typeof v !== "string") return String(v ?? "");

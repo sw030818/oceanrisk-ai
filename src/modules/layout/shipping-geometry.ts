@@ -371,7 +371,7 @@ export function nativeTableLink(
       return l.some((b) => geometricRole(page, b) === "quantity") ||
         (atoms.length === 1 && atoms[0].role === "quantity");
     });
-    if (closes.filter(Boolean).length > 1) {
+    if (closes.filter(Boolean).length >= 1) {
       if (!blocks.every((v) => nativeCell(page, v) === anchor)) return null;
       const groups: PdfBlock[][][] = [];
       let open: PdfBlock[][] = [];
