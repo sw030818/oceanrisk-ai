@@ -1,11 +1,54 @@
 import { goodsComparisonValue } from "./goods-context";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck } from "./review-model";
-import { refKey32, ref32, verified32, type FieldRef } from "./review-evidence";
+import { refKey32, ref32, unit32, verified32, type FieldRef } from "./review-evidence";
 export interface IssueCause {
   key: string;
   kind: "classification" | "evidence" | "scope" | "value_conflict" | "reference_conflict";
   fields: FieldRef[];
+}
+// A row value the AI repeated from a document total (e.g. the B/L's "60 CTNS"
+// written again as the container's count) whose value equals a verified
+// document field of the same meaning (units by canonical unit) adds no new
+// evidence question. It stays unverified and is never used
+// for a confirmed result; it is just not reported as a separate evidence issue.
+function exactCopyOfVerified(f: FieldRef, docs: ShippingDocument[]) {
+  const d = docs.find((x) => x.id === f.documentId);
+  if (!d || f.field.current.status === "user_edited") return false;
+  const alias = (n: string) => (n === "weightUnit" ? "grossWeightUnit" : n);
+  const rowLevel = !!(f.itemId || f.cargoId || f.containerId);
+  // Only a row value repeating a verified document value; an unverified
+  // document value is always its own evidence question.
+  if (!rowLevel) return false;
+  const same = (a: unknown, b: unknown) =>
+    typeof a === "number" || typeof b === "number"
+      ? Number(a) === Number(b)
+      : String(a).normalize("NFKC").trim().toLowerCase() === String(b).normalize("NFKC").trim().toLowerCase();
+  const candidates: FieldRef[] = [];
+  const add = (name: string, field: ShippingDocument["fields"][string] | undefined, entry: { itemId?: string; cargoId?: string; containerId?: string }) => {
+    if (field) candidates.push(ref32(d, name, field, entry));
+  };
+  for (const [k, v] of Object.entries(d.fields)) add(k, v, {});
+  for (const i of d.items) for (const [k, v] of Object.entries(i.fields)) add(k, v, { itemId: i.id });
+  for (const c of d.cargoRecords) for (const [k, v] of Object.entries(c.fields)) add(k, v, { cargoId: c.id });
+  for (const c of d.containers)
+    for (const k of ["containerNumber", "sealNumber", "packageCount", "packageUnit", "grossWeight", "weightUnit"] as const)
+      add(k, c[k], { containerId: c.id });
+  // Units compare by canonical meaning (CTNS = CARTONS = CT in a package cell).
+  const unitKind = (n: string) =>
+    n === "packageUnit" ? "packaging" : /weight/i.test(n) ? "weight" : n === "quantityUnit" ? "quantity" : null;
+  const sameValue = (g: FieldRef) => {
+    const kind = unitKind(alias(f.fieldName));
+    if (kind) {
+      const a = unit32(g.field.current.value, kind as "packaging"), b = unit32(f.field.current.value, kind as "packaging");
+      return !!a && !!b && a.unit === b.unit;
+    }
+    return same(g.field.current.value, f.field.current.value);
+  };
+  return candidates.some((g) =>
+    g.field !== f.field && verified32(g) && alias(g.fieldName) === alias(f.fieldName) &&
+    !!(g.itemId || g.cargoId || g.containerId) !== rowLevel && sameValue(g),
+  );
 }
 // Causal links, not fuzzy title/category deduplication. An unverified owner
 // anchor can block several child fields; unrelated bad fields remain separate.
@@ -18,7 +61,8 @@ export function evidenceCauses(
     (f) =>
       f.field.current.value !== null &&
       f.field.current.value !== "" &&
-      !verified32(f),
+      !verified32(f) &&
+      !exactCopyOfVerified(f, docs),
   );
   const roots = new Map<string, IssueCause>();
   for (const f of bad) {
