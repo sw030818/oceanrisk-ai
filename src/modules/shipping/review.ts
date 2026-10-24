@@ -18,6 +18,7 @@ import {
 } from "./equivalence";
 import { declarationGroupChecks } from "./declaration-groups";
 import { relateShipping } from "./relationships";
+import { matchProductRows } from "./product-matching";
 import {
   has32,
   identifiers32,
@@ -130,6 +131,12 @@ export function reviewShipping(
   registerShippingSet(documents);
   const relationships = relateShipping(documents),
     checks: ShippingCheck[] = [];
+  // Item comparisons that exist only through an AI opinion anchored by a
+  // printed model number go to a separate list: the original check list never
+  // depends on the semantic report; the semantic layer adds these on top.
+  const semanticItemChecks: ShippingCheck[] = [],
+    supersededBySemantic = new Set<string>();
+  let sink = checks;
   for (const r of relationships)
     if (
       r.status === "proposed" &&
@@ -151,7 +158,7 @@ export function reviewShipping(
     links: string[] = [],
     computedValues?: ShippingCheck["computedValues"],
   ) => {
-    checks.push({
+    sink.push({
       id: key32(scope, "check", id),
       scope,
       category,
@@ -478,8 +485,31 @@ export function reviewShipping(
             ),
         ),
     );
+    // The manifest rows of this HBL list exactly one declaration number, and
+    // it is this declaration: by the manifest's own text the declaration covers
+    // the whole HBL, so the contract-level "no partial shipment" proof is not
+    // needed for B/L-declaration amounts. Explicit partial/co-packed scope blocks.
+    const soleDeclaration = (() => {
+      const bl = [a, b].find((d) => d.detectedType === "house_bl"),
+        decl = [a, b].find((d) => d.detectedType === "export_declaration");
+      if (!bl || !decl || [bl, decl].some((d) => ["partial", "combined_packages"].includes(scope32(d)))) return false;
+      const own = new Set(identifiers32(decl, "declarationNumber").filter(verified32).flatMap(identifierValues32));
+      const hbls = new Set(identifiers32(bl, "houseBlNumber").filter(verified32).map((f) => text32(f.field.current.value)));
+      if (own.size !== 1 || !hbls.size) return false;
+      const listed: string[] = [];
+      for (const m of documents.filter((d) => d.detectedType === "house_manifest" && d.classificationStatus === "classified"))
+        for (const c of m.cargoRecords) {
+          const h = ref32(m, "houseBlNumber", c.fields.houseBlNumber, { cargoId: c.id });
+          if (!verified32(h) || !hbls.has(text32(h.field.current.value))) continue;
+          if (!c.fields.declarationNumber || !has32(c.fields.declarationNumber)) continue;
+          const n = ref32(m, "declarationNumber", c.fields.declarationNumber, { cargoId: c.id });
+          if (!verified32(n)) return false;
+          listed.push(...identifierValues32(n));
+        }
+      return listed.length > 0 && new Set(listed).size === 1 && own.has(listed[0]);
+    })();
     const numeric = [
-      ...blockers32(a, b, r, true),
+      ...blockers32(a, b, r, true).filter((w) => !(soleDeclaration && w.startsWith("전체 선적 범위"))),
       ...(duplicateScope
         ? [
             "같은 HBL의 복수 문서 범위가 있어 전체 포함/중복 여부를 확인해야 합니다.",
@@ -870,12 +900,52 @@ export function reviewShipping(
         `컨테이너 ${ca.containerNumber.current.value} Seal`,
       );
     }
-    const ar = rows(a),
-      br = rows(b);
+    // A consolidated manifest's rows of a verifiably different HBL are other
+    // shipments, not counterparts of this pair.
+    const hblsOf = (d: ShippingDocument) =>
+      new Set(identifiers32(d, "houseBlNumber").filter(verified32).map((f) => text32(f.field.current.value)));
+    const ownRows = (d: ShippingDocument, other: ShippingDocument) => {
+      const wanted = hblsOf(other);
+      return rows(d).filter((row) => {
+        if (row.kind !== "cargo" || !wanted.size) return true;
+        const h = ref32(d, "houseBlNumber", row.fields.houseBlNumber, { cargoId: row.id });
+        return !verified32(h) || wanted.has(text32(h.field.current.value));
+      });
+    };
+    const ar = ownRows(a, b),
+      br = ownRows(b, a);
+    // Rows the product matcher pairs with native proof (literal, or an AI
+    // opinion anchored by a unique model/SKU printed on both rows). An AI-only
+    // pairing never counts here.
+    // Several declarations for one HBL split its quantities; the declaration
+    // group logic compares those. Proof-based row pairing is for a sole one.
+    const splitDeclarations = [a, b].some((d) => {
+      if (d.detectedType !== "export_declaration") return false;
+      const other = d === a ? b : a, hbls = hblsOf(other);
+      return documents.filter((x) =>
+        x.detectedType === "export_declaration" && x.classificationStatus === "classified" &&
+        identifiers32(x, "houseBlNumber").some((f) => verified32(f) && hbls.has(text32(f.field.current.value))),
+      ).length > 1 || identifiers32(other, "declarationNumber").filter(verified32).flatMap(identifierValues32).length > 1;
+    });
+    const provenWith = (semantic?: SemanticReport) => r.status === "evidence_confirmed" && !splitDeclarations
+      ? matchProductRows(
+          ar.flatMap((x) => { const f = rowRef(a, x, "goodsDescription"); return f ? [f] : []; }),
+          br.flatMap((x) => { const f = rowRef(b, x, "goodsDescription"); return f ? [f] : []; }),
+          documents,
+          semantic,
+        ).matches.filter((m) => m.proof !== "ai_only")
+      : [];
+    const nativeProven = provenWith(undefined),
+      semanticProven = options.semantic ? provenWith(options.semantic) : [];
+    const provenIn = (list: typeof nativeProven, row: { id: string }) => {
+      const m = list.filter((x) => (x.left.itemId ?? x.left.cargoId) === row.id);
+      return m.length === 1 ? br.filter((x) => x.id === (m[0].right.itemId ?? m[0].right.cargoId)) : [];
+    };
     for (const ra of ar) {
+      sink = checks;
       const description = rowRef(a, ra, "goodsDescription"),
         name = text32(description?.field.current.value),
-        matches = br.filter(
+        literalMatches = br.filter(
           (row) =>
             name &&
             (text32(row.fields.goodsDescription.current.value) === name ||
@@ -893,6 +963,9 @@ export function reviewShipping(
                 text32(ra.fields.hsCode.current.value) ===
                   text32(row.fields.hsCode.current.value))),
         ),
+        nativeMatch = literalMatches.length === 0 ? provenIn(nativeProven, ra) : [],
+        semanticMatch = literalMatches.length === 0 && nativeMatch.length !== 1 ? provenIn(semanticProven, ra) : [],
+        matches = literalMatches.length ? literalMatches : nativeMatch,
         dups =
           ar.filter(
             (row) =>
@@ -913,10 +986,13 @@ export function reviewShipping(
           base,
           links,
         );
-        continue;
+        if (dups || semanticMatch.length !== 1) continue;
+        supersededBySemantic.add(key32(scope, "check", r.id + "/goods/" + ra.id));
+        sink = semanticItemChecks;
       }
-      const rb = matches[0],
-        partialName =
+      const viaProof = literalMatches.length === 0;
+      const rb = matches.length === 1 && !dups ? matches[0] : semanticMatch[0],
+        partialName = !viaProof &&
           goodsEquivalent(
             description?.field.current.value,
             rb.fields.goodsDescription.current.value,
@@ -945,7 +1021,7 @@ export function reviewShipping(
             : []),
         ],
         prefix = r.id + "/goods/" + name;
-      (r.entityLinks ??= []).push({
+      if (sink === checks) (r.entityLinks ??= []).push({
         id: key32(r.id, "goods", ra.id + "/" + rb.id),
         leftDocumentId: a.id,
         leftKind: ra.kind,
@@ -971,10 +1047,12 @@ export function reviewShipping(
         prefix + "/name",
         "goods",
         [description, descB],
-        partialName ? [...base, "전체 품명은 부분 의미 일치입니다."] : base,
+        viaProof
+          ? [...base, "한글·영문 품명은 양쪽에 인쇄된 같은 모델 번호와 AI 의미 대응으로 연결한 같은 품목입니다."]
+          : partialName ? [...base, "전체 품명은 부분 의미 일치입니다."] : base,
         links,
         `품목 ${description!.field.current.value} 품명`,
-        partialName ? true : undefined,
+        partialName || viaProof ? true : undefined,
       );
       compare(
         scope,
@@ -1021,6 +1099,7 @@ export function reviewShipping(
           `품목 ${description!.field.current.value} ${label(value)}`,
         );
     }
+    sink = checks;
     // BL totals against a complete, disjoint set of Manifest rows for that HBL.
     const bl =
         a.detectedType === "house_bl"
@@ -1457,5 +1536,5 @@ export function reviewShipping(
               : "3종 문서가 있지만 공통 HBL과 모든 양자 연결의 근거를 확정하지 못해 삼각대조를 보류했습니다.",
     },
     documents, options.semantic,
-  ), documents, options.semantic);
+  ), documents, options.semantic, { checks: semanticItemChecks, superseded: supersededBySemantic });
 }

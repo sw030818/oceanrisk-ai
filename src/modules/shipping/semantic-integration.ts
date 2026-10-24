@@ -12,7 +12,7 @@ import { validateSemanticDecision, nativeAttributeClaims } from "./semantic-vali
 import { withReviewIssues } from "./issues";
 import { hsSix } from "./equivalence";
 import { refKey32, verified32, text32 } from "./review-evidence";
-export function withSemanticReview(base: ShippingReview, documents: ShippingDocument[], report?: SemanticReport): ShippingReview {
+export function withSemanticReview(base: ShippingReview, documents: ShippingDocument[], report?: SemanticReport, items?: { checks: ShippingCheck[]; superseded: Set<string> }): ShippingReview {
   if(!report || report.status==="not_needed")return base;
   const context=semanticContext(documents), primary=(base.primaryChecks??base.checks).map(check=>({...check})), wire=semanticWireSchema.safeParse(report.decisions);
   const fresh=report.inputKey===context.key, ds=fresh&&wire.success&&report.status!=="failed"?wire.data.pairs:[];
@@ -103,7 +103,13 @@ export function withSemanticReview(base: ShippingReview, documents: ShippingDocu
     old.comparison={...old.comparison,reasonCodes:[],relatedCheckIds:[...new Set([...old.comparison.relatedCheckIds,...resolvedPairs.map(c=>c.id)])]};
     old.explanation=old.comparison.meaning==="hsCode"?"같은 선적의 실제 전체 품목행과 일대일 대응을 확인한 뒤, 각 대응 품목의 검증된 HS 공통 6자리를 코드로 비교했습니다. 전체 국가별 세번 동일성이나 상품 분류의 적법성을 뜻하지 않습니다.":"AI 의미 대응: 한영·상이한 상품 설명을 검토했습니다. 같은 선적·전체 원문 행과 일대일 품목 대응은 별도로 검증했으며, 언어적 동일성은 잠정으로 구분합니다. "+resolvedPairs.map(c=>c.explanation).join(" ");
   }
-  const checks=primary.filter(c=>!covered.has(c.id));
+  // Item comparisons made possible only by an AI opinion anchored by a printed
+  // model number replace that row's "no counterpart" hold in the shown results.
+  const kept=primary.filter(c=>!covered.has(c.id)&&!(fresh&&items?.superseded.has(c.id)));
+  // One changed value is counted once: skip an item check whose fields a shown
+  // summary already covers with the same verdict.
+  const sameAsSummary=(c:ShippingCheck)=>kept.some(k=>k.comparison?.scope==="hbl_record"&&k.assessment===c.assessment&&c.fields.every(f=>k.fields.some(g=>refKey32(g)===refKey32(f))));
+  const checks=[...kept,...(fresh?(items?.checks??[]).filter(c=>!sameAsSummary(c)):[])];
   for(const c of checks.filter(c=>!c.semantic&&['confirmed_mismatch','provisional_mismatch'].includes(c.assessment)&&c.comparison?.meaning==='goodsDescription')){
     const fields=c.fields.filter(f=>f.fieldName==='goodsDescription');if(fields.length!==2)continue;
     const pair=context.pairs.find(p=>[p.left.id,p.right.id].every(id=>fields.some(f=>refKey32(f)===id)));if(!pair)continue;

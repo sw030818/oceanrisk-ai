@@ -169,6 +169,11 @@ export function withFactReview(
     if (facts.length)
       for (const c of related) {
         const subjects = c.fields.filter((f) => f.fieldName === meaning);
+        // A confirmed per-row conflict stays visible; a document-level summary
+        // (possibly inconclusive, e.g. mixed units) never absorbs it.
+        // Only when the summary is not itself a confirmed mismatch: one changed
+        // value is still counted once.
+        if (assessment !== "confirmed_mismatch" && c.assessment === "confirmed_mismatch" && subjects.some((f) => f.itemId)) continue;
         const aliases =
           subjects.length > 0 &&
           subjects.every((f) => {
