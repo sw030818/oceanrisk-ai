@@ -1,0 +1,1693 @@
+{
+ "summary": {
+  "label": "blind1v",
+  "sets": 28,
+  "CLEAN": 0,
+  "OK_WITH_NOISE": 11,
+  "FALSE_ALARM": 0,
+  "CAUGHT": 9,
+  "CAUGHT+FP": 0,
+  "WARNED_ONLY": 4,
+  "MISSED": 1,
+  "TYPE_OK": 3,
+  "TYPE_MISSED": 0,
+  "API_FAIL": 0,
+  "fieldsExpected": 1090,
+  "fieldsVerifiedCorrect": 1003,
+  "fieldsUnverifiedCorrect": 35,
+  "costUsd": 0.1642
+ },
+ "rows": [
+  {
+   "case": "blind-001",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "품목 LITHIUM-ION BATTERY PACK 48V 20AH MODEL LB4820 품명/provisional_match",
+    "품목 AUTOMOTIVE BRAKE PAD SET MODEL BP-330 품명/provisional_match",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "문서 전체 총중량/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 18,
+     "verifiedCorrect": 16,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(1694)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 67060,
+   "cost": 0.0066681250000000004
+  },
+  {
+   "case": "blind-002",
+   "kind": "error",
+   "fault": "packageCount",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "문서 전체 포장 개수/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "quantity:absent",
+      "quantity:absent"
+     ]
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 1,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:unverified",
+      "containerNumber:wrong(OCEU9980493)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 45009,
+   "cost": 0.004693875
+  },
+  {
+   "case": "blind-003",
+   "kind": "error",
+   "fault": "grossWeight",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "문서 전체 총중량/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "Seal 번호/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "품목 INDUSTRIAL SAFETY GLOVES NITRILE MODEL NG-9 / SIZE L 품명/provisional_match",
+    "품목 STAINLESS STEEL WATER BOTTLE 500ML MODEL SB-500 품명/provisional_match",
+    "컨테이너 목록/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 14,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:absent",
+      "containerNumber:absent",
+      "containerNumber:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 60598,
+   "cost": 0.0060085
+  },
+  {
+   "case": "blind-004",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "컨테이너 목록/needs_review",
+    "컨테이너 목록/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 37752,
+   "cost": 0.004354500000000001
+  },
+  {
+   "case": "blind-005",
+   "kind": "error",
+   "fault": "sealNumber",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "Seal 번호/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 18,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 68345,
+   "cost": 0.006506375
+  },
+  {
+   "case": "blind-006",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "품목 블루투스 스피커 품명/provisional_match",
+    "품목 자동차용 브레이크 패드 세트 품명/provisional_match",
+    "문서 전체 총중량/provisional_match",
+    "Seal 번호/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 21,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 4,
+     "missing": [
+      "goodsDescription:unverified",
+      "quantity:unverified",
+      "goodsDescription:unverified",
+      "quantity:unverified"
+     ]
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 20,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 3,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(1132)",
+      "containerNumber:unverified",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 73133,
+   "cost": 0.007048125
+  },
+  {
+   "case": "blind-007",
+   "kind": "error",
+   "fault": "declarationNumber",
+   "verdict": "WARNED_ONLY",
+   "falseConfirmed": [],
+   "issues": [
+    "문서 전체 총중량/provisional_mismatch",
+    "수출신고번호/provisional_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "Seal 번호/insufficient_information",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "문서 전체 포장 개수/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "컨테이너 목록/needs_review",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "House B/L 번호/needs_review",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/needs_review"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 9,
+     "unverifiedCorrect": 2,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(562)",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 72060,
+   "cost": 0.0063679999999999995
+  },
+  {
+   "case": "blind-008",
+   "kind": "wrongtype",
+   "fault": "master_manifest",
+   "verdict": "TYPE_OK",
+   "falseConfirmed": [],
+   "issues": [
+    "House B/L 번호/provisional_mismatch",
+    "문서 필수정보 · grossWeight/insufficient_information",
+    "문서 필수정보 · packageCount/insufficient_information",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "컨테이너 목록/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "컨테이너 ARNU3230471 Seal/provisional_match",
+    "컨테이너 BLRU3532029 Seal/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "문서 전체 총중량/provisional_match",
+    "문서 전체 포장 개수/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "문서 유형의 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 16,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 2,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "needs_review",
+     "typeMismatch": null,
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 42215,
+   "cost": 0.0042477
+  },
+  {
+   "case": "blind-009",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "컨테이너 목록/needs_review",
+    "컨테이너 목록/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 61690,
+   "cost": 0.005755
+  },
+  {
+   "case": "blind-010",
+   "kind": "error",
+   "fault": "portOfLoading",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "선적항 / POL/confirmed_mismatch",
+    "화물 품명 의미/provisional_match",
+    "문서 전체 총중량/provisional_match",
+    "Seal 번호/provisional_match",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 6,
+     "unverifiedCorrect": 2,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(412)",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 43494,
+   "cost": 0.004119125
+  },
+  {
+   "case": "blind-011",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "품목 STAINLESS STEEL WATER BOTTLE 500ML MODEL SB-500 품명/provisional_match",
+    "품목 MESH OFFICE CHAIR MODEL OC-5 품명/provisional_match",
+    "컨테이너 목록/needs_review",
+    "컨테이너 목록/needs_review",
+    "문서 전체 총중량/provisional_match",
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(666)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 59927,
+   "cost": 0.0058242500000000004
+  },
+  {
+   "case": "blind-012",
+   "kind": "error",
+   "fault": "consignee",
+   "verdict": "WARNED_ONLY",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "컨테이너 목록/needs_review",
+    "품목 STAINLESS STEEL WATER BOTTLE 500ML MODEL SB-500 품명/provisional_match",
+    "품목 LITHIUM-ION BATTERY PACK 48V 20AH MODEL LB4820 품명/provisional_match",
+    "품목 POLYPROPYLENE STORAGE BOX 30L MODEL PB-30 품명/provisional_match",
+    "컨테이너 목록/needs_review",
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 14,
+     "unverifiedCorrect": 1,
+     "missing": [
+      "consignee:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 75812,
+   "cost": 0.007523875000000001
+  },
+  {
+   "case": "blind-013",
+   "kind": "error",
+   "fault": "quantitySwap",
+   "verdict": "MISSED",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 57752,
+   "cost": 0.005364875000000001
+  },
+  {
+   "case": "blind-014",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "컨테이너 목록/needs_review",
+    "품목 AUTOMOTIVE BRAKE PAD SET MODEL BP-330 품명/provisional_match",
+    "품목 MESH OFFICE CHAIR MODEL OC-5 품명/provisional_match",
+    "컨테이너 목록/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 69119,
+   "cost": 0.00613225
+  },
+  {
+   "case": "blind-015",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "기재 물품 수량 (합계/단일품목 범위)/confirmed_mismatch",
+    "Seal 번호/insufficient_information",
+    "컨테이너 목록/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 7,
+     "unverifiedCorrect": 3,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:unverified",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 51880,
+   "cost": 0.004976
+  },
+  {
+   "case": "blind-016",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "품목 BLUETOOTH SPEAKER MODEL BS-7 품명/provisional_match",
+    "품목 LED LIGHT BULB 9W MODEL LB-09 품명/provisional_match",
+    "품목 INDUSTRIAL SAFETY GLOVES NITRILE MODEL NG-9 / SIZE L 품명/provisional_match",
+    "Seal 번호/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 19,
+     "verifiedCorrect": 19,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 3,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:unverified",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 73414,
+   "cost": 0.006788875
+  },
+  {
+   "case": "blind-017",
+   "kind": "error",
+   "fault": "grossWeight",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "문서 전체 총중량/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "품목 AUTOMOTIVE BRAKE PAD SET MODEL BP-330 (560 SET) 품명/provisional_match",
+    "품목 POLYPROPYLENE STORAGE BOX 30L MODEL PB-30 (88 PCS) 품명/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 48924,
+   "cost": 0.00492125
+  },
+  {
+   "case": "blind-018",
+   "kind": "error",
+   "fault": "containerNumber",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "컨테이너 목록/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "컨테이너 목록/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "컨테이너 목록/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "Seal 번호/provisional_match",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 2,
+     "missing": [
+      "quantity:unverified",
+      "quantity:unverified"
+     ]
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 14,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 60773,
+   "cost": 0.00605525
+  },
+  {
+   "case": "blind-019",
+   "kind": "wrongtype",
+   "fault": "correction_request",
+   "verdict": "TYPE_OK",
+   "falseConfirmed": [],
+   "issues": [
+    "품명 / Goods Description/provisional_mismatch",
+    "문서 필수정보 · Consignee / 수하인/insufficient_information",
+    "문서 필수정보 · 화물 품명 의미/insufficient_information",
+    "문서 필수정보 · grossWeight/insufficient_information",
+    "문서 필수정보 · 검증된 공통 HBL 참조/insufficient_information",
+    "문서 필수정보 · packageCount/insufficient_information",
+    "문서 필수정보 · 양하항 / POD/insufficient_information",
+    "문서 필수정보 · 선적항 / POL/insufficient_information",
+    "문서 필수정보 · Shipper / 송하인/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
+    "품목 대응/needs_review",
+    "컨테이너 목록/provisional_match",
+    "문서 전체 총중량/provisional_match",
+    "문서 전체 포장 개수/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_match",
+    "문서 유형의 원문 근거 확인 필요/needs_review"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": null,
+     "cls": "needs_review",
+     "typeMismatch": null,
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 27412,
+   "cost": 0.0029063250000000004
+  },
+  {
+   "case": "blind-020",
+   "kind": "error",
+   "fault": "houseBlNumber",
+   "verdict": "WARNED_ONLY",
+   "falseConfirmed": [],
+   "issues": [
+    "서류 간 참조 연결 확인/provisional_mismatch",
+    "서류 간 참조 연결 확인/provisional_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "컨테이너 목록/insufficient_information",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 42315,
+   "cost": 0.004349375000000001
+  },
+  {
+   "case": "blind-021",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "Seal 번호/insufficient_information",
+    "컨테이너 목록/provisional_match",
+    "품목 AUTOMOTIVE BRAKE PAD SET MODEL BP-330 (600 SET) 품명/provisional_match",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 14,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 3,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:unverified",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 62558,
+   "cost": 0.006133375000000001
+  },
+  {
+   "case": "blind-022",
+   "kind": "error",
+   "fault": "hsCode",
+   "verdict": "UNDETECTABLE",
+   "falseConfirmed": [],
+   "issues": [
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "화물 품명 의미/provisional_match",
+    "필드 원문 근거 확인 필요/insufficient_information",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 1,
+     "missing": [
+      "quantity:unverified"
+     ]
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 38065,
+   "cost": 0.003856875
+  },
+  {
+   "case": "blind-023",
+   "kind": "error",
+   "fault": "model",
+   "verdict": "WARNED_ONLY",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "컨테이너 목록/needs_review",
+    "컨테이너 목록/needs_review",
+    "필드 원문 근거 확인 필요/insufficient_information",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 1,
+     "missing": [
+      "shipper:unverified"
+     ]
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 51504,
+   "cost": 0.0050755
+  },
+  {
+   "case": "blind-024",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "컨테이너 목록/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "컨테이너 목록/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "품목 리튬이온 배터리 팩 품명/provisional_match",
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 1,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:unverified",
+      "containerNumber:wrong(BLRU9579933)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 74940,
+   "cost": 0.007171625
+  },
+  {
+   "case": "blind-025",
+   "kind": "error",
+   "fault": "portOfDischarge",
+   "verdict": "UNDETECTABLE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
+    "Seal 번호/insufficient_information",
+    "컨테이너 목록/needs_review",
+    "품목 알루미늄 합금 휠 18인치 품명/provisional_match",
+    "품목 자동차용 브레이크 패드 세트 품명/provisional_match",
+    "컨테이너 목록/needs_review",
+    "컨테이너 목록/provisional_match",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 14,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:wrong(BLRU9516215 OCEU9058939 )",
+      "containerNumber:wrong(BLRU9516215 OCEU9058939 )"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 65511,
+   "cost": 0.006537
+  },
+  {
+   "case": "blind-026",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "Seal 번호/insufficient_information",
+    "컨테이너 목록/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "화물 품명 의미/provisional_match",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/needs_review"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 7,
+     "unverifiedCorrect": 3,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:unverified",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 46506,
+   "cost": 0.004888
+  },
+  {
+   "case": "blind-027",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "기재 물품 수량 (합계/단일품목 범위)/confirmed_mismatch",
+    "컨테이너 목록/needs_review",
+    "컨테이너 목록/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 47566,
+   "cost": 0.004967
+  },
+  {
+   "case": "blind-028",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "품목 LITHIUM-ION BATTERY PACK 48V 20AH MODEL LB4820 물품 수량/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_mismatch",
+    "품목 LITHIUM-ION BATTERY PACK 48V 20AH MODEL LB4820 품명/provisional_match",
+    "품목 MESH OFFICE CHAIR MODEL OC-5 품명/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 42910,
+   "cost": 0.004692875
+  },
+  {
+   "case": "blind-029",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "컨테이너 목록/insufficient_information",
+    "Seal 번호/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "컨테이너 목록/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 14,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:absent",
+      "containerNumber:absent",
+      "containerNumber:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 6,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "containerNumber:wrong(OCEU7319904)",
+      "sealNumber:wrong(KS4587250)",
+      "containerNumber:wrong(OCEU7319904)",
+      "sealNumber:wrong(KS4587250)",
+      "containerNumber:wrong(OCEU7319904)",
+      "sealNumber:wrong(KS4587250)"
+     ]
+    }
+   ],
+   "ms": 49891,
+   "cost": 0.005321375
+  },
+  {
+   "case": "blind-030",
+   "kind": "wrongtype",
+   "fault": "master_manifest",
+   "verdict": "TYPE_OK",
+   "falseConfirmed": [],
+   "issues": [
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "문서 필수정보 · Consignee / 수하인/insufficient_information",
+    "문서 필수정보 · 화물 품명 의미/insufficient_information",
+    "문서 필수정보 · grossWeight/insufficient_information",
+    "문서 필수정보 · 검증된 공통 HBL 참조/insufficient_information",
+    "문서 필수정보 · packageCount/insufficient_information",
+    "문서 필수정보 · Shipper / 송하인/insufficient_information",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "문서 전체 총중량/provisional_match",
+    "문서 전체 포장 개수/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "컨테이너 목록/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "컨테이너 SEAU7237446 / 40GP Seal/provisional_match",
+    "컨테이너 ARNU7709272 / 40GP Seal/provisional_match",
+    "문서 유형의 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 21,
+     "verifiedCorrect": 21,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 20,
+     "verifiedCorrect": 16,
+     "unverifiedCorrect": 3,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:unverified",
+      "containerNumber:unverified",
+      "containerNumber:unverified"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "needs_review",
+     "typeMismatch": null,
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 48028,
+   "cost": 0.004954825
+  }
+ ]
+}

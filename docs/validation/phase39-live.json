@@ -1,16 +1,16 @@
 {
   "phase": "3.9",
-  "approval": "USER_FINAL_ENGINE_INSTRUCTION_USD2",
-  "providerRequests": 651,
+  "approval": "USER_2026_10_24_CUMULATIVE_USD3_5_KEEP_USD1_5",
+  "providerRequests": 1138,
   "automaticRetries": 0,
   "budget": {
-    "documents": 709,
-    "requests": 954,
-    "measuredCostUsd": 0.9678321300000013,
-    "unresolvedCostUpperUsd": 0.12285267500000051,
-    "maxDocuments": 1000,
-    "maxRequests": 1500,
-    "maxCostUsd": 2
+    "documents": 1105,
+    "requests": 1441,
+    "measuredCostUsd": 1.6407844649999999,
+    "unresolvedCostUpperUsd": 0.16031771250000046,
+    "maxDocuments": 3000,
+    "maxRequests": 4500,
+    "maxCostUsd": 3.5
   },
   "limitsAreProposalOnly": false,
   "plan": {

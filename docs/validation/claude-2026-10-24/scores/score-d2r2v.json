@@ -1,0 +1,334 @@
+{
+ "summary": {
+  "label": "d2r2v",
+  "sets": 6,
+  "CLEAN": 0,
+  "OK_WITH_NOISE": 2,
+  "FALSE_ALARM": 0,
+  "CAUGHT": 2,
+  "CAUGHT+FP": 0,
+  "WARNED_ONLY": 1,
+  "MISSED": 0,
+  "TYPE_OK": 0,
+  "TYPE_MISSED": 0,
+  "API_FAIL": 1,
+  "fieldsExpected": 205,
+  "fieldsVerifiedCorrect": 178,
+  "fieldsUnverifiedCorrect": 0,
+  "costUsd": 0.0287
+ },
+ "rows": [
+  {
+   "case": "d2-004",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "품목 보습 크림 품명/provisional_match",
+    "품목 알루미늄 합금 휠 18인치 품명/provisional_match",
+    "품목 도자기 머그컵 품명/provisional_match",
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 14,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 59500,
+   "cost": 0.00649425
+  },
+  {
+   "case": "d2-009",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "컨테이너 목록/provisional_mismatch",
+    "Seal 번호/provisional_mismatch",
+    "컨테이너 목록/insufficient_information",
+    "컨테이너 목록/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 7,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:absent",
+      "containerNumber:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 43351,
+   "cost": 0.004505749999999999
+  },
+  {
+   "case": "d2-012",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "API_FAIL",
+   "falseConfirmed": [],
+   "issues": [],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": null,
+     "cls": "not_performed",
+     "expected": 17,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "houseBlNumber:wrong(null)",
+      "shipper:wrong(null)",
+      "consignee:wrong(null)",
+      "portOfLoading:wrong(null)",
+      "portOfDischarge:wrong(null)",
+      "packageCount:wrong(null)",
+      "grossWeight:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "quantity:absent",
+      "goodsDescription:wrong(null)",
+      "quantity:absent",
+      "goodsDescription:wrong(null)",
+      "quantity:absent",
+      "goodsDescription:wrong(null)",
+      "quantity:absent",
+      "containerNumber:absent",
+      "sealNumber:absent"
+     ]
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 18,
+     "verifiedCorrect": 16,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(750)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "apiError": "missing",
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 65117,
+   "cost": 0.00224315
+  },
+  {
+   "case": "d2-013",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "WARNED_ONLY",
+   "falseConfirmed": [],
+   "issues": [
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_mismatch",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 38597,
+   "cost": 0.0040715000000000005
+  },
+  {
+   "case": "d2-023",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "기재 물품 수량 (합계/단일품목 범위)/confirmed_mismatch",
+    "문서 전체 총중량/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 7,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(156)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 36831,
+   "cost": 0.0038887500000000003
+  },
+  {
+   "case": "d2-025",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "품목 LED 전구 물품 수량/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "컨테이너 목록/needs_review",
+    "품목 LED 전구 품명/provisional_match",
+    "품목 도자기 머그컵 품명/provisional_match",
+    "품목 보습 크림 품명/provisional_match",
+    "품목 자동차용 브레이크 패드 세트 품명/provisional_match",
+    "컨테이너 목록/needs_review",
+    "Seal 번호/provisional_match",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 18,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 78093,
+   "cost": 0.007517500000000001
+  }
+ ]
+}
