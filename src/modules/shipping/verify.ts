@@ -40,7 +40,9 @@ function inlineRole(text: string, value: string | number): string | null {
       .slice(0, -v.length)
       .trim()
       .replace(/[:=#-]$/, "")
-      .trim();
+      .trim()
+      // "(통관고유부호) 보람-1-44-1-01-2": a bracketed label before the value.
+      .replace(/^\((.+)\)$/, "$1");
     return shippingRole(prefix);
   }
   const match = text.match(/[-+]?\d+(?:[.,]\d+)*/);

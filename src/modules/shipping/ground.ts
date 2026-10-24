@@ -311,6 +311,73 @@ export function groundShipping(
           };
           f.current = structuredClone(f.original);
         }
+  // A value the AI repeated at another scope (a row value copied into a
+  // document field, a document total copied into a row, a row's HBL repeated
+  // as a free reference) is refused for that scope. When the same document
+  // already verifies the same meaning with the identical value, the copy adds
+  // nothing and cannot hide a conflict; it is withheld instead of being shown
+  // as unverified evidence.
+  {
+    const alias: Record<string, string> = { weightUnit: "grossWeightUnit" };
+    // level: "document" (document field or free reference) or "row" (an
+    // item/cargo/container entity). Only copies between the two levels count.
+    const entries: { role: string; field: ShippingField; level: "document" | "row" }[] = [];
+    const push = (role: string, f: ShippingField | undefined, level: "document" | "row") => {
+      if (f) entries.push({ role: alias[role] ?? role, field: f, level });
+    };
+    for (const [k, f] of Object.entries(doc.fields)) push(k, f, "document");
+    for (const a of doc.additionalFields) push(a.meaning, a.field, "document");
+    for (const i of doc.items) for (const [k, f] of Object.entries(i.fields)) push(k, f as ShippingField, "row");
+    for (const c of doc.cargoRecords) for (const [k, f] of Object.entries(c.fields)) push(k, f as ShippingField, "row");
+    for (const c of doc.containers)
+      for (const k of ["containerNumber", "sealNumber", "packageCount", "packageUnit", "grossWeight", "weightUnit"] as const)
+        push(k, c[k], "row");
+    const same = (a: unknown, b: unknown) =>
+      typeof a === "number" || typeof b === "number"
+        ? Number(a) === Number(b)
+        : normalizeText(String(a)) === normalizeText(String(b));
+    // Only an exact copy: the same value citing printed text the verified field
+    // already cites. A wrong-row citation of an equal number stays unverified.
+    const blocksOf = (f: ShippingField) => (f.original.source?.segments ?? []).map((x) => x.blockId);
+    const verifiedElsewhere = (role: string, f: ShippingField, level: "document" | "row") =>
+      entries.some(
+        (e) =>
+          e.field !== f && e.level !== level && e.role === role && e.field.original.status === "verified" &&
+          e.field.original.value !== null && same(e.field.original.value, f.original.value) &&
+          (() => {
+            const mine = blocksOf(f), theirs = new Set(blocksOf(e.field));
+            return mine.length > 0 && mine.some((id) => theirs.has(id)) &&
+              mine.every((id) => theirs.has(id) || !/\d|[A-Za-z가-힣]{2}/.test(f.original.source?.segments?.find((x) => x.blockId === id)?.quote ?? ""));
+          })(),
+      );
+    const scopeOnly = (f: ShippingField) =>
+      f.original.value !== null && f.original.status !== "verified" &&
+      ["row_mismatch", "role_mismatch"].includes(f.original.verificationCode ?? "");
+    const withhold = (f: ShippingField) => {
+      const empty = {
+        value: null, status: "missing" as const, verificationCode: "missing_value" as const, source: null,
+        reason: "같은 값이 이 서류의 다른 위치에서 원문 확인되어, 다른 범위에 중복 기재된 AI 값은 비교에 쓰지 않습니다.",
+      };
+      f.original = { ...empty };
+      f.current = { ...empty };
+    };
+    // Document fields only, and only when exactly one row carries that meaning:
+    // then the single row's value is the document's value. Row fields are never
+    // withheld (a row citing a document total stays unverified).
+    const singleRow = (role: string) =>
+      entries.filter((e) => e.level === "row" && e.role === role && e.field.original.value !== null).length === 1;
+    for (const e of entries)
+      if (e.level === "document" && singleRow(e.role) && scopeOnly(e.field) && verifiedElsewhere(e.role, e.field, e.level))
+        withhold(e.field);
+    const refRole: Record<string, string[]> = {
+      house_bl: ["houseBlNumber"],
+      export_declaration: ["declarationNumber"],
+      other: ["houseBlNumber", "declarationNumber", "masterBlNumber"],
+    };
+    for (const r of doc.references)
+      if (scopeOnly(r.number) && (refRole[r.kind] ?? []).some((role) => verifiedElsewhere(role, r.number, "document")))
+        withhold(r.number);
+  }
   const all = shippingValues(doc);
   const required: string[] = (type && requiredFields[type]) || requiredFields.house_bl;
   const present = (key: string) =>

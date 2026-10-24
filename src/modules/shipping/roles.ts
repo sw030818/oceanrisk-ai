@@ -16,7 +16,7 @@ const labels: Record<string, RegExp> = {
   notifyParty: /^(?:notify party|notify|통지처|통지인)$/i,
   exporter: /^(?:exporter|수출자(?:\s*\/\s*상호)?|수출화주(?:\s*영문명)?|수출대행자\s*\/\s*수출화주)$/i,
   exporterIdentifier:
-    /^(?:exporter id|exporter identification|수출자 식별정보|수출자 사업자등록번호)$/i,
+    /^(?:exporter id|exporter identification|수출자 식별정보|수출자 사업자등록번호|통관고유부호)$/i,
   declarant: /^(?:declarant|신고인(?:\s*\/\s*관세사)?|신고자)$/i,
   vessel: /^(?:vessel|ocean vessel|vessel name|선박명)$/i,
   voyage: /^(?:voyage|voyage no\.?|항차)$/i,
@@ -56,7 +56,7 @@ const labels: Record<string, RegExp> = {
   measurement: /^(?:measurement|총용적|용적|cbm)$/i,
   // Other boxes of official customs forms. They are never compared, but they
   // are labels: their text is not a value of the neighbouring box.
-  formField: /^(?:적재장소|place of loading|화물특성(?:부호)?|화물고유식별번호|unique consignment reference|적하목록관리번호|manifest reference no\.?|선박회사(?:명)?|name of carrier|국내화물운송주선업자(?:명)?|consolidator|출항(?:예정)?일자|date of departure|통관고유부호|거래구분|종류|결제방법|운송형태|검사희망일|물품소재지|원산지|상표명|모델\s*[·.]\s*규격|성분|단가(?:\s*\(\w+\))?|금액(?:\s*\(\w+\))?|결제금액|운임(?:\s*\(.\))?|보험료(?:\s*\(.\))?|송품장(?:부호|번호)|수입신고번호|수입화물관리번호|적재예정보세구역|제조자|구매자|l\/c\s*번호|물품상태|c\/s\s*구분|신고구분|세관\s*[.·]\s*과|flag|pre-?carriage by|freight and charges|no\.? of original b\/l|place and date of issue|laden on board(?: the)? vessel)$/i,
+  formField: /^(?:적재장소|place of loading|화물특성(?:부호)?|화물고유식별번호|unique consignment reference|적하목록관리번호|manifest reference no\.?|선박회사(?:명)?|name of carrier|국내화물운송주선업자(?:명)?|consolidator|출항(?:예정)?일자|date of departure|거래구분|종류|결제방법|운송형태|검사희망일|물품소재지|원산지|상표명|모델\s*[·.]\s*규격|성분|단가(?:\s*\(\w+\))?|금액(?:\s*\(\w+\))?|결제금액|운임(?:\s*\(.\))?|보험료(?:\s*\(.\))?|송품장(?:부호|번호)|수입신고번호|수입화물관리번호|적재예정보세구역|제조자|구매자|l\/c\s*번호|물품상태|c\/s\s*구분|신고구분|세관\s*[.·]\s*과|flag|pre-?carriage by|freight and charges|no\.? of original b\/l|place and date of issue|laden on board(?: the)? vessel)$/i,
   shipmentScope: /^(?:shipment scope|선적 범위)$/i,
   shipmentReference:
     /^(?:shipment ref(?:erence)?|shipment no\.?|선적 참조번호)$/i,

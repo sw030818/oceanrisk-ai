@@ -21,6 +21,7 @@ import { relateShipping } from "./relationships";
 import {
   has32,
   identifiers32,
+  identifierValues32,
   declarationAgreement32,
   containerViews32,
   containerEntry32,
@@ -1251,6 +1252,55 @@ export function reviewShipping(
           );
         }
       }
+    }
+  }
+  // A declaration prints no HBL. When the manifest rows of a B/L-linked HBL
+  // list verified declaration numbers and an uploaded declaration's number is
+  // on no manifest row at all, both numbers are shown for review. Never
+  // confirmed: nothing in the sources proves that declaration is this shipment.
+  for (const decl of documents.filter(
+    (d) => d.detectedType === "export_declaration" && d.classificationStatus === "classified",
+  )) {
+    const own = identifiers32(decl, "declarationNumber").filter(verified32);
+    const ownValues = new Set(own.flatMap(identifierValues32));
+    if (ownValues.size !== 1 || identifiers32(decl, "houseBlNumber").some(verified32)) continue;
+    for (const r of relationships) {
+      if (r.status !== "evidence_confirmed") continue;
+      const pair = r.documentIds.map((id) => documents.find((d) => d.id === id));
+      const bl = pair.find((d) => d?.detectedType === "house_bl"),
+        m = pair.find((d) => d?.detectedType === "house_manifest");
+      if (!bl || !m || m.classificationStatus !== "classified") continue;
+      const rowNumbers = (rows: typeof m.cargoRecords) =>
+        rows.flatMap((c) =>
+          c.fields.declarationNumber && has32(c.fields.declarationNumber)
+            ? [ref32(m, "declarationNumber", c.fields.declarationNumber, { cargoId: c.id })]
+            : [],
+        ).filter(verified32);
+      if (rowNumbers(m.cargoRecords).some((f) => identifierValues32(f).some((v) => ownValues.has(v)))) continue;
+      const hbls = new Set(
+        identifiers32(bl, "houseBlNumber").filter(verified32).map((f) => text32(f.field.current.value)),
+      );
+      const listed = rowNumbers(
+        m.cargoRecords.filter(
+          (c) =>
+            hbls.has(text32(c.fields.houseBlNumber.current.value)) &&
+            verified32(ref32(m, "houseBlNumber", c.fields.houseBlNumber, { cargoId: c.id })),
+        ),
+      );
+      if (!listed.length) continue;
+      add(
+        pairScope(decl, m),
+        key32(decl.id, "listed-declaration", m.id),
+        "reference",
+        [...own, ...listed],
+        "provisional_mismatch",
+        "수출신고번호",
+        "적하목록에서 이 House B/L 행에 적힌 수출신고번호가 올린 수출신고필증의 번호와 다릅니다.",
+        [
+          "수출신고필증에는 House B/L 번호가 없어 이 신고필증이 같은 화물인지 원문으로 입증할 수 없습니다. 적하목록의 신고번호 또는 올린 신고필증이 맞는지 확인해 주세요.",
+        ],
+        [r.id],
+      );
     }
   }
   let triangleStatus: NonNullable<ShippingReview["triangleStatus"]> =

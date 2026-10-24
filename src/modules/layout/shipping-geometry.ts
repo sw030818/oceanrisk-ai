@@ -10,10 +10,30 @@ const inside = (c: PdfCell, b: PdfBlock) =>
   b.x + b.width <= c.x + c.width + 0.8 &&
   b.y >= c.y - 0.8 &&
   b.y + b.height <= c.y + c.height + 0.8;
+// Text printed past a box's right border ("SAY: … (136) CARTONS ONLY") still
+// belongs to the box it starts in, when no box contains it fully.
+const startsIn = (c: PdfCell, b: PdfBlock) =>
+  b.x >= c.x - 0.8 && b.x < c.x + c.width - 0.8 &&
+  b.y >= c.y - 0.8 && b.y + b.height <= c.y + c.height + 0.8;
+const overflowOwner = new WeakMap<PdfBlock, PdfCell | null>();
+function overflowCell(page: PdfPage, b: PdfBlock): PdfCell | null {
+  if (overflowOwner.has(b)) return overflowOwner.get(b)!;
+  const cells = page.cells ?? [];
+  const owner = cells.some((c) => inside(c, b))
+    ? null
+    : (cells.filter((c) => startsIn(c, b)).sort((x, y) => x.width * x.height - y.width * y.height)[0] ?? null);
+  overflowOwner.set(b, owner);
+  return owner;
+}
+const within = (page: PdfPage, c: PdfCell, b: PdfBlock) => inside(c, b) || overflowCell(page, b) === c;
 export function nativeCell(page: PdfPage, b: PdfBlock) {
-  return page.cells
-    ?.filter((c) => inside(c, b))
-    .sort((a, b) => a.width * a.height - b.width * b.height)[0];
+  return (
+    page.cells
+      ?.filter((c) => inside(c, b))
+      .sort((a, b) => a.width * a.height - b.width * b.height)[0] ??
+    overflowCell(page, b) ??
+    undefined
+  );
 }
 export function packageGoodsContext(page: PdfPage, b: PdfBlock) {
   const cell = nativeCell(page, b);
@@ -32,7 +52,7 @@ export function packageGoodsContext(page: PdfPage, b: PdfBlock) {
 }
 const body = (p: PdfPage, c: PdfCell) =>
   (p.blocks ?? [])
-    .filter((b) => inside(c, b))
+    .filter((b) => within(p, c, b))
     .sort((a, b) => a.y - b.y || a.x - b.x);
 type Heading = ReturnType<typeof computeCellHeading>;
 type HeadingSnapshot = {

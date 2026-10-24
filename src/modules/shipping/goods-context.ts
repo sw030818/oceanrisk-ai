@@ -1,7 +1,7 @@
 import { countAtoms } from "./count-atoms";
 import type { PdfPage, PdfBlock } from "../documents/schema";
 import type { ShippingField } from "./schema";
-import { nativeCell, geometricRole } from "../layout/shipping-geometry";
+import { nativeCell, geometricRole, cellHeading } from "../layout/shipping-geometry";
 import { shippingCell, type EntityScope } from "../layout/shipping-cells";
 import { physicalLines, spanText } from "../layout/physical-spans";
 import { normalizeText } from "../evidence/verify";
@@ -20,6 +20,40 @@ export function nativeGoodsContext(
   const cell = values[0] && nativeCell(page, values[0]);
   const owner = values[0] && shippingCell(page, [values[0]], scope);
   if (!cell || !owner || values.some((b) => nativeCell(page, b) !== cell)) return;
+  // A declaration item block (란) prints the Korean name, the English trade
+  // name and the model/spec in separate boxes of the SAME block. Only boxes
+  // whose values the engine links to this exact block row are used.
+  if (owner.tableId.includes(":item")) {
+    const sameRow = (b: PdfBlock) => {
+      const link = shippingCell(page, [b], scope);
+      return link?.tableId === owner.tableId && link.rowId === owner.rowId;
+    };
+    const boxText = (match: (heading: string, role: string | null) => boolean) => {
+      const boxes = (page.cells ?? []).filter((c) => {
+        const h = cellHeading(page, c);
+        return c !== cell && !!h && match(h.blocks.map((b) => b.text).join(" "), h.role);
+      });
+      // Same 란 line: a box sharing the goods box's top edge and height.
+      const sameBand = (c: typeof cell) => Math.abs(c.y - cell.y) < 0.5 && Math.abs(c.height - cell.height) < 0.5;
+      const lines = boxes.flatMap((c) => {
+        const own = cellHeading(page, c)?.blocks ?? [];
+        const body = (page.blocks ?? []).filter((b) => nativeCell(page, b) === c && !own.includes(b));
+        return body.length && (body.every(sameRow) || sameBand(c)) ? [body] : [];
+      });
+      return lines.length === 1 ? lines[0] : null;
+    };
+    const trade = boxText((_, role) => role === "tradeDescription");
+    const model = boxText((text) => /모델\s*[·.]\s*규격|model\s*\/?\s*spec/i.test(text));
+    const own = physicalLines(page, values).map(spanText).join(" ");
+    if (trade && /[가-힣]/.test(own) && /[a-z]{3}/i.test(spanText(trade)) && !/[가-힣]/.test(spanText(trade))) {
+      const english = [...trade, ...(model ?? [])];
+      return [
+        { value: own, blockIds: values.map((b) => b.id) },
+        { value: spanText(english), blockIds: english.map((b) => b.id) },
+      ];
+    }
+    return;
+  }
   const candidates = (page.blocks ?? []).filter(
     (b) => nativeCell(page, b) === cell &&
       geometricRole(page, b) === "goodsDescription" && !shippingRole(b.text),
