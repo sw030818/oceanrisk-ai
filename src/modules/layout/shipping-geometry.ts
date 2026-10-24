@@ -372,7 +372,10 @@ export function nativeTableLink(
   // Several containers listed in one cell, each line followed by its own
   // "SEAL: ..." line: every container line opens its own row inside the cell.
   const listed = ab.filter((b) => /^[A-Z]{4}\s?\d{6,7}\b/.test(b.text.trim()));
-  if (scope === "container" && listed.length > 1) {
+  // One sized container line ("SEAU5562386 / 40HC") with its own "SEAL:" line
+  // is the same structure; the plain-identifier row rule below cannot read it.
+  const plainIds = ab.filter((b) => /^[A-Z0-9][A-Z0-9-]{5,}$/i.test(b.text.trim())).length;
+  if (scope === "container" && (listed.length > 1 || (listed.length === 1 && plainIds !== 1))) {
     if (!blocks.every((v) => nativeCell(page, v) === anchor)) return null;
     const owners = blocks.map((v) => listed.filter((a) => a.y <= v.y + 0.5).sort((a, b) => b.y - a.y)[0]);
     if (owners.some((o) => !o) || new Set(owners).size !== 1) return null;

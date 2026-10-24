@@ -254,9 +254,14 @@ export function unit32(
     };
     return weights[raw] ? { unit: "KG", factor: weights[raw] } : null;
   }
+  // Counting units: each is its own unit (SET never equals PCS).
+  const counting: Record<string, string> = {
+    set: "SET", sets: "SET", pr: "PR", prs: "PR", pair: "PR", pairs: "PR",
+    roll: "ROLL", rolls: "ROLL", doz: "DOZ", dz: "DOZ", dozen: "DOZ",
+  };
   const u =
     kind === "quantity"
-      ? canonicalUnit(value)
+      ? (canonicalUnit(value) ?? counting[raw] ?? null)
       : (packageUnit(value) ??
         (
           {
@@ -274,7 +279,7 @@ export function unit32(
             bags: "BAGS",
           } as Record<string, string>
         )[raw]);
-  return u && (kind !== "quantity" || ["PCS", "M"].includes(u))
+  return u && (kind !== "quantity" || ["PCS", "M", "SET", "PR", "ROLL", "DOZ"].includes(u))
     ? { unit: u, factor: 1 }
     : null;
 }

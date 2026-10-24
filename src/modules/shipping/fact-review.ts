@@ -676,6 +676,14 @@ export function withFactReview(
           if (literalSets[0] && literalSets.every((s) => s === literalSets[0]))
             same = true;
         }
+        if (role === "sealNumber" && !same) {
+          // Identical printed seal sets agree even while container ownership
+          // is unresolved (kept provisional by SCOPE_UNRESOLVED).
+          const literalSets = valid.map((s) =>
+            [...new Set((s.verified.length ? s.verified : s.refs).map((f) => text32(f.field.current.value)))].sort().join("|"),
+          );
+          if (literalSets[0] && literalSets.every((v) => v === literalSets[0])) same = true;
+        }
         if (role === "sealNumber") {
           const containers = group.map((d) =>
             [

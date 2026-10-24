@@ -46,7 +46,9 @@ export function matchProductRows(left: FieldRef[], right: FieldRef[], documents:
     if(!pair||nativeAttributeClaims(pair).length)return;
     const ds=decisions.filter(d=>d.leftId===pair.left.id&&d.rightId===pair.right.id);
     if(ds.length!==1||!['same_product','compatible_incomplete'].includes(ds[0].relation)||validateSemanticDecision(ds[0],pair).assessment!=='provisional_match')return;
-    const compatible=!!hs(a)&&!!hs(b)&&hsSix(hs(a))===hsSix(hs(b));
+    // A unique explicit model/SKU printed on both rows anchors the AI pairing.
+    // A form without HS (B/L) cannot contradict it; two different HS codes do.
+    const compatible=!hs(a)||!hs(b)||hsSix(hs(a))===hsSix(hs(b));
     const anchored=compatible&&sameId;
     return {left:a,right:b,proof:anchored?'native_identifier_and_ai':'ai_only'};
   };
