@@ -1097,6 +1097,9 @@ export function reviewShipping(
           guard,
           links,
           `품목 ${description!.field.current.value} ${label(value)}`,
+          // Per-item figures absent from one form (B/L, manifest) are not
+          // missing information; document totals are compared separately.
+          true,
         );
     }
     sink = checks;
