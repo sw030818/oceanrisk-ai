@@ -58,18 +58,32 @@ const containerOnly = (text: string, value: string) => {
   return !!m && /^[A-Z]{4}\s?\d{6}\s?\d$/i.test(value.trim()) &&
     normalizeText(m[1] + m[2] + m[3]) === normalizeText(value.replace(/\s/g, ""));
 };
-const literal = (text: string, value: string) =>
+// "OCEU3352231 ARNU9413844 SEAU8304425": a cell that prints only several
+// distinct container numbers lists each one; a container number equal to
+// exactly one listed member is a complete printed value, never a substring.
+export function containerListTokens(text: string) {
+  const tokens = text.normalize("NFKC").trim().toUpperCase().split(/[\s,;]+/).filter(Boolean);
+  return tokens.length >= 2 && tokens.length <= 20 &&
+    tokens.every((t) => /^[A-Z]{4}\d{7}$/.test(t)) &&
+    new Set(tokens).size === tokens.length
+    ? tokens
+    : null;
+}
+const containerListMember = (text: string, value: string) =>
+  !!containerListTokens(text)?.includes(value.normalize("NFKC").trim().toUpperCase());
+const literal = (text: string, value: string, role?: string) =>
   normalizeText(text) === normalizeText(value) ||
+  (role === "containerNumber" && containerListMember(text, value)) ||
   containerOnly(text, value) ||
   normalizeText(withoutSubfieldMarker(text)) === normalizeText(value) ||
   normalizeText(text.replace(/^[()]|[()]$/g, "")) === normalizeText(value) ||
   normalizeText(text.replace(/^\(?HS\s+/i, "").replace(/\)$/, "")) ===
     normalizeText(value) ||
   inlineRole(text, value) !== null;
-function anchors(blocks: PdfBlock[], value: string | number) {
+function anchors(blocks: PdfBlock[], value: string | number, role?: string) {
   if (typeof value === "number")
     return blocks.filter((b) => numericTokens(b.text).includes(value));
-  const exact = blocks.filter((b) => literal(b.text, value));
+  const exact = blocks.filter((b) => literal(b.text, value, role));
   if (exact.length) return exact;
   // A citation may include a numbered/split label as well as the value. Match
   // complete literal block spans, not a string substring or the entire quote.
@@ -241,7 +255,7 @@ export function verifyShippingField(
   const values = units
     ? [
         ...new Set([
-          ...anchors(blocks, g.value!),
+          ...anchors(blocks, g.value!, role),
           ...blocks.filter((b) => !!contextualAtom(b)),
           ...blocks.filter((b) => {
             // A literal "500PCS" / "320 KG" cell supplies the printed unit,
@@ -262,7 +276,7 @@ export function verifyShippingField(
           }),
         ]),
       ]
-    : anchors(blocks, g.value!);
+    : anchors(blocks, g.value!, role);
   if (
     scope === "document" &&
     values.some((b) => nativeDocumentFieldAmbiguous(page, b, role))
@@ -573,6 +587,9 @@ export function verifyShippingField(
     }
     g.source.semanticRole = actual!;
     if (location) g.source.layout = location;
+    // Each member of a listed-container cell is its own row of that cell.
+    if (location && role === "containerNumber" && values.length === 1 && containerListMember(values[0].text, String(g.value)))
+      g.source.layout = { ...location, rowId: `${location.rowId}#${String(g.value).trim().toUpperCase()}` };
     g.reason = "실제 PDF의 필드 라벨·문자/숫자·열·행 관계를 대조했습니다.";
   }
   return finish();

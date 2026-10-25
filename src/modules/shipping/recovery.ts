@@ -294,7 +294,9 @@ export function nativeCandidates(
           ? atoms.map((a) => a.value)
           : numericTokens(stripped)
         : parents.length
-          ? (stripped.match(
+          ? atoms.length
+            ? atoms.map((a) => a.unit)
+            : (stripped.match(
               /\b(?:PCS|EA|PIECES?|CTNS?|CARTONS?|CT|PKGS?|KGS?|TONNES?|TONS?|MT|M3|CBM)\b/gi,
             ) ?? [])
           : [stripped];

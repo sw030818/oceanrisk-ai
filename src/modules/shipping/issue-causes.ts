@@ -1,4 +1,4 @@
-import { goodsComparisonValue } from "./goods-context";
+import { compareGoodsRefs } from "./goods-context";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck } from "./review-model";
 import { refKey32, ref32, unit32, verified32, type FieldRef } from "./review-evidence";
@@ -133,7 +133,6 @@ export function evidenceCauses(
   return [...roots.values()];
 }
 
-import { compareGoods } from "./goods-semantics";
 // Equal literal HS values can be held solely by the same unresolved product
 // meaning. Connect that dependency only for unique, independently grounded
 // owners in exactly the same document/HBL scope; never absorb a true HS error.
@@ -185,7 +184,7 @@ export function semanticCauses(
       .slice(i + 1)
       .map(
         (p) =>
-          compareGoods(goodsComparisonValue(o.g.field), goodsComparisonValue(p.g.field)).status,
+          compareGoodsRefs(o.g, p.g).status,
       ),
   );
   if (

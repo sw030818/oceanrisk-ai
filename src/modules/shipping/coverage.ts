@@ -1,4 +1,4 @@
-import { verifyShippingField } from "./verify";
+import { containerListTokens, verifyShippingField } from "./verify";
 import { nativeCell,cellHeading } from "../layout/shipping-geometry";
 import { effectiveProof } from "./effective";
 import { shippingCell, type EntityScope } from "../layout/shipping-cells";
@@ -24,11 +24,15 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
         if(heading?.role && heading.blocks.includes(b))continue;
         const l = shippingCell(p, [b], scope);
         if (l && roles[scope].includes(l.role)) {
-          const key=`${p.page}/${l.tableId}/${l.rowId}`;
-          actual.add(key);
-          if(scope === "container") {
-            const id=identity(b.text),table=`${p.page}/${l.tableId}`,views=containerViews.get(id)??new Map<string,Set<string>>();
-            const rows=views.get(table)??new Set<string>();rows.add(key);views.set(table,rows);containerViews.set(id,views);
+          // A listed-container cell holds one row per listed container.
+          const members = scope === "container" ? containerListTokens(b.text) : null;
+          for (const member of members ?? [null]) {
+            const key=`${p.page}/${l.tableId}/${l.rowId}${member ? "#" + member : ""}`;
+            actual.add(key);
+            if(scope === "container") {
+              const id=identity(member ?? b.text),table=`${p.page}/${l.tableId}`,views=containerViews.get(id)??new Map<string,Set<string>>();
+              const rows=views.get(table)??new Set<string>();rows.add(key);views.set(table,rows);containerViews.set(id,views);
+            }
           }
         }
       }

@@ -6,7 +6,7 @@ import { linkReferenceDependencies } from "./reference-dependencies";
 import { linkDeclarationDependencies } from "./dependency-causes";
 import { directHsConflicts } from "./direct-hs-conflicts";
 import type { SemanticReport } from "./semantic-schema";
-import { goodsComparisonValue } from "./goods-context";
+import { goodsComparisonValue, compareGoodsRefs } from "./goods-context";
 import type { ShippingDocument } from "./schema";
 import type {
   ShippingReview,
@@ -36,7 +36,6 @@ import {
 import { resolveDeclarationScopes } from "./declaration-scope";
 import { directGoodsConflicts } from "./direct-goods-conflicts";
 import { withReviewIssues } from "./issues";
-import { compareGoods } from "./goods-semantics";
 import { portRelation } from "./port-context";
 import { hsSix, goodsCore } from "./equivalence";
 import { shippingValues } from "./fields";
@@ -501,10 +500,7 @@ export function withFactReview(
                     (g) =>
                       f.documentId !== g.documentId &&
                       ["partial", "insufficient"].includes(
-                        compareGoods(
-                          goodsComparisonValue(f.field),
-                          goodsComparisonValue(g.field),
-                        ).status,
+                        compareGoodsRefs(f, g).status,
                       ),
                   ),
               )
@@ -653,10 +649,7 @@ export function withFactReview(
                         (g) =>
                           goodsCore(goodsComparisonValue(f.field)) ===
                             goodsCore(goodsComparisonValue(g.field)) ||
-                          compareGoods(
-                            goodsComparisonValue(f.field),
-                            goodsComparisonValue(g.field),
-                          ).status === "semantic",
+                          compareGoodsRefs(f, g).status === "semantic",
                       ),
                   ),
               ),
@@ -734,7 +727,7 @@ export function withFactReview(
               .filter((g) => g.documentId !== f.documentId)
               .map(
                 (g) =>
-                  compareGoods(goodsComparisonValue(f.field), goodsComparisonValue(g.field))
+                  compareGoodsRefs(f, g)
                     .status,
               ),
           );
@@ -751,7 +744,7 @@ export function withFactReview(
                 .slice(i + 1)
                 .some((g) =>
                   ["partial", "insufficient"].includes(
-                    compareGoods(goodsComparisonValue(f.field), goodsComparisonValue(g.field))
+                    compareGoodsRefs(f, g)
                       .status,
                   ),
                 ),
@@ -783,6 +776,22 @@ export function withFactReview(
             }))
         )
           reasons.push("SCOPE_UNRESOLVED");
+        // A container list differs only when every document's list is whole:
+        // an unverified member or an incomplete native container list (one
+        // container read into another field) cannot prove a missing container.
+        // Two whole lists that differ still prove the conflict.
+        if (role === "containerNumber" && !same) {
+          const whole = valid.filter(
+            (s) =>
+              s.verified.length === s.refs.length &&
+              !!s.doc.factCoverage?.containers.complete,
+          );
+          const wholeSets = new Set(
+            whole.map((s) => [...new Set(s.verified.flatMap(containerValues32))].sort().join("|")),
+          );
+          if (whole.length < valid.length && !(whole.length >= 2 && wholeSets.size > 1))
+            reasons.push("AGGREGATION_INCOMPLETE");
+        }
         add(
           group,
           hbl,

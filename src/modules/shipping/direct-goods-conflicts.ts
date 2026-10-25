@@ -1,8 +1,7 @@
-import { goodsComparisonValue } from "./goods-context";
+import { compareGoodsRefs } from "./goods-context";
 import type { ShippingDocument } from "./schema";
 import type { ShippingCheck, ShippingReview } from "./review-model";
 import { factHbl } from "./facts";
-import { compareGoods } from "./goods-semantics";
 import { ref32, scope32, verified32 } from "./review-evidence";
 // A third document's untranslated/partial description must not hide a proven
 // contradiction between two complete, uniquely anchored, linked cargo records.
@@ -78,7 +77,7 @@ export function directGoodsConflicts(
       );
       if (
         !rel ||
-        compareGoods(goodsComparisonValue(fa.field), goodsComparisonValue(fb.field)).status !==
+        compareGoodsRefs(fa, fb).status !==
           "different"
       )
         continue;

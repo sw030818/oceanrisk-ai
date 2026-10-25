@@ -129,3 +129,30 @@ export function nativeGoodsSpans(page: PdfPage) {
   }
   return spans;
 }
+
+// A manifest cargo row may print several goods as separate lines of one cell.
+// That value is a list, not one product: each counterpart is compared with its
+// best-matching printed line. If no line matches, the result stays "different".
+const goodsRank: Record<string, number> = { exact: 0, semantic: 1, partial: 2, insufficient: 3, different: 4 };
+function listLines(ref: { cargoId?: string; field: ShippingField }) {
+  // Only quoted lines that are part of the value itself; a cited label line
+  // ("12. 품명(Description of Goods)") is not a listed product.
+  const value = typeof ref.field.current.value === "string" ? ref.field.current.value.normalize("NFKC").toUpperCase() : "";
+  const segs = ref.cargoId ? (ref.field.current.source?.segments ?? []).map((s) => s.quote.trim()).filter((q) => /[\p{L}]{2}/u.test(q) && value.includes(q.normalize("NFKC").toUpperCase())) : [];
+  return segs.length >= 2 ? segs : null;
+}
+export function compareGoodsRefs(
+  a: { cargoId?: string; field: ShippingField },
+  b: { cargoId?: string; field: ShippingField },
+) {
+  const av = goodsComparisonValue(a.field), bv = goodsComparisonValue(b.field);
+  const la = listLines(a), lb = listLines(b);
+  if (!la && !lb) return compareGoods(av, bv);
+  const lefts = la ?? [av], rights = lb ?? [bv];
+  // Every line of the smaller side must find its best counterpart.
+  const [small, large] = lefts.length <= rights.length ? [lefts, rights] : [rights, lefts];
+  const best = small.map((x) =>
+    large.map((y) => compareGoods(x, y)).sort((p, q) => goodsRank[p.status] - goodsRank[q.status])[0],
+  );
+  return best.sort((p, q) => goodsRank[q.status] - goodsRank[p.status])[0];
+}
