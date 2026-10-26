@@ -1,0 +1,493 @@
+{
+ "summary": {
+  "label": "d3r2",
+  "sets": 9,
+  "CLEAN": 0,
+  "OK_WITH_NOISE": 2,
+  "FALSE_ALARM": 0,
+  "CAUGHT": 3,
+  "CAUGHT+FP": 0,
+  "WARNED_ONLY": 2,
+  "MISSED": 0,
+  "TYPE_OK": 1,
+  "TYPE_MISSED": 0,
+  "API_FAIL": 1,
+  "fieldsExpected": 324,
+  "fieldsVerifiedCorrect": 294,
+  "fieldsUnverifiedCorrect": 3,
+  "costUsd": 0.0466
+ },
+ "rows": [
+  {
+   "case": "d3-004",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
+    "Seal 번호/insufficient_information",
+    "컨테이너 목록/provisional_match",
+    "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 14,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 60139,
+   "cost": 0.006267025000000001
+  },
+  {
+   "case": "d3-012",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "API_FAIL",
+   "falseConfirmed": [],
+   "issues": [],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": null,
+     "cls": "not_performed",
+     "expected": 13,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "houseBlNumber:wrong(null)",
+      "shipper:wrong(null)",
+      "consignee:wrong(null)",
+      "portOfLoading:wrong(null)",
+      "portOfDischarge:wrong(null)",
+      "packageCount:wrong(null)",
+      "grossWeight:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "quantity:absent",
+      "goodsDescription:wrong(null)",
+      "quantity:absent",
+      "containerNumber:absent",
+      "sealNumber:absent"
+     ]
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "apiError": "missing",
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 59861,
+   "cost": 0.001496525
+  },
+  {
+   "case": "d3-015",
+   "kind": "error",
+   "fault": "grossWeight",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "문서 전체 총중량/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "품목 INDUSTRIAL SAFETY GLOVES NITRILE MODEL NG-9 / SIZE L 품명/provisional_match",
+    "품목 LITHIUM-ION BATTERY PACK 48V 20AH MODEL LB4820 품명/provisional_match",
+    "품목 CERAMIC COFFEE MUG 350ML MODEL CM-350 품명/provisional_match",
+    "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 16,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 60203,
+   "cost": 0.0059378750000000004
+  },
+  {
+   "case": "d3-018",
+   "kind": "error",
+   "fault": "houseBlNumber",
+   "verdict": "WARNED_ONLY",
+   "falseConfirmed": [],
+   "issues": [
+    "서류 간 참조 연결 확인/provisional_mismatch",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "Seal 번호/insufficient_information",
+    "서류 간 참조 연결 확인/provisional_match",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "컨테이너 목록/needs_review",
+    "컨테이너 목록/needs_review",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:wrong(ARNU7659530)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 62713,
+   "cost": 0.006367749999999999
+  },
+  {
+   "case": "d3-020",
+   "kind": "error",
+   "fault": "model",
+   "verdict": "WARNED_ONLY",
+   "falseConfirmed": [],
+   "issues": [
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "컨테이너 SEAU9803537 포장 개수/provisional_match",
+    "컨테이너 목록/insufficient_information",
+    "품목 알루미늄 합금 휠 18인치 품명/provisional_match",
+    "품목 자동차용 브레이크 패드 세트 품명/provisional_match",
+    "품목 메쉬 사무용 의자 품명/provisional_match",
+    "문서 전체 총중량/provisional_match",
+    "기재 물품 수량 (합계/단일품목 범위)/not_comparable",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 18,
+     "verifiedCorrect": 16,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(1774)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 71829,
+   "cost": 0.007680375
+  },
+  {
+   "case": "d3-022",
+   "kind": "error",
+   "fault": "consignee",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "Consignee / 수하인/confirmed_mismatch",
+    "컨테이너 ARNU2080865 / 40GP 포장 개수/provisional_match",
+    "기재 물품 수량 (합계/단일품목 범위)/not_comparable",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 47980,
+   "cost": 0.005090375
+  },
+  {
+   "case": "d3-025",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "품목 BLUETOOTH SPEAKER MODEL BS-7 물품 수량/confirmed_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "컨테이너 SEAU3596896 / 40GP 포장 개수/provisional_match",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 14,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 55522,
+   "cost": 0.0059205
+  },
+  {
+   "case": "d3-029",
+   "kind": "normal",
+   "verdict": "OK_WITH_NOISE",
+   "falseConfirmed": [],
+   "issues": [
+    "컨테이너 목록/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/needs_review",
+    "필드 원문 근거 확인 필요/insufficient_information",
+    "필드 원문 근거 확인 필요/insufficient_information",
+    "필드 원문 근거 확인 필요/insufficient_information"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 5,
+     "unverifiedCorrect": 3,
+     "missing": [
+      "consignee:absent",
+      "goodsDescription:unverified",
+      "hsCode:unverified",
+      "quantity:unverified",
+      "containerNumber:wrong(OCEU1983520)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 33620,
+   "cost": 0.0039317499999999995
+  },
+  {
+   "case": "d3-030",
+   "kind": "wrongtype",
+   "fault": "master_manifest",
+   "verdict": "TYPE_OK",
+   "falseConfirmed": [],
+   "issues": [
+    "House B/L 번호/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "컨테이너 목록/insufficient_information",
+    "문서 전체 총중량/insufficient_information",
+    "문서 전체 포장 개수/insufficient_information",
+    "품목 대응/needs_review",
+    "품목 대응/needs_review",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "문서 전체 총중량/provisional_match",
+    "문서 전체 포장 개수/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "컨테이너 목록/provisional_match",
+    "선적항 / POL · UN/LOCODE 표준화/provisional_match",
+    "컨테이너 BLRU2486274 Seal/provisional_match",
+    "컨테이너 BLRU7919459 Seal/provisional_match",
+    "문서 유형의 원문 근거 확인 필요/needs_review"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:absent",
+      "containerNumber:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "needs_review",
+     "typeMismatch": null,
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 34538,
+   "cost": 0.003952075
+  }
+ ]
+}

@@ -1,0 +1,219 @@
+{
+ "summary": {
+  "label": "r3k",
+  "sets": 4,
+  "CLEAN": 0,
+  "OK_WITH_NOISE": 0,
+  "FALSE_ALARM": 0,
+  "CAUGHT": 4,
+  "CAUGHT+FP": 0,
+  "WARNED_ONLY": 0,
+  "MISSED": 0,
+  "TYPE_OK": 0,
+  "TYPE_MISSED": 0,
+  "API_FAIL": 0,
+  "fieldsExpected": 142,
+  "fieldsVerifiedCorrect": 136,
+  "fieldsUnverifiedCorrect": 0,
+  "costUsd": 0.0208
+ },
+ "rows": [
+  {
+   "case": "dev-013",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "기재 물품 수량 (합계/단일품목 범위)/confirmed_mismatch",
+    "필드 원문 근거 확인 필요/insufficient_information",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 40845,
+   "cost": 0.003752
+  },
+  {
+   "case": "dev-015",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "품목 MOISTURIZING CREAM 50ML MODEL MC-50 / 50ML (5,880 PCS) 물품 수량/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "기재 물품 수량 (합계/단일품목 범위)/provisional_mismatch",
+    "Seal 번호/insufficient_information",
+    "품목 MOISTURIZING CREAM 50ML MODEL MC-50 / 50ML (5,880 PCS) 품명/provisional_match",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "컨테이너 목록/provisional_match",
+    "문서 전체 총중량/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 14,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(1512)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 62314,
+   "cost": 0.00585275
+  },
+  {
+   "case": "dev-027",
+   "kind": "error",
+   "fault": "quantitySwap",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "품목 메쉬 사무용 의자 물품 수량/confirmed_mismatch",
+    "품목 LED 전구 물품 수량/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "Seal 번호/insufficient_information",
+    "품목 메쉬 사무용 의자 품명/provisional_match",
+    "품목 LED 전구 품명/provisional_match",
+    "컨테이너 목록/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 14,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 66812,
+   "cost": 0.006344375
+  },
+  {
+   "case": "dev-028",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "기재 물품 수량 (합계/단일품목 범위)/confirmed_mismatch",
+    "컨테이너 OCEU3263350 / 40GP 포장 개수/provisional_match",
+    "문서 전체 총중량/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 9,
+     "verifiedCorrect": 7,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(172)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 47720,
+   "cost": 0.0048026250000000005
+  }
+ ]
+}

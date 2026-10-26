@@ -4,10 +4,10 @@
   "providerRequests": 1138,
   "automaticRetries": 0,
   "budget": {
-    "documents": 1105,
-    "requests": 1441,
-    "measuredCostUsd": 1.6407844649999999,
-    "unresolvedCostUpperUsd": 0.16031771250000046,
+    "documents": 1431,
+    "requests": 1862,
+    "measuredCostUsd": 2.2389825900000004,
+    "unresolvedCostUpperUsd": 0.26971986250000063,
     "maxDocuments": 3000,
     "maxRequests": 4500,
     "maxCostUsd": 3.5
@@ -423,6 +423,24 @@
       "requests": 211
     },
     "providerTimeouts": 3,
+    "automaticRetries": 0
+  },
+  "claudeSession20261025": {
+    "sourceShas": [
+      "3206feb7ba5c08f99561d0b8218c44d89ce1718a",
+      "843e3c625708b0cc5625126130c11b0232c4764a"
+    ],
+    "report": "docs/validation/claude-2026-10-25/REPORT.md",
+    "previousBudget": {
+      "documents": 1224,
+      "requests": 1594
+    },
+    "runs": {
+      "d3r2": "dev3 9 sets at 3206feb",
+      "b2r1": "frozen Blind2 30 sets at 3206feb (then retired to development)",
+      "d3r3": "d3-012 single manual rerun after provider API_UNAVAILABLE at 843e3c6",
+      "b3r1": "frozen Blind3 30 sets at 843e3c6"
+    },
     "automaticRetries": 0
   }
 }
