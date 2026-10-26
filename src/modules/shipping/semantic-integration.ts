@@ -9,7 +9,7 @@ import type { ShippingDocument } from "./schema";
 import type { ShippingCheck, ShippingReview } from "./review-model";
 import { semanticContext, type SemanticProduct } from "./semantic-context";
 import { semanticWireSchema, type SemanticReport } from "./semantic-schema";
-import { validateSemanticDecision, nativeAttributeClaims } from "./semantic-validation";
+import { validateSemanticDecision, nativeAttributeClaims, nativeAttributeVerdict } from "./semantic-validation";
 import { withReviewIssues } from "./issues";
 import { hsSix } from "./equivalence";
 import { refKey32, verified32, text32 } from "./review-evidence";
@@ -41,7 +41,7 @@ export function withSemanticReview(base: ShippingReview, documents: ShippingDocu
       return !!p && ((p.left.id===id&&p.right.ref.documentId===otherDoc)||(p.right.id===id&&p.left.ref.documentId===otherDoc)) && validateSemanticDecision(other,p).assessment==="provisional_match";
     });
     if((!d||["different_product","explicit_conflict"].includes(d.relation))&&mapped(pair.left.id,pair.right.ref.documentId,pair.right.id)&&mapped(pair.right.id,pair.left.ref.documentId,pair.left.id))continue;
-    let tested=d?validateSemanticDecision(d,pair):{assessment:"needs_review" as const,code:fresh?"SEMANTIC_NOT_COMPLETED":"SEMANTIC_STALE",reason:fresh?(report.status==="failed"&&report.error?"상품 의미 분석 실패: "+report.error.message+" 기존 수치·참조 검사는 보존합니다.":"상품 의미 분석이 완료되지 않았습니다. 기존 수치·참조 검사는 보존합니다."):"문서/사용자 수정으로 이전 AI 의미 근거가 달라져 해당 결과를 사용하지 않습니다. 재분석 전까지 기존 검사를 유지합니다."};
+    let tested=d?validateSemanticDecision(d,pair):(fresh&&nativeAttributeVerdict(pair))||{assessment:"needs_review" as const,code:fresh?"SEMANTIC_NOT_COMPLETED":"SEMANTIC_STALE",reason:fresh?(report.status==="failed"&&report.error?"상품 의미 분석 실패: "+report.error.message+" 기존 수치·참조 검사는 보존합니다.":"상품 의미 분석이 완료되지 않았습니다. 기존 수치·참조 검사는 보존합니다."):"문서/사용자 수정으로 이전 AI 의미 근거가 달라져 해당 결과를 사용하지 않습니다. 재분석 전까지 기존 검사를 유지합니다."};
     if(d?.relation==='different_product'&&decisions.length===1&&tested.code!=='INVALID_SEMANTIC_EVIDENCE'&&(!pair.left.whole||!pair.right.whole)&&!uniqueHsCandidate(pair,context))tested={assessment:'not_applicable',code:'REJECTED_NONCOUNTERPART_CANDIDATE',reason:'다품목 후보에서 서로 다른 상품으로 판독한 조합입니다. 원래 AI 의견은 보존하며, 실제 대응하지 않는 상품끼리의 모델 차이를 업무상 오류로 세지 않습니다. 미대응 품목과 전체 집계 검사는 별도로 유지합니다.'};
     if(!d&&fresh&&canonical.has(pair.left.id)&&canonical.get(pair.left.id)===canonical.get(pair.right.id)&&!nativeAttributeClaims(pair).length)
       tested={assessment:'not_applicable',code:'VERIFIED_ALTERNATE_OWNER_PATH',reason:'이 직접 AI 의견은 완료되지 않아 사용하지 않았습니다. 같은 원문 품목의 검증된 전체 신고 대응과 운송서류의 유일한 원문 행 대응 경로가 이미 입증되어 중복 의미 확인을 요구하지 않습니다. 최초 AI 응답과 미완료 진단은 보존합니다.'};
@@ -51,7 +51,9 @@ export function withSemanticReview(base: ShippingReview, documents: ShippingDocu
     // not an ambiguous mapping. It only keeps an informational AI note.
     const listRow=(id:string)=>{const p=context.products.find(p=>p.id===id);return !!p?.ref.cargoId&&(p.ref.field.current.source?.segments?.length??0)>=2;};
     const ambiguous=ds.some(other=>other!==d&&!disjoint(other.leftId,other.rightId)&&!rejectedCross(other)&&!["unknown","different_product"].includes(other.relation)&&((other.leftId===pair.left.id&&other.rightId!==pair.right.id&&!listRow(pair.left.id)&&context.products.find(p=>p.id===other.rightId)?.ref.documentId===pair.right.ref.documentId)||(other.rightId===pair.right.id&&other.leftId!==pair.left.id&&!listRow(pair.right.id)&&context.products.find(p=>p.id===other.leftId)?.ref.documentId===pair.left.ref.documentId)));
-    if(decisions.length>1||tested.assessment!=='not_applicable'&&d?.relation!=='different_product'&&ambiguous)tested={assessment:"needs_review",code:"AMBIGUOUS_SEMANTIC_MAPPING",reason:"AI 응답에 중복/다대일 품목 대응이 있어 일대일 관계를 확정하지 않습니다."};
+    // A source-proven counterpart conflict is not reopened by other AI pairings.
+    const provenConflict=tested.code==='VERIFIED_LITERAL_ATTRIBUTE_CONFLICT'&&tested.assessment==='confirmed_mismatch';
+    if(decisions.length>1||tested.assessment!=='not_applicable'&&d?.relation!=='different_product'&&ambiguous&&!provenConflict)tested={assessment:"needs_review",code:"AMBIGUOUS_SEMANTIC_MAPPING",reason:"AI 응답에 중복/다대일 품목 대응이 있어 일대일 관계를 확정하지 않습니다."};
     const id="semantic/"+pair.left.id+"/"+pair.right.id;
     const c:ShippingCheck={id,scope:pair.left.documentType==="export_declaration"||pair.right.documentType==="export_declaration"?(pair.left.documentType==="house_manifest"||pair.right.documentType==="house_manifest"?"declaration_manifest":"house_bl_declaration"):"house_bl_manifest",category:"goods",title:"AI 상품 의미 · 규격 비교",assessment:tested.assessment,importance:tested.assessment==="confirmed_mismatch"?"high":"attention",
       disposition:tested.assessment==="provisional_match"&&["AI_SEMANTIC_EQUIVALENCE","AI_INCOMPLETE_ATTRIBUTES"].includes(tested.code)?"informational":undefined,

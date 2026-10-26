@@ -86,3 +86,13 @@ it("does not let a party value read under another label meaning block the other 
   expect(party.some((c) => c.assessment === "confirmed_match")).toBe(true);
   expect(party.filter((c) => c.assessment === "confirmed_mismatch")).toEqual([]);
 }, 60000);
+
+it("judges a printed model conflict from the source even when the AI cites the wrong block", () => {
+  const pair: SemanticPair = { left, right, relationshipId: "r", relationshipConfirmed: true, uniqueCounterpart: true };
+  const wrong = { ...decision, left: { ...decision.left, blockIds: ["zz9"] } };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- synthetic decision
+  expect(validateSemanticDecision(wrong as any, pair)).toMatchObject({ assessment: "confirmed_mismatch", code: "VERIFIED_LITERAL_ATTRIBUTE_CONFLICT" });
+  const same = product("de", "CERAMIC COFFEE MUG 350ML MODEL CM-350", [["d1", "CERAMIC COFFEE MUG 350ML MODEL CM-350"]]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- synthetic decision
+  expect(validateSemanticDecision(wrong as any, { left, right: same, relationshipId: "r", relationshipConfirmed: true, uniqueCounterpart: true }).code).toBe("INVALID_SEMANTIC_EVIDENCE");
+});

@@ -41,11 +41,17 @@ export function literalAttributeConflict(claim: SemanticDecision["claims"][numbe
   const ns=parsed.map(p=>numericTokens(p![1]));
   return ns.every(n=>n.length===1)&&ns[0][0]!==ns[1][0];
 }
+// The printed attribute conflict is checked from the source alone; it holds
+// whether the AI answer is valid, wrong or missing for this pair.
+export function nativeAttributeVerdict(pair: SemanticPair): {assessment:ShippingAssessment;reason:string;code:string} | null {
+  if (!nativeAttributeClaims(pair).length) return null;
+  return { assessment: (pair.left.whole && pair.right.whole || pair.uniqueCounterpart === true) && pair.relationshipConfirmed!==false ? "confirmed_mismatch" : "provisional_mismatch", code:"VERIFIED_LITERAL_ATTRIBUTE_CONFLICT", reason:"AI 응답과 별개로, 같은 선적 원문의 공통 모델/규격 라벨에 서로 다른 기재값이 확인됐습니다. 전체 품목 범위나 참조 연결이 불명확하면 잠정으로 보호합니다." };
+}
 export function validateSemanticDecision(d: SemanticDecision, pair: SemanticPair): {assessment:ShippingAssessment;reason:string;code:string} {
+  const native = nativeAttributeVerdict(pair);
+  if (native) return native;
   if(!semanticEvidenceValid(d.left,pair.left)||!semanticEvidenceValid(d.right,pair.right)||d.claims.some(c=>!semanticEvidenceValid(c.left,pair.left)||!semanticEvidenceValid(c.right,pair.right)))
     return {assessment:"needs_review",code:"INVALID_SEMANTIC_EVIDENCE",reason:"AI가 인용한 필드·원문·블록 소속이 맞지 않아 의미 판단을 사용하지 않습니다."};
-  const native = nativeAttributeClaims(pair);
-  if (native.length) return { assessment: (pair.left.whole && pair.right.whole || pair.uniqueCounterpart === true) && pair.relationshipConfirmed!==false ? "confirmed_mismatch" : "provisional_mismatch", code:"VERIFIED_LITERAL_ATTRIBUTE_CONFLICT", reason:"AI 응답과 별개로, 같은 선적 원문의 공통 모델/규격 라벨에 서로 다른 기재값이 확인됐습니다. 전체 품목 범위나 참조 연결이 불명확하면 잠정으로 보호합니다." };
   if(d.relation==="same_product"||d.relation==="compatible_incomplete")
     return {assessment:"provisional_match",code:d.relation==="same_product"?"AI_SEMANTIC_EQUIVALENCE":"AI_INCOMPLETE_ATTRIBUTES",reason:"검증된 원문에 대한 AI 의미 대응입니다. 언어적 판단은 잠정이며 누락된 속성을 추정하거나 확정 일치 건수로 올리지 않습니다."};
   if(d.relation==="explicit_conflict"||d.relation==="different_product") {
