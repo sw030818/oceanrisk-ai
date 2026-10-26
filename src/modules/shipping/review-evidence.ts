@@ -29,8 +29,9 @@ export const containerWithSize =
 export const text32 = (v: unknown) => {
   if (typeof v !== "string") return String(v ?? "");
   const c = v.normalize("NFKC").match(containerWithSize);
-  // A list separator left at either end ("/KS4395103") is not part of the value.
-  return c ? normalizeText(c[1] + c[2] + c[3]) : normalizeText(v.replace(/^[\s/,;]+|[\s/,;]+$/g, ""));
+  // A list separator left at either end ("/KS4395103") and a printed seal
+  // label ("SEAL: KS1192892", "봉인번호: …") are not part of the value.
+  return c ? normalizeText(c[1] + c[2] + c[3]) : normalizeText(v.normalize("NFKC").replace(/^\s*(?:SEAL(?:\s*NO\.?)?|봉인번호)\s*[:#]\s*(?=\S)/i, "").replace(/^[\s/,;]+|[\s/,;]+$/g, ""));
 };
 export const has32 = (f: ShippingField | undefined) =>
   f?.current.value !== null &&
