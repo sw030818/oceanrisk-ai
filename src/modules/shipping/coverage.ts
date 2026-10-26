@@ -16,7 +16,12 @@ export function collectionCoverage32(doc: ShippingDocument, pdf: PdfDocument) {
   ) => {
     const actual = new Set<string>();
     const containerViews = new Map<string,Map<string,Set<string>>>();
-    const identity=(v:unknown)=>String(v??"").normalize("NFKC").toLowerCase().replace(/\s+/g," ").trim();
+    // "OCEU4285098 / 40HC" and "OCEU4285098" are one container: the ISO
+    // size/type code after the number is not part of its identity.
+    const identity=(v:unknown)=>{
+      const t=String(v??"").normalize("NFKC"),c=t.match(/^\s*([A-Z]{4})\s?(\d{6})\s?(\d)\s*(?:[/,-]\s*)?(?:\d{2}\s?(?:'|FT|GP|HC|HQ|DC|DV|RF|RH|OT|FR|TK|PL)|\d{2}[GRUPTB]\d)?\s*$/i);
+      return c?(c[1]+c[2]+c[3]).toLowerCase():t.toLowerCase().replace(/\s+/g," ").trim();
+    };
     for (const p of pdf.pages)
       for (const b of p.blocks ?? []) {
         const cell=nativeCell(p,b);

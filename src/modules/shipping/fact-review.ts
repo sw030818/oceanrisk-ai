@@ -77,6 +77,35 @@ const codes: Record<FactReason, string> = {
   SOURCE_CONFLICT: "같은 의미의 원문 기재값이 서로 충돌합니다.",
   DECLARATION_SCOPE_UNRESOLVED: "복수 신고의 포함/배분 범위를 확인해야 합니다.",
 };
+// A consolidated manifest whose model output lists a row's containers apart
+// from its cargo record: a container belongs to the HBL whose verified box row
+// band (from its row top to the next HBL row top in the same table) holds the
+// container's printed value, and no other HBL's cargo record claims it.
+function bandContainers(d: ShippingDocument, hbl: string) {
+  const top = (f: ShippingDocument["containers"][number]["containerNumber"]) => {
+    const l = f.current.source?.layout;
+    const m = l?.tableId.includes(":box") ? l.rowId.match(/:boxrow(\d+(?:\.\d+)?)$/) : null;
+    return m && l ? { page: f.current.source!.page, table: l.tableId, y: Number(m[1]) } : null;
+  };
+  const anchors = d.cargoRecords.flatMap((c) => {
+    const r = ref32(d, "houseBlNumber", c.fields.houseBlNumber, { cargoId: c.id }), t = top(c.fields.houseBlNumber);
+    return verified32(r) && t ? [{ hbl: text32(c.fields.houseBlNumber.current.value), ...t }] : [];
+  });
+  // Several records of one native row (list views) are one row.
+  const own = [...new Map(anchors.filter((a) => a.hbl === hbl).map((a) => [`${a.page}/${a.table}/${a.y}`, a])).values()];
+  if (own.length !== 1) return [];
+  const a = own[0], next = Math.min(...anchors.filter((o) => o.page === a.page && o.table === a.table && o.y > a.y).map((o) => o.y), Infinity);
+  const claimedElsewhere = new Set(d.cargoRecords.filter((c) => text32(c.fields.houseBlNumber.current.value) !== hbl && has32(c.fields.containerNumber)).map((c) => text32(c.fields.containerNumber.current.value)));
+  return d.containers.filter((c) => {
+    if (!has32(c.containerNumber) || claimedElsewhere.has(text32(c.containerNumber.current.value))) return false;
+    const r = ref32(d, "containerNumber", c.containerNumber, { containerId: c.id }), src = c.containerNumber.current.source;
+    const value = src?.blocks?.find((b) => text32(b.text) === text32(c.containerNumber.current.value) || b.text.toUpperCase().includes(text32(c.containerNumber.current.value).toUpperCase()));
+    return verified32(r) && !!src && src.page === a.page && !!value && "y" in value && typeof value.y === "number" && value.y >= a.y && value.y < next;
+  });
+}
+// Containers owned through a row band by some HBL of this manifest.
+const banded = (d: ShippingDocument) =>
+  new Set([...new Set(d.cargoRecords.map((c) => text32(c.fields.houseBlNumber.current.value)))].flatMap((h) => bandContainers(d, h).map((c) => c.id)));
 const roots = (d: ShippingDocument, role: string, hbl: string): FieldRef[] => {
   if (role === "houseBlNumber" || role === "declarationNumber")
     return identifiers32(d, role).filter(
@@ -98,6 +127,12 @@ const roots = (d: ShippingDocument, role: string, hbl: string): FieldRef[] => {
       has32(c.fields[role])
     )
       rs.push(ref32(d, role, c.fields[role], { cargoId: c.id }));
+  if (factHbl(d) !== hbl && d.detectedType === "house_manifest" && (role === "containerNumber" || role === "sealNumber"))
+    for (const c of bandContainers(d, hbl)) {
+      if (role === "containerNumber") rs.push(ref32(d, role, c.containerNumber, { containerId: c.id }));
+      else for (const f of c.sealNumbers?.length ? c.sealNumbers : [c.sealNumber])
+        if (has32(f)) rs.push(ref32(d, role, f, { containerId: c.id }));
+    }
   if (factHbl(d) === hbl) {
     if (role === "containerNumber")
       for (const c of d.containers)
@@ -200,6 +235,9 @@ export function withFactReview(
     else
       for (const c of related) {
         const subjects = c.fields.filter((f) => f.fieldName === meaning);
+        // A confirmed per-container conflict stays visible under a summary
+        // that is not itself a confirmed mismatch (e.g. one unverified seal).
+        if (assessment !== "confirmed_mismatch" && c.assessment === "confirmed_mismatch" && subjects.some((f) => f.containerId)) continue;
         if (
           subjects.length &&
           subjects.every((f) => refs.some((v) => refKey32(v) === refKey32(f)))
@@ -426,7 +464,15 @@ export function withFactReview(
         "goodsDescription",
         "hsCode",
       ]) {
-        const sets = group.map((d) => ({ doc: d, refs: roots(d, role, hbl) }));
+        // A party value the verifier read under a different label meaning
+        // (신고필증 "구매자" for Consignee) is not this field; it neither joins
+        // nor blocks the comparison of the documents that print the field.
+        const sets = group.map((d) => ({
+          doc: d,
+          refs: roots(d, role, hbl).filter(
+            (f) => !((role === "shipper" || role === "consignee") && !verified32(f) && f.field.current.verificationCode === "role_mismatch"),
+          ),
+        }));
         const available = sets.filter((s) => s.refs.length),
           core = [
             "houseBlNumber",
@@ -683,7 +729,9 @@ export function withFactReview(
           if (literalSets[0] && literalSets.every((v) => v === literalSets[0])) same = true;
         }
         if (role === "sealNumber") {
-          const containers = group.map((d) =>
+          // Only the documents whose seals are compared need the same
+          // container owners; a form that prints no seal (신고필증) is not one.
+          const containers = valid.map(({ doc: d }) =>
             [
               ...new Set(
                 roots(d, "containerNumber", hbl)
@@ -706,6 +754,7 @@ export function withFactReview(
               d.containers.some(
                 (c) =>
                   has32(c.containerNumber) &&
+                  !banded(d).has(c.id) &&
                   !d.cargoRecords.some(
                     (r) =>
                       text32(r.fields.containerNumber?.current.value) ===

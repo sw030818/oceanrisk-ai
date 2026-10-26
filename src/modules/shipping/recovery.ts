@@ -246,7 +246,8 @@ export function nativeCandidates(
         !t.owner &&
         t.field.original.value !== null &&
         String(t.field.original.value).trim().toLowerCase() !==
-          b.text.trim().toLowerCase()
+          b.text.trim().toLowerCase() &&
+        !nameWithOwnModel(p, b, String(t.field.original.value), t.role)
       )
         continue;
       // A form value may be followed by an address or country in another cell.
@@ -314,6 +315,18 @@ export function nativeCandidates(
     }
   }
   return out;
+}
+// The AI joined a goods name with the model/spec printed on the same line of
+// the same item block ("메쉬 사무용 의자" + "MODEL OC-5"). Only that exact join
+// lets the name cell itself be recovered; the AI value stays in `original`.
+function nameWithOwnModel(page: PdfDocument["pages"][number], b: NonNullable<PdfDocument["pages"][number]["blocks"]>[number], original: string, role: string) {
+  if (role !== "goodsDescription") return false;
+  const norm = (v: string) => v.normalize("NFKC").replace(/\s+/g, " ").trim().toLowerCase();
+  const name = norm(b.text), joined = norm(original);
+  if (!name || !joined.startsWith(name + " ")) return false;
+  const rest = joined.slice(name.length + 1);
+  if (!/^(?:model|style|size|type|spec)\b/.test(rest)) return false;
+  return (page.blocks ?? []).filter((v) => v !== b && Math.abs(v.y - b.y) <= 2 && Math.abs(v.height - b.height) <= 2 && norm(v.text) === rest).length === 1;
 }
 export function mergeRecovery(
   pdf: PdfDocument,

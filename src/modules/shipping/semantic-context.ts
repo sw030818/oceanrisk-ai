@@ -17,7 +17,19 @@ export interface SemanticProduct {
   descriptions: { value: string; blockIds: string[] }[];
   hsCode: string | null;
 }
-export interface SemanticPair { left: SemanticProduct; right: SemanticProduct; relationshipId: string; relationshipConfirmed?:boolean; }
+export interface SemanticPair { left: SemanticProduct; right: SemanticProduct; relationshipId: string; relationshipConfirmed?:boolean; uniqueCounterpart?: boolean; }
+// Product name with its explicit attribute values (MODEL/SIZE/CAPACITY/RAM)
+// removed: "CERAMIC COFFEE MUG 350ML MODEL CM-350" -> "ceramic coffee mug 350ml".
+// A "(57 PCS)" quantity line and a "SAID TO CONTAIN:" heading are not the name.
+// Used only to prove WHICH row is the counterpart, never that attributes agree.
+function nameKeys(p: SemanticProduct) {
+  return new Set(p.descriptions.map((d) =>
+    d.value.normalize("NFKC").replace(/^\s*SAID\s+TO\s+CONTAIN\s*:?/i, " ")
+      .replace(/\(\s*\d[\d,.]*\s*[A-Z]{2,8}\s*\)/gi, " ")
+      .replace(/\b(?:MODEL|STYLE|SIZE|CAPACITY|RAM)\s*[:=#]?\s+[A-Z0-9]+(?:[.,_\/-][A-Z0-9]+)*/gi, " ")
+      .toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim(),
+  ).filter((k) => (k.match(/\p{L}{2,}/gu) ?? []).length >= 2));
+}
 export function semanticInputKey(documents: ShippingDocument[]) {
   return stableJson([...documents].sort((a, b) => a.id.localeCompare(b.id)));
 }
@@ -60,6 +72,19 @@ export function semanticContext(documents: ShippingDocument[]) {
     };
     if(exactOwner(left,right.ref.documentId)||exactOwner(right,left.ref.documentId))continue;
     all.push({left,right,relationshipId:relationship.id,relationshipConfirmed:relationship.status==='evidence_confirmed'&&!relationship.mappingWarnings?.length&&!relationship.conflictRoles.length});
+  }
+  // A multi-item row is a proven counterpart when both complete collections of
+  // this HBL have the same row count and its attribute-free name is printed on
+  // exactly one row of each document. Repeated or partial names stay unproven.
+  for (const pair of all) {
+    const rows = (p: SemanticProduct) => products.filter((q) => q.ref.documentId === p.ref.documentId && q.hbl === p.hbl);
+    const left = rows(pair.left), right = rows(pair.right);
+    const share = (a: SemanticProduct, b: SemanticProduct) => [...nameKeys(a)].some((k) => nameKeys(b).has(k));
+    // Single-row documents stay governed by `whole` alone.
+    pair.uniqueCounterpart = pair.left.collectionComplete && pair.right.collectionComplete && left.length > 1 && left.length === right.length &&
+      share(pair.left, pair.right) &&
+      left.every((q) => q === pair.left || !share(q, pair.right)) &&
+      right.every((q) => q === pair.right || !share(q, pair.left));
   }
   // Preserve the complete small candidate set (including negative alternatives)
   // and its diagnostics. Reduce only a large Cartesian set that risks saturating
