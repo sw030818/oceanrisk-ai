@@ -1,0 +1,172 @@
+{
+ "summary": {
+  "label": "b2r2",
+  "sets": 3,
+  "CLEAN": 0,
+  "OK_WITH_NOISE": 0,
+  "FALSE_ALARM": 0,
+  "CAUGHT": 1,
+  "CAUGHT+FP": 0,
+  "WARNED_ONLY": 0,
+  "MISSED": 0,
+  "TYPE_OK": 0,
+  "TYPE_MISSED": 0,
+  "API_FAIL": 2,
+  "fieldsExpected": 99,
+  "fieldsVerifiedCorrect": 69,
+  "fieldsUnverifiedCorrect": 0,
+  "costUsd": 0.0088
+ },
+ "rows": [
+  {
+   "case": "b2-012",
+   "kind": "error",
+   "fault": "containerMissing",
+   "verdict": "API_FAIL",
+   "falseConfirmed": [],
+   "issues": [],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": null,
+     "cls": "not_performed",
+     "expected": 11,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "declarationNumber:wrong(null)",
+      "exporter:wrong(null)",
+      "consignee:absent",
+      "packageCount:wrong(null)",
+      "grossWeight:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "hsCode:wrong(null)",
+      "quantity:wrong(null)",
+      "containerNumber:absent",
+      "containerNumber:absent",
+      "containerNumber:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "apiError": "missing",
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 70813,
+   "cost": 0.0020095250000000003
+  },
+  {
+   "case": "b2-017",
+   "kind": "error",
+   "fault": "sealNumber",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "Seal 번호/confirmed_mismatch"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 15,
+     "verifiedCorrect": 15,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 58060,
+   "cost": 0.005217
+  },
+  {
+   "case": "b2-020",
+   "kind": "error",
+   "fault": "model",
+   "verdict": "API_FAIL",
+   "falseConfirmed": [],
+   "issues": [],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": null,
+     "cls": "not_performed",
+     "expected": 18,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "declarationNumber:wrong(null)",
+      "exporter:wrong(null)",
+      "consignee:absent",
+      "packageCount:wrong(null)",
+      "grossWeight:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "hsCode:wrong(null)",
+      "quantity:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "hsCode:wrong(null)",
+      "quantity:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "hsCode:wrong(null)",
+      "quantity:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "hsCode:wrong(null)",
+      "quantity:wrong(null)",
+      "containerNumber:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "apiError": "missing",
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 75802,
+   "cost": 0.0015629
+  }
+ ]
+}

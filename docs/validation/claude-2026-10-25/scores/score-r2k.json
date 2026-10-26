@@ -2,19 +2,19 @@
  "summary": {
   "label": "r2k",
   "sets": 28,
-  "CLEAN": 0,
-  "OK_WITH_NOISE": 11,
+  "CLEAN": 1,
+  "OK_WITH_NOISE": 10,
   "FALSE_ALARM": 0,
-  "CAUGHT": 9,
+  "CAUGHT": 11,
   "CAUGHT+FP": 0,
-  "WARNED_ONLY": 4,
+  "WARNED_ONLY": 2,
   "MISSED": 0,
   "TYPE_OK": 3,
   "TYPE_MISSED": 0,
   "API_FAIL": 1,
   "fieldsExpected": 1051,
-  "fieldsVerifiedCorrect": 970,
-  "fieldsUnverifiedCorrect": 7,
+  "fieldsVerifiedCorrect": 973,
+  "fieldsUnverifiedCorrect": 4,
   "costUsd": 0.1591
  },
  "rows": [
@@ -24,14 +24,13 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
     "컨테이너 목록/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "컨테이너 목록/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
@@ -81,14 +80,13 @@
     "문서 전체 포장 개수/confirmed_mismatch",
     "컨테이너 목록/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
-    "필드 원문 근거 확인 필요/provisional_mismatch",
     "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
-    "컨테이너 목록/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
-    "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
+    "기재 물품 수량 (합계/단일품목 범위)/not_comparable",
+    "필드 원문 근거 확인 필요/provisional_match"
    ],
    "docs": [
     {
@@ -175,8 +173,6 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
-    "필드 원문 근거 확인 필요/provisional_mismatch",
-    "필드 원문 근거 확인 필요/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_match"
    ],
    "docs": [
@@ -223,8 +219,7 @@
     "컨테이너 OCEU4280115 Seal/confirmed_mismatch",
     "컨테이너 목록/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
-    "필드 원문 근거 확인 필요/provisional_mismatch",
-    "컨테이너 목록/needs_review"
+    "필드 원문 근거 확인 필요/provisional_mismatch"
    ],
    "docs": [
     {
@@ -267,9 +262,7 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 목록/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
-    "컨테이너 목록/needs_review",
     "문서 전체 총중량/provisional_match"
    ],
    "docs": [
@@ -443,7 +436,6 @@
    "issues": [
     "화물 품명 의미/provisional_mismatch",
     "컨테이너 BLRU7389852 포장 개수/provisional_match",
-    "컨테이너 목록/insufficient_information",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
@@ -539,9 +531,7 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 목록/insufficient_information",
-    "컨테이너 목록/insufficient_information",
-    "Seal 번호/insufficient_information",
+    "컨테이너 목록/provisional_match",
     "문서 전체 총중량/provisional_match"
    ],
    "docs": [
@@ -590,12 +580,9 @@
    "falseConfirmed": [],
    "issues": [
     "Consignee / 수하인/confirmed_mismatch",
-    "컨테이너 목록/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
-    "Seal 번호/provisional_mismatch",
-    "컨테이너 목록/insufficient_information",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
@@ -603,6 +590,7 @@
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "품목 LITHIUM-ION BATTERY PACK 48V 20AH MODEL LB4820 품명/provisional_match",
+    "컨테이너 목록/provisional_match",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
    ],
    "docs": [
@@ -645,17 +633,17 @@
    "case": "dev-013",
    "kind": "error",
    "fault": "quantity",
-   "verdict": "WARNED_ONLY",
+   "verdict": "CAUGHT",
    "falseConfirmed": [],
    "issues": [
-    "기재 물품 수량 (합계/단일품목 범위)/provisional_mismatch",
-    "기재 물품 수량 (합계/단일품목 범위)/provisional_mismatch",
-    "기재 물품 수량 (합계/단일품목 범위)/provisional_mismatch",
-    "필드 원문 근거 확인 필요/not_comparable",
+    "기재 물품 수량 (합계/단일품목 범위)/confirmed_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
     "필드 원문 근거 확인 필요/not_comparable",
     "필드 원문 근거 확인 필요/provisional_match",
-    "필드 원문 근거 확인 필요/needs_review",
-    "필드 원문 근거 확인 필요/insufficient_information"
+    "필드 원문 근거 확인 필요/not_comparable"
    ],
    "docs": [
     {
@@ -672,13 +660,10 @@
      "detected": "export_declaration",
      "cls": "classified",
      "expected": 9,
-     "verifiedCorrect": 5,
-     "unverifiedCorrect": 3,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
      "missing": [
-      "consignee:absent",
-      "goodsDescription:unverified",
-      "hsCode:unverified",
-      "quantity:unverified"
+      "consignee:absent"
      ]
     },
     {
@@ -697,13 +682,9 @@
   {
    "case": "dev-014",
    "kind": "normal",
-   "verdict": "OK_WITH_NOISE",
+   "verdict": "CLEAN",
    "falseConfirmed": [],
-   "issues": [
-    "컨테이너 목록/insufficient_information",
-    "Seal 번호/insufficient_information",
-    "컨테이너 목록/provisional_match"
-   ],
+   "issues": [],
    "docs": [
     {
      "type": "house_bl",
@@ -749,9 +730,7 @@
    "issues": [
     "품목 보습 크림 물품 수량/confirmed_mismatch",
     "기재 물품 수량 (합계/단일품목 범위)/provisional_mismatch",
-    "컨테이너 목록/insufficient_information",
-    "컨테이너 목록/insufficient_information",
-    "Seal 번호/insufficient_information",
+    "컨테이너 목록/provisional_match",
     "문서 전체 총중량/provisional_match"
    ],
    "docs": [
@@ -852,10 +831,7 @@
    "verdict": "CAUGHT",
    "falseConfirmed": [],
    "issues": [
-    "문서 전체 총중량/confirmed_mismatch",
-    "컨테이너 목록/provisional_mismatch",
-    "Seal 번호/provisional_mismatch",
-    "컨테이너 목록/insufficient_information"
+    "문서 전체 총중량/confirmed_mismatch"
    ],
    "docs": [
     {
@@ -1071,9 +1047,6 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 목록/insufficient_information",
-    "Seal 번호/insufficient_information",
-    "컨테이너 목록/provisional_match",
     "필드 원문 근거 확인 필요/insufficient_information",
     "필드 원문 근거 확인 필요/provisional_match"
    ],
@@ -1161,10 +1134,10 @@
    "case": "dev-023",
    "kind": "error",
    "fault": "model",
-   "verdict": "WARNED_ONLY",
+   "verdict": "CAUGHT",
    "falseConfirmed": [],
    "issues": [
-    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/confirmed_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
     "컨테이너 BLRU1619710 / 40GP 포장 개수/provisional_match",
@@ -1213,10 +1186,7 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 목록/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
-    "Seal 번호/provisional_mismatch",
-    "컨테이너 목록/needs_review",
     "품목 STAINLESS STEEL WATER BOTTLE 500ML MODEL SB-500 품명/provisional_match",
     "품목 MOISTURIZING CREAM 50ML MODEL MC-50 / 50ML 품명/provisional_match",
     "품목 CERAMIC COFFEE MUG 350ML MODEL CM-350 품명/provisional_match"
@@ -1310,10 +1280,10 @@
    "falseConfirmed": [],
    "issues": [
     "화물 품명 의미/provisional_mismatch",
-    "필드 원문 근거 확인 필요/provisional_mismatch",
     "컨테이너 OCEU3891320 포장 개수/provisional_match",
     "품목 스테인리스 물병 품명/provisional_match",
     "품목 LED 전구 품명/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
     "필드 원문 근거 확인 필요/provisional_match"
    ],
    "docs": [
@@ -1464,7 +1434,6 @@
    "falseConfirmed": [],
    "issues": [
     "화물 품명 의미/provisional_mismatch",
-    "Seal 번호/insufficient_information",
     "AI 상품 의미 · 규격 비교/needs_review",
     "품목 POLYPROPYLENE STORAGE BOX 30L MODEL PB-30 품명/provisional_match",
     "품목 MOISTURIZING CREAM 50ML MODEL MC-50 / 50ML 품명/provisional_match",
@@ -1472,8 +1441,7 @@
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "컨테이너 목록/provisional_match"
+    "AI 상품 의미 · 규격 비교/needs_review"
    ],
    "docs": [
     {

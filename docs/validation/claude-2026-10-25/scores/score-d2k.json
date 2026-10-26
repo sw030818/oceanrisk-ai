@@ -5,9 +5,9 @@
   "CLEAN": 0,
   "OK_WITH_NOISE": 10,
   "FALSE_ALARM": 0,
-  "CAUGHT": 10,
+  "CAUGHT": 11,
   "CAUGHT+FP": 0,
-  "WARNED_ONLY": 5,
+  "WARNED_ONLY": 4,
   "MISSED": 1,
   "TYPE_OK": 3,
   "TYPE_MISSED": 0,
@@ -24,8 +24,6 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
-    "필드 원문 근거 확인 필요/provisional_mismatch",
-    "컨테이너 목록/insufficient_information",
     "컨테이너 목록/provisional_match",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
    ],
@@ -126,11 +124,9 @@
    "falseConfirmed": [],
    "issues": [
     "문서 전체 총중량/confirmed_mismatch",
-    "컨테이너 목록/insufficient_information",
-    "컨테이너 목록/insufficient_information",
-    "Seal 번호/insufficient_information",
     "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review"
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "컨테이너 목록/provisional_match"
    ],
    "docs": [
     {
@@ -224,11 +220,11 @@
    "falseConfirmed": [],
    "issues": [
     "Seal 번호/confirmed_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
     "컨테이너 OCEU5513952 포장 개수/provisional_match",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
@@ -442,9 +438,6 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 목록/provisional_mismatch",
-    "Seal 번호/provisional_mismatch",
-    "컨테이너 목록/insufficient_information",
     "품목 메쉬 사무용 의자 포장 개수/provisional_match"
    ],
    "docs": [
@@ -590,12 +583,11 @@
    "falseConfirmed": [],
    "issues": [
     "품목 STAINLESS STEEL WATER BOTTLE 500ML MODEL SB-500 물품 수량/confirmed_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
     "컨테이너 BLRU5423310 / 40HC 포장 개수/provisional_match",
-    "컨테이너 목록/insufficient_information",
     "품목 STAINLESS STEEL WATER BOTTLE 500ML MODEL SB-500 품명/provisional_match",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
@@ -1016,13 +1008,12 @@
    "case": "d2-020",
    "kind": "error",
    "fault": "model",
-   "verdict": "WARNED_ONLY",
+   "verdict": "CAUGHT",
    "falseConfirmed": [],
    "issues": [
-    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/confirmed_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "컨테이너 ARNU8935438 / 20GP 포장 개수/provisional_match",
-    "컨테이너 목록/insufficient_information",
     "품목 BLUETOOTH SPEAKER MODEL BS-7 품명/provisional_match",
     "품목 CERAMIC COFFEE MUG 350ML MODEL CM-350 품명/provisional_match",
     "품목 MESH OFFICE CHAIR MODEL OC-5 품명/provisional_match",
@@ -1118,14 +1109,14 @@
    "falseConfirmed": [],
    "issues": [
     "Consignee / 수하인/confirmed_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "컨테이너 SEAU1710567 포장 개수/provisional_match",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
@@ -1419,10 +1410,7 @@
    "verdict": "WARNED_ONLY",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 목록/insufficient_information",
-    "컨테이너 목록/insufficient_information",
-    "Seal 번호/insufficient_information",
-    "컨테이너 목록/needs_review",
+    "컨테이너 목록/provisional_mismatch",
     "AI 상품 의미 · 규격 비교/needs_review"
    ],
    "docs": [

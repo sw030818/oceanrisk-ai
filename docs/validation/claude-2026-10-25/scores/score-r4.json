@@ -1,0 +1,167 @@
+{
+ "summary": {
+  "label": "r4",
+  "sets": 3,
+  "CLEAN": 0,
+  "OK_WITH_NOISE": 0,
+  "FALSE_ALARM": 0,
+  "CAUGHT": 2,
+  "CAUGHT+FP": 0,
+  "WARNED_ONLY": 0,
+  "MISSED": 0,
+  "TYPE_OK": 0,
+  "TYPE_MISSED": 0,
+  "API_FAIL": 1,
+  "fieldsExpected": 86,
+  "fieldsVerifiedCorrect": 74,
+  "fieldsUnverifiedCorrect": 0,
+  "costUsd": 0.0111
+ },
+ "rows": [
+  {
+   "case": "dev-005",
+   "kind": "error",
+   "fault": "sealNumber",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "컨테이너 OCEU4280115 Seal/confirmed_mismatch",
+    "컨테이너 목록/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "필드 원문 근거 확인 필요/provisional_mismatch",
+    "품목 메쉬 사무용 의자 포장 개수/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "containerNumber:wrong(OCEU4280115)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 10,
+     "verifiedCorrect": 10,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 57110,
+   "cost": 0.0053212500000000005
+  },
+  {
+   "case": "dev-013",
+   "kind": "error",
+   "fault": "quantity",
+   "verdict": "API_FAIL",
+   "falseConfirmed": [],
+   "issues": [],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 11,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": null,
+     "cls": "not_performed",
+     "expected": 9,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "declarationNumber:wrong(null)",
+      "exporter:wrong(null)",
+      "consignee:absent",
+      "packageCount:wrong(null)",
+      "grossWeight:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "hsCode:wrong(null)",
+      "quantity:wrong(null)",
+      "containerNumber:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "apiError": "missing",
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 55635,
+   "cost": 0.0010104
+  },
+  {
+   "case": "dev-023",
+   "kind": "error",
+   "fault": "model",
+   "verdict": "CAUGHT",
+   "falseConfirmed": [],
+   "issues": [
+    "AI 상품 의미 · 규격 비교/confirmed_mismatch",
+    "화물 품명 의미/provisional_mismatch",
+    "컨테이너 BLRU1619710 / 40GP 포장 개수/provisional_match",
+    "품목 ALUMINIUM ALLOY WHEEL 18 INCH MODEL AW-18 (39 PCS) 품명/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 13,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 12,
+     "verifiedCorrect": 11,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 52591,
+   "cost": 0.004765875
+  }
+ ]
+}

@@ -2,12 +2,12 @@
  "summary": {
   "label": "d3xk",
   "sets": 40,
-  "CLEAN": 0,
-  "OK_WITH_NOISE": 15,
+  "CLEAN": 1,
+  "OK_WITH_NOISE": 14,
   "FALSE_ALARM": 0,
-  "CAUGHT": 15,
+  "CAUGHT": 16,
   "CAUGHT+FP": 0,
-  "WARNED_ONLY": 3,
+  "WARNED_ONLY": 2,
   "MISSED": 1,
   "TYPE_OK": 2,
   "TYPE_MISSED": 0,
@@ -159,14 +159,12 @@
    "issues": [
     "화물 품명 의미/provisional_mismatch",
     "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
-    "Seal 번호/insufficient_information",
     "품목 자동차용 브레이크 패드 세트 품명/provisional_match",
     "품목 도자기 머그컵 품명/provisional_match",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
-    "컨테이너 목록/provisional_match",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
    ],
    "docs": [
@@ -210,9 +208,7 @@
    "verdict": "CAUGHT",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 ARNU2127129 / 20GP Seal/confirmed_mismatch",
-    "컨테이너 목록/provisional_mismatch",
-    "Seal 번호/provisional_mismatch",
+    "Seal 번호/confirmed_mismatch",
     "품목 AUTOMOTIVE BRAKE PAD SET MODEL BP-330 포장 개수/provisional_match"
    ],
    "docs": [
@@ -255,9 +251,7 @@
    "verdict": "OK_WITH_NOISE",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 목록/provisional_mismatch",
-    "Seal 번호/provisional_mismatch",
-    "컨테이너 목록/insufficient_information",
+    "컨테이너 목록/provisional_match",
     "문서 전체 총중량/provisional_match"
    ],
    "docs": [
@@ -310,8 +304,6 @@
     "문서 전체 총중량/insufficient_information",
     "문서 전체 포장 개수/insufficient_information",
     "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
-    "컨테이너 목록/insufficient_information",
-    "Seal 번호/insufficient_information",
     "품목 대응/needs_review",
     "컨테이너 목록/needs_review",
     "문서 전체 총중량/provisional_match",
@@ -668,12 +660,9 @@
   {
    "case": "d3-014",
    "kind": "normal",
-   "verdict": "OK_WITH_NOISE",
+   "verdict": "CLEAN",
    "falseConfirmed": [],
-   "issues": [
-    "Seal 번호/insufficient_information",
-    "컨테이너 목록/provisional_match"
-   ],
+   "issues": [],
    "docs": [
     {
      "type": "house_bl",
@@ -821,9 +810,7 @@
    "verdict": "CAUGHT",
    "falseConfirmed": [],
    "issues": [
-    "컨테이너 OCEU2192930 / 40HC Seal/confirmed_mismatch",
-    "컨테이너 목록/provisional_mismatch",
-    "Seal 번호/provisional_mismatch",
+    "Seal 번호/confirmed_mismatch",
     "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
    ],
@@ -869,7 +856,6 @@
    "falseConfirmed": [],
    "issues": [
     "서류 간 참조 연결 확인/provisional_mismatch",
-    "컨테이너 목록/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "문서 전체 총중량/insufficient_information",
     "문서 전체 포장 개수/insufficient_information",
@@ -1243,14 +1229,14 @@
    "verdict": "MISSED",
    "falseConfirmed": [],
    "issues": [
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "컨테이너 SEAU3596896 포장 개수/provisional_match",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
@@ -1357,7 +1343,6 @@
     "컨테이너 목록/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
-    "컨테이너 목록/needs_review",
     "품목 SAID TO CONTAIN: AUTOMOTIVE BRAKE PAD SET MODEL BP-330 품명/provisional_match",
     "품목 ALUMINIUM ALLOY WHEEL 18 INCH MODEL AW-18 품명/provisional_match",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
@@ -1401,18 +1386,15 @@
    "case": "d3-028",
    "kind": "error",
    "fault": "containerNumber",
-   "verdict": "WARNED_ONLY",
+   "verdict": "CAUGHT",
    "falseConfirmed": [],
    "issues": [
+    "컨테이너 목록/confirmed_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
-    "Seal 번호/insufficient_information",
-    "컨테이너 목록/needs_review",
     "품목 INDUSTRIAL SAFETY GLOVES NITRILE MODEL NG-9 / SIZE L 품명/provisional_match",
     "품목 ALUMINIUM ALLOY WHEEL 18 INCH MODEL AW-18 품명/provisional_match",
     "품목 AUTOMOTIVE BRAKE PAD SET MODEL BP-330 품명/provisional_match",
     "품목 POLYPROPYLENE STORAGE BOX 30L MODEL PB-30 품명/provisional_match",
-    "컨테이너 목록/needs_review",
-    "컨테이너 목록/provisional_match",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
    ],
    "docs": [
@@ -1553,7 +1535,6 @@
    "issues": [
     "필드 원문 근거 확인 필요/provisional_mismatch",
     "문서 전체 포장 개수/insufficient_information",
-    "컨테이너 목록/insufficient_information",
     "필드 원문 근거 확인 필요/provisional_match"
    ],
    "docs": [
@@ -1643,8 +1624,6 @@
    "issues": [
     "선적항 / POL/confirmed_mismatch",
     "컨테이너 목록/provisional_mismatch",
-    "Seal 번호/insufficient_information",
-    "컨테이너 목록/needs_review",
     "문서 전체 총중량/provisional_match"
    ],
    "docs": [
@@ -1743,7 +1722,6 @@
     "컨테이너 목록/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
-    "컨테이너 목록/needs_review",
     "품목 LITHIUM-ION BATTERY PACK 48V 20AH MODEL LB4820 (61 PCS) 품명/provisional_match",
     "품목 MESH OFFICE CHAIR MODEL OC-5 (54 PCS) 품명/provisional_match"
    ],
@@ -1790,7 +1768,6 @@
    "issues": [
     "화물 품명 의미/provisional_mismatch",
     "컨테이너 BLRU3729785 포장 개수/provisional_match",
-    "컨테이너 목록/insufficient_information",
     "품목 MESH OFFICE CHAIR MODEL OC-5 품명/provisional_match",
     "품목 POLYPROPYLENE STORAGE BOX 30L MODEL PB-30 품명/provisional_match",
     "품목 CERAMIC COFFEE MUG 350ML MODEL CM-350 품명/provisional_match",
@@ -1845,7 +1822,6 @@
     "품목 INDUSTRIAL SAFETY GLOVES NITRILE MODEL NG-9 / SIZE L 품명/provisional_match",
     "품목 ALUMINIUM ALLOY WHEEL 18 INCH MODEL AW-18 품명/provisional_match",
     "품목 CERAMIC COFFEE MUG 350ML MODEL CM-350 품명/provisional_match",
-    "컨테이너 목록/needs_review",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
    ],
    "docs": [
@@ -1988,13 +1964,11 @@
    "falseConfirmed": [],
    "issues": [
     "컨테이너 목록/confirmed_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/provisional_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "AI 상품 의미 · 규격 비교/needs_review",
-    "컨테이너 목록/needs_review",
-    "컨테이너 목록/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "AI 상품 의미 · 규격 비교/needs_review",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"

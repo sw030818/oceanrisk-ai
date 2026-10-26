@@ -1,0 +1,78 @@
+{
+ "summary": {
+  "label": "d3r5",
+  "sets": 1,
+  "CLEAN": 0,
+  "OK_WITH_NOISE": 0,
+  "FALSE_ALARM": 0,
+  "CAUGHT": 0,
+  "CAUGHT+FP": 0,
+  "WARNED_ONLY": 0,
+  "MISSED": 0,
+  "TYPE_OK": 0,
+  "TYPE_MISSED": 0,
+  "API_FAIL": 1,
+  "fieldsExpected": 28,
+  "fieldsVerifiedCorrect": 12,
+  "fieldsUnverifiedCorrect": 0,
+  "costUsd": 0.0016
+ },
+ "rows": [
+  {
+   "case": "d3-017",
+   "kind": "error",
+   "fault": "sealNumber",
+   "verdict": "API_FAIL",
+   "falseConfirmed": [],
+   "issues": [],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": null,
+     "cls": "not_performed",
+     "expected": 15,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "houseBlNumber:wrong(null)",
+      "shipper:wrong(null)",
+      "consignee:wrong(null)",
+      "portOfLoading:wrong(null)",
+      "portOfDischarge:wrong(null)",
+      "packageCount:wrong(null)",
+      "grossWeight:wrong(null)",
+      "goodsDescription:wrong(null)",
+      "quantity:absent",
+      "goodsDescription:wrong(null)",
+      "quantity:absent",
+      "containerNumber:absent",
+      "sealNumber:absent",
+      "containerNumber:absent",
+      "sealNumber:absent"
+     ]
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 13,
+     "verifiedCorrect": 12,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "apiError": "missing",
+     "expected": 0,
+     "verifiedCorrect": 0,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 61787,
+   "cost": 0.0016100250000000002
+  }
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "summary": {
+  "label": "d2r3",
+  "sets": 1,
+  "CLEAN": 0,
+  "OK_WITH_NOISE": 0,
+  "FALSE_ALARM": 0,
+  "CAUGHT": 0,
+  "CAUGHT+FP": 0,
+  "WARNED_ONLY": 1,
+  "MISSED": 0,
+  "TYPE_OK": 0,
+  "TYPE_MISSED": 0,
+  "API_FAIL": 0,
+  "fieldsExpected": 43,
+  "fieldsVerifiedCorrect": 41,
+  "fieldsUnverifiedCorrect": 0,
+  "costUsd": 0.0079
+ },
+ "rows": [
+  {
+   "case": "d2-020",
+   "kind": "error",
+   "fault": "model",
+   "verdict": "WARNED_ONLY",
+   "falseConfirmed": [],
+   "issues": [
+    "화물 품명 의미/provisional_mismatch",
+    "컨테이너 ARNU8935438 포장 개수/provisional_match",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "품목 BLUETOOTH SPEAKER MODEL BS-7 품명/provisional_match",
+    "품목 CERAMIC COFFEE MUG 350ML MODEL CM-350 품명/provisional_match",
+    "품목 MESH OFFICE CHAIR MODEL OC-5 품명/provisional_match",
+    "문서 전체 총중량/provisional_match"
+   ],
+   "docs": [
+    {
+     "type": "house_bl",
+     "detected": "house_bl",
+     "cls": "classified",
+     "expected": 17,
+     "verifiedCorrect": 17,
+     "unverifiedCorrect": 0,
+     "missing": []
+    },
+    {
+     "type": "export_declaration",
+     "detected": "export_declaration",
+     "cls": "classified",
+     "expected": 18,
+     "verifiedCorrect": 16,
+     "unverifiedCorrect": 0,
+     "missing": [
+      "consignee:absent",
+      "grossWeight:wrong(1820)"
+     ]
+    },
+    {
+     "type": "house_manifest",
+     "detected": "house_manifest",
+     "cls": "classified",
+     "expected": 8,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
+     "missing": []
+    }
+   ],
+   "ms": 78320,
+   "cost": 0.00794275
+  }
+ ]
+}

@@ -5,16 +5,16 @@
   "CLEAN": 0,
   "OK_WITH_NOISE": 2,
   "FALSE_ALARM": 0,
-  "CAUGHT": 3,
+  "CAUGHT": 4,
   "CAUGHT+FP": 0,
-  "WARNED_ONLY": 2,
+  "WARNED_ONLY": 1,
   "MISSED": 0,
   "TYPE_OK": 1,
   "TYPE_MISSED": 0,
   "API_FAIL": 1,
   "fieldsExpected": 324,
-  "fieldsVerifiedCorrect": 294,
-  "fieldsUnverifiedCorrect": 3,
+  "fieldsVerifiedCorrect": 297,
+  "fieldsUnverifiedCorrect": 0,
   "costUsd": 0.0466
  },
  "rows": [
@@ -25,8 +25,6 @@
    "falseConfirmed": [],
    "issues": [
     "기재 물품 수량 (합계/단일품목 범위)/insufficient_information",
-    "Seal 번호/insufficient_information",
-    "컨테이너 목록/provisional_match",
     "기재 물품 수량 (합계/단일품목 범위)/not_comparable"
    ],
    "docs": [
@@ -173,14 +171,12 @@
    "falseConfirmed": [],
    "issues": [
     "서류 간 참조 연결 확인/provisional_mismatch",
+    "컨테이너 목록/provisional_mismatch",
     "문서 전체 총중량/insufficient_information",
     "문서 전체 포장 개수/insufficient_information",
-    "컨테이너 목록/insufficient_information",
-    "Seal 번호/insufficient_information",
     "서류 간 참조 연결 확인/provisional_match",
     "품목 대응/needs_review",
     "품목 대응/needs_review",
-    "컨테이너 목록/needs_review",
     "컨테이너 목록/needs_review",
     "품목 대응/needs_review",
     "품목 대응/needs_review",
@@ -226,14 +222,13 @@
    "case": "d3-020",
    "kind": "error",
    "fault": "model",
-   "verdict": "WARNED_ONLY",
+   "verdict": "CAUGHT",
    "falseConfirmed": [],
    "issues": [
-    "AI 상품 의미 · 규격 비교/provisional_mismatch",
+    "AI 상품 의미 · 규격 비교/confirmed_mismatch",
     "화물 품명 의미/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
     "컨테이너 SEAU9803537 포장 개수/provisional_match",
-    "컨테이너 목록/insufficient_information",
     "품목 알루미늄 합금 휠 18인치 품명/provisional_match",
     "품목 자동차용 브레이크 패드 세트 품명/provisional_match",
     "품목 메쉬 사무용 의자 품명/provisional_match",
@@ -378,14 +373,14 @@
    "falseConfirmed": [],
    "issues": [
     "컨테이너 목록/provisional_mismatch",
+    "화물 품명 의미/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
     "필드 원문 근거 확인 필요/provisional_mismatch",
-    "필드 원문 근거 확인 필요/provisional_mismatch",
-    "필드 원문 근거 확인 필요/provisional_mismatch",
-    "필드 원문 근거 확인 필요/needs_review",
-    "필드 원문 근거 확인 필요/insufficient_information",
-    "필드 원문 근거 확인 필요/insufficient_information",
-    "필드 원문 근거 확인 필요/insufficient_information"
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "AI 상품 의미 · 규격 비교/needs_review",
+    "필드 원문 근거 확인 필요/not_comparable",
+    "필드 원문 근거 확인 필요/provisional_match",
+    "필드 원문 근거 확인 필요/provisional_match"
    ],
    "docs": [
     {
@@ -402,13 +397,10 @@
      "detected": "export_declaration",
      "cls": "classified",
      "expected": 10,
-     "verifiedCorrect": 5,
-     "unverifiedCorrect": 3,
+     "verifiedCorrect": 8,
+     "unverifiedCorrect": 0,
      "missing": [
       "consignee:absent",
-      "goodsDescription:unverified",
-      "hsCode:unverified",
-      "quantity:unverified",
       "containerNumber:wrong(OCEU1983520)"
      ]
     },

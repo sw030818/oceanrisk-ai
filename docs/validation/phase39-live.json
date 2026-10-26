@@ -4,10 +4,10 @@
   "providerRequests": 1138,
   "automaticRetries": 0,
   "budget": {
-    "documents": 1431,
-    "requests": 1862,
-    "measuredCostUsd": 2.2389825900000004,
-    "unresolvedCostUpperUsd": 0.26971986250000063,
+    "documents": 1532,
+    "requests": 1989,
+    "measuredCostUsd": 2.415959170000003,
+    "unresolvedCostUpperUsd": 0.38390467500000064,
     "maxDocuments": 3000,
     "maxRequests": 4500,
     "maxCostUsd": 3.5
@@ -428,7 +428,9 @@
   "claudeSession20261025": {
     "sourceShas": [
       "3206feb7ba5c08f99561d0b8218c44d89ce1718a",
-      "843e3c625708b0cc5625126130c11b0232c4764a"
+      "843e3c625708b0cc5625126130c11b0232c4764a",
+      "e27b691c440d62c0e14f05c8238ad68e60a640f1",
+      "a0ace1b05d09a52be3ce96504290a7d8597322cc"
     ],
     "report": "docs/validation/claude-2026-10-25/REPORT.md",
     "previousBudget": {
@@ -439,8 +441,11 @@
       "d3r2": "dev3 9 sets at 3206feb",
       "b2r1": "frozen Blind2 30 sets at 3206feb (then retired to development)",
       "d3r3": "d3-012 single manual rerun after provider API_UNAVAILABLE at 843e3c6",
-      "b3r1": "frozen Blind3 30 sets at 843e3c6"
+      "b3r1": "frozen Blind3 30 sets at 843e3c6",
+      "b3r2/b2r2/d3r4/d2r3/r4/b1r2": "28 fixed/normal sets at e27b691",
+      "b3r3/b2r3/d3r5/r5/d2r4": "one manual rerun of 7 provider-timeout sets and d2-020 at a0ace1b"
     },
-    "automaticRetries": 0
+    "automaticRetries": 0,
+    "blind3Retired": "Blind3 results were used for the 2026-10-26 fixes; it is now development"
   }
 }
