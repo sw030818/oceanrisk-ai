@@ -85,8 +85,14 @@ function directRole(label:string){
 // Official forms number their boxes: ⑤ (NFKC "5"), "(31)", "13." and item
 // tags such as "[란 001]". English translations or units follow in brackets:
 // "선박명(Name Of Vessel)", "총중량(KGS)". None of these change the meaning.
+// Circled box numbers (①–⑳, ㉑–㉟, ㊱–㊿) as printed on 한국무역협회 B/L and
+// UNI-PASS forms are the same box numbers as "(1)". They never occur in a
+// printed value, so they are read as "(n)" before any label parsing.
+export function circledAsParen(text: string) {
+  return text.replace(/[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/g, (c) => `(${c.normalize("NFKC")})`);
+}
 function labelForms(text: string): string[] {
-  const base = text
+  const base = circledAsParen(text)
     .normalize("NFKC")
     .trim()
     .replace(/^(?:\(\d{1,3}\)|\d{1,3}[.)]|\d{1,3}(?=\s*[가-힣]))\s*(?=[A-Za-z가-힣])/, "")
@@ -166,7 +172,7 @@ const partUnit = (text: string) => {
   return u ? { unit: u.toUpperCase() } : {};
 };
 export function compoundLabel(text: string): CompoundLabel | null {
-  const t = text.normalize("NFKC").replace(/\s+/g, " ").trim()
+  const t = circledAsParen(text).normalize("NFKC").replace(/\s+/g, " ").trim()
     .replace(/^(?:\(\d{1,3}\)|\d{1,3}[.)])\s*(?=[A-Za-z가-힣0-9])/, "");
   if (shippingRole(t)) return null;
   const markers = [...t.matchAll(/(?:^|\s)([A-Z]|\d)\)\s*(?=[A-Za-z가-힣])/g)];

@@ -2,7 +2,7 @@ import type { PdfPage, PdfBlock, PdfCell } from "../documents/schema";
 import { numericTokens } from "../evidence/numbers";
 import { physicalLines, spanText } from "./physical-spans";
 import { countAtoms } from "../shipping/count-atoms";
-import { shippingRole, compoundLabel, subfieldRole, subfieldMarker, type CompoundLabel } from "../shipping/roles";
+import { shippingRole, compoundLabel, subfieldRole, subfieldMarker, circledAsParen, type CompoundLabel } from "../shipping/roles";
 import type { EntityScope } from "./shipping-cells";
 import type { TableLink } from "./relations";
 const inside = (c: PdfCell, b: PdfBlock) =>
@@ -207,7 +207,7 @@ function compoundRole(page: PdfPage, cell: PdfCell, compound: CompoundLabel, hea
 // data units and competing adjacent labels do not. No template coordinates.
 // "16. 적재장소", "(21) 물품소재지", "⑬ 목적국": a numbered box caption is a
 // label even when its meaning is not one we compare.
-const numberedCaption = (t: string) => /^(?:\(\d{1,3}\)|\d{1,3}[.)])\s*[A-Za-z가-힣]/.test(t.normalize("NFKC").trim()) && !/\d{3,}/.test(t.replace(/^\D*\d{1,3}/, ""));
+const numberedCaption = (t: string) => /^(?:\(\d{1,3}\)|\d{1,3}[.)])\s*[A-Za-z가-힣]/.test(circledAsParen(t).normalize("NFKC").trim()) && !/\d{3,}/.test(circledAsParen(t).replace(/^\D*\d{1,3}/, ""));
 export function nativeKeyValue(page: PdfPage, b: PdfBlock) {
   const cell=nativeCell(page,b);if(!cell || shippingRole(b.text) || numberedCaption(b.text))return null;
   const pairs:{role:string;label:PdfCell;vertical:boolean}[]=[];

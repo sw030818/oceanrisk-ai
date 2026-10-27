@@ -20,7 +20,7 @@ import {
   cellHeading,
   packageGoodsContext,
 } from "../layout/shipping-geometry";
-import { shippingRole, rootTotalRole, unitParents, withoutSubfieldMarker, compoundLabel } from "./roles";
+import { shippingRole, rootTotalRole, unitParents, withoutSubfieldMarker, compoundLabel, circledAsParen } from "./roles";
 import { containerWithSize } from "./review-evidence";
 import { nativeGoodsContext } from "./goods-context";
 import { cargoCountAtoms } from "./cargo-description";
@@ -32,6 +32,7 @@ type Location = NonNullable<
   NonNullable<GroundedField<unknown>["source"]>["layout"]
 >;
 function inlineRole(text: string, value: string | number): string | null {
+  text = circledAsParen(text);
   const normalized = normalizeText(text),
     v = normalizeText(String(value));
   if (typeof value === "string") {
@@ -595,7 +596,7 @@ export function verifyShippingField(
   return finish();
 }
 function titleType(text: string): 'house_bl'|'export_declaration'|'house_manifest'|null {
-  const t = normalizeText(text)
+  const t = normalizeText(circledAsParen(text))
     .replace(/\s*\((?:synthetic|합성)\)\s*$/, "")
     .replace(/^(?:\(\d{1,3}\)|\d{1,3}[.)])\s*(?=[A-Za-z가-힣])/, "")
     .replace(/^\((.*)\)$/, "$1");
