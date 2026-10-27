@@ -58,6 +58,10 @@ type Selection = {
   page?: PdfPage;
   raw?: boolean;
 };
+// One of the ten pre-stored synthetic sets of a kind, chosen on click.
+function pickSampleSet(kind: "normal" | "abnormal") {
+  return `${kind}-${String(1 + Math.floor(Math.random() * 10)).padStart(2, "0")}`;
+}
 export function ShippingWorkspace() {
   const [slots, setSlots] = useState(emptySlots);
   const [identities, setIdentities] = useState(
@@ -83,6 +87,7 @@ export function ShippingWorkspace() {
   const [results, setResults] = useState<ShippingResult[]>([]),
     [selection, setSelection] = useState<Selection | null>(null);
   const [tab, setTab] = useState<"upload" | "results">("upload");
+  const [sampleMode, setSampleMode] = useState<"attach" | "download">("attach");
   useEffect(() => {
     if (tab === "results") window.scrollTo({ top: 0, behavior: "instant" });
   }, [tab]);
@@ -165,23 +170,33 @@ export function ShippingWorkspace() {
       setError(safeError(e).message);
     }
   }
-  // Synthetic sample transactions (no real company data) let a visitor try
-  // the flow without their own documents. Loading never starts AI analysis.
-  async function loadSample(kind: "normal" | "mismatch") {
+  // Pre-stored synthetic sample transactions (no real company data): ten normal
+  // and ten abnormal sets. Nothing is generated at click time; one stored set
+  // is picked at random. Attaching never starts AI analysis.
+  async function takeSample(kind: "normal" | "abnormal") {
     if (busy) return;
+    const set = pickSampleSet(kind);
+    if (sampleMode === "download") {
+      const a = document.createElement("a");
+      a.href = `/samples/downloads/oceanrisk-sample-${set}.zip`;
+      a.download = `oceanrisk-sample-${set}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      return;
+    }
     try {
       const names: Record<ShippingType, string> = {
         house_bl: "house-bl",
         export_declaration: "export-declaration",
         house_manifest: "house-manifest",
       };
-      const label = kind === "normal" ? "예시-정상" : "예시-오류포함";
       const loaded = await Promise.all(
         shippingTypes.map(async (slot) => {
-          const res = await fetch(`/samples/${kind}/${names[slot]}.pdf`);
+          const res = await fetch(`/samples/sets/${set}/${names[slot]}.pdf`);
           if (!res.ok) throw new Error("예시 서류를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.");
           const blob = await res.blob();
-          return [slot, [new File([blob], `${label}-${names[slot]}.pdf`, { type: "application/pdf", lastModified: 0 })]] as [ShippingType, File[]];
+          return [slot, [new File([blob], `샘플-${set}-${names[slot]}.pdf`, { type: "application/pdf", lastModified: 0 })]] as [ShippingType, File[]];
         }),
       );
       setError(null);
@@ -189,18 +204,6 @@ export function ShippingWorkspace() {
     } catch (e) {
       setError(safeError(e).message);
     }
-  }
-  // Pre-stored synthetic ZIPs (B/L, 수출신고필증, 혼재화물적하목록). Nothing is
-  // generated at click time; one stored set is picked at random.
-  function downloadSample(kind: "same" | "mixed") {
-    const count = kind === "same" ? 7 : 3;
-    const name = `oceanrisk-${kind === "same" ? "same-shipment" : "mixed-shipments"}-${1 + Math.floor(Math.random() * count)}.zip`;
-    const a = document.createElement("a");
-    a.href = `/samples/downloads/${name}`;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
   }
   function remove(slot: ShippingType, id: string) {
     const next = {
@@ -694,52 +697,55 @@ export function ShippingWorkspace() {
                     확인해 알려 드립니다.
                   </p>
                   <div
-                    data-testid="sample-loader"
-                    className="mt-3 flex flex-wrap items-center gap-2 text-xs"
+                    data-testid="sample-panel"
+                    className="mt-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3 text-xs"
                   >
-                    <span className="text-slate-500">서류가 없다면 예시 서류로 체험하기:</span>
-                    <button
-                      type="button"
-                      onClick={() => loadSample("normal")}
-                      disabled={busy}
-                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50 disabled:opacity-40"
-                    >
-                      정상 거래
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => loadSample("mismatch")}
-                      disabled={busy}
-                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50 disabled:opacity-40"
-                    >
-                      오류 포함 거래
-                    </button>
-                    <span className="text-[11px] text-slate-400">
-                      가상의 회사·화물로 만든 합성 서류입니다.
-                    </span>
-                  </div>
-                  <div
-                    data-testid="sample-download"
-                    className="mt-2 flex flex-wrap items-center gap-2 text-xs"
-                  >
-                    <span className="text-slate-500">샘플 PDF 내려받기 (ZIP, 3장):</span>
-                    <button
-                      type="button"
-                      onClick={() => downloadSample("same")}
-                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50"
-                    >
-                      같은 거래 서류 3장
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => downloadSample("mixed")}
-                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50"
-                    >
-                      서로 다른 거래 서류 3장
-                    </button>
-                    <span className="text-[11px] text-slate-400">
-                      미리 준비한 합성 세트 중 하나를 무작위로 내려받습니다.
-                    </span>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-semibold text-slate-700">서류가 없다면 샘플 서류로 체험하기</span>
+                      <div role="group" aria-label="받는 방식" className="ml-auto inline-flex overflow-hidden rounded-lg border border-slate-200 bg-white">
+                        {([["attach", "바로 첨부"], ["download", "ZIP 다운로드"]] as const).map(([mode, label]) => (
+                          <button
+                            key={mode}
+                            type="button"
+                            aria-pressed={sampleMode === mode}
+                            onClick={() => setSampleMode(mode)}
+                            className={`px-3 py-1.5 ${sampleMode === mode ? "bg-slate-900 text-white" : "text-slate-600 hover:bg-slate-50"}`}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div data-testid="sample-loader" className="mt-2 flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => takeSample("normal")}
+                        disabled={busy}
+                        className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+                      >
+                        정상 거래
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => takeSample("abnormal")}
+                        disabled={busy}
+                        className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+                      >
+                        비정상 거래
+                      </button>
+                      <span className="text-[11px] text-slate-500">
+                        {sampleMode === "attach"
+                          ? "B/L·수출신고필증·혼재화물적하목록 3장을 업로드 칸에 바로 넣습니다. 분석은 동의 후 직접 시작합니다."
+                          : "3장이 든 ZIP 파일을 내려받습니다. 압축을 풀어 직접 올려 보세요."}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-[11px] leading-5 text-slate-500">
+                      미리 준비한 정상 10건·비정상 10건(서류 1장에 오류가 있거나 서로 다른 거래의 서류가 섞인 경우) 중 하나를 무작위로 제공합니다.
+                    </p>
+                    <p data-testid="sample-sources" className="mt-1 text-[11px] leading-5 text-slate-500">
+                      양식 출처 — 수출신고필증: 국가관세종합정보시스템(UNI-PASS) 양식 · 혼재화물적하목록: 국가법령정보센터·관세청 공개 서식 · B/L: 한국무역협회 양식.
+                      실제 회사·화물이 아닌 가상의 내용으로 만든 합성 서류입니다.
+                    </p>
                   </div>
                 </div>
                 <div
@@ -919,6 +925,30 @@ export function ShippingWorkspace() {
                           : "같은 거래 연결 확인 필요"}
                   </span>
                 </p>
+                {comparisonEnabled &&
+                  !!review.relationships?.length &&
+                  review.relationships.some((r) => r.status === "conflict") &&
+                  !review.relationships.some(
+                    (r) =>
+                      r.status === "evidence_confirmed" ||
+                      confirmedRelationships.includes(r.id),
+                  ) && (
+                    <div
+                      data-testid="different-shipments"
+                      role="alert"
+                      className="mt-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3"
+                    >
+                      <p className="text-sm font-bold text-rose-800">
+                        서로 다른 화물로 보입니다
+                      </p>
+                      <p className="mt-1 text-xs leading-6 text-rose-700">
+                        올린 서류들을 같은 화물로 연결할 공통 번호(House B/L·수출신고번호)가
+                        원문에서 확인되지 않고, 서로 다른 번호가 기재되어 있습니다. 다른
+                        거래의 서류가 섞였거나 번호가 잘못 기재됐을 수 있습니다. 같은 화물로
+                        확인되기 전까지 서류 간 대조는 보류하며, 오류로 확정하지 않습니다.
+                      </p>
+                    </div>
+                  )}
                 {results.some(
                   (r) => r.document?.classificationStatus === "needs_review",
                 ) && (
@@ -941,6 +971,63 @@ export function ShippingWorkspace() {
                   </p>
                 )}
               </section>
+              {results.some((r) => urlById.get(r.pdf.id)) && (
+                <section
+                  data-testid="document-previews"
+                  className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="text-sm font-bold text-slate-900">검토한 원본 서류</h3>
+                    <p className="text-[11px] text-slate-500">
+                      원본 PDF는 이 브라우저 안에서만 표시하며 서버에 저장하지 않습니다.
+                    </p>
+                  </div>
+                  <div className="mt-3 grid gap-3 md:grid-cols-3">
+                    {[...results]
+                      .sort(
+                        (a, b) =>
+                          shippingTypes.indexOf(a.detectedType ?? a.uploadSlot) -
+                          shippingTypes.indexOf(b.detectedType ?? b.uploadSlot),
+                      )
+                      .map((r) => {
+                        const url = urlById.get(r.pdf.id);
+                        const type = r.detectedType ?? r.uploadSlot;
+                        const title = shippingLabels[type]?.title ?? "서류";
+                        return (
+                          <figure
+                            key={r.pdf.id}
+                            data-testid="document-preview"
+                            className="overflow-hidden rounded-xl border border-slate-200 bg-slate-100"
+                          >
+                            <figcaption className="flex items-center justify-between gap-2 border-b border-slate-200 bg-white px-3 py-2">
+                              <span className="shrink-0 text-xs font-semibold text-slate-800">{title}</span>
+                              <span className="truncate text-[11px] text-slate-500">{r.pdf.fileName}</span>
+                            </figcaption>
+                            {url ? (
+                              <iframe
+                                title={`${title} 원본 PDF`}
+                                src={`${url}#toolbar=0&navpanes=0&view=FitH`}
+                                className="h-[420px] w-full bg-white"
+                              />
+                            ) : (
+                              <p className="p-6 text-xs text-slate-500">원본 파일을 표시할 수 없습니다.</p>
+                            )}
+                            {url && (
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="block border-t border-slate-200 bg-white px-3 py-2 text-center text-[11px] font-semibold text-blue-700 hover:bg-slate-50"
+                              >
+                                새 창에서 크게 보기
+                              </a>
+                            )}
+                          </figure>
+                        );
+                      })}
+                  </div>
+                </section>
+              )}
               {comparisonEnabled && (
                 <ShippingReviewPanel
                   review={review}

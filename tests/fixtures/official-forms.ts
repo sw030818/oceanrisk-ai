@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- evaluation-only truth JSON with optional fault keys */
 import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import truth from "./official-forms/truth.json";
+// Read as data so both Vitest and the Playwright loader can use this fixture.
+const truth = JSON.parse(readFileSync(new URL("./official-forms/truth.json", import.meta.url), "utf8")) as typeof import("./official-forms/truth.json");
 import { extractPdfText } from "../../src/modules/pdf/extract";
 import type { ShippingType } from "../../src/modules/shipping/catalog";
 import type { Candidate, ShippingWire } from "../../src/modules/shipping/ai-schema";
