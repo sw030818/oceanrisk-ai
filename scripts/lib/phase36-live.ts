@@ -43,7 +43,7 @@ export async function paidRecovery36(
   if (!/^[a-f0-9]{40}$/.test(sha) || !targets.length || targets.length > 6)
     throw Error("INVALID_RECOVERY_TRIAL");
   return withTrialBudget(policy36, async (budget, save) => {
-    const base = "https://oceanrisk-ai.vercel.app";
+    const base = "https://ai-portcheck.vercel.app";
     const status = async () => {
       const s = await (
         await fetch(base + "/api/status?recovery=" + Date.now(), {

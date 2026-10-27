@@ -9,7 +9,7 @@ if (!Number.isInteger(attempts) || attempts < 1 || attempts > 40) throw new Erro
 for (let i = 0; i < attempts; i++) {
   report.attempts++;
   try {
-    const response = await fetch("https://oceanrisk-ai.vercel.app/api/status", { cache: "no-store", signal: AbortSignal.timeout(10000) });
+    const response = await fetch("https://ai-portcheck.vercel.app/api/status", { cache: "no-store", signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error(`Production HTTP ${response.status}`);
     const match = assertProduction(await response.json(), sha);
     report.verified = true;

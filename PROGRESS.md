@@ -876,3 +876,4 @@
 - 한 페이지 앱이라 로고 링크가 화면을 바꾸지 못하던 문제: 클릭 시 업로드 화면으로 전환·맨 위로 이동, 첨부 파일과 결과는 유지.
 - 엔진(`src/modules`)·API·판정 로직 변경 없음. 내부 식별자(semantic receipt HMAC 문자열, 저장소/패키지/Production 주소)는 유지. 미사용 레거시 `workspace.tsx`는 수정하지 않음.
 - 브라우저 검사 갱신 이유: samples.spec의 ZIP 파일명 기대값을 새 이름으로 변경(UI 계약 변경), 로고→홈 검사 1개 추가. 로컬 samples.spec 7/7 통과, tsc·eslint 통과. 유료 API 호출 0회.
+- 같은 날: 사용자가 Vercel에 `ai-portcheck.vercel.app`(Production)을 추가하고 네트워크 허용 목록에 등록. 배포 확인·검증 스크립트/Actions의 Production 주소를 새 주소로 변경(옛 주소는 사용자 판단으로 유지/전환). 엔진·화면 변경 없음, 유료 호출 0회.

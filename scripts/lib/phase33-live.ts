@@ -119,7 +119,7 @@ export async function paid33(
       )
     )
       throw new Error("Invalid PHASE33 ledger");
-    const base = "https://oceanrisk-ai.vercel.app";
+    const base = "https://ai-portcheck.vercel.app";
     async function status() {
       const s = await (
         await fetch(base + "/api/status?live33=" + Date.now(), {

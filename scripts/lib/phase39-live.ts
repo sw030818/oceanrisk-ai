@@ -24,7 +24,7 @@ export async function paid39Semantic(sha:string,results:ShippingResult[]) {
   if(!context.pairs.length)return{semantic:undefined,budget,attempted:false};
   const snapshots=results.flatMap(r=>r.semanticSnapshot?[r.semanticSnapshot]:[]);
   if(snapshots.length!==documents.length)throw Error("MISSING_SERVER_RECEIPT_NO_SEMANTIC_CALL");
-  const base="https://oceanrisk-ai.vercel.app",status=await(await fetch(base+"/api/status?phase39="+Date.now(),{signal:AbortSignal.timeout(15000)})).json();
+  const base="https://ai-portcheck.vercel.app",status=await(await fetch(base+"/api/status?phase39="+Date.now(),{signal:AbortSignal.timeout(15000)})).json();
   if(status.deployment?.commitSha!==sha||status.enginePhase!=="3.9"||status.model!=="gpt-6-luna"||status.capabilities?.automaticTargetedRecovery!==false)throw Error("UNEXPECTED_PRODUCTION_NO_CALL");
   const upper=requestUpperCost(Buffer.byteLength(JSON.stringify(semanticOpenAIRequest(context))),8192);
   reserve39(budget,upper,0,1);await save();

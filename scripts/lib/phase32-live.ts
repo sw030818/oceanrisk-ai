@@ -224,7 +224,7 @@ export async function paidBatch32(
       )
     )
       throw new Error("Invalid PHASE32 budget");
-    const base = "https://oceanrisk-ai.vercel.app",
+    const base = "https://ai-portcheck.vercel.app",
       s = await (
         await fetch(base + "/api/status?live32=" + Date.now(), {
           signal: AbortSignal.timeout(15000),

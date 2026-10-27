@@ -54,7 +54,7 @@ if (
   throw new Error(
     "New explicit approval required: 3 documents / $0.05; no call made",
   );
-const base = "https://oceanrisk-ai.vercel.app",
+const base = "https://ai-portcheck.vercel.app",
   dir = "test-results/live-phase31",
   path = dir + "/ledger.json",
   archive = "docs/validation/phase31-live-2026-10-13.json";

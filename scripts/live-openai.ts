@@ -39,7 +39,7 @@ if (selected && !layoutCases.some((c) => c.id === selected))
   throw new Error("Unknown layout case");
 const remote = args.includes("--local")
   ? null
-  : "https://oceanrisk-ai.vercel.app";
+  : "https://ai-portcheck.vercel.app";
 const directory = "test-results/live-openai",
   ledgerPath = directory + "/ledger.json";
 await mkdir(directory, { recursive: true });

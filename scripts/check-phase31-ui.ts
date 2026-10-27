@@ -4,7 +4,7 @@ import { chromium, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { makePdf } from "../tests/fixtures/synthetic";
 import { shippingTypes, shippingLabels } from "../src/modules/shipping/catalog";
-const base = "https://oceanrisk-ai.vercel.app";
+const base = "https://ai-portcheck.vercel.app";
 const sha = process.argv.find((a) => a.startsWith("--sha="))?.slice(6);
 if (!sha || !/^[a-f0-9]{40}$/.test(sha))
   throw new Error("Exact deployed SHA required");

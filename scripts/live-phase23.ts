@@ -30,7 +30,7 @@ if (
   throw new Error(
     "Explicit new approval required: 2 documents / $0.03. No provider call made.",
   );
-const base = "https://oceanrisk-ai.vercel.app",
+const base = "https://ai-portcheck.vercel.app",
   directory = "test-results/live-phase23",
   path = directory + "/ledger.json";
 await mkdir(directory, { recursive: true });

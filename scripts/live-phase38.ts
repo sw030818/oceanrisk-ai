@@ -35,7 +35,7 @@ if (
 )
   throw Error("Clean exact Production SHA required");
 const status = await (
-  await fetch("https://oceanrisk-ai.vercel.app/api/status", {
+  await fetch("https://ai-portcheck.vercel.app/api/status", {
     signal: AbortSignal.timeout(15000),
   })
 ).json();

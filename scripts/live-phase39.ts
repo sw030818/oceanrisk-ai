@@ -16,7 +16,7 @@ if(arg("approved-documents")!==String(policy39.documents)||arg("approved-request
 const sha=arg("sha")??"",id=arg("case")??"",dir="test-results/live-phase39";
 if(!/^[a-f0-9]{40}$/.test(sha)||!cases39.some(c=>c.id===id)&&!["set2","independent-normal","independent-model"].includes(id))throw Error("Exact SHA and one evaluation case required");
 if(execFileSync("git",["rev-parse","HEAD"],{encoding:"utf8"}).trim()!==sha||execFileSync("git",["status","--porcelain"],{encoding:"utf8"}).trim())throw Error("Clean exact Production source required");
-const status=await(await fetch("https://oceanrisk-ai.vercel.app/api/status",{signal:AbortSignal.timeout(15000)})).json();if(status.enginePhase!=="3.9"||status.deployment?.commitSha!==sha||status.capabilities?.automaticTargetedRecovery!==false)throw Error("Wrong Production or extra recovery enabled");
+const status=await(await fetch("https://ai-portcheck.vercel.app/api/status",{signal:AbortSignal.timeout(15000)})).json();if(status.enginePhase!=="3.9"||status.deployment?.commitSha!==sha||status.capabilities?.automaticTargetedRecovery!==false)throw Error("Wrong Production or extra recovery enabled");
 const fixtures=[];
 for(const[index,type]of shippingTypes.entries()){
  if(["set2","independent-normal","independent-model"].includes(id)){

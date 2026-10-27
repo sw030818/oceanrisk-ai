@@ -10,7 +10,7 @@ import { normalizeText } from "../src/modules/evidence/verify";
 nextEnv.loadEnvConfig(process.cwd());
 const remoteArg = process.argv.slice(2).find((arg) => arg.startsWith("--url="));
 const remote = remoteArg ? new URL(remoteArg.slice(6)) : null;
-if (remote && remote.origin !== "https://oceanrisk-ai.vercel.app")
+if (remote && remote.origin !== "https://ai-portcheck.vercel.app")
   throw new Error("Remote live tests only target the authorized OceanRisk Production domain");
 let configured = Boolean(process.env.GEMINI_API_KEY);
 let statusError: string | null = null;

@@ -178,7 +178,7 @@ export async function paidTrial(
   if (!/^[a-f0-9]{40}$/.test(sha) || !/^[a-z0-9-]+$/.test(stage))
     throw new Error("Invalid source or safe stage ID");
   return withTrialBudget(policy, async (budget, save) => {
-    const base = "https://oceanrisk-ai.vercel.app";
+    const base = "https://ai-portcheck.vercel.app";
     async function status() {
       const s = await (
         await fetch(base + "/api/status?trial=" + Date.now(), {
