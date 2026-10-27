@@ -4,10 +4,10 @@
   "providerRequests": 1138,
   "automaticRetries": 0,
   "budget": {
-    "documents": 1532,
-    "requests": 1989,
-    "measuredCostUsd": 2.415959170000003,
-    "unresolvedCostUpperUsd": 0.38390467500000064,
+    "documents": 1662,
+    "requests": 2161,
+    "measuredCostUsd": 2.6581831250000003,
+    "unresolvedCostUpperUsd": 0.40872727500000056,
     "maxDocuments": 3000,
     "maxRequests": 4500,
     "maxCostUsd": 3.5
@@ -447,5 +447,15 @@
     },
     "automaticRetries": 0,
     "blind3Retired": "Blind3 results were used for the 2026-10-26 fixes; it is now development"
+  },
+  "claudeSession20261027": {
+    "engineSourceSha": "18770dcbe147aa99d436b39a3710d9d32d7cc7a3",
+    "siteSampleSha": "24fa4d8d0487848b3cbbff36c02db309de16b6db",
+    "report": "docs/validation/claude-2026-10-27/REPORT.md",
+    "runs": {
+      "s6r1": "22 new-format sample sets (first layout)",
+      "s6r2": "same 22 sets after swapping 상표명/모델·규격 positions"
+    },
+    "automaticRetries": 0
   }
 }
