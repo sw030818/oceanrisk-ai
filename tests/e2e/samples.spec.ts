@@ -31,7 +31,7 @@ for (const kind of ["normal", "abnormal"] as const)
       page.waitForEvent("download"),
       page.getByTestId("sample-loader").getByRole("button", { name: kind === "normal" ? "정상 거래" : "비정상 거래", exact: true }).click(),
     ]);
-    expect(download.suggestedFilename()).toMatch(new RegExp(`^oceanrisk-sample-${kind}-(0[1-9]|10)\\.zip$`));
+    expect(download.suggestedFilename()).toMatch(new RegExp(`^portcheck-sample-${kind}-(0[1-9]|10)\\.zip$`));
     const bytes = await readFile((await download.path())!);
     expect(bytes.subarray(0, 2).toString("latin1")).toBe("PK");
     for (const entry of ["1_House_BL.pdf", "2_Export_Declaration.pdf", "3_House_Manifest.pdf"])
@@ -75,4 +75,14 @@ test("MOCK documents of different shipments show the different-shipment notice w
   await analyzeOfficial(page, { house_bl: "normal", export_declaration: "normal", house_manifest: "mismatch" });
   await expect(page.getByTestId("different-shipments")).toContainText("서로 다른 화물로 보입니다");
   await expect(page.getByTestId("document-preview")).toHaveCount(3);
+});
+// UI contract added 2026-10-27: the header logo returns to the upload screen
+// (one-page app) and keeps the attached files and the finished results.
+test("MOCK the header logo returns to the upload screen and keeps files and results", async ({ page }) => {
+  await analyzeOfficial(page, { house_bl: "normal", export_declaration: "normal", house_manifest: "normal" });
+  await page.getByRole("link", { name: "PortCheck AI 홈", exact: true }).click();
+  await expect(page.getByTestId("upload-slots")).toBeVisible();
+  await expect(page.getByTestId("upload-file")).toHaveCount(3);
+  await expect(page.getByTestId("shipping-document")).toHaveCount(0);
+  await expect(page).toHaveTitle(/^PortCheck AI/);
 });

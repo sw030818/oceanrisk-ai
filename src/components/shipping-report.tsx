@@ -41,7 +41,7 @@ export function ShippingReport({
         id="shipping-print-report"
         className="hidden bg-white p-6 text-slate-900 print:block"
       >
-        <h1 className="text-xl font-bold">OceanRisk AI 선적서류 검토 보고서</h1>
+        <h1 className="text-xl font-bold">PortCheck AI 선적서류 검토 보고서</h1>
         {review.status === "not_performed" ? (
           <p className="my-3">
             서류 간 대조 미실시 · PDF 원문 준비 또는 대상 부족 상태입니다.

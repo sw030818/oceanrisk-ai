@@ -3,7 +3,6 @@ import Link from "next/link";
 import { shippingValues } from "@/modules/shipping/fields";
 import { useEffect, useRef, useState, useMemo } from "react";
 import {
-  Anchor,
   ArrowRight,
   FileSearch,
   FileCheck2,
@@ -14,6 +13,7 @@ import {
   Info,
   ScanText,
 } from "lucide-react";
+import { PortCheckMark } from "@/components/portcheck-mark";
 import {
   ShippingUploadCard,
   type UploadProgress,
@@ -178,8 +178,8 @@ export function ShippingWorkspace() {
     const set = pickSampleSet(kind);
     if (sampleMode === "download") {
       const a = document.createElement("a");
-      a.href = `/samples/downloads/oceanrisk-sample-${set}.zip`;
-      a.download = `oceanrisk-sample-${set}.zip`;
+      a.href = `/samples/downloads/portcheck-sample-${set}.zip`;
+      a.download = `portcheck-sample-${set}.zip`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -561,12 +561,15 @@ export function ShippingWorkspace() {
       <header className="flex h-[72px] items-center justify-between border-b border-slate-200 bg-white px-5 md:px-9">
         <Link
           href="/"
+          aria-label="PortCheck AI 홈"
+          onClick={() => {
+            setTab("upload");
+            window.scrollTo({ top: 0 });
+          }}
           className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-[#142744]"
         >
-          <span className="flex size-9 items-center justify-center rounded-xl bg-[#152e51] text-white">
-            <Anchor size={20} />
-          </span>
-          OceanRisk <span className="text-blue-600">AI</span>
+          <PortCheckMark size={36} />
+          PortCheck <span className="text-blue-600">AI</span>
         </Link>
         <span className="rounded-full bg-blue-50 px-3 py-1.5 text-[11px] font-semibold text-blue-700">
           신고 전 문서 분석
@@ -601,7 +604,7 @@ export function ShippingWorkspace() {
             </p>
           </div>
           <p className="mt-5 text-[10px] text-slate-400">
-            © 2026 OceanRisk AI
+            © 2026 PortCheck AI
           </p>
         </aside>
         <main className="min-w-0 flex-1 px-5 pb-10 pt-7 md:px-9 lg:px-10">
@@ -1284,7 +1287,7 @@ export function ShippingWorkspace() {
             </>
           )}
           <footer className="mt-8 border-t border-slate-200 pt-5 text-[11px] leading-6 text-slate-500">
-            OceanRisk AI는 신고 전 검토를 지원하는 보조 도구입니다. 세관 신고를
+            PortCheck AI는 신고 전 검토를 지원하는 보조 도구입니다. 세관 신고를
             직접 수행하거나 과태료 예방을 보장하지 않습니다. 관세청·EDI·외부
             업무시스템 및 온프레미스 연동은 제공하지 않습니다.
           </footer>
