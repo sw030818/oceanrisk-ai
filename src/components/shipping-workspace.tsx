@@ -190,6 +190,18 @@ export function ShippingWorkspace() {
       setError(safeError(e).message);
     }
   }
+  // Pre-stored synthetic ZIPs (B/L, 수출신고필증, 혼재화물적하목록). Nothing is
+  // generated at click time; one stored set is picked at random.
+  function downloadSample(kind: "same" | "mixed") {
+    const count = kind === "same" ? 7 : 3;
+    const name = `oceanrisk-${kind === "same" ? "same-shipment" : "mixed-shipments"}-${1 + Math.floor(Math.random() * count)}.zip`;
+    const a = document.createElement("a");
+    a.href = `/samples/downloads/${name}`;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
   function remove(slot: ShippingType, id: string) {
     const next = {
       ...slots,
@@ -704,6 +716,29 @@ export function ShippingWorkspace() {
                     </button>
                     <span className="text-[11px] text-slate-400">
                       가상의 회사·화물로 만든 합성 서류입니다.
+                    </span>
+                  </div>
+                  <div
+                    data-testid="sample-download"
+                    className="mt-2 flex flex-wrap items-center gap-2 text-xs"
+                  >
+                    <span className="text-slate-500">샘플 PDF 내려받기 (ZIP, 3장):</span>
+                    <button
+                      type="button"
+                      onClick={() => downloadSample("same")}
+                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50"
+                    >
+                      같은 거래 서류 3장
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => downloadSample("mixed")}
+                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50"
+                    >
+                      서로 다른 거래 서류 3장
+                    </button>
+                    <span className="text-[11px] text-slate-400">
+                      미리 준비한 합성 세트 중 하나를 무작위로 내려받습니다.
                     </span>
                   </div>
                 </div>
