@@ -4,10 +4,10 @@
   "providerRequests": 1138,
   "automaticRetries": 0,
   "budget": {
-    "documents": 1662,
-    "requests": 2161,
+    "documents": 1668,
+    "requests": 2169,
     "measuredCostUsd": 2.6581831250000003,
-    "unresolvedCostUpperUsd": 0.40872727500000056,
+    "unresolvedCostUpperUsd": 0.5160211375000006,
     "maxDocuments": 3000,
     "maxRequests": 4500,
     "maxCostUsd": 3.5
@@ -457,5 +457,26 @@
       "s6r2": "same 22 sets after swapping 상표명/모델·규격 positions"
     },
     "automaticRetries": 0
+  },
+  "claudeSession20261028": {
+    "sourceSha": "cfcfab47e60636471490c9ee7f10b2d72662b332",
+    "purpose": "Proposal result screenshots via the public UI (user-approved 2 real analyses)",
+    "sets": [
+      "site sample normal-01",
+      "site sample abnormal-06 (quantity fault)"
+    ],
+    "reservation": {
+      "documents": 6,
+      "requests": 8,
+      "upperUsd": 0.1073,
+      "usageReconciled": false,
+      "note": "UI responses not reconciled; full upper reservation kept"
+    },
+    "automaticRetries": 0,
+    "results": {
+      "normal-01": "0 confirmed mismatches, 2 review items",
+      "abnormal-06": "1 confirmed mismatch (item quantity House B/L 384 PCS vs declaration 434 EA), 2 review items"
+    },
+    "providerFailures": 0
   }
 }
